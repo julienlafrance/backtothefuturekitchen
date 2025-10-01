@@ -44,6 +44,16 @@ def display_environment_badge():
             """, 
             unsafe_allow_html=True
         )
+    elif "PROD (Docker)" in env:
+        st.sidebar.markdown(
+            """
+            <div style="background-color: #6c757d; padding: 6px; border-radius: 5px; text-align: center; margin-top: 15px;">
+                <small style="color: white; margin: 0; font-weight: bold;">🐳 PROD (Docker)</small>
+                <p style="color: white; margin: 0; font-size: 9px;">Environnement production Docker</p>
+            </div>
+            """, 
+            unsafe_allow_html=True
+        )
     elif "PROD" in env:
         st.sidebar.markdown(
             """
@@ -51,7 +61,7 @@ def display_environment_badge():
                 <small style="color: white; margin: 0; font-weight: bold;">🚀 PRODUCTION</small>
                 <p style="color: white; margin: 0; font-size: 9px;">Environnement de production</p>
             </div>
-            """, 
+            """,
             unsafe_allow_html=True
         )
 

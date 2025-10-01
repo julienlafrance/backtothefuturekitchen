@@ -1,137 +1,178 @@
 # 🍽️ Mangetamain Analytics
 
-Data AI project for Telecom Paris - Food recommendation system based on Kaggle Food.com dataset
+Application d'analyse de données pour le dataset Food.com - Dashboard interactif avec DuckDB et Streamlit
 
-## 📁 Project Structure
+## 📁 Architecture du projet
 
 ```
 mangetamain/
-├── 00_preprod/          # Development environment
-│   ├── src/             # Streamlit app source code
-│   ├── tests/           # Unit & integration tests
-│   ├── data/            # Food.com dataset (excluded from Git)
-│   └── requirements.txt # Python dependencies
-├── 10_prod/           # Production environment (coming soon)
-├── 30_docker/           # Docker containerization
-├── 90_doc/              # Documentation & reports
-└── README.md            # This file
+├── 00_preprod/                     # Environnement de développement
+│   ├── src/mangetamain_analytics/  # Code source Streamlit
+│   ├── data/mangetamain.duckdb     # Base de données (20MB, 743K interactions)
+│   ├── logs/                       # Logs Loguru (app + erreurs)
+│   └── .venv/                      # Environnement Python (uv)
+├── 10_prod/                        # Environnement de production ✨
+│   ├── streamlit/main.py           # Application optimisée 
+│   ├── data/mangetamain.duckdb     # Base production
+│   ├── logs/                       # Logs isolés production
+│   └── pyproject.toml              # Configuration simplifiée
+├── 30_docker/                      # Orchestration conteneurs
+│   ├── docker-compose.yml          # Docker preprod
+│   └── docker-compose-prod.yml     # Docker production ✨
+├── 90_doc/                         # Documentation technique
+│   └── RESUME_*_V01-V05.md         # Historique des versions
+└── README.md                       # Ce fichier
 ```
 
-## 🚀 Quick Start
+## 🚀 Démarrage rapide
 
-### Option 1: Docker (Recommended)
+### Docker Production (Recommandé)
 
 ```bash
-# Clone the repository
-git clone https://github.com/julienlafrance/backtothefuturekitchen
-cd backtothefuturekitchen
-
-# Run with Docker Compose
 cd 30_docker/
-docker-compose up -d
+docker-compose -f docker-compose-prod.yml up -d
 ```
 
-Access the app at: **http://localhost:8501**
+**Accès** : http://localhost:8501 (avec badges environnement automatiques)
 
-### Option 2: Local Development
+### Développement local
 
 ```bash
 cd 00_preprod/
-uv venv
-source .venv/bin/activate
-uv pip install -r requirements.txt
-
-# Run the Streamlit app
-streamlit run src/mangetamain_analytics/main.py
+uv sync
+uv run streamlit run src/mangetamain_analytics/main.py
 ```
 
-## 📊 Data Setup
+## 🎯 Fonctionnalités
 
-Download the Food.com dataset from Kaggle and place CSV files in `00_preprod/data/`:
-- `RAW_interactions.csv`
-- `RAW_recipes.csv` 
-- `PP_recipes.csv`
-- `PP_users.csv`
-- etc.
+### Analyses disponibles
+- **Distribution des notes** : Visualisation 698K+ ratings Food.com
+- **Activité utilisateurs** : Métriques d'engagement (top 1000 users)  
+- **Base DuckDB** : Requêtes SQL rapides sur 4 tables
+- **Badges environnement** : Détection auto PREPROD/PROD
 
-> **Note**: Data files are excluded from Git due to size. You need to download them separately.
+### Dashboard interactif
+- Interface Streamlit responsive
+- Graphiques temps réel avec Seaborn/Matplotlib
+- Sidebar informative avec metrics base de données
+- Logs Loguru avec rotation automatique
 
-## 🐳 Docker Usage
+## 🐳 Environnements Docker
 
-### Frontend with Docker
-
+### Production (mange_prod)
 ```bash
-cd 30_docker/
+# Démarrage service persistant
+docker-compose -f docker-compose-prod.yml up -d
 
-# Start the application
-docker-compose up -d
+# Monitoring logs
+docker-compose -f docker-compose-prod.yml logs -f
 
-# View logs
-docker-compose logs -f
+# Santé du service
+docker-compose -f docker-compose-prod.yml ps
+```
 
-# Stop the application
+### Maintenance
+```bash
+# Switch preprod → production
 docker-compose down
+docker-compose -f docker-compose-prod.yml up -d
+
+# Redémarrage sans interruption
+docker-compose -f docker-compose-prod.yml restart
 ```
 
-### Environment Variables
+## 🔧 Stack technique
 
-Copy and configure environment variables:
+- **Backend** : DuckDB 1.4.0 (743K interactions analysées)
+- **Frontend** : Streamlit 1.50.0 avec badges environnement
+- **Visualisation** : Seaborn 0.13.2, Matplotlib 3.10.6
+- **Logs** : Loguru 0.7.3 (rotation 1MB, séparation erreurs)
+- **Package Manager** : uv 0.8.22 (gestionnaire moderne)
+- **Conteneurisation** : Python 3.13.3-slim, Docker Compose
+- **Données** : Dataset Food.com (1999-2018, 25K utilisateurs)
+
+## 📊 Données
+
+Le dataset Food.com contient :
+- **interactions_train** : 698,901 ratings
+- **interactions_test** : 12,455 ratings  
+- **interactions_validation** : 7,023 ratings
+- **users** : 25,076 utilisateurs
+
+> Base DuckDB pré-construite disponible (20MB) - pas besoin de CSV sources
+
+## 🎨 Interface utilisateur
+
+### Badges environnement intelligents
+- **🔧 PREPROD** : Environnement développement (gris discret)
+- **🚀 PRODUCTION** : Environnement production (gris discret)
+- **🚀 PROD (Docker)** : Conteneur production automatique
+
+### Navigation
+- **Sidebar** : Infos base + métriques + badge environnement
+- **Onglets** : Distribution notes, Activité users, Informations
+- **Responsive** : Layout adaptatif wide format
+
+## 📈 Monitoring
+
+### Logs temps réel
 ```bash
-cp .env.example .env
-# Edit .env with your configuration
+# Logs production
+tail -f ~/mangetamain/10_prod/logs/mangetamain_app.log
+
+# Logs preprod  
+tail -f ~/mangetamain/00_preprod/logs/mangetamain_app.log
+
+# Erreurs uniquement
+grep "ERROR" ~/mangetamain/*/logs/*.log
 ```
 
-## 🔧 Environments
+### Métriques dashboard
+- Nombre total interactions analysées
+- Utilisateurs les plus actifs (top 5)
+- Distribution ratings (0-5 étoiles)
+- Moyennes engagement par utilisateur
 
-- **00_preprod/** - Full development setup with Streamlit analytics app
-- **30_docker/** - Production-ready Docker containerization with frontend
-- **90_doc/** - Project documentation and analysis reports
+## 🚀 Accès en production
 
-## 📊 Features
+- **Local** : http://192.168.80.210:8501/8502 (selon environnement)
+- **Docker** : http://localhost:8501 (mange_prod)
+- **Public** : https://mangetamain.lafrance.io/ (reverse proxy HTTPS)
 
-- Interactive data visualization with Streamlit
-- DuckDB database for efficient data processing
-- Food recommendation analytics
-- User behavior analysis
-- Recipe clustering and insights
-- Dockerized deployment for production
+## 🤝 Développement
 
-## 🛠️ Tech Stack
+### Workflow recommandé
+1. **Développer** dans `00_preprod/` (badge PREPROD)
+2. **Tester** avec `uv run streamlit run...`  
+3. **Copier** vers `10_prod/` pour validation
+4. **Déployer** avec Docker production (badge PROD)
 
-- **Frontend**: Streamlit (Dockerized)
-- **Database**: DuckDB
-- **Data Processing**: Pandas, NumPy
-- **Visualization**: Plotly, Matplotlib
-- **Package Management**: UV
-- **Containerization**: Docker, Docker Compose
-
-## 📝 Documentation
-
-Detailed documentation available in:
-- `00_preprod/README.md` - Development setup
-- `30_docker/README_DOCKER.md` - Docker deployment guide
-- `90_doc/` - Analysis reports and guides
-
-## 🤝 Contributing
-
-1. Clone the repository
-2. Setup development environment in `00_preprod/` or use Docker
-3. Make your changes
-4. Run tests: `pytest tests/`
-5. Test with Docker: `cd 30_docker && docker-compose up`
-6. Submit a pull request
-
-## 🚀 Deployment
-
-For production deployment, use the Docker setup:
-
+### Tests environnements
 ```bash
-cd 30_docker/
-docker-compose -f docker-compose.yml up -d
+# Validation badges
+cd ~/mangetamain/00_preprod && uv run python -c "print('✅ PREPROD')"
+cd ~/mangetamain/10_prod && uv run python -c "print('✅ PROD')"
+docker exec mange_prod python -c "print('✅ DOCKER')"
 ```
 
-The application will be available on port 8501 with automatic restarts and proper logging.
+## 📚 Documentation
+
+**Architecture évolutive** documentée dans `90_doc/` :
+- **V01-V02** : Setup initial + Docker basique  
+- **V03-V04** : Production + Logs Loguru
+- **V05** : Environnements séparés + Badges ✨
+
+**Détails techniques** : Voir `RESUME_PROD_20251001_V05.md`
+
+## 🎯 Prochaines étapes
+
+1. **Tests unitaires** : pytest avec couverture >90%
+2. **CI/CD** : Pipeline GitHub Actions preprod→prod  
+3. **Analyses ML** : Clustering utilisateurs, recommandations
+4. **Monitoring** : Métriques Prometheus + Grafana
+5. **Scaling** : Load balancing multi-conteneurs
 
 ---
 
-**Mangetamain Analytics** - Transform culinary data into actionable insights! 🍽️📊
+**Mangetamain Analytics V05** - Dashboard Food.com avec environnements intelligents! 🍽️📊  
+*Architecture production • Logs Loguru • Badges automatiques • Docker optimisé*

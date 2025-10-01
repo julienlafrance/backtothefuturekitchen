@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mangetamain-prod:
+    image: python:3.13.3-slim
+    container_name: mange_prod
+    ports:
+      - "8501:8501"
+    volumes:
+      - ../10_prod/streamlit:/app/streamlit:ro
+      - ../10_prod/data:/app/data
+      - ../10_prod/logs:/app/logs
+      - ../10_prod/pyproject.toml:/app/pyproject.toml:ro
+      - ../10_prod/uv.lock:/app/uv.lock:ro
+      - ../10_prod/README.md:/app/README.md:ro
+    working_dir: /app
+    command: >
+      bash -c "
+        apt-get update && 
+        apt-get install -y curl && 
+        pip install uv && 
+        uv sync && 
+        uv run streamlit run streamlit/main.py 
+        --server.address 0.0.0.0 
+        --server.port 8501 
+        --server.headless true
+      "
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  default:
+    name: mangetamain-prod-network

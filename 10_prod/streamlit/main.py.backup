@@ -12,48 +12,6 @@ import duckdb
 from pathlib import Path
 from loguru import logger
 import sys
-import os
-
-def detect_environment():
-    """Detect if running in PREPROD or PROD environment."""
-    current_path = str(Path.cwd())
-    
-    # Check if we are in a Docker container
-    if Path("/.dockerenv").exists():
-        return "PROD (Docker)"
-    
-    # Check the current working directory path
-    if "00_preprod" in current_path:
-        return "PREPROD"
-    elif "10_prod" in current_path:
-        return "PROD"
-    else:
-        return "UNKNOWN"
-
-def display_environment_badge():
-    """Display environment badge in sidebar."""
-    env = detect_environment()
-    
-    if "PREPROD" in env:
-        st.sidebar.markdown(
-            """
-            <div style="background-color: #6c757d; padding: 6px; border-radius: 5px; text-align: center; margin-top: 15px;">
-                <small style="color: white; margin: 0; font-weight: bold;">🔧 PREPROD</small>
-                <p style="color: white; margin: 0; font-size: 9px;">Environnement de développement</p>
-            </div>
-            """, 
-            unsafe_allow_html=True
-        )
-    elif "PROD" in env:
-        st.sidebar.markdown(
-            """
-            <div style="background-color: #6c757d; padding: 6px; border-radius: 5px; text-align: center; margin-top: 15px;">
-                <small style="color: white; margin: 0; font-weight: bold;">🚀 PRODUCTION</small>
-                <p style="color: white; margin: 0; font-size: 9px;">Environnement de production</p>
-            </div>
-            """, 
-            unsafe_allow_html=True
-        )
 
 # Ensure logs directory exists
 Path("logs").mkdir(exist_ok=True)
@@ -363,7 +321,6 @@ def main():
     # Display database information in sidebar
     with st.sidebar:
         display_database_info(conn)
-        display_environment_badge()
     
     # Main content area - Food.com data analysis
     st.header("📈 Analyses des données Food.com")
