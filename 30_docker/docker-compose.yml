@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  mangetamain-web:
+    image: python:3.13-slim
+    container_name: mange_web
+    ports:
+      - "8501:8501"
+    volumes:
+      - ../00_preprod/src:/app/src:ro
+      - ../00_preprod/data:/app/data
+      - ../00_preprod/logs:/app/logs
+      - ../00_preprod/pyproject.toml:/app/pyproject.toml:ro
+      - ../00_preprod/uv.lock:/app/uv.lock:ro
+      - ../00_preprod/README.md:/app/README.md:ro
+    working_dir: /app
+    command: >
+      bash -c "
+        apt-get update && 
+        apt-get install -y curl && 
+        pip install uv && 
+        uv sync && 
+        uv run streamlit run src/mangetamain_analytics/main.py 
+        --server.address 0.0.0.0 
+        --server.port 8501 
+        --server.headless true
+      "
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+networks:
+  default:
+    name: mangetamain-network

@@ -1,0 +1,38 @@
+# Environnements Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+
+# Base de données (trop lourde pour Git)
+data/mangetamain.duckdb
+
+# Logs (générés automatiquement)
+logs/
+*.log
+
+# Fichiers temporaires
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# uv
+.python-version
+
+# Gros fichiers de données (à exclure de Git)
+data/*.csv
+data/*.duckdb
+data/*.pkl
+

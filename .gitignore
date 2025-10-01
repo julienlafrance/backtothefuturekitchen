@@ -1,0 +1,39 @@
+# Environnements Python (OBLIGATOIRE À EXCLURE)
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*/venv/
+*/.venv/
+
+# Gros fichiers de données - ACTIVÉ
+*/data/*.csv
+*/data/*.duckdb  
+*/data/*.pkl
+
+# Logs 
+*/logs/
+*.log
+
+# Fichiers temporaires
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# UV
+.python-version
+
+# Fichiers temporaires
+temp_clean/
