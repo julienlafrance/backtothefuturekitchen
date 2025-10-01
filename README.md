@@ -11,6 +11,7 @@ mangetamain/
 │   ├── tests/           # Unit & integration tests
 │   ├── data/            # Food.com dataset (excluded from Git)
 │   └── requirements.txt # Python dependencies
+├── 10_prod/           # Production environment (coming soon)
 ├── 30_docker/           # Docker containerization
 ├── 90_doc/              # Documentation & reports
 └── README.md            # This file
