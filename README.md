@@ -8,7 +8,7 @@ Application d'analyse de données pour le dataset Food.com - Dashboard interacti
 mangetamain/
 ├── 00_preprod/                     # Environnement de développement
 │   ├── src/mangetamain_analytics/  # Code source Streamlit
-│   ├── data/mangetamain.duckdb     # Base de données (20MB, 743K interactions)
+│   ├── data/mangetamain.duckdb     # Base de données (581MB, 2.3M lignes)
 │   ├── logs/                       # Logs Loguru (app + erreurs)
 │   └── .venv/                      # Environnement Python (uv)
 ├── 10_prod/                        # Environnement de production ✨
@@ -16,6 +16,10 @@ mangetamain/
 │   ├── data/mangetamain.duckdb     # Base production
 │   ├── logs/                       # Logs isolés production
 │   └── pyproject.toml              # Configuration simplifiée
+├── 20_VibeCoding/
+│   └── Ydata/                      # Analyse YData SDK
+│       ├── ydata_advanced_analysis.py  # Profiling avancé
+│       └── profile_reports/        # Rapports HTML
 ├── 30_docker/                      # Orchestration conteneurs
 │   ├── docker-compose.yml          # Docker preprod
 │   └── docker-compose-prod.yml     # Docker production ✨
@@ -46,9 +50,9 @@ uv run streamlit run src/mangetamain_analytics/main.py
 ## 🎯 Fonctionnalités
 
 ### Analyses disponibles
-- **Distribution des notes** : Visualisation 698K+ ratings Food.com
-- **Activité utilisateurs** : Métriques d'engagement (top 1000 users)  
-- **Base DuckDB** : Requêtes SQL rapides sur 4 tables
+- **Distribution des notes** : Visualisation 700K+ ratings Food.com (7 tables)
+- **Activité utilisateurs** : Métriques d'engagement (top users (25K total))  
+- **Base DuckDB** : Requêtes SQL rapides sur 7 tables
 - **Badges environnement** : Détection auto PREPROD/PROD
 
 ### Dashboard interactif
@@ -83,7 +87,7 @@ docker-compose -f docker-compose-prod.yml restart
 
 ## 🔧 Stack technique
 
-- **Backend** : DuckDB 1.4.0 (743K interactions analysées)
+- **Backend** : DuckDB 1.4.0 (2.3M lignes analysées)
 - **Frontend** : Streamlit 1.50.0 avec badges environnement
 - **Visualisation** : Seaborn 0.13.2, Matplotlib 3.10.6
 - **Logs** : Loguru 0.7.3 (rotation 1MB, séparation erreurs)
@@ -97,9 +101,12 @@ Le dataset Food.com contient :
 - **interactions_train** : 698,901 ratings
 - **interactions_test** : 12,455 ratings  
 - **interactions_validation** : 7,023 ratings
-- **users** : 25,076 utilisateurs
+- **PP_users** : 25,076 utilisateurs
+- **PP_recipes** : 178,265 recettes
+- **RAW_interactions** : 1,132,367 interactions brutes
+- **RAW_recipes** : 231,637 recettes détaillées
 
-> Base DuckDB pré-construite disponible (20MB) - pas besoin de CSV sources
+> Base DuckDB étendue disponible (581MB) avec 7 tables complètes
 
 ## 🎨 Interface utilisateur
 
@@ -110,7 +117,7 @@ Le dataset Food.com contient :
 
 ### Navigation
 - **Sidebar** : Infos base + métriques + badge environnement
-- **Onglets** : Distribution notes, Activité users, Informations
+- **Onglets** : Vue d'ensemble, Notes, Temporel, Utilisateurs, Données brutes
 - **Responsive** : Layout adaptatif wide format
 
 ## 📈 Monitoring

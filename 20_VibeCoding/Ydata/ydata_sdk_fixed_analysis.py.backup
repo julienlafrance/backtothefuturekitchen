@@ -1,0 +1,469 @@
+#!/usr/bin/env python3
+"""
+Analyse complète avec YData SDK 3.0+ - CORRECTION datetime et HTML
+Convertit les colonnes datetime en string pour compatibilité YData SDK
+"""
+
+import os
+import sys
+import duckdb
+import pandas as pd
+import numpy as np
+from datetime import datetime
+import warnings
+warnings.filterwarnings('ignore')
+
+def configure_ydata():
+    """Configuration YData SDK avec license key"""
+    if os.path.exists('.env'):
+        with open('.env', 'r') as f:
+            for line in f:
+                if line.strip() and not line.startswith('#'):
+                    try:
+                        key, value = line.strip().split('=', 1)
+                        os.environ[key] = value
+                    except ValueError:
+                        continue
+    
+    license_key = os.environ.get('YDATA_LICENSE_KEY')
+    if not license_key:
+        raise ValueError("YDATA_LICENSE_KEY non trouvé dans .env")
+    
+    print(f"✅ YData SDK configuré avec licence: {license_key[:10]}...")
+    return license_key
+
+def import_ydata_sdk():
+    """Import de tous les composants YData SDK"""
+    try:
+        from ydata.connectors.storages.local_connector import LocalConnector
+        from ydata.metadata import Metadata
+        from ydata.dataset import Dataset
+        from ydata.synthesizers.regular.model import RegularSynthesizer
+        from ydata.synthesizers.timeseries.model import TimeSeriesSynthesizer
+        
+        print("✅ Tous les composants YData SDK importés")
+        
+        return {
+            'LocalConnector': LocalConnector,
+            'Metadata': Metadata,
+            'Dataset': Dataset,
+            'RegularSynthesizer': RegularSynthesizer,
+            'TimeSeriesSynthesizer': TimeSeriesSynthesizer
+        }
+        
+    except ImportError as e:
+        print(f"❌ Erreur import YData SDK: {e}")
+        return None
+
+def connect_to_duckdb():
+    """Connexion à la base DuckDB de production"""
+    db_path = '/home/dataia25/mangetamain/10_prod/data/mangetamain.duckdb'
+    if not os.path.exists(db_path):
+        raise FileNotFoundError(f"Base DuckDB non trouvée: {db_path}")
+    
+    conn = duckdb.connect(db_path)
+    print(f"✅ Connexion DuckDB: {db_path}")
+    return conn
+
+def fix_datetime_columns_for_ydata(df, table_name):
+    """
+    CORRECTION CLEF: Convertir les colonnes datetime pour compatibilité YData SDK
+    YData SDK ne supporte pas datetime64[us], il faut convertir en string
+    """
+    df_fixed = df.copy()
+    datetime_columns = []
+    
+    for col in df_fixed.columns:
+        if pd.api.types.is_datetime64_any_dtype(df_fixed[col]):
+            print(f"  🔧 Conversion datetime → string: {col}")
+            # Convertir en string format ISO pour YData
+            df_fixed[col] = df_fixed[col].dt.strftime('%Y-%m-%d')
+            datetime_columns.append(col)
+    
+    if datetime_columns:
+        print(f"  ✅ {len(datetime_columns)} colonnes datetime converties pour YData SDK")
+    
+    return df_fixed, datetime_columns
+
+def analyze_table_with_ydata_sdk(table_name, df, sdk_components):
+    """Analyse complète d'une table avec YData SDK 3.0+ et correction datetime"""
+    
+    print(f"\n🔬 ANALYSE YDATA SDK COMPLÈTE: {table_name}")
+    print("-" * 60)
+    
+    results = {
+        'table_name': table_name,
+        'rows': len(df),
+        'columns': len(df.columns),
+        'memory_usage': int(df.memory_usage(deep=True).sum()),
+        'analyses': {}
+    }
+    
+    # 1. CORRECTION datetime pour YData SDK
+    df_fixed, converted_datetime_cols = fix_datetime_columns_for_ydata(df, table_name)
+    
+    # 2. Export CSV pour LocalConnector
+    csv_path = f"ydata_analysis/{table_name}.csv"
+    df_fixed.to_csv(csv_path, index=False)
+    print(f"📁 Export CSV (datetime corrigé): {csv_path}")
+    
+    try:
+        # 3. Créer Dataset YData (API 3.0+ avec données corrigées)
+        dataset = sdk_components['Dataset'](df_fixed)
+        print(f"📊 Dataset YData créé: {table_name}")
+        
+        # 4. Créer Metadata depuis Dataset (API correcte)
+        metadata = sdk_components['Metadata'](dataset=dataset)
+        print("🧠 Métadonnées YData générées")
+        
+        # Extraire informations des métadonnées
+        metadata_info = {
+            'shape': metadata.shape,
+            'columns': list(metadata.columns),
+            'categorical_vars': list(metadata.categorical_vars) if metadata.categorical_vars else [],
+            'numerical_vars': list(metadata.numerical_vars) if metadata.numerical_vars else [],
+            'date_vars': list(metadata.date_vars) if metadata.date_vars else [],
+            'string_vars': list(metadata.string_vars) if metadata.string_vars else [],
+            'cardinality': dict(metadata.cardinality) if hasattr(metadata.cardinality, 'items') else str(metadata.cardinality),
+            'warnings': metadata.warnings if metadata.warnings else [],
+            'converted_datetime_columns': converted_datetime_cols  # Info sur colonnes converties
+        }
+        
+        results['analyses']['ydata_metadata'] = metadata_info
+        print(f"  📋 Colonnes: {len(metadata.columns)} ({len(metadata.numerical_vars or [])} num, {len(metadata.categorical_vars or [])} cat)")
+        
+        # 5. Détection colonnes temporelles avancée (sur dataframe original + converties)
+        temporal_columns = detect_temporal_columns_advanced(df, df_fixed, metadata, converted_datetime_cols, table_name)
+        results['analyses']['temporal_columns'] = temporal_columns
+        
+        # 6. Analyse de qualité des données
+        quality_analysis = analyze_data_quality_advanced(df_fixed, metadata, table_name)
+        results['analyses']['data_quality'] = quality_analysis
+        
+        # 7. Si colonnes temporelles → préparation time-series
+        if temporal_columns and any(col.get('is_temporal', False) for col in temporal_columns.values()):
+            ts_analysis = analyze_timeseries_patterns(df, temporal_columns, table_name)  # Utiliser df original pour dates
+            results['analyses']['timeseries'] = ts_analysis
+            
+            # Préparation TimeSeriesSynthesizer
+            ts_ready = prepare_for_timeseries_synthesis(df_fixed, temporal_columns, metadata, table_name)
+            results['analyses']['synthesis_ready'] = ts_ready
+        
+        # 8. Analyse des corrélations (si colonnes numériques)
+        if metadata.numerical_vars and len(metadata.numerical_vars) > 1:
+            correlation_analysis = analyze_correlations_advanced(df_fixed, metadata, table_name)
+            results['analyses']['correlations'] = correlation_analysis
+        
+        # 9. Détection d'outliers sur colonnes numériques
+        if metadata.numerical_vars:
+            outlier_analysis = detect_outliers_advanced(df_fixed, metadata, table_name)
+            results['analyses']['outliers'] = outlier_analysis
+        
+        # 10. Analyse de cardinalité pour variables catégorielles
+        if metadata.categorical_vars:
+            cardinality_analysis = analyze_cardinality(df_fixed, metadata, table_name)
+            results['analyses']['cardinality'] = cardinality_analysis
+        
+        print(f"✅ Analyse YData SDK complète pour {table_name}")
+        
+        return results
+        
+    except Exception as e:
+        print(f"❌ Erreur analyse YData SDK {table_name}: {e}")
+        import traceback
+        traceback.print_exc()
+        results['analyses']['error'] = str(e)
+        return results
+
+def detect_temporal_columns_advanced(df_original, df_fixed, metadata, converted_datetime_cols, table_name):
+    """Détection avancée des colonnes temporelles avec gestion des conversions"""
+    temporal_info = {}
+    
+    # 1. Colonnes converties automatiquement (datetime64 → string)
+    for col in converted_datetime_cols:
+        temporal_info[col] = {
+            'is_temporal': True,
+            'detected_by': 'datetime_conversion',
+            'type': 'converted_datetime',
+            'original_type': 'datetime64[us]',
+            'range': [str(df_original[col].min()), str(df_original[col].max())],
+            'null_count': int(df_original[col].isnull().sum())
+        }
+    
+    # 2. Utiliser YData metadata pour détection supplémentaire
+    if metadata.date_vars:
+        for col in metadata.date_vars:
+            if col not in temporal_info:  # Pas déjà détecté
+                temporal_info[col] = {
+                    'is_temporal': True,
+                    'detected_by': 'ydata_metadata',
+                    'type': 'date_var',
+                    'range': [str(df_original[col].min()), str(df_original[col].max())] if col in df_original.columns else None,
+                    'null_count': int(df_original[col].isnull().sum()) if col in df_original.columns else 0
+                }
+    
+    # 3. Détection manuelle complémentaire
+    for col in df_original.columns:
+        if col in temporal_info:
+            continue
+            
+        # Test parsing pour colonnes suspectes
+        if col.lower() in ['date', 'timestamp', 'time', 'submitted', 'created', 'modified']:
+            try:
+                sample = df_original[col].dropna().head(1000)
+                if len(sample) > 10:
+                    parsed = pd.to_datetime(sample, errors='coerce')
+                    success_rate = parsed.notna().sum() / len(sample)
+                    
+                    if success_rate > 0.8:
+                        temporal_info[col] = {
+                            'is_temporal': True,
+                            'detected_by': 'manual_parsing',
+                            'type': 'parseable',
+                            'success_rate': float(success_rate),
+                            'sample_parsed': str(parsed.iloc[0]) if len(parsed) > 0 else None,
+                            'null_count': int(df_original[col].isnull().sum())
+                        }
+            except:
+                pass
+    
+    if temporal_info:
+        temporal_count = len(temporal_info)
+        print(f"  🕒 {temporal_count} colonnes temporelles: {list(temporal_info.keys())}")
+    
+    return temporal_info
+
+def analyze_data_quality_advanced(df, metadata, table_name):
+    """Analyse de qualité avancée avec YData metadata"""
+    quality = {
+        'ydata_warnings': metadata.warnings if metadata.warnings else [],
+        'completeness': {},
+        'consistency': {},
+        'distribution_quality': {}
+    }
+    
+    # Completeness
+    total_cells = len(df) * len(df.columns)
+    null_cells = df.isnull().sum().sum()
+    quality['completeness'] = {
+        'total_cells': int(total_cells),
+        'null_cells': int(null_cells),
+        'completeness_rate': float(1 - (null_cells / total_cells))
+    }
+    
+    # Consistency basée sur YData metadata
+    quality['consistency'] = {
+        'numerical_vars_count': len(metadata.numerical_vars or []),
+        'categorical_vars_count': len(metadata.categorical_vars or []),
+        'date_vars_count': len(metadata.date_vars or []),
+        'string_vars_count': len(metadata.string_vars or [])
+    }
+    
+    # Distribution quality pour variables numériques
+    if metadata.numerical_vars:
+        for col in metadata.numerical_vars:
+            if col in df.columns:
+                series = df[col].dropna()
+                if len(series) > 0:
+                    quality['distribution_quality'][col] = {
+                        'mean': float(series.mean()),
+                        'std': float(series.std()),
+                        'skewness': float(series.skew()),
+                        'kurtosis': float(series.kurtosis()),
+                        'zeros_percentage': float((series == 0).sum() / len(series) * 100)
+                    }
+    
+    completeness_pct = quality['completeness']['completeness_rate'] * 100
+    warnings_count = len(quality['ydata_warnings'])
+    print(f"  📊 Qualité: {completeness_pct:.1f}% complétude, {warnings_count} warnings YData")
+    
+    return quality
+
+def analyze_timeseries_patterns(df, temporal_columns, table_name):
+    """Analyse des patterns temporels sur dataframe original"""
+    ts_analysis = {}
+    
+    for col_name, col_info in temporal_columns.items():
+        if not col_info.get('is_temporal', False):
+            continue
+            
+        print(f"  📈 Analyse temporelle: {col_name}")
+        
+        # Utiliser les données temporelles originales
+        if col_info.get('type') == 'converted_datetime':
+            time_series = df[col_name]  # Déjà datetime64
+        elif col_info.get('type') == 'parseable':
+            time_series = pd.to_datetime(df[col_name], errors='coerce')
+        else:
+            time_series = df[col_name]
+        
+        # Analyse des patterns
+        valid_dates = time_series.dropna()
+        if len(valid_dates) > 0:
+            time_range = (valid_dates.max() - valid_dates.min())
+            
+            analysis = {
+                'range': [str(valid_dates.min()), str(valid_dates.max())],
+                'span_days': int(time_range.days),
+                'valid_dates_count': len(valid_dates),
+                'frequency_analysis': {}
+            }
+            
+            # Analyse de fréquence
+            if len(valid_dates) > 1:
+                sorted_dates = valid_dates.sort_values()
+                time_diffs = sorted_dates.diff().dropna()
+                
+                if len(time_diffs) > 0:
+                    median_interval_hours = time_diffs.median().total_seconds() / 3600
+                    analysis['frequency_analysis'] = {
+                        'median_interval_hours': float(median_interval_hours),
+                        'min_interval_hours': float(time_diffs.min().total_seconds() / 3600),
+                        'max_interval_hours': float(time_diffs.max().total_seconds() / 3600)
+                    }
+            
+            ts_analysis[col_name] = analysis
+    
+    return ts_analysis
+
+def prepare_for_timeseries_synthesis(df, temporal_columns, metadata, table_name):
+    """Préparation pour TimeSeriesSynthesizer"""
+    synthesis_info = {
+        'ready_for_synthesis': False,
+        'requirements_met': [],
+        'requirements_missing': []
+    }
+    
+    temporal_cols = [col for col, info in temporal_columns.items() if info.get('is_temporal', False)]
+    
+    if temporal_cols:
+        synthesis_info['primary_time_column'] = temporal_cols[0]
+        synthesis_info['requirements_met'].append(f'Colonnes temporelles: {len(temporal_cols)}')
+        
+        # Volume suffisant
+        if len(df) >= 100:
+            synthesis_info['requirements_met'].append(f'Volume suffisant: {len(df)} lignes')
+        else:
+            synthesis_info['requirements_missing'].append(f'Volume insuffisant: {len(df)} < 100')
+        
+        # Variables numériques pour les métriques
+        if metadata.numerical_vars and len(metadata.numerical_vars) > 0:
+            synthesis_info['requirements_met'].append(f'Variables numériques: {len(metadata.numerical_vars)}')
+            synthesis_info['numeric_columns'] = list(metadata.numerical_vars)
+        else:
+            synthesis_info['requirements_missing'].append('Aucune variable numérique')
+        
+        # Prêt si toutes conditions remplies
+        synthesis_info['ready_for_synthesis'] = len(synthesis_info['requirements_missing']) == 0
+        
+        status = "✅ PRÊT" if synthesis_info['ready_for_synthesis'] else "⚠️ MANQUE REQ"
+        print(f"  🎯 TimeSeriesSynthesizer: {status}")
+    
+    return synthesis_info
+
+def analyze_correlations_advanced(df, metadata, table_name):
+    """Analyse des corrélations sur variables numériques"""
+    numeric_cols = list(metadata.numerical_vars)
+    numeric_df = df[numeric_cols].select_dtypes(include=[np.number])
+    
+    if len(numeric_df.columns) < 2:
+        return {'note': 'Moins de 2 colonnes numériques'}
+    
+    # Matrice de corrélation Pearson
+    corr_matrix = numeric_df.corr(method='pearson')
+    
+    # Corrélations fortes
+    strong_correlations = []
+    for i in range(len(corr_matrix.columns)):
+        for j in range(i+1, len(corr_matrix.columns)):
+            corr_val = corr_matrix.iloc[i, j]
+            if not pd.isna(corr_val) and abs(corr_val) > 0.5:
+                strong_correlations.append({
+                    'var1': corr_matrix.columns[i],
+                    'var2': corr_matrix.columns[j], 
+                    'correlation': float(corr_val),
+                    'strength': 'forte' if abs(corr_val) > 0.7 else 'modérée'
+                })
+    
+    analysis = {
+        'matrix_shape': corr_matrix.shape,
+        'strong_correlations': strong_correlations,
+        'max_correlation': float(corr_matrix.abs().max().max()) if not corr_matrix.empty else 0
+    }
+    
+    if strong_correlations:
+        print(f"  🔗 {len(strong_correlations)} corrélations fortes détectées")
+    
+    return analysis
+
+def detect_outliers_advanced(df, metadata, table_name):
+    """Détection d'outliers sur variables numériques YData"""
+    numeric_cols = list(metadata.numerical_vars)
+    outlier_info = {}
+    
+    for col in numeric_cols:
+        if col not in df.columns:
+            continue
+            
+        series = df[col].dropna()
+        if len(series) < 10:
+            continue
+            
+        # Méthode IQR
+        Q1 = series.quantile(0.25)
+        Q3 = series.quantile(0.75)
+        IQR = Q3 - Q1
+        
+        if IQR == 0:  # Éviter division par zéro
+            continue
+            
+        lower_bound = Q1 - 1.5 * IQR
+        upper_bound = Q3 + 1.5 * IQR
+        
+        outliers_mask = (series < lower_bound) | (series > upper_bound)
+        outlier_count = outliers_mask.sum()
+        
+        if outlier_count > 0:
+            outlier_info[col] = {
+                'count': int(outlier_count),
+                'percentage': float(outlier_count / len(series) * 100),
+                'bounds': [float(lower_bound), float(upper_bound)],
+                'extreme_values': {
+                    'min_outlier': float(series[outliers_mask].min()),
+                    'max_outlier': float(series[outliers_mask].max())
+                }
+            }
+    
+    if outlier_info:
+        total_outliers = sum([info['count'] for info in outlier_info.values()])
+        print(f"  🎯 {total_outliers} outliers dans {len(outlier_info)} colonnes")
+    
+    return outlier_info
+
+def analyze_cardinality(df, metadata, table_name):
+    """Analyse de cardinalité des variables catégorielles"""
+    categorical_cols = list(metadata.categorical_vars) if metadata.categorical_vars else []
+    cardinality_info = {}
+    
+    for col in categorical_cols:
+        if col not in df.columns:
+            continue
+            
+        unique_count = df[col].nunique()
+        total_count = len(df[col].dropna())
+        
+        if total_count > 0:
+            cardinality_info[col] = {
+                'unique_values': int(unique_count),
+                'total_values': int(total_count),
+                'cardinality_ratio': float(unique_count / total_count),
+                'top_values': df[col].value_counts().head(5).to_dict()
+            }
+    
+    if cardinality_info:
+        high_card = [col for col, info in cardinality_info.items() if info['cardinality_ratio'] > 0.9]
+        if high_card:
+            print(f"  📊 Cardinalité élevée détectée: {high_card}")
+    
+    return cardinality_info
+
