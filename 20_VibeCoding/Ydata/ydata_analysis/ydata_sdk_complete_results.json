@@ -1,0 +1,109 @@
+[
+  {
+    "table_name": "PP_recipes",
+    "rows": 50000,
+    "columns": 8,
+    "memory_usage": 69310681,
+    "analyses": [
+      "ydata_metadata",
+      "temporal_columns",
+      "data_quality",
+      "correlations",
+      "outliers",
+      "cardinality"
+    ]
+  },
+  {
+    "table_name": "PP_users",
+    "rows": 25076,
+    "columns": 6,
+    "memory_usage": 17331806,
+    "analyses": [
+      "ydata_metadata",
+      "temporal_columns",
+      "data_quality",
+      "correlations",
+      "outliers"
+    ]
+  },
+  {
+    "table_name": "RAW_interactions",
+    "rows": 50000,
+    "columns": 5,
+    "memory_usage": 18017887,
+    "analyses": [
+      "ydata_metadata",
+      "temporal_columns",
+      "data_quality",
+      "timeseries",
+      "synthesis_ready",
+      "correlations",
+      "outliers",
+      "cardinality"
+    ]
+  },
+  {
+    "table_name": "RAW_recipes",
+    "rows": 50000,
+    "columns": 12,
+    "memory_usage": 78613504,
+    "analyses": [
+      "ydata_metadata",
+      "temporal_columns",
+      "data_quality",
+      "timeseries",
+      "synthesis_ready",
+      "correlations",
+      "outliers",
+      "cardinality"
+    ]
+  },
+  {
+    "table_name": "interactions_test",
+    "rows": 12455,
+    "columns": 6,
+    "memory_usage": 1233177,
+    "analyses": [
+      "ydata_metadata",
+      "temporal_columns",
+      "data_quality",
+      "timeseries",
+      "synthesis_ready",
+      "correlations",
+      "outliers",
+      "cardinality"
+    ]
+  },
+  {
+    "table_name": "interactions_train",
+    "rows": 50000,
+    "columns": 6,
+    "memory_usage": 4950132,
+    "analyses": [
+      "ydata_metadata",
+      "temporal_columns",
+      "data_quality",
+      "timeseries",
+      "synthesis_ready",
+      "correlations",
+      "outliers",
+      "cardinality"
+    ]
+  },
+  {
+    "table_name": "interactions_validation",
+    "rows": 7023,
+    "columns": 6,
+    "memory_usage": 695409,
+    "analyses": [
+      "ydata_metadata",
+      "temporal_columns",
+      "data_quality",
+      "timeseries",
+      "synthesis_ready",
+      "correlations",
+      "outliers",
+      "cardinality"
+    ]
+  }
+]
