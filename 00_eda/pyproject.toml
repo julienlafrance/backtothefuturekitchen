@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Add your description here"
 requires-python = ">=3.13"
 dependencies = [
+    "ast",
     "duckdb>=1.4.1",
     "ipykernel>=6.30.1",
     "jupyter>=1.1.1",
