@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapports YData - MangetaMain</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-top: 10px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+        
+        .legend {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+        
+        .legend h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .legend-item {
+            margin: 8px 0;
+            color: #856404;
+        }
+        
+        .legend-item strong {
+            color: #664d03;
+        }
+        
+        .table-section {
+            margin: 30px 0;
+        }
+        
+        .table-card {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .table-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .table-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .table-info {
+            background: #e7f3ff;
+            color: #0056b3;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .report-link {
+            display: block;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .report-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .report-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transition: left 0.3s ease;
+        }
+        
+        .report-link:hover::before {
+            left: 100%;
+        }
+        
+        .report-type {
+            font-weight: bold;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .report-desc {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+        
+        .report-size {
+            font-size: 0.75em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        .badge-profiling {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .badge-timeseries {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #e9ecef;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span class="emoji">📊</span> Rapports d'Analyse YData</h1>
+            <div class="subtitle">Base de données MangetaMain - DuckDB</div>
+        </header>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">7</div>
+                <div class="stat-label">Tables analysées</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Rapports uniques</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">2.6M</div>
+                <div class="stat-label">Lignes de données</div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <h3><span class="emoji">ℹ️</span> Types de rapports</h3>
+            <div class="legend-item">
+                <strong>📈 PROFILING</strong> - Analyse statistique standard : distributions, corrélations, valeurs manquantes, duplicatas
+            </div>
+            <div class="legend-item">
+                <strong>⏰ TIMESERIES</strong> - Analyse temporelle : tendances, saisonnalité, autocorrélation, patterns temporels
+            </div>
+            <div class="legend-item">
+                <strong>📊 VISUALISATION</strong> - Graphiques détaillés d'analyse temporelle (format PNG) - <a href="visualisations.html" style="color: #0056b3; font-weight: bold; text-decoration: underline;">Voir toutes les visualisations →</a>
+            </div>
+        </div>
+        
+        <div class="table-section">
+            <!-- PP_recipes -->
+            <div class="table-card">
+                <div class="table-header">
+                    <div class="table-name"><span class="emoji">🍽️</span> PP_recipes</div>
+                    <div class="table-info">178,265 lignes</div>
+                </div>
+                <div class="reports-grid">
+                    <a href="profiling_PP_recipes.html" class="report-link badge-profiling">
+                        <span class="report-type">📈 PROFILING</span>
+                        <span class="report-desc">Analyse statistique des recettes</span>
+                        <span class="report-size">2.6 MB</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- PP_users -->
+            <div class="table-card">
+                <div class="table-header">
+                    <div class="table-name"><span class="emoji">👥</span> PP_users</div>
+                    <div class="table-info">25,076 lignes</div>
+                </div>
+                <div class="reports-grid">
+                    <a href="profiling_PP_users.html" class="report-link badge-profiling">
+                        <span class="report-type">📈 PROFILING</span>
+                        <span class="report-desc">Analyse statistique des utilisateurs</span>
+                        <span class="report-size">1.8 MB</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- RAW_interactions -->
+            <div class="table-card">
+                <div class="table-header">
+                    <div class="table-name"><span class="emoji">💬</span> RAW_interactions</div>
+                    <div class="table-info">1,132,367 lignes</div>
+                </div>
+                <div class="reports-grid">
+                    <a href="profiling_RAW_interactions.html" class="report-link badge-profiling">
+                        <span class="report-type">📈 PROFILING</span>
+                        <span class="report-desc">Analyse statistique des interactions</span>
+                        <span class="report-size">1.4 MB</span>
+                    </a>
+                    <a href="timeseries_RAW_interactions.html" class="report-link badge-timeseries">
+                        <span class="report-type">⏰ TIMESERIES</span>
+                        <span class="report-desc">Analyse temporelle des interactions</span>
+                        <span class="report-size">1.8 MB</span>
+                    </a>
+                    <a href="temporal_detailed_RAW_interactions.png" class="report-link" style="background: linear-gradient(135deg, #06beb6 0%, #48b1bf 100%);">
+                        <span class="report-type">📊 VISUALISATION</span>
+                        <span class="report-desc">Graphique détaillé temporel</span>
+                        <span class="report-size">334 KB</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- RAW_recipes -->
+            <div class="table-card">
+                <div class="table-header">
+                    <div class="table-name"><span class="emoji">📖</span> RAW_recipes</div>
+                    <div class="table-info">231,637 lignes</div>
+                </div>
+                <div class="reports-grid">
+                    <a href="profiling_RAW_recipes.html" class="report-link badge-profiling">
+                        <span class="report-type">📈 PROFILING</span>
+                        <span class="report-desc">Analyse statistique des recettes brutes</span>
+                        <span class="report-size">4.3 MB</span>
+                    </a>
+                    <a href="timeseries_RAW_recipes.html" class="report-link badge-timeseries">
+                        <span class="report-type">⏰ TIMESERIES</span>
+                        <span class="report-desc">Analyse temporelle des recettes</span>
+                        <span class="report-size">4.6 MB</span>
+                    </a>
+                    <a href="temporal_detailed_RAW_recipes.png" class="report-link" style="background: linear-gradient(135deg, #06beb6 0%, #48b1bf 100%);">
+                        <span class="report-type">📊 VISUALISATION</span>
+                        <span class="report-desc">Graphique détaillé temporel</span>
+                        <span class="report-size">302 KB</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- interactions_test -->
+            <div class="table-card">
+                <div class="table-header">
+                    <div class="table-name"><span class="emoji">🧪</span> interactions_test</div>
+                    <div class="table-info">12,455 lignes</div>
+                </div>
+                <div class="reports-grid">
+                    <a href="profiling_interactions_test.html" class="report-link badge-profiling">
+                        <span class="report-type">📈 PROFILING</span>
+                        <span class="report-desc">Analyse du jeu de test</span>
+                        <span class="report-size">1.9 MB</span>
+                    </a>
+                    <a href="timeseries_interactions_test.html" class="report-link badge-timeseries">
+                        <span class="report-type">⏰ TIMESERIES</span>
+                        <span class="report-desc">Analyse temporelle du test</span>
+                        <span class="report-size">1.9 MB</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- interactions_train -->
+            <div class="table-card">
+                <div class="table-header">
+                    <div class="table-name"><span class="emoji">🎯</span> interactions_train</div>
+                    <div class="table-info">698,901 lignes</div>
+                </div>
+                <div class="reports-grid">
+                    <a href="profiling_interactions_train.html" class="report-link badge-profiling">
+                        <span class="report-type">📈 PROFILING</span>
+                        <span class="report-desc">Analyse du jeu d'entraînement</span>
+                        <span class="report-size">1.9 MB</span>
+                    </a>
+                    <a href="timeseries_interactions_train.html" class="report-link badge-timeseries">
+                        <span class="report-type">⏰ TIMESERIES</span>
+                        <span class="report-desc">Analyse temporelle de l'entraînement</span>
+                        <span class="report-size">1.9 MB</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- interactions_validation -->
+            <div class="table-card">
+                <div class="table-header">
+                    <div class="table-name"><span class="emoji">✅</span> interactions_validation</div>
+                    <div class="table-info">7,023 lignes</div>
+                </div>
+                <div class="reports-grid">
+                    <a href="profiling_interactions_validation.html" class="report-link badge-profiling">
+                        <span class="report-type">📈 PROFILING</span>
+                        <span class="report-desc">Analyse du jeu de validation</span>
+                        <span class="report-size">1.9 MB</span>
+                    </a>
+                    <a href="timeseries_interactions_validation.html" class="report-link badge-timeseries">
+                        <span class="report-type">⏰ TIMESERIES</span>
+                        <span class="report-desc">Analyse temporelle de la validation</span>
+                        <span class="report-size">1.9 MB</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p><strong>📅 Généré le:</strong> 7 octobre 2025</p>
+            <p><strong>🔧 Outil:</strong> YData Profiling v4.17.0</p>
+            <p><strong>💾 Base:</strong> ./00_preprod/data/mangetamain.duckdb</p>
+        </footer>
+    </div>
+</body>
+</html>

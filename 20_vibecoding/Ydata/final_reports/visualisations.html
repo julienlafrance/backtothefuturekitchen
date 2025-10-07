@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualisations Temporelles - YData</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #06beb6 0%, #48b1bf 100%);
+            color: #333;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            color: #06beb6;
+            margin-bottom: 10px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #06beb6;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: #048a82;
+            transform: translateY(-2px);
+        }
+        
+        .viz-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .viz-header {
+            border-bottom: 3px solid #06beb6;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .viz-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .viz-subtitle {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .viz-image {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .viz-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .viz-download {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #48b1bf;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .viz-download:hover {
+            background: #06beb6;
+        }
+        
+        .info-box {
+            background: #e7f9f7;
+            border-left: 4px solid #06beb6;
+            padding: 15px 20px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        
+        .info-box p {
+            margin: 5px 0;
+            color: #0a5f57;
+        }
+        
+        /* Lightbox pour agrandir l'image */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .lightbox img {
+            max-width: 95%;
+            max-height: 95%;
+            border-radius: 10px;
+        }
+        
+        .lightbox.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Visualisations Temporelles</h1>
+            <p>Graphiques détaillés d'analyse temporelle - MangetaMain</p>
+            <a href="index.html" class="back-link">← Retour à l'index</a>
+        </header>
+        
+        <!-- RAW_interactions -->
+        <div class="viz-card">
+            <div class="viz-header">
+                <h2 class="viz-title">💬 RAW_interactions</h2>
+                <p class="viz-subtitle">Analyse temporelle détaillée des interactions utilisateurs</p>
+            </div>
+            
+            <img src="temporal_detailed_RAW_interactions.png" 
+                 alt="Analyse temporelle RAW_interactions" 
+                 class="viz-image"
+                 onclick="openLightbox('temporal_detailed_RAW_interactions.png')">
+            
+            <div class="info-box">
+                <p><strong>📊 Données:</strong> 1,132,367 interactions</p>
+                <p><strong>📅 Type:</strong> Série temporelle avec patterns d'activité</p>
+                <p><strong>🔍 Contenu:</strong> Tendances, distributions temporelles, pics d'activité</p>
+            </div>
+            
+            <a href="temporal_detailed_RAW_interactions.png" download class="viz-download">
+                ⬇️ Télécharger l'image (334 KB)
+            </a>
+        </div>
+        
+        <!-- RAW_recipes -->
+        <div class="viz-card">
+            <div class="viz-header">
+                <h2 class="viz-title">📖 RAW_recipes</h2>
+                <p class="viz-subtitle">Analyse temporelle détaillée des recettes</p>
+            </div>
+            
+            <img src="temporal_detailed_RAW_recipes.png" 
+                 alt="Analyse temporelle RAW_recipes" 
+                 class="viz-image"
+                 onclick="openLightbox('temporal_detailed_RAW_recipes.png')">
+            
+            <div class="info-box">
+                <p><strong>📊 Données:</strong> 231,637 recettes</p>
+                <p><strong>📅 Type:</strong> Série temporelle de publication des recettes</p>
+                <p><strong>🔍 Contenu:</strong> Évolution temporelle, saisonnalité, tendances de publication</p>
+            </div>
+            
+            <a href="temporal_detailed_RAW_recipes.png" download class="viz-download">
+                ⬇️ Télécharger l'image (302 KB)
+            </a>
+        </div>
+    </div>
+    
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="">
+    </div>
+    
+    <script>
+        function openLightbox(imgSrc) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = imgSrc;
+            lightbox.classList.add('active');
+        }
+        
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+        }
+        
+        // Fermer avec la touche Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
