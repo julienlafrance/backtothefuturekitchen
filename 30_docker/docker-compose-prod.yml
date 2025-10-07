@@ -4,15 +4,17 @@ services:
   mangetamain-prod:
     image: python:3.13.3-slim
     container_name: mange_prod
+    environment:
+      - APP_ENV=PROD
     ports:
       - "8501:8501"
     volumes:
-      - ../10_prod/streamlit:/app/streamlit:ro
-      - ../10_prod/data:/app/data
-      - ../10_prod/logs:/app/logs
-      - ../10_prod/pyproject.toml:/app/pyproject.toml:ro
-      - ../10_prod/uv.lock:/app/uv.lock:ro
-      - ../10_prod/README.md:/app/README.md:ro
+      - ../20_prod/streamlit:/app/streamlit:ro
+      - ../20_prod/data:/app/data
+      - ../20_prod/logs:/app/logs
+      - ../20_prod/pyproject.toml:/app/pyproject.toml:ro
+      - ../20_prod/uv.lock:/app/uv.lock:ro
+      - ../20_prod/README.md:/app/README.md:ro
     working_dir: /app
     command: >
       bash -c "
