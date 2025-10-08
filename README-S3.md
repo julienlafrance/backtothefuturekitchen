@@ -28,9 +28,10 @@ Le module `utils/utils_s3.py` détecte automatiquement votre environnement :
 
 ### Import du module
 
+Le module `utils/` est présent dans chaque sous-projet (00_eda, 10_preprod, 20_prod) :
+
 ```python
-import sys
-sys.path.insert(0, '..')  # Depuis un sous-dossier
+# Import direct depuis le même dossier
 from utils.utils_s3 import get_s3_client, get_duckdb_s3_connection
 ```
 
@@ -41,18 +42,14 @@ from utils.utils_s3 import get_s3_client
 
 # Connexion automatique
 client, bucket = get_s3_client()
-```
 
-### 2. Lister les fichiers
-
-```python
+# Lister les fichiers
 response = client.list_objects_v2(Bucket=bucket)
-
 for obj in response.get('Contents', []):
     print(f"📄 {obj['Key']} - {obj['Size']} bytes")
 ```
 
-### 3. Télécharger un fichier
+### 2. Télécharger un fichier
 
 ```python
 # Télécharger un fichier spécifique
@@ -60,6 +57,17 @@ client.download_file(
     Bucket=bucket,
     Key='mangetamain.duckdb',
     Filename='data/mangetamain.duckdb'
+)
+```
+
+### 3. Uploader un fichier
+
+```python
+# Uploader un fichier
+client.upload_file(
+    Filename='data/results.csv',
+    Bucket=bucket,
+    Key='results/analysis_results.csv'
 )
 ```
 
@@ -82,15 +90,7 @@ df = con.execute(f"SELECT * FROM 's3://{bucket}/PP_recipes.csv' LIMIT 5").df()
 print(df)
 ```
 
-### Query sur base DuckDB S3
-
-```python
-# Lire la base DuckDB directement depuis S3
-df = con.execute(f"SELECT * FROM 's3://{bucket}/mangetamain.duckdb::recipes' LIMIT 5").df()
-print(df)
-```
-
-### Agrégations complexes
+### Agrégations SQL complexes
 
 ```python
 # Analyse directe sur S3 sans téléchargement
@@ -98,7 +98,7 @@ query = f"""
 SELECT 
     calorie_level,
     COUNT(*) as nb_recipes,
-    AVG(n_ingredients) as avg_ingredients
+    COUNT(DISTINCT id) as unique_recipes
 FROM 's3://{bucket}/PP_recipes.csv'
 GROUP BY calorie_level
 ORDER BY calorie_level
@@ -108,6 +108,57 @@ df = con.execute(query).df()
 print(df)
 ```
 
+**Résultat :**
+```
+ calorie_level  nb_recipes  unique_recipes
+             0       69699           69699
+             1       63255           63255
+             2       45311           45311
+```
+
+## 🐳 Utilisation dans Docker
+
+Les containers Docker accèdent aux credentials via un **volume read-only** :
+
+```yaml
+volumes:
+  - ../96_keys:/app/../96_keys:ro       # Credentials (read-only)
+  - ../10_preprod/utils:/app/utils:ro   # Module utils_s3
+```
+
+### Test dans un container
+
+```bash
+# Tester S3 dans preprod
+docker exec -w /app mange_preprod uv run python -c "
+from utils.utils_s3 import get_s3_client
+client, bucket = get_s3_client(verbose=True)
+print(f'✅ {bucket}')
+"
+
+# Tester DuckDB dans prod
+docker exec -w /app mange_prod uv run python -c "
+from utils.utils_s3 import get_duckdb_s3_connection
+con, bucket = get_duckdb_s3_connection()
+df = con.execute(f'SELECT COUNT(*) as total FROM s3://{bucket}/PP_recipes.csv').df()
+print(df)
+"
+```
+
+### Démarrage des containers
+
+```bash
+cd 30_docker
+
+# Preprod (port 8500)
+docker-compose -p mangetamain-preprod -f docker-compose-preprod.yml up -d
+
+# Prod (port 8501)
+docker-compose -p mangetamain-prod -f docker-compose-prod.yml up -d
+```
+
+Voir [README_DOCKER_S3.md](README_DOCKER_S3.md) pour plus de détails sur Docker.
+
 ## ⚙️ Options avancées
 
 ### Mode verbose
@@ -116,6 +167,7 @@ Pour voir les informations de connexion :
 
 ```python
 client, bucket = get_s3_client(verbose=True)
+# 📁 Credentials chargés depuis fichier local
 # 🔗 S3 Endpoint: local (direct)
 ```
 
@@ -142,6 +194,7 @@ client, bucket = get_s3_client(profile='autre_profil')
 | **VM locale** | Direct (3910) | ~2.7s | ~523 MB/s ⚡ |
 | **VM via HTTPS** | Reverse proxy | ~13s | ~107 MB/s |
 | **Hôte ixia** | Localhost | ~1.9s | ~718 MB/s 🚀 |
+| **Docker** | HTTPS externe | ~13s | ~107 MB/s |
 
 💡 **Astuce** : La détection automatique utilise toujours le mode le plus rapide disponible !
 
@@ -172,6 +225,21 @@ Le dossier `96_keys/` doit être dans `.gitignore` :
 # Dans /home/dataia25/mangetamain/.gitignore
 96_keys/
 ```
+
+### Chargement des credentials
+
+Le module `utils_s3.py` charge les credentials dans cet ordre :
+
+1. **Variables d'environnement** (prioritaire, pour production distante)
+   - `S3_ACCESS_KEY_ID`
+   - `S3_SECRET_ACCESS_KEY`
+   - `S3_BUCKET`
+   - `S3_REGION` (optionnel)
+   - `S3_ENDPOINT_URL` (optionnel)
+
+2. **Fichier credentials** (pour développement local et Docker)
+   - Chemin : `../96_keys/credentials`
+   - Format : INI avec section `[s3fast]`
 
 ## 🛠️ Dépannage
 
@@ -210,13 +278,29 @@ ls -la 96_keys/credentials
 # Si absent, contactez l'administrateur
 ```
 
+### Test complet dans uv
+
+```bash
+cd 10_preprod
+uv run python -c "
+from utils.utils_s3 import get_s3_client, get_duckdb_s3_connection
+
+# Test S3
+client, bucket = get_s3_client(verbose=True)
+print(f'✅ S3 : {bucket}')
+
+# Test DuckDB
+con, bucket = get_duckdb_s3_connection()
+df = con.execute(f'SELECT COUNT(*) FROM s3://{bucket}/PP_recipes.csv').df()
+print(f'✅ DuckDB : {df.iloc[0,0]} recettes')
+"
+```
+
 ## 📚 Exemples complets
 
 ### Exemple 1 : Analyse DuckDB sur CSV S3
 
 ```python
-import sys
-sys.path.insert(0, '..')
 from utils.utils_s3 import get_duckdb_s3_connection
 
 # Connexion directe S3
@@ -227,10 +311,8 @@ query = f"""
 SELECT 
     calorie_level,
     COUNT(*) as recipes_count,
-    ROUND(AVG(n_ingredients), 2) as avg_ingredients,
-    ROUND(AVG(minutes), 2) as avg_cooking_time
+    COUNT(DISTINCT id) as unique_recipes
 FROM 's3://{bucket}/PP_recipes.csv'
-WHERE n_ingredients BETWEEN 5 AND 15
 GROUP BY calorie_level
 ORDER BY recipes_count DESC
 """
@@ -247,16 +329,14 @@ print(df)
 query = f"""
 SELECT 
     'recipes' as source,
-    COUNT(*) as count,
-    AVG(n_ingredients) as avg_ingredients
+    COUNT(*) as count
 FROM 's3://{bucket}/PP_recipes.csv'
 
 UNION ALL
 
 SELECT 
     'interactions' as source,
-    COUNT(*) as count,
-    NULL as avg_ingredients
+    COUNT(*) as count
 FROM 's3://{bucket}/PP_user_interactions.csv'
 """
 
@@ -284,14 +364,38 @@ client.upload_file('analysis_results.csv', bucket, 'results/analysis_results.csv
 print("✅ Résultats uploadés sur S3")
 ```
 
+## 📦 Structure du projet
+
+```
+mangetamain/
+├── 96_keys/                    ← Credentials (ignoré par git)
+│   └── credentials
+├── utils/                      ← Module partagé (référence)
+│   ├── __init__.py
+│   └── utils_s3.py
+├── 00_eda/
+│   └── utils/                  ← Copie locale
+├── 10_preprod/
+│   └── utils/                  ← Copie locale
+├── 20_prod/
+│   └── utils/                  ← Copie locale
+└── 30_docker/
+    ├── docker-compose-preprod.yml
+    └── docker-compose-prod.yml
+```
+
+**Note** : Le dossier `utils/` est copié dans chaque sous-projet pour faciliter le déploiement Docker.
+
 ## 📞 Support
 
 Pour toute question ou problème :
 - Vérifiez d'abord ce README
 - Testez avec `verbose=True` pour plus d'informations
+- Consultez [README_DOCKER_S3.md](README_DOCKER_S3.md) pour Docker
 - Contactez l'équipe infrastructure pour les problèmes de credentials
 
 ---
 
 **Dernière mise à jour** : 2025-10-08  
-**Responsable** : Infrastructure Team
+**Responsable** : Infrastructure Team  
+**Tests** : ✅ Validé sur preprod et prod Docker

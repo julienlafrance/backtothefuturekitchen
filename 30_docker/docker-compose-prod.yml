@@ -15,6 +15,8 @@ services:
       - ../20_prod/pyproject.toml:/app/pyproject.toml:ro
       - ../20_prod/uv.lock:/app/uv.lock:ro
       - ../20_prod/README.md:/app/README.md:ro
+      - ../20_prod/utils:/app/utils:ro
+      - ../96_keys:/app/../96_keys:ro  # Monter les credentials en READ-ONLY
     working_dir: /app
     command: >
       bash -c "
