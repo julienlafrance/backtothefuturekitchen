@@ -71,3 +71,47 @@ if __name__ == "__main__":
     
     response = client.list_objects_v2(Bucket=bucket, MaxKeys=3)
     print(f"📄 {len(response.get('Contents', []))} fichiers listés")
+
+
+def get_duckdb_s3_connection():
+    """
+    Configure et retourne une connexion DuckDB avec accès S3 automatique
+    
+    Returns:
+        tuple: (duckdb.Connection, bucket_name)
+    
+    Usage:
+        con, bucket = get_duckdb_s3_connection()
+        df = con.execute(f"SELECT * FROM 's3://{bucket}/PP_recipes.csv' LIMIT 5").df()
+    """
+    import duckdb
+    
+    # Charger les credentials
+    cred_file = Path(__file__).parent.parent / '96_keys' / 'credentials'
+    config = ConfigParser()
+    config.read(cred_file)
+    
+    # Créer la connexion DuckDB
+    con = duckdb.connect()
+    con.execute("INSTALL httpfs")
+    con.execute("LOAD httpfs")
+    
+    # Déterminer l'endpoint selon le réseau
+    if is_on_local_network():
+        endpoint = '192.168.80.202:3910'
+        use_ssl = 'false'
+    else:
+        endpoint = 's3fast.lafrance.io'
+        use_ssl = 'true'
+    
+    # Configurer S3 dans DuckDB
+    con.execute(f"""
+        SET s3_endpoint = '{endpoint}';
+        SET s3_use_ssl = {use_ssl};
+        SET s3_url_style = 'path';
+        SET s3_region = '{config['s3fast']['region']}';
+        SET s3_access_key_id = '{config['s3fast']['aws_access_key_id']}';
+        SET s3_secret_access_key = '{config['s3fast']['aws_secret_access_key']}';
+    """)
+    
+    return con, config['s3fast']['bucket']

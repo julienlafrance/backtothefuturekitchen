@@ -19,17 +19,25 @@ Ce projet utilise **Garage S3** pour le stockage des données. Le système déte
 
 ### 📍 Détection automatique du réseau
 
-Le module `utils_s3.py` détecte automatiquement votre environnement :
+Le module `utils/utils_s3.py` détecte automatiquement votre environnement :
 
 - **Réseau local** (`192.168.80.x` ou `192.168.0.x`) → Utilise l'IP directe (ultra-rapide ⚡)
 - **Réseau externe** → Utilise le reverse proxy HTTPS (sécurisé 🔒)
 
 ## 🚀 Démarrage rapide
 
-### 1. Import simple
+### Import du module
 
 ```python
-from utils_s3 import get_s3_client
+import sys
+sys.path.insert(0, '..')  # Depuis un sous-dossier
+from utils.utils_s3 import get_s3_client, get_duckdb_s3_connection
+```
+
+### 1. Connexion S3 classique
+
+```python
+from utils.utils_s3 import get_s3_client
 
 # Connexion automatique
 client, bucket = get_s3_client()
@@ -55,35 +63,49 @@ client.download_file(
 )
 ```
 
-### 4. Uploader un fichier
+## 🦆 DuckDB avec S3 (Recommandé)
+
+### Connexion directe (sans téléchargement !)
 
 ```python
-# Uploader un fichier
-client.upload_file(
-    Filename='data/results.csv',
-    Bucket=bucket,
-    Key='results.csv'
-)
+from utils.utils_s3 import get_duckdb_s3_connection
+
+# Connexion DuckDB avec S3 configuré automatiquement
+con, bucket = get_duckdb_s3_connection()
 ```
 
-### 5. Télécharger un dossier complet
+### Query directe sur fichier CSV S3
 
 ```python
-import os
+# Lire directement depuis S3 - AUCUN téléchargement !
+df = con.execute(f"SELECT * FROM 's3://{bucket}/PP_recipes.csv' LIMIT 5").df()
+print(df)
+```
 
-# Télécharger tous les fichiers du bucket
-response = client.list_objects_v2(Bucket=bucket)
+### Query sur base DuckDB S3
 
-for obj in response.get('Contents', []):
-    local_path = f"data/{obj['Key']}"
-    os.makedirs(os.path.dirname(local_path), exist_ok=True)
-    
-    client.download_file(
-        Bucket=bucket,
-        Key=obj['Key'],
-        Filename=local_path
-    )
-    print(f"✅ Téléchargé: {obj['Key']}")
+```python
+# Lire la base DuckDB directement depuis S3
+df = con.execute(f"SELECT * FROM 's3://{bucket}/mangetamain.duckdb::recipes' LIMIT 5").df()
+print(df)
+```
+
+### Agrégations complexes
+
+```python
+# Analyse directe sur S3 sans téléchargement
+query = f"""
+SELECT 
+    calorie_level,
+    COUNT(*) as nb_recipes,
+    AVG(n_ingredients) as avg_ingredients
+FROM 's3://{bucket}/PP_recipes.csv'
+GROUP BY calorie_level
+ORDER BY calorie_level
+"""
+
+df = con.execute(query).df()
+print(df)
 ```
 
 ## ⚙️ Options avancées
@@ -127,7 +149,7 @@ client, bucket = get_s3_client(profile='autre_profil')
 
 ### Credentials
 
-Les credentials sont stockés dans `../96_keys/credentials` (ignoré par git).
+Les credentials sont stockés dans `96_keys/credentials` (ignoré par git).
 
 **Structure du fichier :**
 
@@ -144,7 +166,7 @@ bucket = mangetamain
 
 ### Vérifier le .gitignore
 
-Le dossier `96_keys/` doit être dans `.gitignore` au niveau parent :
+Le dossier `96_keys/` doit être dans `.gitignore` :
 
 ```bash
 # Dans /home/dataia25/mangetamain/.gitignore
@@ -157,7 +179,7 @@ Le dossier `96_keys/` doit être dans `.gitignore` au niveau parent :
 
 ```python
 # Tester la connexion
-from utils_s3 import get_s3_client
+from utils.utils_s3 import get_s3_client
 
 try:
     client, bucket = get_s3_client(verbose=True)
@@ -169,7 +191,7 @@ except Exception as e:
 ### Vérifier le réseau
 
 ```python
-from utils_s3 import is_on_local_network
+from utils.utils_s3 import is_on_local_network
 
 if is_on_local_network():
     print("📍 Vous êtes sur le réseau local")
@@ -183,70 +205,83 @@ Si vous voyez l'erreur `Credentials introuvable`, vérifiez :
 
 ```bash
 # Le fichier doit exister ici :
-ls -la ../96_keys/credentials
+ls -la 96_keys/credentials
 
 # Si absent, contactez l'administrateur
 ```
 
 ## 📚 Exemples complets
 
-### Exemple 1 : Charger la base DuckDB depuis S3
+### Exemple 1 : Analyse DuckDB sur CSV S3
 
 ```python
-from utils_s3 import get_s3_client
-import duckdb
+import sys
+sys.path.insert(0, '..')
+from utils.utils_s3 import get_duckdb_s3_connection
 
-# Télécharger la base
-client, bucket = get_s3_client()
-client.download_file(bucket, 'mangetamain.duckdb', 'data/local.duckdb')
+# Connexion directe S3
+con, bucket = get_duckdb_s3_connection()
 
-# Utiliser avec DuckDB
-con = duckdb.connect('data/local.duckdb')
-df = con.execute("SELECT * FROM recipes LIMIT 5").df()
+# Analyse directe sans téléchargement
+query = f"""
+SELECT 
+    calorie_level,
+    COUNT(*) as recipes_count,
+    ROUND(AVG(n_ingredients), 2) as avg_ingredients,
+    ROUND(AVG(minutes), 2) as avg_cooking_time
+FROM 's3://{bucket}/PP_recipes.csv'
+WHERE n_ingredients BETWEEN 5 AND 15
+GROUP BY calorie_level
+ORDER BY recipes_count DESC
+"""
+
+df = con.execute(query).df()
+print("📊 Analyse des recettes par niveau calorique:")
 print(df)
 ```
 
-### Exemple 2 : Uploader les résultats d'une analyse
+### Exemple 2 : Comparaison de fichiers S3
 
 ```python
-from utils_s3 import get_s3_client
-import pandas as pd
+# Comparer deux datasets directement sur S3
+query = f"""
+SELECT 
+    'recipes' as source,
+    COUNT(*) as count,
+    AVG(n_ingredients) as avg_ingredients
+FROM 's3://{bucket}/PP_recipes.csv'
 
-# Créer des résultats
-results = pd.DataFrame({'metric': ['accuracy', 'f1'], 'value': [0.95, 0.89]})
-results.to_csv('results.csv', index=False)
+UNION ALL
 
-# Uploader sur S3
-client, bucket = get_s3_client()
-client.upload_file('results.csv', bucket, 'analysis/results.csv')
-print("✅ Résultats uploadés sur S3")
+SELECT 
+    'interactions' as source,
+    COUNT(*) as count,
+    NULL as avg_ingredients
+FROM 's3://{bucket}/PP_user_interactions.csv'
+"""
+
+df = con.execute(query).df()
+print("📈 Comparaison des datasets:")
+print(df)
 ```
 
-### Exemple 3 : Synchroniser un dossier complet
+### Exemple 3 : Export de résultats vers S3
 
 ```python
-from utils_s3 import get_s3_client
-import os
-from pathlib import Path
+from utils.utils_s3 import get_s3_client, get_duckdb_s3_connection
+import pandas as pd
 
-client, bucket = get_s3_client(verbose=True)
+# Analyse avec DuckDB
+con, bucket = get_duckdb_s3_connection()
+df_results = con.execute(f"SELECT * FROM 's3://{bucket}/PP_recipes.csv' LIMIT 100").df()
 
-# Créer le dossier local
-local_dir = Path('data/s3_sync')
-local_dir.mkdir(parents=True, exist_ok=True)
+# Sauvegarder localement
+df_results.to_csv('analysis_results.csv', index=False)
 
-# Télécharger tous les fichiers
-response = client.list_objects_v2(Bucket=bucket)
-
-for obj in response.get('Contents', []):
-    local_file = local_dir / obj['Key']
-    local_file.parent.mkdir(parents=True, exist_ok=True)
-    
-    print(f"⬇️  {obj['Key']}", end=' ... ')
-    client.download_file(bucket, obj['Key'], str(local_file))
-    print("✅")
-
-print(f"\n🎉 {len(response.get('Contents', []))} fichiers synchronisés !")
+# Upload vers S3
+client, bucket = get_s3_client()
+client.upload_file('analysis_results.csv', bucket, 'results/analysis_results.csv')
+print("✅ Résultats uploadés sur S3")
 ```
 
 ## 📞 Support
@@ -259,4 +294,4 @@ Pour toute question ou problème :
 ---
 
 **Dernière mise à jour** : 2025-10-08  
-**Responsable** : Julien Lafrance
+**Responsable** : Infrastructure Team
