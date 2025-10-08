@@ -15,6 +15,8 @@ services:
       - ../10_preprod/pyproject.toml:/app/pyproject.toml:ro
       - ../10_preprod/uv.lock:/app/uv.lock:ro
       - ../10_preprod/README.md:/app/README.md:ro
+      - ../10_preprod/utils:/app/utils:ro
+      - ../96_keys:/app/../96_keys:ro  # Monter les credentials en READ-ONLY
     working_dir: /app
     command: bash -c "apt-get update && apt-get install -y curl && pip install uv && uv sync && uv run streamlit run src/mangetamain_analytics/main.py --server.address 0.0.0.0 --server.port 8501 --server.headless true"
     restart: unless-stopped
