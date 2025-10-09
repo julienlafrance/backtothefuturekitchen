@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mangetamain-preprod:
-    image: python:3.13.3-slim
+    image: python:3.13-slim
     container_name: mange_preprod
     environment:
       - APP_ENV=PREPROD
@@ -18,19 +18,7 @@ services:
       - ../10_preprod/utils:/app/utils:ro
       - ../96_keys:/app/../96_keys:ro  # Monter les credentials en READ-ONLY
     working_dir: /app
-    extra_hosts:
-      - "s3fast.lafrance.io:192.168.80.202"  # Résolution DNS vers Garage S3 direct
-    cap_add:
-      - NET_ADMIN  # Nécessaire pour iptables
-    command: bash -c "
-      apt-get update && 
-      apt-get install -y curl iptables && 
-      iptables -t nat -A OUTPUT -p tcp -d 192.168.80.202 --dport 80 -j DNAT --to-destination 192.168.80.202:3910 &&
-      echo '✅ Redirection DNAT port 80→3910 activée' &&
-      pip install uv && 
-      uv sync && 
-      uv run streamlit run src/mangetamain_analytics/main.py --server.address 0.0.0.0 --server.port 8501 --server.headless true
-      "
+    command: bash -c "apt-get update && apt-get install -y curl && pip install uv && uv sync && uv run streamlit run src/mangetamain_analytics/main.py --server.address 0.0.0.0 --server.port 8501 --server.headless true"
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8501"]
