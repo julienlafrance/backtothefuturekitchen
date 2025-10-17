@@ -19,16 +19,20 @@ from datetime import datetime
 
 def detect_environment():
     """Detect if running in PREPROD or PROD environment."""
-    current_path = str(Path.cwd())
+    # Priority 1: Check environment variable (Docker or manual set)
+    app_env = os.getenv("APP_ENV")
+    if app_env:
+        return app_env.upper()
     
-    # Check if we are in a Docker container
+    # Priority 2: Check if we are in a Docker container
     if Path("/.dockerenv").exists():
         return "PROD (Docker)"
     
-    # Check the current working directory path
-    if "00_preprod" in current_path:
+    # Priority 3: Check the current working directory path
+    current_path = str(Path.cwd())
+    if "10_preprod" in current_path:
         return "PREPROD"
-    elif "10_prod" in current_path:
+    elif "20_prod" in current_path:
         return "PROD"
     else:
         return "UNKNOWN"

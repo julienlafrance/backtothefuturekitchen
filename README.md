@@ -1,185 +1,152 @@
-# 🍽️ Mangetamain Analytics
+# 🍳 Mangetamain Analytics
 
-Application d'analyse de données pour le dataset Food.com - Dashboard interactif avec DuckDB et Streamlit
+## 📋 Vue d'ensemble
 
-## 📁 Architecture du projet
+Plateforme d'analytics culinaires basée sur un système de recommandations de recettes avec données Food.com. Architecture moderne Python 3.13.3 + Streamlit + DuckDB + S3 Storage.
+
+## 🎯 Configuration S3 Simplifiée (2025-10-09)
+
+### Architecture Ultra-Simple
+```
+🔗 Endpoint unique    : http://s3fast.lafrance.io
+🗂️ Bucket            : mangetamain  
+🔑 Credentials        : 96_keys/credentials
+🦆 DuckDB + S3        : garage_s3.duckdb (secret intégré)
+⚡ Performance        : 500+ MB/s (DNAT bypass)
+🐍 Python cohérent    : 3.13.3 partout
+```
+
+### Usage
+
+**DuckDB (Recommandé)**
+```bash
+duckdb ~/mangetamain/96_keys/garage_s3.duckdb
+SELECT * FROM 's3://mangetamain/PP_recipes.csv' LIMIT 10;
+```
+
+**Python**
+```python
+import boto3
+from configparser import ConfigParser
+
+config = ConfigParser()
+config.read('96_keys/credentials')
+
+s3 = boto3.client('s3', endpoint_url='http://s3fast.lafrance.io',
+                  aws_access_key_id=config['s3fast']['aws_access_key_id'],
+                  aws_secret_access_key=config['s3fast']['aws_secret_access_key'],
+                  region_name='garage-fast')
+```
+
+**AWS CLI**
+```bash
+aws s3 ls s3://mangetamain/ --endpoint-url http://s3fast.lafrance.io --region garage-fast
+```
+
+## 🏗️ Architecture du Projet
 
 ```
 mangetamain/
-├── 00_preprod/                     # Environnement de développement
-│   ├── src/mangetamain_analytics/  # Code source Streamlit
-│   ├── data/mangetamain.duckdb     # Base de données (581MB, 2.3M lignes)
-│   ├── logs/                       # Logs Loguru (app + erreurs)
-│   └── .venv/                      # Environnement Python (uv)
-├── 10_prod/                        # Environnement de production ✨
-│   ├── streamlit/main.py           # Application optimisée 
-│   ├── data/mangetamain.duckdb     # Base production
-│   ├── logs/                       # Logs isolés production
-│   └── pyproject.toml              # Configuration simplifiée
-├── 20_VibeCoding/
-│   └── Ydata/                      # Analyse YData SDK
-│       ├── ydata_advanced_analysis.py  # Profiling avancé
-│       └── profile_reports/        # Rapports HTML
-├── 30_docker/                      # Orchestration conteneurs
-│   ├── docker-compose.yml          # Docker preprod
-│   └── docker-compose-prod.yml     # Docker production ✨
-├── 90_doc/                         # Documentation technique
-│   └── RESUME_*_V01-V05.md         # Historique des versions
-└── README.md                       # Ce fichier
+├── 00_eda/           # 📊 Notebooks EDA - Analyses exploratoires qui alimentent l'app Streamlit
+├── 10_preprod/       # Environnement de pré-production
+├── 20_prod/          # Environnement de production  
+├── 30_docker/        # Containers Docker
+├── 50_test/          # Tests et validation S3
+├── 90_doc/           # Documentation
+├── 96_keys/          # Credentials S3 (ignoré par git)
+└── S3_INSTALL.md     # Guide installation S3
+└── S3_USAGE.md       # Guide utilisation S3
 ```
 
-## 🚀 Démarrage rapide
+## 🚀 Démarrage Rapide
 
-### Docker Production (Recommandé)
+### 1. Installation S3 (une seule fois)
+Suivre [S3_INSTALL.md](S3_INSTALL.md)
 
+### 2. Lancement PREPROD
 ```bash
-cd 30_docker/
-docker-compose -f docker-compose-prod.yml up -d
-```
-
-**Accès** : http://localhost:8501 (avec badges environnement automatiques)
-
-### Développement local
-
-```bash
-cd 00_preprod/
-uv sync
+cd 10_preprod
 uv run streamlit run src/mangetamain_analytics/main.py
 ```
 
-## 🎯 Fonctionnalités
-
-### Analyses disponibles
-- **Distribution des notes** : Visualisation 700K+ ratings Food.com (7 tables)
-- **Activité utilisateurs** : Métriques d'engagement (top users (25K total))  
-- **Base DuckDB** : Requêtes SQL rapides sur 7 tables
-- **Badges environnement** : Détection auto PREPROD/PROD
-
-### Dashboard interactif
-- Interface Streamlit responsive
-- Graphiques temps réel avec Seaborn/Matplotlib
-- Sidebar informative avec metrics base de données
-- Logs Loguru avec rotation automatique
-
-## 🐳 Environnements Docker
-
-### Production (mange_prod)
+### 3. Lancement PROD
 ```bash
-# Démarrage service persistant
-docker-compose -f docker-compose-prod.yml up -d
-
-# Monitoring logs
-docker-compose -f docker-compose-prod.yml logs -f
-
-# Santé du service
-docker-compose -f docker-compose-prod.yml ps
+cd 20_prod  
+uv run streamlit run streamlit/main.py
 ```
 
-### Maintenance
+### 4. Containers Docker
 ```bash
-# Switch preprod → production
-docker-compose down
+cd 30_docker
+docker-compose -f docker-compose-preprod.yml up -d
 docker-compose -f docker-compose-prod.yml up -d
-
-# Redémarrage sans interruption
-docker-compose -f docker-compose-prod.yml restart
 ```
 
-## 🔧 Stack technique
+## 🧪 Tests et Validation
 
-- **Backend** : DuckDB 1.4.0 (2.3M lignes analysées)
-- **Frontend** : Streamlit 1.50.0 avec badges environnement
-- **Visualisation** : Seaborn 0.13.2, Matplotlib 3.10.6
-- **Logs** : Loguru 0.7.3 (rotation 1MB, séparation erreurs)
-- **Package Manager** : uv 0.8.22 (gestionnaire moderne)
-- **Conteneurisation** : Python 3.13.3-slim, Docker Compose
-- **Données** : Dataset Food.com (1999-2018, 25K utilisateurs)
+**Test complet S3 + DuckDB**
+```bash
+cd 50_test
+uv run ./S3_duckdb_test.py
+```
+
+**Résultats attendus :**
+- ✅ Environnement Python 3.13.3 cohérent
+- ✅ S3 Performance 500+ MB/s  
+- ✅ DuckDB requêtes directes sur S3
+- ✅ Containers PREPROD + PROD fonctionnels
 
 ## 📊 Données
 
-Le dataset Food.com contient :
-- **interactions_train** : 698,901 ratings
-- **interactions_test** : 12,455 ratings  
-- **interactions_validation** : 7,023 ratings
-- **PP_users** : 25,076 utilisateurs
-- **PP_recipes** : 178,265 recettes
-- **RAW_interactions** : 1,132,367 interactions brutes
-- **RAW_recipes** : 231,637 recettes détaillées
+### Datasets
+- **PP_recipes.csv** (205MB) - 178,265 recettes Food.com
+- **PP_users.csv** (14MB) - Profils utilisateurs
+- **interactions_train.csv** (28MB) - Interactions d'entraînement
+- **mangetamain.duckdb** (582MB) - Base DuckDB complète
 
-> Base DuckDB étendue disponible (581MB) avec 7 tables complètes
+### Stockage S3
+- **Bucket** : `mangetamain` sur Garage S3
+- **Performance** : 500-917 MB/s (selon environnement)
+- **Accès** : Endpoint unique avec DNAT transparent
 
-## 🎨 Interface utilisateur
+## 🔧 Environnements
 
-### Badges environnement intelligents
-- **🔧 PREPROD** : Environnement développement (gris discret)
-- **🚀 PRODUCTION** : Environnement production (gris discret)
-- **🚀 PROD (Docker)** : Conteneur production automatique
+| Environnement | Port | Status | Python | Usage |
+|---------------|------|--------|--------|--------|
+| **PREPROD** | 8500 | ✅ | 3.13.3 | Développement |
+| **PROD** | 8501 | ✅ | 3.13.3 | Production |
+| **Containers** | 8500/8501 | ✅ | 3.13.3 | Déploiement |
 
-### Navigation
-- **Sidebar** : Infos base + métriques + badge environnement
-- **Onglets** : Vue d'ensemble, Notes, Temporel, Utilisateurs, Données brutes
-- **Responsive** : Layout adaptatif wide format
+## 📈 Performance
 
-## 📈 Monitoring
+- **S3 Download** : 507-917 MB/s
+- **DuckDB COUNT** : 178K recettes en 0.53s  
+- **DuckDB GROUP BY** : Analyse en 0.54s
+- **Cohérence Python** : 100% sur tous environnements
 
-### Logs temps réel
-```bash
-# Logs production
-tail -f ~/mangetamain/10_prod/logs/mangetamain_app.log
+## 🔒 Sécurité
 
-# Logs preprod  
-tail -f ~/mangetamain/00_preprod/logs/mangetamain_app.log
-
-# Erreurs uniquement
-grep "ERROR" ~/mangetamain/*/logs/*.log
-```
-
-### Métriques dashboard
-- Nombre total interactions analysées
-- Utilisateurs les plus actifs (top 5)
-- Distribution ratings (0-5 étoiles)
-- Moyennes engagement par utilisateur
-
-## 🚀 Accès en production
-
-- **Local** : http://192.168.80.210:8501/8502 (selon environnement)
-- **Docker** : http://localhost:8501 (mange_prod)
-- **Public** : https://mangetamain.lafrance.io/ (reverse proxy HTTPS)
-
-## 🤝 Développement
-
-### Workflow recommandé
-1. **Développer** dans `00_preprod/` (badge PREPROD)
-2. **Tester** avec `uv run streamlit run...`  
-3. **Copier** vers `10_prod/` pour validation
-4. **Déployer** avec Docker production (badge PROD)
-
-### Tests environnements
-```bash
-# Validation badges
-cd ~/mangetamain/00_preprod && uv run python -c "print('✅ PREPROD')"
-cd ~/mangetamain/10_prod && uv run python -c "print('✅ PROD')"
-docker exec mange_prod python -c "print('✅ DOCKER')"
-```
+- **Credentials** : `96_keys/` ignoré par git
+- **DNAT** : Bypass reverse proxy pour performance
+- **Secrets DuckDB** : Intégrés dans garage_s3.duckdb
+- **Logging** : utils_logger.py pour monitoring
 
 ## 📚 Documentation
 
-**Architecture évolutive** documentée dans `90_doc/` :
-- **V01-V02** : Setup initial + Docker basique  
-- **V03-V04** : Production + Logs Loguru
-- **V05** : Environnements séparés + Badges ✨
+- **[S3_INSTALL.md](S3_INSTALL.md)** - Guide d'installation S3
+- **[S3_USAGE.md](S3_USAGE.md)** - Guide d'utilisation S3  
+- **[90_doc/](90_doc/)** - Documentation technique complète
 
-**Détails techniques** : Voir `RESUME_PROD_20251001_V05.md`
+## 🏷️ Version
 
-## 🎯 Prochaines étapes
-
-1. **Tests unitaires** : pytest avec couverture >90%
-2. **CI/CD** : Pipeline GitHub Actions preprod→prod  
-3. **Analyses ML** : Clustering utilisateurs, recommandations
-4. **Monitoring** : Métriques Prometheus + Grafana
-5. **Scaling** : Load balancing multi-conteneurs
+**Version actuelle** : 2025-10-09
+- ✅ Configuration S3 simplifiée et optimisée
+- ✅ Python 3.13.3 unifié sur tous environnements
+- ✅ Performance S3 maximisée (DNAT bypass)
+- ✅ DuckDB avec secrets intégrés
+- ✅ Architecture nettoyée et validée
 
 ---
 
-**Mangetamain Analytics V05** - Dashboard Food.com avec environnements intelligents! 🍽️📊  
-*Architecture production • Logs Loguru • Badges automatiques • Docker optimisé*
+**Équipe** : Data Analytics Team  
+**Dernière mise à jour** : 2025-10-09
