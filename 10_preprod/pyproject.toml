@@ -7,15 +7,23 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "streamlit>=1.28.0",
-    "duckdb>=0.9.0",
-    "pandas>=2.0.0",
-    "plotly>=5.17.0",
-    "numpy>=1.24.0",
+    "duckdb>=1.4.1",
+    "pandas>=2.3.3",
+    "plotly>=6.3.1",
+    "numpy>=2.3.3",
     "altair>=5.0.0",
     "loguru>=0.7.0",
     "python-dotenv>=1.0.0",
     "seaborn>=0.13.2",
     "boto3>=1.40.47",
+    # Nouvelles dépendances pour analyses EDA - Antoine
+    "ipykernel>=6.30.1",
+    "jupyter>=1.1.1",
+    "matplotlib>=3.10.6",
+    "polars>=1.34.0",
+    "pyarrow>=21.0.0",
+    "scikit-learn>=1.7.2",
+    "scipy>=1.16.2",
 ]
 
 [project.optional-dependencies]
