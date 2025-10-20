@@ -1,0 +1,19 @@
+Metadata-Version: 2.4
+Name: 00-eda
+Version: 0.1.0
+Summary: Back to the Future Kitchen — EDA Food.com dataset
+Requires-Python: >=3.11
+Requires-Dist: boto3>=1.40.47
+Requires-Dist: duckdb>=1.4.1
+Requires-Dist: ipykernel>=6.30.1
+Requires-Dist: jupyter>=1.1.1
+Requires-Dist: matplotlib>=3.10.6
+Requires-Dist: numpy>=2.3.3
+Requires-Dist: pandas>=2.3.3
+Requires-Dist: plotly>=6.3.1
+Requires-Dist: polars>=1.34.0
+Requires-Dist: pyarrow>=21.0.0
+Requires-Dist: scikit-learn>=1.7.2
+Requires-Dist: scipy>=1.16.2
+Requires-Dist: seaborn>=0.13.2
+Requires-Dist: statsmodels>=0.14.5
