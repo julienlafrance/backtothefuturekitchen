@@ -79,23 +79,31 @@ def parse_nutrition_column(df: pl.DataFrame) -> pl.DataFrame:
     ]).drop("nutrition_list")
 
 def add_recipe_time_features(df: pl.DataFrame) -> pl.DataFrame:
-    """Ajoute des features temporelles à partir de la date de soumission."""
+    """Ajoute des features temporelles à partir de la date de soumission (réutilise add_calendar_features)."""
     if "submitted" not in df.columns:
         return df
 
-    df = df.with_columns([
-        pl.col("submitted").str.strptime(pl.Date, "%Y-%m-%d", strict=False).alias("date")
-    ])
+    # Vérifier si submitted est déjà de type Date, sinon le parser
+    submitted_dtype = df["submitted"].dtype
+    
+    if submitted_dtype == pl.Date:
+        # Déjà une date, juste renommer
+        df = df.with_columns([
+            pl.col("submitted").alias("date")
+        ])
+    elif submitted_dtype == pl.Utf8 or submitted_dtype == pl.String:
+        # C'est une string, parser en date
+        df = df.with_columns([
+            pl.col("submitted").str.strptime(pl.Date, "%Y-%m-%d", strict=False).alias("date")
+        ])
+    else:
+        # Autre type, essayer de caster
+        df = df.with_columns([
+            pl.col("submitted").cast(pl.Date).alias("date")
+        ])
 
-    return df.with_columns([
-        pl.col("date").dt.year().alias("year"),
-        pl.col("date").dt.month().alias("month"),
-        (pl.col("date").dt.weekday() >= 5).cast(pl.Int8).alias("is_weekend"),
-        pl.when(pl.col("date").dt.month().is_in([12, 1, 2])).then(pl.lit("Winter"))
-          .when(pl.col("date").dt.month().is_in([3, 4, 5])).then(pl.lit("Spring"))
-          .when(pl.col("date").dt.month().is_in([6, 7, 8])).then(pl.lit("Summer"))
-          .otherwise(pl.lit("Autumn")).alias("season")
-    ])
+    # Réutiliser la fonction commune pour les features calendaires
+    return add_calendar_features(df, date_col="date")
 
 def compute_recipe_complexity(df: pl.DataFrame) -> pl.DataFrame:
     """Crée un score de complexité basé sur minutes, n_steps, n_ingredients."""
@@ -110,9 +118,19 @@ def compute_recipe_complexity(df: pl.DataFrame) -> pl.DataFrame:
 
 def clean_and_enrich_recipes(df: pl.DataFrame) -> pl.DataFrame:
     """Pipeline complet pour nettoyer et enrichir les recettes."""
+    # Nettoyage de base
     cleaned = df.drop_nulls(subset=["name", "submitted"])
     cleaned = cleaned.unique()
+    
+    # Filtrer les recettes avec minutes invalides (avant d'enrichir)
+    if "minutes" in cleaned.columns:
+        before = cleaned.height
+        cleaned = cleaned.filter((pl.col("minutes") > 0) & (pl.col("minutes") <= 180))
+        removed = before - cleaned.height
+        if removed > 0:
+            print(f"🧹 Filtrage minutes : {removed:,} recettes retirées (<=0 ou >180 min)")
 
+    # Enrichissement avec features
     enriched = (
         cleaned
         .pipe(parse_nutrition_column)
