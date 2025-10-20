@@ -2,6 +2,52 @@
 from .data_utils_common import *
 
 # =============================================================================
+# LOADING
+# =============================================================================
+
+def load_interactions_raw(db_path: Optional[Path] = None) -> pl.DataFrame:
+    """Charge la table RAW_interactions avec filtrage de base - EXCLUT les ratings à 0."""
+    if db_path is None:
+        db_path = get_db_path()
+    
+    sql = """
+    SELECT *
+    FROM RAW_interactions
+    WHERE rating BETWEEN 1 AND 5
+      AND date IS NOT NULL
+    """
+    
+    with duckdb.connect(database=str(db_path), read_only=True) as conn:
+        return conn.execute(sql).pl()
+
+def load_enriched_interactions(db_path: Optional[Path] = None) -> pl.DataFrame:
+    """Charge interactions enrichies avec les données de recettes - EXCLUT les ratings à 0."""
+    if db_path is None:
+        db_path = get_db_path()
+    
+    sql = """
+    SELECT 
+        i.user_id,
+        i.recipe_id,
+        i.date,
+        i.rating,
+        i.review,
+        r.name as recipe_name,
+        r.ingredients,
+        r.tags,
+        r.nutrition,
+        r.n_steps,
+        r.n_ingredients
+    FROM RAW_interactions i
+    LEFT JOIN RAW_recipes r ON i.recipe_id = r.id
+    WHERE i.rating BETWEEN 1 AND 5
+      AND i.date IS NOT NULL
+    """
+    
+    with duckdb.connect(database=str(db_path), read_only=True) as conn:
+        return conn.execute(sql).pl()
+    
+# =============================================================================
 # TRANSFORMATIONS
 # =============================================================================
 
