@@ -30,13 +30,13 @@ def get_db_path() -> Path:
     """Localise automatiquement la base DuckDB dans la hiérarchie de dossiers."""
     anchors = [Path.cwd().resolve(), *Path.cwd().resolve().parents]
     db_candidate = next(
-        (anchor / "00_preprod" / "data" / "mangetamain.duckdb"
+        (anchor / "10_preprod" / "data" / "mangetamain.duckdb"
          for anchor in anchors
-         if (anchor / "00_preprod" / "data" / "mangetamain.duckdb").exists()),
+         if (anchor / "10_preprod" / "data" / "mangetamain.duckdb").exists()),
         None,
     )
     if db_candidate is None:
-        raise FileNotFoundError("Impossible de localiser 00_preprod/data/mangetamain.duckdb")
+        raise FileNotFoundError("Impossible de localiser 10_preprod/data/mangetamain.duckdb")
     return db_candidate
 
 def get_table_overview(db_path: Path) -> pl.DataFrame:
@@ -170,3 +170,22 @@ def print_quality_report(report: Dict[str, any]):
 def check_data_quality(df: pl.DataFrame, name: str = "DataFrame") -> Dict[str, any]:
     """Alias pour analyze_data_quality (compatibilité)."""
     return analyze_data_quality(df, name)
+
+
+# =============================================================================
+# FEATURES ENGINEERING
+# =============================================================================
+
+def add_calendar_features(df: pl.DataFrame, date_col: str = "date") -> pl.DataFrame:
+    """Ajoute les features calendaires (année, mois, jour, saison, weekend)."""
+    return df.with_columns([
+        pl.col(date_col).dt.year().alias("year"),
+        pl.col(date_col).dt.month().alias("month"),
+        pl.col(date_col).dt.day().alias("day"),
+        pl.col(date_col).dt.weekday().alias("weekday"),
+        (pl.col(date_col).dt.weekday() >= 5).cast(pl.Int8).alias("is_weekend"),
+        pl.when(pl.col(date_col).dt.month().is_in([12, 1, 2])).then(pl.lit("Winter"))
+          .when(pl.col(date_col).dt.month().is_in([3, 4, 5])).then(pl.lit("Spring"))
+          .when(pl.col(date_col).dt.month().is_in([6, 7, 8])).then(pl.lit("Summer"))
+          .otherwise(pl.lit("Autumn")).alias("season"),
+    ])
