@@ -1,5 +1,4 @@
 from .data_utils_common import *
-import numpy as np
 
 # =============================================================================
 # 📦 CHARGEMENT DES DONNÉES
@@ -163,7 +162,7 @@ def clean_recipes(df: pl.DataFrame) -> pl.DataFrame:
     
     Opérations effectuées:
         1. Suppression des doublons (sur colonnes clés)
-        2. Filtrage des valeurs aberrantes (minutes < 1 ou > 2000)
+        2. Filtrage des valeurs aberrantes (minutes < 1 ou > 180)
         3. Suppression des lignes sans 'submitted' ou sans 'name'
         4. Parsing des colonnes JSON : tags, ingredients, steps
         5. Cast de 'submitted' en type Date
@@ -189,22 +188,22 @@ def clean_recipes(df: pl.DataFrame) -> pl.DataFrame:
     if "minutes" in df.columns:
         before = df.height
         df = df.filter(
-            (pl.col("minutes") >= 1) & (pl.col("minutes") <= 2000)
+            (pl.col("minutes") >= 1) & (pl.col("minutes") <= 180)
         )
         removed = before - df.height
         if removed > 0:
-            print(f"   ✓ {removed:,} recettes avec minutes invalides (<1 ou >2000)")
+            print(f"   ✓ {removed:,} recettes avec minutes invalides (<1 ou >180)")
     
-    # 3. Supprimer les lignes sans submitted ou name
+    # 3. Cast submitted en Date AVANT drop_nulls
+    df = _cast_submitted_to_date(df)
+    
+    # 4. Supprimer les lignes sans submitted ou name
     df = df.drop_nulls(subset=["submitted", "name"])
     
-    # 4. Parser les colonnes de type liste/JSON
+    # 5. Parser les colonnes de type liste/JSON
     df = _parse_list_column(df, "tags")
     df = _parse_list_column(df, "ingredients")
     df = _parse_list_column(df, "steps")
-    
-    # 5. Cast submitted en Date
-    df = _cast_submitted_to_date(df)
     
     # 6. Extraire les champs nutrition
     df = _extract_nutrition_fields(df)
@@ -417,6 +416,9 @@ def compute_recipe_complexity(df: pl.DataFrame) -> pl.DataFrame:
 
 def clean_and_enrich_recipes(df: pl.DataFrame) -> pl.DataFrame:
     """Pipeline complet pour nettoyer et enrichir les recettes."""
+    # Cast submitted en Date AVANT drop_nulls
+    df = _cast_submitted_to_date(df)
+    
     # Nettoyage de base
     cleaned = df.drop_nulls(subset=["name", "submitted"])
     cleaned = cleaned.unique()
