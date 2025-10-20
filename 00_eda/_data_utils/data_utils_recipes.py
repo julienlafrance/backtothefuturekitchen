@@ -79,13 +79,31 @@ def _extract_nutrition_fields(df: pl.DataFrame) -> pl.DataFrame:
     if "nutrition" not in df.columns:
         return df
 
-    # Parser la nutrition (format string "[val1, val2, ...]")
-    df_parsed = df.with_columns([
-        pl.col("nutrition")
-        .str.strip_chars("[]")
-        .str.split(", ")
-        .alias("_nutrition_list")
-    ])
+    # Vérifier le type de la colonne nutrition
+    nutrition_dtype = df["nutrition"].dtype
+    
+    # Si nutrition est déjà une liste, on l'utilise directement
+    if nutrition_dtype == pl.List:
+        df_parsed = df.with_columns([
+            pl.col("nutrition").alias("_nutrition_list")
+        ])
+    # Sinon, parser la nutrition (format string "[val1, val2, ...]")
+    elif nutrition_dtype in (pl.Utf8, pl.String):
+        df_parsed = df.with_columns([
+            pl.col("nutrition")
+            .str.strip_chars("[]")
+            .str.split(", ")
+            .alias("_nutrition_list")
+        ])
+    else:
+        # Type inattendu, essayer de caster en string puis parser
+        df_parsed = df.with_columns([
+            pl.col("nutrition")
+            .cast(pl.Utf8)
+            .str.strip_chars("[]")
+            .str.split(", ")
+            .alias("_nutrition_list")
+        ])
     
     # Extraire les 7 valeurs
     return df_parsed.with_columns([
@@ -414,7 +432,7 @@ def clean_and_enrich_recipes(df: pl.DataFrame) -> pl.DataFrame:
     # Enrichissement avec features
     enriched = (
         cleaned
-        .pipe(parse_nutrition_column)
+        .pipe(_extract_nutrition_fields)
         .pipe(add_recipe_time_features)
         .pipe(compute_recipe_complexity)
     )
