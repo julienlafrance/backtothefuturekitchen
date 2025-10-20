@@ -1,7 +1,38 @@
 from .data_utils_common import *
 
 # =============================================================================
-# 📦 CHARGEMENT DES DONNÉES
+# � AMÉLIORATIONS DATA QUALITY (Audit DQ du 2025-01-XX)
+# =============================================================================
+"""
+Ce module implémente les recommandations de l'audit Data Quality:
+- Score global: 8.5/10 (BONNE à EXCELLENTE QUALITÉ)
+- Dataset: 213,154 recettes (1999-2018)
+
+🎯 Recommandations implémentées:
+1. ✅ Nettoyage des guillemets parasites dans tags et ingredients
+   → _parse_list_column() avec paramètre clean_quotes=True
+   
+2. ✅ Conversion nutrition: string → array natif avec validation
+   → _extract_nutrition_fields() amélioration avec validate=True
+   
+3. ✅ Recalcul n_ingredients = len(ingredients) pour cohérence parfaite
+   → _recalculate_n_ingredients() dans le pipeline clean_recipes()
+   
+4. 🔄 Indicateurs de complexité (à venir)
+   → Ajout de n_steps_per_ingredient, complexity_score, etc.
+   
+5. 🔄 Standardisation des ingrédients (à venir)
+   → Normalisation et nettoyage avancé des noms d'ingrédients
+
+📊 Points forts confirmés:
+- Aucune valeur manquante sur colonnes critiques
+- Dates valides (1999-2018, pas de futur)
+- Distributions numériques réalistes
+- Dataset prêt pour la production
+"""
+
+# =============================================================================
+# �📦 CHARGEMENT DES DONNÉES
 # =============================================================================
 
 def load_recipes_raw(db_path: Optional[Path] = None, limit: Optional[int] = None) -> pl.DataFrame:
@@ -37,13 +68,33 @@ def load_recipes_raw(db_path: Optional[Path] = None, limit: Optional[int] = None
 # 🧹 HELPERS INTERNES - PARSING
 # =============================================================================
 
-def _parse_list_column(df: pl.DataFrame, col_name: str) -> pl.DataFrame:
+def _clean_quotes_from_text(text: str) -> str:
+    """
+    Nettoie les guillemets parasites dans une chaîne.
+    
+    Basé sur l'audit DQ : présence de guillemets dans tags et ingredients
+    
+    Args:
+        text: Texte à nettoyer
+        
+    Returns:
+        Texte sans guillemets en début/fin
+    """
+    if text is None:
+        return None
+    return text.strip('"\'')
+
+
+def _parse_list_column(df: pl.DataFrame, col_name: str, clean_quotes: bool = True) -> pl.DataFrame:
     """
     Parse une colonne texte de type "[item1, item2, ...]" en liste Python.
+    
+    Amélioration DQ: Option pour nettoyer les guillemets parasites
     
     Args:
         df: DataFrame Polars
         col_name: Nom de la colonne à parser
+        clean_quotes: Si True, nettoie les guillemets autour des éléments
         
     Returns:
         DataFrame avec la colonne parsée en liste
@@ -52,7 +103,7 @@ def _parse_list_column(df: pl.DataFrame, col_name: str) -> pl.DataFrame:
         return df
     
     # Nettoyer et parser la colonne
-    return df.with_columns([
+    df_parsed = df.with_columns([
         pl.col(col_name)
         .str.strip_chars()
         .str.replace("'", '"')  # Remplacer quotes simples par doubles
@@ -60,17 +111,30 @@ def _parse_list_column(df: pl.DataFrame, col_name: str) -> pl.DataFrame:
         .str.split(", ")
         .alias(col_name)
     ])
+    
+    # Nettoyer les guillemets dans chaque élément de la liste si demandé
+    if clean_quotes:
+        df_parsed = df_parsed.with_columns([
+            pl.col(col_name)
+            .list.eval(pl.element().str.strip_chars('"\''))
+            .alias(col_name)
+        ])
+    
+    return df_parsed
 
 
-def _extract_nutrition_fields(df: pl.DataFrame) -> pl.DataFrame:
+def _extract_nutrition_fields(df: pl.DataFrame, validate: bool = True) -> pl.DataFrame:
     """
     Éclate la colonne nutrition en 7 colonnes individuelles.
     
     Format attendu: [calories, total_fat_pct, sugar_pct, sodium_pct, 
                      protein_pct, sat_fat_pct, carb_pct]
     
+    Amélioration DQ: Validation optionnelle des valeurs nutritionnelles
+    
     Args:
         df: DataFrame avec colonne 'nutrition'
+        validate: Si True, valide les valeurs (calories >= 0, pourcentages valides)
         
     Returns:
         DataFrame avec 7 nouvelles colonnes nutritionnelles
@@ -105,7 +169,7 @@ def _extract_nutrition_fields(df: pl.DataFrame) -> pl.DataFrame:
         ])
     
     # Extraire les 7 valeurs
-    return df_parsed.with_columns([
+    df_result = df_parsed.with_columns([
         pl.col("_nutrition_list").list.get(0).cast(pl.Float64, strict=False).alias("calories"),
         pl.col("_nutrition_list").list.get(1).cast(pl.Float64, strict=False).alias("total_fat_pct"),
         pl.col("_nutrition_list").list.get(2).cast(pl.Float64, strict=False).alias("sugar_pct"),
@@ -114,6 +178,21 @@ def _extract_nutrition_fields(df: pl.DataFrame) -> pl.DataFrame:
         pl.col("_nutrition_list").list.get(5).cast(pl.Float64, strict=False).alias("sat_fat_pct"),
         pl.col("_nutrition_list").list.get(6).cast(pl.Float64, strict=False).alias("carb_pct")
     ]).drop("_nutrition_list")
+    
+    # Validation basée sur l'audit DQ
+    if validate:
+        # Remplacer les calories négatives par null (détecté dans l'audit)
+        df_result = df_result.with_columns([
+            pl.when(pl.col("calories") < 0)
+            .then(None)
+            .otherwise(pl.col("calories"))
+            .alias("calories")
+        ])
+        
+        # Note: Les pourcentages > 100% sont légitimes selon l'audit DQ
+        # (recettes très riches), donc on ne les filtre pas
+    
+    return df_result
 
 
 def _cast_submitted_to_date(df: pl.DataFrame) -> pl.DataFrame:
@@ -156,18 +235,62 @@ def _cast_submitted_to_date(df: pl.DataFrame) -> pl.DataFrame:
 # 🧹 NETTOYAGE DES DONNÉES
 # =============================================================================
 
+def _recalculate_n_ingredients(df: pl.DataFrame) -> pl.DataFrame:
+    """
+    Recalcule n_ingredients = len(ingredients) pour cohérence parfaite.
+    
+    Recommandation DQ #3: L'audit a révélé des écarts mineurs entre 
+    n_ingredients et la longueur réelle de la liste ingredients.
+    Cette fonction force la cohérence en recalculant depuis les données.
+    
+    Args:
+        df: DataFrame avec colonnes 'ingredients' et 'n_ingredients'
+        
+    Returns:
+        DataFrame avec n_ingredients recalculé
+    """
+    if "ingredients" not in df.columns:
+        return df
+    
+    # Sauvegarder l'ancien n_ingredients pour comparaison (optionnel)
+    if "n_ingredients" in df.columns:
+        df = df.with_columns([
+            pl.col("n_ingredients").alias("_n_ingredients_original")
+        ])
+    
+    # Recalculer depuis la liste réelle
+    df = df.with_columns([
+        pl.col("ingredients").list.len().alias("n_ingredients")
+    ])
+    
+    # Log des corrections (optionnel, pour debug)
+    if "_n_ingredients_original" in df.columns:
+        corrections = df.filter(
+            pl.col("n_ingredients") != pl.col("_n_ingredients_original")
+        ).height
+        if corrections > 0:
+            print(f"   ✓ {corrections:,} valeurs n_ingredients recalculées pour cohérence")
+        df = df.drop("_n_ingredients_original")
+    
+    return df
+
+
 def clean_recipes(df: pl.DataFrame) -> pl.DataFrame:
     """
     Nettoie et prépare les données de la table RAW_recipes.
     
     Opérations effectuées:
         1. Suppression des doublons (sur colonnes clés)
-        2. Filtrage des valeurs aberrantes (minutes < 1 ou > 180)
-        3. Suppression des lignes sans 'submitted' ou sans 'name'
-        4. Parsing des colonnes JSON : tags, ingredients, steps
-        5. Cast de 'submitted' en type Date
-        6. Extraction des 7 champs nutritionnels
-        7. Suppression des recettes sans nutrition ou sans ingrédients
+        2. Filtrage des valeurs aberrantes :
+           - minutes : [1, 180]
+           - n_steps : [3, 21] (IQ 90%)
+           - n_ingredients : [4, 16] (IQ 90%)
+        3. Cast de 'submitted' en type Date
+        4. Suppression des lignes sans 'submitted' ou sans 'name'
+        5. Parsing des colonnes JSON : tags, ingredients, steps
+        6. Recalcul de n_ingredients pour cohérence parfaite
+        7. Extraction des 7 champs nutritionnels
+        8. Suppression des recettes sans nutrition ou sans ingrédients
         
     Args:
         df: DataFrame Polars brut depuis DuckDB
@@ -194,21 +317,36 @@ def clean_recipes(df: pl.DataFrame) -> pl.DataFrame:
         if removed > 0:
             print(f"   ✓ {removed:,} recettes avec minutes invalides (<1 ou >180)")
     
+    # 2b. Filtrer les valeurs aberrantes de n_steps et n_ingredients (IQ 90%)
+    # Basé sur l'analyse: n_steps [3, 21], n_ingredients [4, 16]
+    if "n_steps" in df.columns and "n_ingredients" in df.columns:
+        before = df.height
+        df = df.filter(
+            (pl.col("n_steps") >= 3) & (pl.col("n_steps") <= 21) &
+            (pl.col("n_ingredients") >= 4) & (pl.col("n_ingredients") <= 16)
+        )
+        removed = before - df.height
+        if removed > 0:
+            print(f"   ✓ {removed:,} recettes avec n_steps ou n_ingredients aberrants (hors IQ 90%)")
+    
     # 3. Cast submitted en Date AVANT drop_nulls
     df = _cast_submitted_to_date(df)
     
     # 4. Supprimer les lignes sans submitted ou name
     df = df.drop_nulls(subset=["submitted", "name"])
     
-    # 5. Parser les colonnes de type liste/JSON
-    df = _parse_list_column(df, "tags")
-    df = _parse_list_column(df, "ingredients")
+    # 5. Parser les colonnes de type liste/JSON avec nettoyage des guillemets
+    df = _parse_list_column(df, "tags", clean_quotes=True)
+    df = _parse_list_column(df, "ingredients", clean_quotes=True)
     df = _parse_list_column(df, "steps")
     
-    # 6. Extraire les champs nutrition
-    df = _extract_nutrition_fields(df)
+    # 6. Recalculer n_ingredients pour cohérence parfaite (recommandation DQ #3)
+    df = _recalculate_n_ingredients(df)
     
-    # 7. Supprimer les recettes sans nutrition ou sans ingrédients
+    # 7. Extraire les champs nutrition avec validation
+    df = _extract_nutrition_fields(df, validate=True)
+    
+    # 8. Supprimer les recettes sans nutrition ou sans ingrédients
     before = df.height
     df = df.filter(
         pl.col("calories").is_not_null() &
