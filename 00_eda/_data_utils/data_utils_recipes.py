@@ -235,6 +235,59 @@ def _cast_submitted_to_date(df: pl.DataFrame) -> pl.DataFrame:
 # 🧹 NETTOYAGE DES DONNÉES
 # =============================================================================
 
+def _compute_outlier_thresholds(df: pl.DataFrame, percentile: float = 0.05) -> dict:
+    """
+    Calcule les seuils pour détecter les valeurs aberrantes (IQ 90% par défaut).
+    
+    Méthode: On garde les valeurs entre Q5% et Q95% (90% centraux de la distribution).
+    Cela élimine les 5% les plus bas et les 5% les plus hauts.
+    
+    Args:
+        df: DataFrame avec colonnes 'n_steps' et 'n_ingredients'
+        percentile: Percentile inférieur (défaut: 0.05 pour Q5%-Q95%)
+        
+    Returns:
+        dict: Dictionnaire avec les seuils calculés
+        {
+            'n_steps': {'min': x, 'max': y, 'q_low': 0.05, 'q_high': 0.95},
+            'n_ingredients': {'min': x, 'max': y, 'q_low': 0.05, 'q_high': 0.95}
+        }
+        
+    Exemple:
+        thresholds = _compute_outlier_thresholds(df)
+        # {'n_steps': {'min': 3, 'max': 21, ...}, 'n_ingredients': {'min': 4, 'max': 16, ...}}
+    """
+    thresholds = {}
+    
+    # Calcul pour n_steps
+    if "n_steps" in df.columns:
+        q_low = df["n_steps"].quantile(percentile)
+        q_high = df["n_steps"].quantile(1 - percentile)
+        thresholds["n_steps"] = {
+            "min": int(q_low),
+            "max": int(q_high),
+            "q_low": percentile,
+            "q_high": 1 - percentile,
+            "median": df["n_steps"].median(),
+            "mean": df["n_steps"].mean()
+        }
+    
+    # Calcul pour n_ingredients
+    if "n_ingredients" in df.columns:
+        q_low = df["n_ingredients"].quantile(percentile)
+        q_high = df["n_ingredients"].quantile(1 - percentile)
+        thresholds["n_ingredients"] = {
+            "min": int(q_low),
+            "max": int(q_high),
+            "q_low": percentile,
+            "q_high": 1 - percentile,
+            "median": df["n_ingredients"].median(),
+            "mean": df["n_ingredients"].mean()
+        }
+    
+    return thresholds
+
+
 def _recalculate_n_ingredients(df: pl.DataFrame) -> pl.DataFrame:
     """
     Recalcule n_ingredients = len(ingredients) pour cohérence parfaite.
@@ -318,12 +371,24 @@ def clean_recipes(df: pl.DataFrame) -> pl.DataFrame:
             print(f"   ✓ {removed:,} recettes avec minutes invalides (<1 ou >180)")
     
     # 2b. Filtrer les valeurs aberrantes de n_steps et n_ingredients (IQ 90%)
-    # Basé sur l'analyse: n_steps [3, 21], n_ingredients [4, 16]
+    # Calcul automatique des seuils à partir de la distribution réelle
     if "n_steps" in df.columns and "n_ingredients" in df.columns:
+        # Calculer les seuils basés sur les quantiles
+        thresholds = _compute_outlier_thresholds(df, percentile=0.05)
+        
+        # Afficher les seuils calculés pour traçabilité
+        print(f"   ℹ️  Seuils calculés (IQ 90% = Q5%-Q95%):")
+        for col, bounds in thresholds.items():
+            print(f"      • {col}: [{bounds['min']}, {bounds['max']}] "
+                  f"(médiane={bounds['median']:.0f}, moyenne={bounds['mean']:.1f})")
+        
+        # Appliquer le filtrage
         before = df.height
         df = df.filter(
-            (pl.col("n_steps") >= 3) & (pl.col("n_steps") <= 21) &
-            (pl.col("n_ingredients") >= 4) & (pl.col("n_ingredients") <= 16)
+            (pl.col("n_steps") >= thresholds["n_steps"]["min"]) & 
+            (pl.col("n_steps") <= thresholds["n_steps"]["max"]) &
+            (pl.col("n_ingredients") >= thresholds["n_ingredients"]["min"]) & 
+            (pl.col("n_ingredients") <= thresholds["n_ingredients"]["max"])
         )
         removed = before - df.height
         if removed > 0:
