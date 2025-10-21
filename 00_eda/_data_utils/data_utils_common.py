@@ -18,7 +18,7 @@ import duckdb
 import polars as pl
 import numpy as np
 import pandas as pd
-from typing import Optional, List, Dict, Tuple
+from typing import Optional, List, Dict, Tuple, Union
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -30,13 +30,13 @@ def get_db_path() -> Path:
     """Localise automatiquement la base DuckDB dans la hiérarchie de dossiers."""
     anchors = [Path.cwd().resolve(), *Path.cwd().resolve().parents]
     db_candidate = next(
-        (anchor / "10_preprod" / "data" / "mangetamain.duckdb"
+        (anchor / "00_preprod" / "data" / "mangetamain.duckdb"
          for anchor in anchors
-         if (anchor / "10_preprod" / "data" / "mangetamain.duckdb").exists()),
+         if (anchor / "00_preprod" / "data" / "mangetamain.duckdb").exists()),
         None,
     )
     if db_candidate is None:
-        raise FileNotFoundError("Impossible de localiser 10_preprod/data/mangetamain.duckdb")
+        raise FileNotFoundError("Impossible de localiser 00_preprod/data/mangetamain.duckdb")
     return db_candidate
 
 def get_table_overview(db_path: Path) -> pl.DataFrame:
@@ -148,3 +148,31 @@ def add_calendar_features(df: pl.DataFrame, date_col: str = "date") -> pl.DataFr
           .when(pl.col(date_col).dt.month().is_in([6, 7, 8])).then(pl.lit("Summer"))
           .otherwise(pl.lit("Autumn")).alias("season"),
     ])
+
+def add_rating_features(df: pl.DataFrame, rating_col: str = "rating") -> pl.DataFrame:
+    """Ajoute les features dérivées du rating (z-score normalisé)."""
+    rating_mean = df[rating_col].mean()
+    rating_std = df[rating_col].std()
+    
+    return df.with_columns([
+        ((pl.col(rating_col) - rating_mean) / rating_std).alias("normalized_rating"),
+    ])
+
+def clean_and_enrich_interactions(df: pl.DataFrame) -> pl.DataFrame:
+    """Pipeline complet de nettoyage et enrichissement - retourne une copie transformée."""
+    # Nettoyage de base (copie pour ne pas modifier l'original)
+    # ⚠️ EXCLUT les ratings à 0 (cohérent avec load_interactions_raw)
+    cleaned = df.filter(
+        (pl.col("rating").is_between(1, 5, closed="both")) &
+        (pl.col("date").is_not_null())
+    )
+    
+    # Suppression des duplicatas exacts
+    cleaned = cleaned.unique()
+    
+    # Ajout des features calendaires et de rating
+    enriched = add_calendar_features(cleaned)
+    enriched = add_rating_features(enriched)
+    
+    return enriched
+
