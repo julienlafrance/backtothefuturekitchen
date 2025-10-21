@@ -6,7 +6,7 @@ from .data_utils_common import *
 
 def load_recipes_raw(db_path: Optional[Path] = None, limit: Optional[int] = None) -> pl.DataFrame:
     """
-    Charge la table RAW_recipes depuis DuckDB.
+    Charge la table RAW_RECIPES depuis DuckDB.
     
     Args:
         db_path: Chemin vers la base DuckDB (par défaut: détection auto)
@@ -23,14 +23,14 @@ def load_recipes_raw(db_path: Optional[Path] = None, limit: Optional[int] = None
     if db_path is None:
         db_path = get_db_path()
 
-    sql = "SELECT * FROM RAW_recipes"
+    sql = "SELECT * FROM RAW_RECIPES"
     if limit:
         sql += f" LIMIT {limit}"
 
     with duckdb.connect(database=str(db_path), read_only=True) as conn:
         df = conn.execute(sql).pl()
 
-    print(f"✅ RAW_recipes chargée : {df.shape[0]:,} lignes × {df.shape[1]} colonnes")
+    print(f"✅ RAW_RECIPES chargée : {df.shape[0]:,} lignes × {df.shape[1]} colonnes")
     return df
 
 # =============================================================================
@@ -295,7 +295,7 @@ def load_clean_recipes(db_path: Optional[Path] = None) -> pl.DataFrame:
 
 def clean_recipes(df: pl.DataFrame) -> pl.DataFrame:
     """
-    Nettoie et prépare les données de la table RAW_recipes.
+    Nettoie et prépare les données de la table RAW_RECIPES.
     
     Args: df: DataFrame Polars brut depuis DuckDB
         
@@ -603,19 +603,19 @@ def analyze_recipe_quality(df: pl.DataFrame) -> Dict[str, any]:
     
     # Affichage du rapport
     print(f"\n{'='*70}")
-    print(f"📋 RAPPORT DE QUALITÉ - RAW_recipes")
+    print(f"📋 RAPPORT DE QUALITÉ - RAW_RECIPES")
     print(f"{'='*70}")
     print(f"📦 Dimensions : {report['n_rows']:,} lignes × {report['n_cols']} colonnes")
     print(f"🔄 Doublons : {report['duplicate_count']:,}")
     
     if report['null_counts']:
-        print(f"\n⚠️  Valeurs nulles :")
+        print(f"⚠️  Valeurs nulles :")
         for col, count in sorted(report['null_counts'].items(), key=lambda x: x[1], reverse=True)[:5]:
             pct = (count / report['n_rows']) * 100
             print(f"   • {col}: {count:,} ({pct:.1f}%)")
     
     if "minutes_stats" in report:
-        print(f"\n⏱️ Minutes : médiane={report['minutes_stats']['median']:.0f}, "
+        print(f"⏱️ Minutes : médiane={report['minutes_stats']['median']:.0f}, "
               f"moyenne={report['minutes_stats']['mean']:.1f}, "
               f"max={report['minutes_stats']['max']:,}")
 
@@ -632,7 +632,7 @@ def analyze_recipe_quality(df: pl.DataFrame) -> Dict[str, any]:
               f"max={report['n_ingredients_stats']['max']}")
     
     if "time_range" in report and report['time_range']['min_date']:
-        print(f"\n📅 Période : {report['time_range']['min_date']} → {report['time_range']['max_date']} "
+        print(f"📅 Période : {report['time_range']['min_date']} → {report['time_range']['max_date']} "
               f"({report['time_range']['n_years']} ans)")
     
     print(f"{'='*70}\n")
