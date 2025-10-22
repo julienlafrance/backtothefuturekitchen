@@ -41,6 +41,7 @@ def get_db_path() -> Path:
 
 def get_table_overview(db_path: Path) -> pl.DataFrame:
     """Retourne un aperçu de toutes les tables avec leurs tailles."""
+
     with duckdb.connect(database=str(db_path), read_only=True) as conn:
         tables = conn.execute("SHOW TABLES").pl()
         table_list = [row[0] for row in tables.iter_rows()]
