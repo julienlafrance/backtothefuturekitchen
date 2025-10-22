@@ -4,12 +4,11 @@ from .data_utils_common import *
 # �📦 CHARGEMENT DES DONNÉES
 # =============================================================================
 
-def load_recipes_raw(db_path: Optional[Path] = None, limit: Optional[int] = None) -> pl.DataFrame:
+def load_recipes_raw(limit: Optional[int] = None) -> pl.DataFrame:
     """
-    Charge la table RAW_RECIPES depuis DuckDB.
+    Charge les données de recettes depuis S3.
     
     Args:
-        db_path: Chemin vers la base DuckDB (par défaut: détection auto)
         limit: Nombre maximum de lignes à charger (optionnel)
         
     Returns:
@@ -20,17 +19,16 @@ def load_recipes_raw(db_path: Optional[Path] = None, limit: Optional[int] = None
         - tags, nutrition, n_steps, steps, description
         - ingredients, n_ingredients
     """
-    if db_path is None:
-        db_path = get_db_path()
-
-    sql = "SELECT * FROM RAW_RECIPES"
+    # Charger depuis S3
+    conn = get_s3_duckdb_connection()
+    sql = "SELECT * FROM 's3://mangetamain/PP_recipes.csv'"
     if limit:
         sql += f" LIMIT {limit}"
+    
+    df = conn.execute(sql).pl()
+    conn.close()
 
-    with duckdb.connect(database=str(db_path), read_only=True) as conn:
-        df = conn.execute(sql).pl()
-
-    print(f"✅ RAW_RECIPES chargée : {df.shape[0]:,} lignes × {df.shape[1]} colonnes")
+    print(f"✅ Recettes chargées depuis S3 : {df.shape[0]:,} lignes × {df.shape[1]} colonnes")
     return df
 
 # =============================================================================
@@ -520,7 +518,7 @@ def enrich_recipes(df: pl.DataFrame) -> pl.DataFrame:
 # 🚀 PIPELINE COMPLET
 # =============================================================================
 
-def load_clean_recipes(db_path: Optional[Path] = None) -> pl.DataFrame:
+def load_clean_recipes(limit: Optional[int] = None) -> pl.DataFrame:
     """
     Pipeline complet : charge, nettoie et enrichit les recettes en une seule commande.
 
@@ -528,7 +526,7 @@ def load_clean_recipes(db_path: Optional[Path] = None) -> pl.DataFrame:
         
     Returns: DataFrame prêt pour l'analyse
     """
-    df = load_recipes_raw(db_path)
+    df = load_recipes_raw(limit)
     df = clean_recipes(df)
     df = enrich_recipes(df)
     return df

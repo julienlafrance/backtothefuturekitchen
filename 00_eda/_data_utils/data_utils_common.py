@@ -19,59 +19,76 @@ import polars as pl
 import numpy as np
 import pandas as pd
 from typing import Optional, List, Dict, Tuple, Union
+from configparser import ConfigParser
 import warnings
 warnings.filterwarnings('ignore')
 
 # =============================================================================
-# CONNEXION DUCKDB
+# CONNEXION S3 via DUCKDB
 # =============================================================================
 
-def get_db_path() -> Path:
-    """Localise automatiquement la base DuckDB dans la hiérarchie de dossiers."""
+def get_s3_credentials_path() -> Path:
+    """Localise le fichier de credentials S3 dans 96_keys/."""
     anchors = [Path.cwd().resolve(), *Path.cwd().resolve().parents]
-    db_candidate = next(
-        (anchor / "00_preprod" / "data" / "mangetamain.duckdb"
+    creds_candidate = next(
+        (anchor / "96_keys" / "credentials"
          for anchor in anchors
-         if (anchor / "00_preprod" / "data" / "mangetamain.duckdb").exists()),
+         if (anchor / "96_keys" / "credentials").exists()),
         None,
     )
-    if db_candidate is None:
-        raise FileNotFoundError("Impossible de localiser 00_preprod/data/mangetamain.duckdb")
-    return db_candidate
+    if creds_candidate is None:
+        raise FileNotFoundError("Impossible de localiser 96_keys/credentials")
+    return creds_candidate
 
-def get_table_overview(db_path: Path) -> pl.DataFrame:
-    """Retourne un aperçu de toutes les tables avec leurs tailles."""
-
-    with duckdb.connect(database=str(db_path), read_only=True) as conn:
-        tables = conn.execute("SHOW TABLES").pl()
-        table_list = [row[0] for row in tables.iter_rows()]
+def get_s3_duckdb_connection():
+    """
+    Crée une connexion DuckDB en mémoire avec le secret S3 configuré.
+    
+    Returns:
+        duckdb.DuckDBPyConnection: Connexion avec httpfs et secret S3 chargés
         
-        row_counts = []
-        for table in table_list:
-            count = conn.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
-            row_counts.append(count)
+    Raises:
+        FileNotFoundError: Si le fichier credentials n'est pas trouvé
+        
+    Example:
+        >>> conn = get_s3_duckdb_connection()
+        >>> df = conn.execute("SELECT * FROM 's3://mangetamain/PP_recipes.csv'").pl()
+    """
+    # Charger les credentials
+    creds_path = get_s3_credentials_path()
+    config = ConfigParser()
+    config.read(creds_path)
     
-    return pl.DataFrame({
-        "table": table_list,
-        "row_count": row_counts,
-    }).sort("row_count", descending=True)
-
-# =============================================================================
-# CHARGEMENT DES DONNÉES
-# =============================================================================
-
-def load_table(table_name: str, db_path: Optional[Path] = None, limit: Optional[int] = None) -> pl.DataFrame:
-    """Charge une table depuis DuckDB."""
-    if db_path is None:
-        db_path = get_db_path()
+    if 's3fast' not in config:
+        raise ValueError("Profil [s3fast] introuvable dans 96_keys/credentials")
     
-    sql = f"SELECT * FROM {table_name}"
-    if limit is not None:
-        sql += f" LIMIT {limit}"
+    s3_config = config['s3fast']
+    endpoint_url = s3_config.get('endpoint_url', 'http://s3fast.lafrance.io')
+    access_key = s3_config.get('aws_access_key_id')
+    secret_key = s3_config.get('aws_secret_access_key')
+    region = s3_config.get('region', 'garage-fast')
     
-    with duckdb.connect(database=str(db_path), read_only=True) as conn:
-        return conn.execute(sql).pl()
-
+    # Créer une connexion en mémoire
+    conn = duckdb.connect(database=':memory:')
+    
+    # Installer et charger httpfs
+    conn.execute("INSTALL httpfs;")
+    conn.execute("LOAD httpfs;")
+    
+    # Configurer le secret S3
+    conn.execute(f"""
+        CREATE SECRET s3fast (
+            TYPE s3,
+            KEY_ID '{access_key}',
+            SECRET '{secret_key}',
+            ENDPOINT '{endpoint_url.replace('http://', '').replace('https://', '')}',
+            REGION '{region}',
+            URL_STYLE 'path',
+            USE_SSL false
+        );
+    """)
+    
+    return conn
 
 # =============================================================================
 # DATA QUALITY & CLEANING
