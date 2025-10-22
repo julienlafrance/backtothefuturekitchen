@@ -30,13 +30,13 @@ def get_db_path() -> Path:
     """Localise automatiquement la base DuckDB dans la hiérarchie de dossiers."""
     anchors = [Path.cwd().resolve(), *Path.cwd().resolve().parents]
     db_candidate = next(
-        (anchor / "00_preprod" / "data" / "mangetamain.duckdb"
+        (anchor / "10_preprod" / "data" / "mangetamain.duckdb"
          for anchor in anchors
-         if (anchor / "00_preprod" / "data" / "mangetamain.duckdb").exists()),
+         if (anchor / "10_preprod" / "data" / "mangetamain.duckdb").exists()),
         None,
     )
     if db_candidate is None:
-        raise FileNotFoundError("Impossible de localiser 00_preprod/data/mangetamain.duckdb")
+        raise FileNotFoundError("Impossible de localiser 10_preprod/data/mangetamain.duckdb")
     return db_candidate
 
 def get_table_overview(db_path: Path) -> pl.DataFrame:
