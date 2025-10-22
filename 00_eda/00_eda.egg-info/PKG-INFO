@@ -2,7 +2,7 @@ Metadata-Version: 2.4
 Name: 00-eda
 Version: 0.1.0
 Summary: Back to the Future Kitchen — EDA Food.com dataset
-Requires-Python: >=3.11
+Requires-Python: ==3.11.13
 Requires-Dist: boto3>=1.40.47
 Requires-Dist: duckdb>=1.4.1
 Requires-Dist: ipykernel>=6.30.1

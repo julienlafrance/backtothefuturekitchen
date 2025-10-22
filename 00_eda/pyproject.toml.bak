@@ -2,7 +2,7 @@
 name = "00-eda"
 version = "0.1.0"
 description = "Back to the Future Kitchen — EDA Food.com dataset"
-requires-python = "==3.11.13"
+requires-python = ">=3.11"
 
 dependencies = [
     "boto3>=1.40.47",
