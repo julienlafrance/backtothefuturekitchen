@@ -16,6 +16,12 @@ import os
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
+from visualization.custom_charts import (
+    create_correlation_heatmap,
+    create_distribution_plot,
+    create_time_series_plot,
+    create_custom_scatter_plot
+)
 
 def detect_environment():
     """Detect if running in PREPROD or PROD environment."""
@@ -397,6 +403,80 @@ def display_raw_data_explorer(conn):
             sample_df = conn.execute(f"SELECT * FROM {selected_table} LIMIT {sample_size}").fetchdf()
             st.dataframe(sample_df, use_container_width=True)
 
+def create_custom_visualizations(conn):
+    """Interface pour créer des graphiques personnalisés."""
+    st.subheader("📈 Graphiques personnalisés")
+    
+    # Get available tables
+    tables = conn.execute("SHOW TABLES").fetchall()
+    table_names = [t[0] for t in tables]
+    
+    selected_table = st.selectbox("Choisir une table:", table_names, key="custom_viz_table")
+    
+    if selected_table:
+        # Get columns for the selected table
+        schema = conn.execute(f"DESCRIBE {selected_table}").fetchall()
+        columns = [col[0] for col in schema]
+        numeric_columns = []
+        date_columns = []
+        
+        # Identify column types
+        for col_name, col_type, _, _, _, _ in schema:
+            if any(t in col_type.lower() for t in ['int', 'float', 'double', 'numeric']):
+                numeric_columns.append(col_name)
+            if any(t in col_type.lower() for t in ['date', 'time']):
+                date_columns.append(col_name)
+        
+        # Chart type selector
+        chart_type = st.selectbox(
+            "Type de graphique:", 
+            ["Corrélation (heatmap)", "Distribution", "Nuage de points", "Série temporelle"]
+        )
+        
+        if chart_type == "Corrélation (heatmap)":
+            if len(numeric_columns) > 1:
+                create_correlation_heatmap(conn, selected_table)
+            else:
+                st.warning("Cette table n'a pas assez de colonnes numériques pour une matrice de corrélation")
+        
+        elif chart_type == "Distribution":
+            if numeric_columns:
+                selected_column = st.selectbox("Colonne à analyser:", numeric_columns)
+                create_distribution_plot(conn, selected_table, selected_column)
+            else:
+                st.warning("Cette table n'a pas de colonnes numériques")
+        
+        elif chart_type == "Nuage de points":
+            if len(numeric_columns) >= 2:
+                col1, col2 = st.columns(2)
+                with col1:
+                    x_column = st.selectbox("Axe X:", numeric_columns, key="scatter_x")
+                with col2:
+                    y_column = st.selectbox("Axe Y:", numeric_columns, key="scatter_y")
+                
+                color_column = st.selectbox(
+                    "Colonne de couleur (optionnel):", 
+                    ["Aucune"] + columns,
+                    key="scatter_color"
+                )
+                color_col = color_column if color_column != "Aucune" else None
+                
+                create_custom_scatter_plot(conn, selected_table, x_column, y_column, color_col)
+            else:
+                st.warning("Cette table n'a pas assez de colonnes numériques pour un nuage de points")
+        
+        elif chart_type == "Série temporelle":
+            if date_columns and numeric_columns:
+                col1, col2 = st.columns(2)
+                with col1:
+                    date_column = st.selectbox("Colonne de date:", date_columns, key="ts_date")
+                with col2:
+                    value_column = st.selectbox("Colonne de valeur:", numeric_columns, key="ts_value")
+                
+                create_time_series_plot(conn, selected_table, date_column, value_column)
+            else:
+                st.warning("Cette table n'a pas de colonnes de date ou de valeurs numériques pour une série temporelle")
+
 def main():
     """Main Streamlit application - Enhanced version."""
     logger.info("🚀 Enhanced Streamlit application starting")
@@ -417,12 +497,13 @@ def main():
         display_environment_badge()
     
     # Main content tabs
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "📊 Vue d'ensemble", 
         "⭐ Analyses des notes", 
         "📅 Analyse temporelle", 
         "👥 Utilisateurs", 
-        "🔍 Données brutes"
+        "🔍 Données brutes",
+        "📈 Graphiques personnalisés"
     ])
     
     with tab1:
@@ -439,6 +520,9 @@ def main():
     
     with tab5:
         display_raw_data_explorer(conn)
+    
+    with tab6:
+        create_custom_visualizations(conn)
     
     # Footer
     st.markdown("---")
