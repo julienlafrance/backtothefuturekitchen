@@ -1,5 +1,7 @@
 
 from .data_utils_common import *
+from typing import Union, Tuple, Dict, List, Optional
+import pandas as pd
 
 # =============================================================================
 # LOADING
@@ -47,6 +49,8 @@ def load_enriched_interactions(db_path: Optional[Path] = None) -> pl.DataFrame:
     with duckdb.connect(database=str(db_path), read_only=True) as conn:
         return conn.execute(sql).pl()
     
+
+    
 # =============================================================================
 # TRANSFORMATIONS
 # =============================================================================
@@ -63,24 +67,6 @@ def add_rating_features(df: pl.DataFrame, rating_col: str = "rating") -> pl.Data
           .when(pl.col(rating_col) <= 4).then(pl.lit("High"))
           .otherwise(pl.lit("Excellent")).alias("rating_category"),
     ])
-
-def clean_and_enrich_interactions(df: pl.DataFrame) -> pl.DataFrame:
-    """Pipeline complet de nettoyage et enrichissement - EXCLUT les ratings à 0 - retourne une copie transformée."""
-    # Nettoyage de base (copie pour ne pas modifier l'original)
-    # IMPORTANT: Exclut les ratings à 0 car ils correspondent à des interactions sans note
-    cleaned = df.filter(
-        (pl.col("rating").is_between(1, 5, closed="both")) &
-        (pl.col("date").is_not_null())
-    )
-    
-    # Suppression des duplicatas exacts
-    cleaned = cleaned.unique()
-    
-    # Ajout des features
-    enriched = add_calendar_features(cleaned)
-    enriched = add_rating_features(enriched)
-    
-    return enriched
 
 def load_clean_interactions(db_path: Optional[Path] = None) -> pl.DataFrame:
     """Charge et nettoie les interactions en une seule fois - version transformée prête à l'emploi."""
@@ -103,105 +89,6 @@ def extract_ingredients_from_string(ingredients_str: str) -> List[str]:
     # Filtre les éléments vides et normalise
     return [ing.lower().strip() for ing in ingredients if ing.strip()]
 
-def explore_ingredients_format(db_path: Optional[Path] = None, n_samples: int = 10) -> Dict:
-    """Fonction de test pour comprendre le format des ingrédients."""
-    if db_path is None:
-        db_path = get_db_path()
-    
-    # Charge quelques recettes avec ingrédients
-    sql = """
-    SELECT id as recipe_id, name, ingredients, n_ingredients
-    FROM RAW_recipes 
-    WHERE ingredients IS NOT NULL 
-    LIMIT ?
-    """
-    
-    with duckdb.connect(database=str(db_path), read_only=True) as conn:
-        df_sample = conn.execute(sql, [n_samples]).pl()
-    
-    # Analyse du format
-    analysis = {
-        "sample_count": len(df_sample),
-        "ingredients_samples": [],
-        "format_analysis": {},
-    }
-    
-    for row in df_sample.iter_rows(named=True):
-        ingredients_str = row["ingredients"]
-        extracted = extract_ingredients_from_string(ingredients_str)
-        
-        analysis["ingredients_samples"].append({
-            "recipe_id": row["recipe_id"],
-            "name": row["name"][:50] + "..." if len(row["name"]) > 50 else row["name"],
-            "n_ingredients": row["n_ingredients"],
-            "raw_string": ingredients_str[:100] + "..." if len(str(ingredients_str)) > 100 else ingredients_str,
-            "extracted_count": len(extracted),
-            "extracted_sample": extracted[:3]  # Premiers 3 ingrédients
-        })
-    
-    # Stats globales
-    all_extracted = []
-    for sample in analysis["ingredients_samples"]:
-        recipe_ingredients = extract_ingredients_from_string(
-            df_sample.filter(pl.col("recipe_id") == sample["recipe_id"])["ingredients"][0]
-        )
-        all_extracted.extend(recipe_ingredients)
-    
-    analysis["format_analysis"] = {
-        "total_ingredients_extracted": len(all_extracted),
-        "unique_ingredients": len(set(all_extracted)),
-        "most_common": pd.Series(all_extracted).value_counts().head(10).to_dict(),
-        "avg_ingredients_per_recipe": len(all_extracted) / n_samples if n_samples > 0 else 0
-    }
-    
-    return analysis
-
-def load_ingredient_ratings(target_ingredients: List[str], db_path: Optional[Path] = None) -> pl.DataFrame:
-    """
-    Charge les ratings pour recettes contenant des ingrédients spécifiques.
-    
-    SCHÉMA DU DATASET FINAL:
-    - recipe_id: ID de la recette
-    - user_id: ID utilisateur  
-    - date: Date de l'interaction
-    - rating: Note donnée (1-5)
-    - ingredient_name: Nom de l'ingrédient trouvé
-    - recipe_name: Nom de la recette (pour debug)
-    - n_ingredients: Nombre total ingrédients recette
-    
-    Une ligne par (recette × ingrédient_cible_trouvé × interaction)
-    """
-    df_enriched = load_enriched_interactions(db_path)
-    
-    # Explode les ingrédients - chaque recette devient N lignes (1 par ingrédient)
-    df_with_ingredients = (df_enriched
-        .with_columns([
-            # Extraction des ingrédients individuels  
-            pl.col("ingredients").map_elements(
-                lambda x: extract_ingredients_from_string(str(x)) if x else [],
-                return_dtype=pl.List(pl.Utf8)
-            ).alias("ingredient_list")
-        ])
-        .explode("ingredient_list")  # Explose la liste = 1 ligne par ingrédient
-        .rename({"ingredient_list": "ingredient_name"})
-        .filter(pl.col("ingredient_name") != "")  # Supprime les vides
-    )
-    
-    # Filtre sur les ingrédients cibles seulement
-    df_filtered = df_with_ingredients.filter(
-        pl.col("ingredient_name").is_in([ing.lower().strip() for ing in target_ingredients])
-    )
-    
-    # Sélectionne les colonnes finales
-    return df_filtered.select([
-        "recipe_id", 
-        "user_id", 
-        "date", 
-        "rating",
-        "ingredient_name",
-        "recipe_name",
-        "n_ingredients"
-    ])
 
 # =============================================================================
 # FONCTIONS D'ANALYSE SPÉCIALISÉES
@@ -295,6 +182,117 @@ def test_data_pipeline():
     return df_raw, df_transformed
 
 # =============================================================================
+# FONCTIONS POUR ANALYSES TEMPORELLES - RATINGS GLOBAUX
+# =============================================================================
+
+def load_ratings_for_longterm_analysis(
+    min_interactions: int = 100,
+    db_path: Optional[Path] = None,
+    return_metadata: bool = True,
+    verbose: bool = True
+) -> Union[pd.DataFrame, Tuple[pd.DataFrame, Dict]]:
+    """
+    Charge les statistiques mensuelles de ratings avec filtrage de robustesse statistique.
+    
+    Conçue pour analyses de tendances long-terme (Mann-Kendall, régression linéaire).
+    Élimine les mois avec volume insuffisant pour garantir la fiabilité statistique.
+    
+    Args:
+        min_interactions: Seuil minimum d'interactions par mois (défaut: 100)
+                         Recommandé: >=100 pour robustesse, >=50 minimum acceptable
+        db_path: Chemin vers la base DuckDB (auto-détecté si None)
+        return_metadata: Si True, retourne aussi les métadonnées de filtrage
+        verbose: Si True, affiche les logs de progression
+        
+    Returns:
+        pd.DataFrame: Stats mensuelles filtrées avec colonnes:
+            - year, month, date: identifiants temporels
+            - mean_rating, median_rating, std_rating: statistiques de rating
+            - n_interactions: volume mensuel (tous >= min_interactions)
+        dict (optionnel): Métadonnées du filtrage:
+            - seuil_applique, mois_total, mois_exclus, mois_conserves
+            - pct_exclus, periode_avant, periode_apres
+            - gaps_temporels (bool), volume_moyen_avant, volume_moyen_apres
+    
+    Example:
+        >>> monthly_stats, meta = load_ratings_for_longterm_analysis(
+        ...     min_interactions=100, return_metadata=True, verbose=False
+        ... )
+        >>> print(f"Période d'analyse: {meta['periode_apres']}")
+        >>> print(f"Mois conservés: {meta['mois_conserves']}")
+    """
+    if verbose:
+        print(f"🔄 Chargement avec seuil de robustesse: {min_interactions}")
+    
+    # 1. Chargement données de base (filtrées: rating 1-5, date non-null)
+    df_clean = load_clean_interactions(db_path)
+    
+    # 2. Agrégation mensuelle complète (avant filtrage)
+    monthly_raw = df_clean.group_by(["year", "month"]).agg([
+        pl.col("rating").mean().alias("mean_rating"),
+        pl.col("rating").median().alias("median_rating"),
+        pl.col("rating").std().alias("std_rating"),
+        pl.len().alias("n_interactions")
+    ]).sort(["year", "month"]).to_pandas()
+    
+    # Ajout date pour continuité temporelle et visualisations
+    monthly_raw['date'] = pd.to_datetime(monthly_raw[['year', 'month']].assign(day=1))
+    
+    # 3. FILTRAGE de robustesse statistique
+    monthly_filtered = monthly_raw[monthly_raw['n_interactions'] >= min_interactions].copy()
+    
+    # 4. Calcul des métadonnées de filtrage
+    n_exclus = len(monthly_raw) - len(monthly_filtered)
+    pct_exclus = (n_exclus / len(monthly_raw)) * 100 if len(monthly_raw) > 0 else 0
+    
+    # Analyse de la continuité temporelle
+    if len(monthly_filtered) > 0:
+        periode_avant = f"{monthly_raw['date'].min().strftime('%Y-%m')} → {monthly_raw['date'].max().strftime('%Y-%m')}"
+        periode_apres = f"{monthly_filtered['date'].min().strftime('%Y-%m')} → {monthly_filtered['date'].max().strftime('%Y-%m')}"
+        
+        # Détection de gaps temporels (mois manquants dans la séquence)
+        dates_complete = pd.date_range(
+            monthly_filtered['date'].min(), 
+            monthly_filtered['date'].max(), 
+            freq='MS'
+        )
+        gaps_detected = len(dates_complete) != len(monthly_filtered)
+    else:
+        periode_avant = periode_apres = "N/A"
+        gaps_detected = True
+    
+    metadata = {
+        "seuil_applique": min_interactions,
+        "mois_total": len(monthly_raw),
+        "mois_exclus": n_exclus,
+        "mois_conserves": len(monthly_filtered),
+        "pct_exclus": pct_exclus,
+        "periode_avant": periode_avant,
+        "periode_apres": periode_apres,
+        "gaps_temporels": gaps_detected,
+        "volume_moyen_avant": monthly_raw['n_interactions'].mean(),
+        "volume_moyen_apres": monthly_filtered['n_interactions'].mean() if len(monthly_filtered) > 0 else 0
+    }
+    
+    # 5. Logging automatique (si verbose)
+    if verbose:
+        print(f"📊 RÉSULTATS FILTRAGE:")
+        print(f"   Mois exclus: {n_exclus} ({pct_exclus:.1f}%)")
+        print(f"   Mois conservés: {len(monthly_filtered)}")
+        print(f"   Période finale: {periode_apres}")
+        print(f"   Volume moyen: {metadata['volume_moyen_avant']:.0f} → {metadata['volume_moyen_apres']:.0f}")
+        
+        if gaps_detected:
+            print(f"   ⚠️ Gaps temporels détectés")
+        else:
+            print(f"   ✅ Continuité temporelle préservée")
+    
+    if return_metadata:
+        return monthly_filtered, metadata
+    else:
+        return monthly_filtered
+
+# =============================================================================
 # FONCTIONS POUR ANALYSES TEMPORELLES D'INGRÉDIENTS
 # =============================================================================
 
@@ -307,25 +305,82 @@ def get_ingredients_for_analysis(analysis_type: str) -> List[str]:
     
     Returns:
         Liste des ingrédients sélectionnés pour l'analyse
-    """
-    # Ingrédients CORE (présents dans toutes les analyses)
-    core_ingredients = ['salt', 'ground beef', 'eggs', 'onions', 'garlic']
     
-    # Ingrédients spécialisés par axe d'analyse
+    Note:
+        - Évite les ingrédients ubiquitaires (salt, eggs, onions) qui masquent les variations
+        - Privilégie les ingrédients avec vraie volatilité temporelle ou saisonnière
+    """
+    
     if analysis_type == 'long_term':
-        # Ingrédients avec >= 10 ans de données pour analyser les tendances long-terme
-        specialized = ['butter', 'olive oil']
-        return core_ingredients + specialized
+        # Ingrédients VOLATILES dans le temps (tendances émergentes/déclinantes)
+        # Stratégie: Détecter évolutions culturelles et tendances alimentaires
+        return [
+            # Emergent (santé)
+            'quinoa',           # Superfood 2010+
+            'kale',             # Health trend 2010+
+            'avocado',          # Boom 2015+
+            
+            # Adoption culturelle
+            'tofu',             # Végétarisme croissant
+            'sriracha',         # Hot sauce trend
+            
+            # Phénomènes temporels
+            'bacon',            # "Bacon craze" 2010-2015
+            'butternut squash'  # Contrôle saisonnier
+        ]
     
     elif analysis_type == 'seasonality':
-        # Ingrédients avec potentiel saisonnier fort
-        specialized = ['butternut squash', 'asparagus', 'pumpkin']
-        return core_ingredients + specialized
+        # Ingrédients avec SAISONNALITÉ NATURELLE forte
+        # Stratégie: Légumes/fruits avec variations liées aux saisons
+        return [
+            # 🌱 Printemps
+            'asparagus',        # Pic avril-mai
+            'peas',             # Pic printemps
+            'strawberries',     # Pic printemps/été
+            'rhubarb',          # Pic avril-mai
+            
+            # ☀️ Été
+            'tomatoes',         # Pic juillet-août
+            'zucchini',         # Pic été
+            'basil',            # Herbe d'été
+            'corn',             # Pic juillet-août
+            
+            # 🍂 Automne
+            'butternut squash', # Pic octobre-novembre
+            'pumpkin',          # Pic automne
+            'brussels sprouts', # Pic automne/hiver
+            'sweet potato',     # Pic automne
+            
+            # ❄️ Hiver
+            'kale',             # Résistant au froid
+            'cabbage',          # Légume d'hiver
+            'cranberries',      # Pic novembre-décembre
+            'lemon'             # Agrumes hiver
+        ]
     
     elif analysis_type == 'weekend':
-        # Tous les ingrédients disponibles (weekend a moins de contraintes)
-        specialized = ['butternut squash', 'asparagus', 'pumpkin', 'butter', 'olive oil']
-        return core_ingredients + specialized
+        # Mix d'ingrédients pour analyser comportements weekend vs semaine
+        # Stratégie: Ingrédients variés (comfort food + healthy + saisonniers)
+        return [
+            # Comfort food (weekend)
+            'bacon',
+            'cheese',
+            'butter',
+            
+            # Healthy (semaine?)
+            'kale',
+            'quinoa',
+            'avocado',
+            
+            # Saisonniers (contrôle)
+            'butternut squash',
+            'asparagus',
+            'tomatoes',
+            
+            # Basiques
+            'olive oil',
+            'garlic'
+        ]
     
     else:
         raise ValueError(f"Type d'analyse non supporté: {analysis_type}. "
