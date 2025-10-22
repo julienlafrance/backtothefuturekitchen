@@ -31,6 +31,42 @@ def load_recipes_raw(limit: Optional[int] = None) -> pl.DataFrame:
     print(f"✅ Recettes chargées depuis S3 : {df.shape[0]:,} lignes × {df.shape[1]} colonnes")
     return df
 
+
+def save_recipes_to_s3(df: pl.DataFrame, s3_path: str, format: str = "parquet") -> None:
+    """
+    Sauvegarde un DataFrame de recettes vers S3.
+    
+    Args:
+        df: DataFrame Polars à sauvegarder
+        s3_path: Chemin S3 (ex: 's3://mangetamain/cleaned_recipes.parquet')
+        format: Format de fichier ('parquet', 'csv', ou 'duckdb')
+        
+    Example:
+        >>> df_clean = clean_recipes(df_raw)
+        >>> save_recipes_to_s3(df_clean, 's3://mangetamain/recipes_clean.parquet')
+        ✅ Sauvegardé vers s3://mangetamain/recipes_clean.parquet (123,456 lignes)
+    """
+    conn = get_s3_duckdb_connection()
+    
+    # Enregistrer le DataFrame dans DuckDB (table temporaire)
+    conn.register("temp_recipes", df)
+    
+    # Écrire vers S3 selon le format
+    if format.lower() == "parquet":
+        conn.execute(f"COPY temp_recipes TO '{s3_path}' (FORMAT PARQUET)")
+    elif format.lower() == "csv":
+        conn.execute(f"COPY temp_recipes TO '{s3_path}' (FORMAT CSV, HEADER TRUE)")
+    elif format.lower() == "duckdb":
+        # Pour DuckDB, on doit d'abord créer une table puis l'exporter
+        conn.execute(f"EXPORT DATABASE '{s3_path}' (FORMAT PARQUET)")
+    else:
+        raise ValueError(f"Format non supporté: {format}. Utilisez 'parquet', 'csv' ou 'duckdb'")
+    
+    conn.close()
+    
+    print(f"✅ Sauvegardé vers {s3_path} ({df.shape[0]:,} lignes, format={format})")
+
+
 # =============================================================================
 # 🧹 HELPERS INTERNES - PARSING
 # =============================================================================
