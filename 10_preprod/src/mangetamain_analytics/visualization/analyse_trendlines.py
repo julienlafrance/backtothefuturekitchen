@@ -113,11 +113,39 @@ def analyse_trendline_volume():
         col=2,
     )
 
-    # Mise en page
-    fig.update_xaxes(title_text="Année", row=1, col=1)
-    fig.update_yaxes(title_text="Nombre de recettes", row=1, col=1)
-    fig.update_xaxes(title_text="Quantiles théoriques (loi normale)", row=1, col=2)
-    fig.update_yaxes(title_text="Quantiles observés", row=1, col=2)
+    # Mise en page avec grilles
+    fig.update_xaxes(
+        title_text="Année",
+        showgrid=True,
+        gridcolor="#e0e0e0",
+        gridwidth=1,
+        row=1,
+        col=1,
+    )
+    fig.update_yaxes(
+        title_text="Nombre de recettes",
+        showgrid=True,
+        gridcolor="#e0e0e0",
+        gridwidth=1,
+        row=1,
+        col=1,
+    )
+    fig.update_xaxes(
+        title_text="Quantiles théoriques (loi normale)",
+        showgrid=True,
+        gridcolor="#e0e0e0",
+        gridwidth=1,
+        row=1,
+        col=2,
+    )
+    fig.update_yaxes(
+        title_text="Quantiles observés",
+        showgrid=True,
+        gridcolor="#e0e0e0",
+        gridwidth=1,
+        row=1,
+        col=2,
+    )
 
     fig.update_layout(
         height=500,
