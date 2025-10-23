@@ -6,10 +6,11 @@ from typing import Dict, List, Tuple, Optional, Union
 from configparser import ConfigParser
 
 # Ajout du chemin du module personnalisé
-sys.path.append('../../')
+sys.path.append('../../../40_utils/mangetamain_data_utils/src')
 
 # Import du module interne
-from _data_utils import *
+from mangetamain_data_utils.data_utils_recipes import load_recipes_clean
+from mangetamain_data_utils.data_utils_common import *
 
 # Bibliothèques data science
 import pandas as pd
