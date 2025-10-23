@@ -30,6 +30,31 @@ def load_recipes_raw(limit: Optional[int] = None) -> pl.DataFrame:
     print(f"✅ Recettes chargées depuis S3 : {df.shape[0]:,} lignes × {df.shape[1]} colonnes")
     return df
 
+def load_recipes_clean(limit: Optional[int] = None) -> pl.DataFrame:
+    """
+    Charge les données de recettes nettoyées depuis le fichier Parquet final sur S3.
+    
+    Args:
+        limit: Nombre maximum de lignes à charger (optionnel)
+        
+    Returns:
+        pl.DataFrame: DataFrame Polars avec les données nettoyées et enrichies
+    """
+    # Charger depuis S3
+    conn = get_s3_duckdb_connection()
+    
+    # Lire directement le fichier Parquet final
+    sql = "SELECT * FROM read_parquet('s3://mangetamain/final_recipes.parquet')"
+    
+    if limit:
+        sql += f" LIMIT {limit}"
+    
+    df = conn.execute(sql).pl()
+    conn.close()
+
+    print(f"✅ Recettes nettoyées chargées depuis S3 : {df.shape[0]:,} lignes × {df.shape[1]} colonnes")
+    return df
+
 
 def save_recipes_to_s3(df: pl.DataFrame, s3_path: str, format: str = "parquet") -> None:
     """
@@ -622,6 +647,7 @@ def load_clean_recipes(limit: Optional[int] = None, save_to_s3: bool = False) ->
     
     print("\n✅ Pipeline complet terminé !")
     return df_final
+
 
 # =============================================================================
 # 📊 ANALYSE DE QUALITÉ
