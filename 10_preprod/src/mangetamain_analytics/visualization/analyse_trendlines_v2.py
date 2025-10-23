@@ -66,19 +66,20 @@ def analyse_trendline_volume():
         rows=1,
         cols=2,
         subplot_titles=("Nombre de recettes par année", "Q-Q Plot (Test de normalité)"),
-        horizontal_spacing=0.15,
+        horizontal_spacing=0.12,
     )
 
     # SUBPLOT 1 : Bar chart
     fig.add_trace(
         go.Bar(
-            x=recipes_per_year["year"].astype(int),
+            x=recipes_per_year["year"].astype(str),  # En string pour affichage
             y=recipes_per_year["n_recipes"],
             marker=dict(color="steelblue", opacity=0.8),
             text=[f"{val:,}" for val in recipes_per_year["n_recipes"]],
             textposition="outside",
-            textfont=dict(size=10),
+            textfont=dict(size=9, color="black"),
             showlegend=False,
+            hovertemplate="<b>Année %{x}</b><br>Recettes: %{y:,}<extra></extra>",
         ),
         row=1,
         col=1,
@@ -90,8 +91,9 @@ def analyse_trendline_volume():
             x=osm,
             y=osr,
             mode="markers",
-            marker=dict(color="darkblue", size=8, opacity=0.6),
+            marker=dict(color="#5470c6", size=8, opacity=0.8),
             name="Observations",
+            hovertemplate="Théorique: %{x:.2f}<br>Observé: %{y:,.0f}<extra></extra>",
         ),
         row=1,
         col=2,
@@ -103,53 +105,64 @@ def analyse_trendline_volume():
             mode="lines",
             line=dict(color="red", width=2, dash="dash"),
             name="Ligne théorique",
+            hoverinfo="skip",
         ),
         row=1,
         col=2,
     )
 
-    # Mise en forme
+    # Mise en forme axes
     fig.update_xaxes(
         title_text="Année",
-        tickvals=recipes_per_year["year"].astype(int),
-        tickangle=45,
+        title_font=dict(size=12, color="black"),
+        tickfont=dict(size=10, color="black"),
+        tickangle=0,
+        showgrid=False,
         row=1,
         col=1,
     )
     fig.update_yaxes(
         title_text="Nombre de recettes",
+        title_font=dict(size=12, color="black"),
+        tickfont=dict(size=10, color="black"),
         showgrid=True,
-        gridcolor="rgba(128,128,128,0.3)",
+        gridcolor="rgba(200,200,200,0.4)",
         row=1,
         col=1,
     )
     fig.update_xaxes(
         title_text="Quantiles théoriques (loi normale)",
+        title_font=dict(size=12, color="black"),
+        tickfont=dict(size=10, color="black"),
         showgrid=True,
-        gridcolor="rgba(128,128,128,0.3)",
+        gridcolor="rgba(200,200,200,0.4)",
         row=1,
         col=2,
     )
     fig.update_yaxes(
         title_text="Quantiles observés",
+        title_font=dict(size=12, color="black"),
+        tickfont=dict(size=10, color="black"),
         showgrid=True,
-        gridcolor="rgba(128,128,128,0.3)",
+        gridcolor="rgba(200,200,200,0.4)",
         row=1,
         col=2,
     )
 
-    # Titres plus visibles
+    # Layout global
     fig.update_layout(
         height=600,
         plot_bgcolor="white",
         paper_bgcolor="white",
-        font=dict(size=12, color="black"),
-        showlegend=True,
+        font=dict(size=11, color="black", family="Arial, sans-serif"),
+        showlegend=False,
     )
 
-    # Forcer les titres en noir et plus gros
+    # Titres des subplots en noir et lisibles
     for annotation in fig["layout"]["annotations"]:
-        annotation["font"] = dict(size=14, color="black", family="Arial, sans-serif")
+        annotation["font"] = dict(
+            size=13, color="black", family="Arial, sans-serif", weight="bold"
+        )
 
     st.plotly_chart(fig, use_container_width=True)
 
