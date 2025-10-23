@@ -19,7 +19,9 @@ coverage.xml
 
 # Gros fichiers de données - ACTIVÉ
 */data/*.csv
-*/data/*.duckdb  
+*/data/*.duckdb
+**/data/*.duckdb
+*.duckdb
 */data/*.pkl
 
 # Logs 
