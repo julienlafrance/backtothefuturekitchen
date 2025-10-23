@@ -1,4 +1,4 @@
-"""Module de chargement et validation des données DuckDB"""
+"""Module de chargement et validation des données DuckDB."""
 
 import pandas as pd
 from pathlib import Path
@@ -6,8 +6,7 @@ from typing import List, Tuple
 
 
 def validate_db_path(db_path: str) -> bool:
-    """
-    Valide l'existence d'un fichier DuckDB.
+    """Valide l'existence d'un fichier DuckDB.
 
     Args:
         db_path: Chemin vers le fichier DuckDB
@@ -19,8 +18,7 @@ def validate_db_path(db_path: str) -> bool:
 
 
 def get_file_size_mb(file_path: str) -> float:
-    """
-    Retourne la taille d'un fichier en MB.
+    """Retourne la taille d'un fichier en MB.
 
     Args:
         file_path: Chemin vers le fichier
@@ -35,8 +33,7 @@ def get_file_size_mb(file_path: str) -> float:
 
 
 def calculate_rating_stats(ratings_df: pd.DataFrame) -> dict:
-    """
-    Calcule les statistiques sur les ratings.
+    """Calcule les statistiques sur les ratings.
 
     Args:
         ratings_df: DataFrame avec colonnes 'rating' et 'count'
@@ -66,8 +63,7 @@ def calculate_rating_stats(ratings_df: pd.DataFrame) -> dict:
 
 
 def categorize_table(table_name: str) -> str:
-    """
-    Catégorise une table selon son nom.
+    """Catégorise une table selon son nom.
 
     Args:
         table_name: Nom de la table
@@ -86,8 +82,7 @@ def categorize_table(table_name: str) -> str:
 
 
 def validate_rating_range(rating: float) -> bool:
-    """
-    Valide qu'un rating est dans la plage [0, 5].
+    """Valide qu'un rating est dans la plage [0, 5].
 
     Args:
         rating: Note à valider
@@ -99,8 +94,7 @@ def validate_rating_range(rating: float) -> bool:
 
 
 def filter_valid_ratings(df: pd.DataFrame, rating_col: str = "rating") -> pd.DataFrame:
-    """
-    Filtre un DataFrame pour ne garder que les ratings valides.
+    """Filtre un DataFrame pour ne garder que les ratings valides.
 
     Args:
         df: DataFrame source
@@ -116,8 +110,7 @@ def filter_valid_ratings(df: pd.DataFrame, rating_col: str = "rating") -> pd.Dat
 
 
 def get_table_stats(tables_info: List[Tuple[str, int, int]]) -> dict:
-    """
-    Calcule les statistiques globales sur un ensemble de tables.
+    """Calcule les statistiques globales sur un ensemble de tables.
 
     Args:
         tables_info: Liste de tuples (nom_table, nb_lignes, nb_colonnes)
