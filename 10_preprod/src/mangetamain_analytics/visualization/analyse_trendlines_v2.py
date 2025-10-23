@@ -60,6 +60,9 @@ def analyse_trendline_volume():
     # Données pour Q-Q plot
     data = recipes_per_year["n_recipes"].values
 
+    # Calcul Q-Q plot
+    (osm, osr), (slope, intercept, r) = stats.probplot(data, dist="norm")
+
     # Créer subplots
     fig = make_subplots(
         rows=1,
@@ -67,14 +70,13 @@ def analyse_trendline_volume():
         subplot_titles=("Nombre de recettes par année", "Q-Q Plot (Test de normalité)"),
     )
 
-    # Graphique 1: Bar chart
+    # SUBPLOT 1: Bar chart
     fig.add_trace(
         go.Bar(
             x=recipes_per_year["year"].astype(int),
             y=recipes_per_year["n_recipes"],
-            marker=dict(color="#4682B4", opacity=0.8),
-            name="Recettes",
-            text=recipes_per_year["n_recipes"].apply(lambda x: f"{x:,}"),
+            marker=dict(color="steelblue", opacity=0.8),
+            text=[f"{val:,}" for val in recipes_per_year["n_recipes"]],
             textposition="outside",
             showlegend=False,
         ),
@@ -82,16 +84,13 @@ def analyse_trendline_volume():
         col=1,
     )
 
-    # Graphique 2: Q-Q plot
-    theoretical_quantiles, ordered_values = stats.probplot(data, dist="norm")
-
-    # Points observés
+    # SUBPLOT 2: Q-Q plot - Points
     fig.add_trace(
         go.Scatter(
-            x=theoretical_quantiles[0],
-            y=ordered_values,
+            x=osm,
+            y=osr,
             mode="markers",
-            marker=dict(color="#4682B4", size=8),
+            marker=dict(color="steelblue", size=6),
             name="Observations",
             showlegend=False,
         ),
@@ -99,16 +98,11 @@ def analyse_trendline_volume():
         col=2,
     )
 
-    # Ligne théorique
-    slope = theoretical_quantiles[1]
-    intercept = theoretical_quantiles[0]
-    x_ref = theoretical_quantiles[0]
-    y_ref = slope * x_ref + intercept
-
+    # SUBPLOT 2: Q-Q plot - Ligne de référence
     fig.add_trace(
         go.Scatter(
-            x=x_ref,
-            y=y_ref,
+            x=[osm.min(), osm.max()],
+            y=[slope * osm.min() + intercept, slope * osm.max() + intercept],
             mode="lines",
             line=dict(color="red", dash="dash", width=2),
             name="Loi normale",
@@ -118,22 +112,50 @@ def analyse_trendline_volume():
         col=2,
     )
 
-    # Mise en forme
-    fig.update_xaxes(title_text="Année", row=1, col=1)
-    fig.update_yaxes(title_text="Nombre de recettes", row=1, col=1)
-    fig.update_xaxes(title_text="Quantiles théoriques", row=1, col=2)
-    fig.update_yaxes(title_text="Quantiles observés", row=1, col=2)
+    # Mise en forme des axes
+    fig.update_xaxes(
+        title_text="Année",
+        tickvals=recipes_per_year["year"].astype(int),
+        tickangle=45,
+        showgrid=True,
+        gridcolor="#e0e0e0",
+        gridwidth=1,
+        row=1,
+        col=1,
+    )
+    fig.update_yaxes(
+        title_text="Nombre de recettes",
+        showgrid=True,
+        gridcolor="#e0e0e0",
+        gridwidth=1,
+        row=1,
+        col=1,
+    )
+    fig.update_xaxes(
+        title_text="Quantiles théoriques (loi normale)",
+        showgrid=True,
+        gridcolor="#e0e0e0",
+        gridwidth=1,
+        row=1,
+        col=2,
+    )
+    fig.update_yaxes(
+        title_text="Quantiles observés",
+        showgrid=True,
+        gridcolor="#e0e0e0",
+        gridwidth=1,
+        row=1,
+        col=2,
+    )
 
+    # Layout global
     fig.update_layout(
         height=500,
         plot_bgcolor="white",
         paper_bgcolor="white",
         font=dict(size=12),
+        showlegend=False,
     )
-
-    # Grilles
-    fig.update_xaxes(showgrid=True, gridcolor="#e0e0e0", gridwidth=1)
-    fig.update_yaxes(showgrid=True, gridcolor="#e0e0e0", gridwidth=1)
 
     st.plotly_chart(fig, use_container_width=True)
 
