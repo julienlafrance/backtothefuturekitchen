@@ -23,47 +23,21 @@ import statsmodels.api as sm
 import streamlit as st
 
 from mangetamain_data_utils.data_utils_recipes import load_recipes_clean
+from .plotly_config import COLORS, apply_theme
 
 warnings.filterwarnings("ignore")
 
-# Palette de couleurs cohérente
-COLORS = {
-    "primary": "#00416A",  # darkblue
-    "secondary": "#E94B3C",  # red
-    "success": "#2E8B57",  # green
-    "warning": "#FF8C00",  # orange
-    "info": "#4682B4",  # steelblue
-    "purple": "#8B008B",
-    "coral": "#FF7F50",
-}
-
-
-def apply_white_theme(fig):
-    """Applique un thème blanc cohérent à tous les graphiques.
-
-    Args:
-        fig: Figure Plotly à styliser
-
-    Returns:
-        Figure Plotly avec thème appliqué
-    """
-    fig.update_layout(
-        plot_bgcolor="white",
-        paper_bgcolor="white",
-        font=dict(family="Arial, sans-serif", size=12, color="#333"),
-        hovermode="x unified",
-        legend=dict(
-            bgcolor="rgba(255, 255, 255, 0.9)",
-            bordercolor="#ddd",
-            borderwidth=1,
-        ),
-    )
-
-    # Ajouter grille à tous les axes
-    fig.update_xaxes(showgrid=True, gridcolor="#e0e0e0", gridwidth=1)
-    fig.update_yaxes(showgrid=True, gridcolor="#e0e0e0", gridwidth=1)
-
-    return fig
+# Les couleurs sont maintenant importées depuis plotly_config
+# COLORS = {
+#     "primary": "#00416A",  # darkblue
+#     "secondary": "#E94B3C",  # red
+#     "success": "#2E8B57",  # green
+#     "warning": "#FF8C00",  # orange
+#     "info": "#4682B4",  # steelblue
+#     "purple": "#8B008B",
+#     "coral": "#FF7F50",
+# }
+# La fonction apply_white_theme est maintenant importée depuis plotly_config (renommée apply_theme)
 
 
 def analyse_trendline_volume():
@@ -151,7 +125,7 @@ def analyse_trendline_volume():
         title_text="Volume de recettes par année (1999-2018)",
     )
 
-    st.plotly_chart(apply_white_theme(fig), use_container_width=True)
+    st.plotly_chart(apply_theme(fig), use_container_width=True)
 
     # Interprétation
     st.info(
@@ -301,7 +275,7 @@ def analyse_trendline_duree():
         hovermode="x unified",
     )
 
-    st.plotly_chart(apply_white_theme(fig), use_container_width=True)
+    st.plotly_chart(apply_theme(fig), use_container_width=True)
 
     # Interprétation
     st.info(
@@ -440,7 +414,7 @@ def analyse_trendline_complexite():
         title_text="Évolution de la complexité des recettes",
     )
 
-    st.plotly_chart(apply_white_theme(fig), use_container_width=True)
+    st.plotly_chart(apply_theme(fig), use_container_width=True)
 
     # Interprétation
     slope_complexity = regressions["mean_complexity"]["slope"]
@@ -586,7 +560,7 @@ def analyse_trendline_nutrition():
         height=800, showlegend=True, title_text="Évolution des valeurs nutritionnelles"
     )
 
-    st.plotly_chart(apply_white_theme(fig), use_container_width=True)
+    st.plotly_chart(apply_theme(fig), use_container_width=True)
 
     # Interprétation
     st.info(
@@ -824,7 +798,7 @@ def analyse_trendline_ingredients(top_n=10):
         height=1400, title_text="Analyse des ingrédients", showlegend=True
     )
 
-    st.plotly_chart(apply_white_theme(fig), use_container_width=True)
+    st.plotly_chart(apply_theme(fig), use_container_width=True)
 
     # Interprétation
     st.info(
@@ -1053,7 +1027,7 @@ def analyse_trendline_tags(top_n=10):
         height=1400, title_text="Analyse des tags/catégories", showlegend=True
     )
 
-    st.plotly_chart(apply_white_theme(fig), use_container_width=True)
+    st.plotly_chart(apply_theme(fig), use_container_width=True)
 
     # Interprétation
     st.info(
