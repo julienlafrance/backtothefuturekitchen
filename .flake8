@@ -1,0 +1,20 @@
+[flake8]
+# Configuration pour la vérification PEP8 avec flake8
+max-line-length = 88
+extend-ignore = E203, W503, E501
+exclude =
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    env,
+    build,
+    dist,
+    *.egg-info,
+    .pytest_cache,
+    htmlcov,
+    96_keys
+
+# Chemins à vérifier
+per-file-ignores =
+    __init__.py:F401

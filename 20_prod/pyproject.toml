@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Application web d'analyse de données pour Mangetamain"
 authors = [{name = "Votre équipe", email = "email@example.com"}]
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.11,<3.14"
 dependencies = [
     "streamlit>=1.28.0",
     "duckdb>=0.9.0",
@@ -24,6 +24,7 @@ dev = [
     "pytest-cov>=4.1.0",
     "black>=23.9.0",
     "flake8>=6.1.0",
+    "pydocstyle>=6.3.0",
     "mypy>=1.6.0",
     "sphinx>=7.2.0",
     "sphinx-rtd-theme>=1.3.0",
@@ -53,3 +54,21 @@ python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
 addopts = "--cov=streamlit --cov-report=html --cov-report=term-missing --cov-fail-under=90"
+
+[tool.coverage.run]
+omit = [
+    "streamlit/main.py",
+    "streamlit/pages/*",
+    "*/__pycache__/*",
+    "*/.venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if __name__ == .__main__.:",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+]

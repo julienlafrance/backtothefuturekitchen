@@ -1,5 +1,13 @@
 # 🍳 Mangetamain Analytics
 
+![Tests](https://img.shields.io/badge/tests-96_passing-success)
+![Coverage](https://img.shields.io/badge/coverage-98%25-brightgreen)
+![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-blue)
+![10_preprod](https://img.shields.io/badge/10__preprod-96%25-brightgreen)
+![20_prod](https://img.shields.io/badge/20__prod-100%25-brightgreen)
+![Python](https://img.shields.io/badge/python-3.13.3-blue)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
 ## 📋 Vue d'ensemble
 
 Plateforme d'analytics culinaires basée sur un système de recommandations de recettes avec données Food.com. Architecture moderne Python 3.13.3 + Streamlit + DuckDB + S3 Storage.
@@ -82,19 +90,57 @@ docker-compose -f docker-compose-preprod.yml up -d
 docker-compose -f docker-compose-prod.yml up -d
 ```
 
-## 🧪 Tests et Validation
+## 🧪 Tests et Coverage
 
+### Pipeline CI/CD Automatisé
+
+**Vérification locale avant push**
+```bash
+./run_ci_checks.sh prod    # Teste 20_prod
+./run_ci_checks.sh preprod # Teste 10_preprod
+```
+
+Le pipeline CI/CD GitHub Actions vérifie automatiquement :
+- ✅ **PEP8 compliance** (flake8)
+- ✅ **Code formatting** (black)
+- ✅ **Docstrings** (pydocstyle - Google style)
+- ✅ **Tests unitaires** avec coverage >= 90%
+- ✅ **Type checking** (mypy - optionnel)
+
+📚 **Documentation complète:** Voir [README_CI_CD.md](README_CI_CD.md)
+
+### Tests d'infrastructure (50_test/)
 **Test complet S3 + DuckDB**
 ```bash
 cd 50_test
-uv run ./S3_duckdb_test.py
+pytest -v
 ```
 
-**Résultats attendus :**
-- ✅ Environnement Python 3.13.3 cohérent
-- ✅ S3 Performance 500+ MB/s  
-- ✅ DuckDB requêtes directes sur S3
-- ✅ Containers PREPROD + PROD fonctionnels
+**Résultats :** 35 tests (14-16 en local, 35 sur serveur avec Docker)
+
+### Tests unitaires avec coverage
+
+**10_preprod - Analytics (96% coverage)**
+```bash
+cd 10_preprod
+uv run pytest tests/unit/ -v --cov=src --cov-report=html
+```
+**Résultat:** 22 tests passent, 96% coverage en 2.10s
+
+**20_prod - Production (100% coverage)**
+```bash
+cd 20_prod
+uv run pytest tests/unit/ -v --cov=streamlit --cov-report=html
+```
+**Résultat:** 31 tests passent, 100% coverage en 0.94s
+
+### Métriques globales
+- **Total tests:** 96 tests configurés
+- **Coverage global:** 98% sur code métier
+- **Temps d'exécution:** ~6 secondes
+- **Taux de réussite:** 100%
+
+📚 **Documentation complète:** Voir [RESUME_COVERAGE_FINAL.md](RESUME_COVERAGE_FINAL.md)
 
 ## 📊 Données
 
@@ -133,20 +179,29 @@ uv run ./S3_duckdb_test.py
 
 ## 📚 Documentation
 
+### Configuration et utilisation
 - **[S3_INSTALL.md](S3_INSTALL.md)** - Guide d'installation S3
-- **[S3_USAGE.md](S3_USAGE.md)** - Guide d'utilisation S3  
+- **[S3_USAGE.md](S3_USAGE.md)** - Guide d'utilisation S3
 - **[90_doc/](90_doc/)** - Documentation technique complète
+
+### Tests et coverage
+- **[RESUME_COVERAGE_FINAL.md](RESUME_COVERAGE_FINAL.md)** - 📊 Résumé complet coverage (96 tests, 98% coverage)
+- **[README_COVERAGE.md](README_COVERAGE.md)** - Guide général pytest-cov
+- **[50_test/README_TESTS.md](50_test/README_TESTS.md)** - Tests d'infrastructure détaillés
+- **[20_prod/README_COVERAGE.md](20_prod/README_COVERAGE.md)** - Guide coverage 20_prod (100%)
+- **[00_eda/_data_utils/README_TESTS.md](00_eda/_data_utils/README_TESTS.md)** - Tests data_utils
 
 ## 🏷️ Version
 
-**Version actuelle** : 2025-10-09
+**Version actuelle** : 2025-10-23
 - ✅ Configuration S3 simplifiée et optimisée
 - ✅ Python 3.13.3 unifié sur tous environnements
 - ✅ Performance S3 maximisée (DNAT bypass)
 - ✅ DuckDB avec secrets intégrés
 - ✅ Architecture nettoyée et validée
+- ✅ **Tests et coverage complets (96 tests, 98% coverage)**
 
 ---
 
-**Équipe** : Data Analytics Team  
-**Dernière mise à jour** : 2025-10-09
+**Équipe** : Data Analytics Team
+**Dernière mise à jour** : 2025-10-23
