@@ -16,8 +16,8 @@ services:
       - ../10_preprod/uv.lock:/app/uv.lock
       - ../10_preprod/README.md:/app/README.md:ro
       - ../10_preprod/utils:/app/utils:ro
-      - ../40_utils:/home/julien/code/mangetamain/000_dev/40_utils:ro  # Monter le package data-utils avec chemin absolu
-      - ../96_keys:/app/../96_keys:ro  # Monter les credentials en READ-ONLY
+      - ../40_utils:/app/40_utils:ro  # Monter le package data-utils
+      - ../96_keys:/app/96_keys:ro  # Monter les credentials en READ-ONLY
     working_dir: /app
     extra_hosts:
       - "s3fast.lafrance.io:192.168.80.202"  # Résolution DNS vers Garage S3 direct
