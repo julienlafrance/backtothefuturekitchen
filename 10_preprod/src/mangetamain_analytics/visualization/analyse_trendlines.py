@@ -26,6 +26,45 @@ from mangetamain_data_utils.data_utils_recipes import load_recipes_clean
 
 warnings.filterwarnings("ignore")
 
+# Palette de couleurs cohérente
+COLORS = {
+    "primary": "#00416A",  # darkblue
+    "secondary": "#E94B3C",  # red
+    "success": "#2E8B57",  # green
+    "warning": "#FF8C00",  # orange
+    "info": "#4682B4",  # steelblue
+    "purple": "#8B008B",
+    "coral": "#FF7F50",
+}
+
+
+def apply_white_theme(fig):
+    """Applique un thème blanc cohérent à tous les graphiques.
+
+    Args:
+        fig: Figure Plotly à styliser
+
+    Returns:
+        Figure Plotly avec thème appliqué
+    """
+    fig.update_layout(
+        plot_bgcolor="white",
+        paper_bgcolor="white",
+        font=dict(family="Arial, sans-serif", size=12, color="#333"),
+        hovermode="x unified",
+        legend=dict(
+            bgcolor="rgba(255, 255, 255, 0.9)",
+            bordercolor="#ddd",
+            borderwidth=1,
+        ),
+    )
+
+    # Ajouter grille à tous les axes
+    fig.update_xaxes(showgrid=True, gridcolor="#e0e0e0", gridwidth=1)
+    fig.update_yaxes(showgrid=True, gridcolor="#e0e0e0", gridwidth=1)
+
+    return fig
+
 
 def analyse_trendline_volume():
     """Analyse du volume de recettes par année.
@@ -60,7 +99,7 @@ def analyse_trendline_volume():
         go.Bar(
             x=recipes_per_year["year"].astype(int),
             y=recipes_per_year["n_recipes"],
-            marker=dict(color="steelblue", opacity=0.8),
+            marker=dict(color=COLORS["primary"], opacity=0.8),
             text=recipes_per_year["n_recipes"].apply(lambda x: f"{x:,}"),
             textposition="outside",
             name="Recettes",
@@ -76,7 +115,7 @@ def analyse_trendline_volume():
             x=theoretical_quantiles[0],
             y=ordered_values,
             mode="markers",
-            marker=dict(color="steelblue", size=8),
+            marker=dict(color=COLORS["primary"], size=8),
             name="Observations",
         ),
         row=1,
@@ -93,7 +132,7 @@ def analyse_trendline_volume():
             x=x_ref,
             y=y_ref,
             mode="lines",
-            line=dict(color="red", dash="dash"),
+            line=dict(color=COLORS["secondary"], dash="dash"),
             name="Loi normale théorique",
         ),
         row=1,
@@ -112,7 +151,7 @@ def analyse_trendline_volume():
         title_text="Volume de recettes par année (1999-2018)",
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(apply_white_theme(fig), use_container_width=True)
 
     # Interprétation
     st.info(
@@ -187,7 +226,7 @@ def analyse_trendline_duree():
             y=minutes_by_year["q25"],
             fill=None,
             mode="lines",
-            line=dict(color="steelblue", width=0),
+            line=dict(color=COLORS["primary"], width=0),
             showlegend=False,
             hoverinfo="skip",
         )
@@ -199,7 +238,7 @@ def analyse_trendline_duree():
             y=minutes_by_year["q75"],
             fill="tonexty",
             mode="lines",
-            line=dict(color="steelblue", width=0),
+            line=dict(color=COLORS["primary"], width=0),
             name="IQR (Q25-Q75)",
             fillcolor="rgba(70, 130, 180, 0.15)",
         )
@@ -212,8 +251,8 @@ def analyse_trendline_duree():
             y=minutes_by_year["mean_minutes"],
             mode="lines+markers",
             name="Moyenne (observée)",
-            line=dict(color="steelblue", width=2),
-            marker=dict(size=sizes, color="steelblue", opacity=0.6),
+            line=dict(color=COLORS["primary"], width=2),
+            marker=dict(size=sizes, color=COLORS["primary"], opacity=0.6),
         )
     )
 
@@ -224,7 +263,7 @@ def analyse_trendline_duree():
             y=regressions["mean_minutes"]["y_pred"],
             mode="lines",
             name=f"Régression Moyenne (R²={regressions['mean_minutes']['r2']:.3f})",
-            line=dict(color="darkblue", width=2, dash="dash"),
+            line=dict(color=COLORS["primary"], width=2, dash="dash"),
         )
     )
 
@@ -235,8 +274,8 @@ def analyse_trendline_duree():
             y=minutes_by_year["median_minutes"],
             mode="lines+markers",
             name="Médiane (observée)",
-            line=dict(color="coral", width=2),
-            marker=dict(size=sizes, color="coral", opacity=0.6),
+            line=dict(color=COLORS["coral"], width=2),
+            marker=dict(size=sizes, color=COLORS["coral"], opacity=0.6),
         )
     )
 
@@ -247,7 +286,7 @@ def analyse_trendline_duree():
             y=regressions["median_minutes"]["y_pred"],
             mode="lines",
             name=f"Régression Médiane (R²={regressions['median_minutes']['r2']:.3f})",
-            line=dict(color="darkred", width=2, dash="dash"),
+            line=dict(color=COLORS["secondary"], width=2, dash="dash"),
         )
     )
 
@@ -262,7 +301,7 @@ def analyse_trendline_duree():
         hovermode="x unified",
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(apply_white_theme(fig), use_container_width=True)
 
     # Interprétation
     st.info(
@@ -379,7 +418,7 @@ def analyse_trendline_complexite():
                 y=reg["y_pred"],
                 mode="lines",
                 name=f"Régression (R²={reg['r2']:.3f})",
-                line=dict(color="red", width=2, dash="dash"),
+                line=dict(color=COLORS["secondary"], width=2, dash="dash"),
                 legendgroup=f"group{idx}",
             ),
             row=1,
@@ -401,7 +440,7 @@ def analyse_trendline_complexite():
         title_text="Évolution de la complexité des recettes",
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(apply_white_theme(fig), use_container_width=True)
 
     # Interprétation
     slope_complexity = regressions["mean_complexity"]["slope"]
@@ -526,7 +565,7 @@ def analyse_trendline_nutrition():
                 y=reg["y_pred"],
                 mode="lines",
                 name=f"Régression (R²={reg['r2']:.3f})",
-                line=dict(color="red", width=2, dash="dash"),
+                line=dict(color=COLORS["secondary"], width=2, dash="dash"),
                 legendgroup=f"group{row}{col}",
             ),
             row=row,
@@ -547,7 +586,7 @@ def analyse_trendline_nutrition():
         height=800, showlegend=True, title_text="Évolution des valeurs nutritionnelles"
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(apply_white_theme(fig), use_container_width=True)
 
     # Interprétation
     st.info(
@@ -679,7 +718,7 @@ def analyse_trendline_ingredients(top_n=10):
             y=top_global["ingredient_norm"].tolist()[::-1],
             x=top_global["total_count"].tolist()[::-1],
             orientation="h",
-            marker=dict(color="steelblue", opacity=0.8),
+            marker=dict(color=COLORS["primary"], opacity=0.8),
             name="Fréquence globale",
         ),
         row=1,
@@ -694,8 +733,8 @@ def analyse_trendline_ingredients(top_n=10):
             x=unique_per_year["year"],
             y=unique_per_year["n_unique"],
             mode="lines+markers",
-            marker=dict(size=sizes_div, color="purple", opacity=0.6),
-            line=dict(color="purple", width=2),
+            marker=dict(size=sizes_div, color=COLORS["purple"], opacity=0.6),
+            line=dict(color=COLORS["purple"], width=2),
             name="Diversité",
         ),
         row=1,
@@ -708,7 +747,7 @@ def analyse_trendline_ingredients(top_n=10):
             y=biggest_increase["ingredient_norm"].tolist()[::-1],
             x=biggest_increase["delta"].tolist()[::-1],
             orientation="h",
-            marker=dict(color="green", opacity=0.8),
+            marker=dict(color=COLORS["success"], opacity=0.8),
             name="Hausses",
         ),
         row=2,
@@ -721,7 +760,7 @@ def analyse_trendline_ingredients(top_n=10):
             y=biggest_decrease["ingredient_norm"].tolist()[::-1],
             x=biggest_decrease["delta"].tolist()[::-1],
             orientation="h",
-            marker=dict(color="red", opacity=0.8),
+            marker=dict(color=COLORS["secondary"], opacity=0.8),
             name="Baisses",
         ),
         row=2,
@@ -785,7 +824,7 @@ def analyse_trendline_ingredients(top_n=10):
         height=1400, title_text="Analyse des ingrédients", showlegend=True
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(apply_white_theme(fig), use_container_width=True)
 
     # Interprétation
     st.info(
@@ -912,7 +951,7 @@ def analyse_trendline_tags(top_n=10):
             y=top_global_tags["tag_norm"].tolist()[::-1],
             x=top_global_tags["total_count"].tolist()[::-1],
             orientation="h",
-            marker=dict(color="steelblue", opacity=0.8),
+            marker=dict(color=COLORS["primary"], opacity=0.8),
             name="Fréquence globale",
         ),
         row=1,
@@ -927,8 +966,8 @@ def analyse_trendline_tags(top_n=10):
             x=unique_per_year_tags["year"],
             y=unique_per_year_tags["n_unique"],
             mode="lines+markers",
-            marker=dict(size=sizes_div_tags, color="purple", opacity=0.6),
-            line=dict(color="purple", width=2),
+            marker=dict(size=sizes_div_tags, color=COLORS["purple"], opacity=0.6),
+            line=dict(color=COLORS["purple"], width=2),
             name="Diversité",
         ),
         row=1,
@@ -941,7 +980,7 @@ def analyse_trendline_tags(top_n=10):
             y=biggest_increase_tags["tag_norm"].tolist()[::-1],
             x=biggest_increase_tags["delta"].tolist()[::-1],
             orientation="h",
-            marker=dict(color="green", opacity=0.8),
+            marker=dict(color=COLORS["success"], opacity=0.8),
             name="Hausses",
         ),
         row=2,
@@ -954,7 +993,7 @@ def analyse_trendline_tags(top_n=10):
             y=biggest_decrease_tags["tag_norm"].tolist()[::-1],
             x=biggest_decrease_tags["delta"].tolist()[::-1],
             orientation="h",
-            marker=dict(color="red", opacity=0.8),
+            marker=dict(color=COLORS["secondary"], opacity=0.8),
             name="Baisses",
         ),
         row=2,
@@ -1014,7 +1053,7 @@ def analyse_trendline_tags(top_n=10):
         height=1400, title_text="Analyse des tags/catégories", showlegend=True
     )
 
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(apply_white_theme(fig), use_container_width=True)
 
     # Interprétation
     st.info(
