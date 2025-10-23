@@ -258,6 +258,387 @@ def analyse_trendline_volume():
 
 def analyse_trendline_duree():
     """
+    Analyse professionnelle de l'évolution de la durée de préparation.
+    Avec intervalles de confiance (95%) et intervalles de prédiction.
+    """
+
+    # Chargement des données
+    df = load_and_prepare_data()
+
+    # ========================================
+    # WIDGETS INTERACTIFS
+    # ========================================
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        # Filtre années
+        all_years = sorted(df["year"].unique().to_list())
+        year_range = st.slider(
+            "📅 Plage d'années",
+            min_value=int(all_years[0]),
+            max_value=int(all_years[-1]),
+            value=(int(all_years[0]), int(all_years[-1])),
+            key="slider_duree_years"
+        )
+
+    with col2:
+        # Choix métrique
+        metric_choice = st.selectbox(
+            "📊 Métrique à analyser",
+            options=['Moyenne', 'Médiane'],
+            index=0,
+            key="select_duree_metric"
+        )
+
+    with col3:
+        # Niveau de confiance
+        confidence_level = st.slider(
+            "🎯 Niveau de confiance (%)",
+            min_value=90,
+            max_value=99,
+            value=95,
+            step=1,
+            key="slider_confidence"
+        )
+
+    # ========================================
+    # FILTRAGE DES DONNÉES
+    # ========================================
+
+    df_filtered = df.filter(
+        (pl.col("year") >= year_range[0]) & (pl.col("year") <= year_range[1])
+    )
+
+    # Agrégation par année
+    if metric_choice == 'Moyenne':
+        metric_col = "prep_time_mean"
+        df_yearly = (
+            df_filtered.group_by("year")
+            .agg([
+                pl.col("minutes").mean().alias("prep_time_mean"),
+                pl.len().alias("n_recipes")
+            ])
+            .sort("year")
+        )
+    else:
+        metric_col = "prep_time_median"
+        df_yearly = (
+            df_filtered.group_by("year")
+            .agg([
+                pl.col("minutes").median().alias("prep_time_median"),
+                pl.len().alias("n_recipes")
+            ])
+            .sort("year")
+        )
+
+    # ========================================
+    # RÉGRESSION WLS
+    # ========================================
+
+    X = df_yearly["year"].to_numpy()
+    y = df_yearly[metric_col].to_numpy()
+    w = df_yearly["n_recipes"].to_numpy()
+
+    # Modèle WLS
+    X_const = sm.add_constant(X)
+    wls_model = sm.WLS(y, X_const, weights=w)
+    wls_result = wls_model.fit()
+
+    # Prédictions
+    y_pred = wls_result.predict(X_const)
+
+    # ========================================
+    # INTERVALLES DE CONFIANCE (pour la moyenne)
+    # ========================================
+
+    alpha = 1 - confidence_level / 100
+    predictions = wls_result.get_prediction(X_const)
+    conf_int = predictions.conf_int(alpha=alpha)
+    conf_lower = conf_int[:, 0]
+    conf_upper = conf_int[:, 1]
+
+    # ========================================
+    # INTERVALLES DE PRÉDICTION (pour individus)
+    # ========================================
+
+    # Calcul manuel des intervalles de prédiction
+    residuals = y - y_pred
+    mse = np.average(residuals**2, weights=w)
+
+    # Variance de prédiction
+    X_mean = np.average(X, weights=w)
+    sxx = np.sum(w * (X - X_mean)**2)
+
+    pred_std = []
+    for i, x_val in enumerate(X):
+        # Effet de levier
+        h_ii = w[i] * (1 + (x_val - X_mean)**2 / sxx)
+        # Variance de prédiction = MSE * (1 + h_ii)
+        pred_var = mse * (1 + h_ii)
+        pred_std.append(np.sqrt(pred_var))
+
+    pred_std = np.array(pred_std)
+
+    # Valeur critique t de Student
+    t_val = stats.t.ppf(1 - alpha/2, df=len(X)-2)
+
+    # Bornes des intervalles de prédiction
+    pred_lower = y_pred - t_val * pred_std
+    pred_upper = y_pred + t_val * pred_std
+
+    # ========================================
+    # GRAPHIQUE
+    # ========================================
+
+    fig = go.Figure()
+
+    # 1. Intervalle de prédiction (FOND orange clair)
+    fig.add_trace(go.Scatter(
+        x=X,
+        y=pred_lower,
+        mode='lines',
+        line=dict(width=0),
+        showlegend=False,
+        hoverinfo='skip'
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=X,
+        y=pred_upper,
+        mode='lines',
+        fill='tonexty',
+        fillcolor='rgba(255, 165, 0, 0.1)',
+        line=dict(width=0),
+        name=f'Intervalle de prédiction {confidence_level}% (individuel)',
+        hoverinfo='skip'
+    ))
+
+    # 2. Lignes pointillées orange (bornes prédiction)
+    fig.add_trace(go.Scatter(
+        x=X,
+        y=pred_lower,
+        mode='lines',
+        line=dict(color='orange', width=2, dash='dot'),
+        name='Borne inf. prédiction',
+        hovertemplate='<b>%{x}</b><br>Borne inf: %{y:.1f} min<extra></extra>'
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=X,
+        y=pred_upper,
+        mode='lines',
+        line=dict(color='orange', width=2, dash='dot'),
+        name='Borne sup. prédiction',
+        hovertemplate='<b>%{x}</b><br>Borne sup: %{y:.1f} min<extra></extra>'
+    ))
+
+    # 3. Intervalle de confiance (FOND vert clair)
+    fig.add_trace(go.Scatter(
+        x=X,
+        y=conf_lower,
+        mode='lines',
+        line=dict(width=0),
+        showlegend=False,
+        hoverinfo='skip'
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=X,
+        y=conf_upper,
+        mode='lines',
+        fill='tonexty',
+        fillcolor='rgba(0, 128, 0, 0.15)',
+        line=dict(width=0),
+        name=f'Intervalle de confiance {confidence_level}% (moyenne)',
+        hoverinfo='skip'
+    ))
+
+    # 4. Lignes tiretées vertes (bornes confiance)
+    fig.add_trace(go.Scatter(
+        x=X,
+        y=conf_lower,
+        mode='lines',
+        line=dict(color='green', width=2, dash='dash'),
+        name='Borne inf. confiance',
+        hovertemplate='<b>%{x}</b><br>Borne inf: %{y:.1f} min<extra></extra>'
+    ))
+
+    fig.add_trace(go.Scatter(
+        x=X,
+        y=conf_upper,
+        mode='lines',
+        line=dict(color='green', width=2, dash='dash'),
+        name='Borne sup. confiance',
+        hovertemplate='<b>%{x}</b><br>Borne sup: %{y:.1f} min<extra></extra>'
+    ))
+
+    # 5. Droite de régression (ROUGE)
+    fig.add_trace(go.Scatter(
+        x=X,
+        y=y_pred,
+        mode='lines',
+        line=dict(color='red', width=3),
+        name='Régression WLS',
+        hovertemplate='<b>%{x}</b><br>Prédiction: %{y:.1f} min<extra></extra>'
+    ))
+
+    # 6. Points observés (BLEU FONCÉ)
+    fig.add_trace(go.Scatter(
+        x=X,
+        y=y,
+        mode='markers',
+        marker=dict(
+            color='darkblue',
+            size=10,
+            line=dict(color='white', width=1)
+        ),
+        name='Données observées',
+        hovertemplate='<b>%{x}</b><br>Valeur: %{y:.1f} min<extra></extra>'
+    ))
+
+    # Mise en forme
+    fig.update_layout(
+        title={
+            'text': f"Évolution de la durée de préparation ({metric_choice.lower()})<br><sub>Avec intervalles de confiance et de prédiction à {confidence_level}%</sub>",
+            'x': 0.5,
+            'xanchor': 'center',
+            'font': dict(size=16, color='black')
+        },
+        xaxis=dict(
+            title='Année',
+            showgrid=True,
+            gridcolor='rgba(128,128,128,0.2)',
+            title_font=dict(size=12, color='black'),
+            tickfont=dict(size=10, color='black')
+        ),
+        yaxis=dict(
+            title=f'Durée ({metric_choice.lower()}, minutes)',
+            showgrid=True,
+            gridcolor='rgba(128,128,128,0.2)',
+            title_font=dict(size=12, color='black'),
+            tickfont=dict(size=10, color='black')
+        ),
+        hovermode='x unified',
+        plot_bgcolor='white',
+        height=600,
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=0.99,
+            xanchor="right",
+            x=0.99,
+            bgcolor="rgba(255,255,255,0.8)",
+            bordercolor="black",
+            borderwidth=1
+        )
+    )
+
+    st.plotly_chart(fig, use_container_width=True)
+
+    # ========================================
+    # MÉTRIQUES
+    # ========================================
+
+    col_a, col_b, col_c, col_d = st.columns(4)
+
+    with col_a:
+        current_value = y[-1]
+        st.metric(
+            f"📊 {metric_choice} actuelle",
+            f"{current_value:.1f} min"
+        )
+
+    with col_b:
+        slope = wls_result.params[1]
+        trend = "📈 Hausse" if slope > 0 else "📉 Baisse"
+        st.metric(
+            "Tendance",
+            trend,
+            f"{slope:.2f} min/an"
+        )
+
+    with col_c:
+        r_squared = wls_result.rsquared
+        st.metric(
+            "R² pondéré",
+            f"{r_squared:.3f}",
+            "Qualité du modèle"
+        )
+
+    with col_d:
+        p_value = wls_result.pvalues[1]
+        significance = "✅ Significatif" if p_value < 0.05 else "⚠️ Non significatif"
+        st.metric(
+            "p-value",
+            f"{p_value:.4f}",
+            significance
+        )
+
+    # ========================================
+    # EXPLICATIONS
+    # ========================================
+
+    with st.expander("📖 Comprendre les intervalles"):
+        st.markdown("""
+        **Intervalle de confiance (vert)** 🟢
+        - Incertitude sur la **position moyenne** de la droite de régression
+        - "Où se trouve la vraie moyenne de la population ?"
+        - Plus étroit car basé sur une moyenne d'observations
+
+        **Intervalle de prédiction (orange)** 🟠
+        - Incertitude sur une **observation individuelle future**
+        - "Où se situera la prochaine recette ?"
+        - Plus large car inclut la variabilité individuelle des recettes
+
+        **Pourquoi l'intervalle de prédiction est plus large ?**
+        - Il inclut 2 sources d'incertitude :
+          1. L'incertitude sur la moyenne (comme l'IC)
+          2. La variabilité naturelle entre recettes individuelles
+        """)
+
+    with st.expander("📊 Statistiques détaillées de la régression"):
+        st.markdown("**Équation du modèle WLS :**")
+        intercept = wls_result.params[0]
+        st.latex(rf"\text{{Durée}} = {intercept:.2f} + {slope:.2f} \times \text{{Année}}")
+
+        st.markdown("**Coefficients :**")
+        st.write(f"- Ordonnée à l'origine : {intercept:.2f} minutes")
+        st.write(f"- Pente : {slope:.2f} minutes/an")
+        st.write(f"- R² pondéré : {r_squared:.4f}")
+        st.write(f"- p-value (pente) : {p_value:.4e}")
+
+        st.markdown("**Résumé complet du modèle :**")
+        st.text(wls_result.summary())
+
+    with st.expander("📋 Tableau des données avec prédictions"):
+        df_table = pl.DataFrame({
+            "Année": X,
+            f"{metric_choice} observée": y,
+            "Prédiction WLS": y_pred,
+            "Résidu": residuals,
+            f"IC inf ({confidence_level}%)": conf_lower,
+            f"IC sup ({confidence_level}%)": conf_upper,
+            f"IP inf ({confidence_level}%)": pred_lower,
+            f"IP sup ({confidence_level}%)": pred_upper,
+        })
+
+        st.dataframe(
+            df_table.to_pandas().style.format({
+                f"{metric_choice} observée": "{:.1f}",
+                "Prédiction WLS": "{:.1f}",
+                "Résidu": "{:.2f}",
+                f"IC inf ({confidence_level}%)": "{:.1f}",
+                f"IC sup ({confidence_level}%)": "{:.1f}",
+                f"IP inf ({confidence_level}%)": "{:.1f}",
+                f"IP sup ({confidence_level}%)": "{:.1f}",
+            }),
+            use_container_width=True
+        )
+
+
+def analyse_trendline_duree_old():
+    """
     Analyse interactive de l'évolution de la durée de préparation.
     Version preprod avec filtres, régressions WLS et statistiques.
     """
