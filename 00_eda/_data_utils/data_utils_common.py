@@ -160,7 +160,7 @@ def add_calendar_features(df: pl.DataFrame, date_col: str = "date") -> pl.DataFr
         pl.col(date_col).dt.month().alias("month"),
         pl.col(date_col).dt.day().alias("day"),
         pl.col(date_col).dt.weekday().alias("weekday"),
-        (pl.col(date_col).dt.weekday() >= 5).cast(pl.Int8).alias("is_weekend"),
+        (pl.col(date_col).dt.weekday() >= 6).cast(pl.Int8).alias("is_weekend"),
         pl.when(pl.col(date_col).dt.month().is_in([12, 1, 2])).then(pl.lit("Winter"))
           .when(pl.col(date_col).dt.month().is_in([3, 4, 5])).then(pl.lit("Spring"))
           .when(pl.col(date_col).dt.month().is_in([6, 7, 8])).then(pl.lit("Summer"))
