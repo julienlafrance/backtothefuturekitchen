@@ -200,6 +200,11 @@ uv run pytest tests/unit/ -v --cov=streamlit --cov-report=html
 - ✅ DuckDB avec secrets intégrés
 - ✅ Architecture nettoyée et validée
 - ✅ **Tests et coverage complets (96 tests, 98% coverage)**
+- ✅ **Pipeline CI/CD avec GitHub Actions**
+  - Vérification PEP8 automatique (flake8)
+  - Validation des docstrings (pydocstyle)
+  - Tests automatisés sur PR et merge vers main
+  - Coverage minimum 90% obligatoire
 
 ---
 
