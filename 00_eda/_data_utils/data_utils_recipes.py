@@ -4,34 +4,103 @@ from .data_utils_common import *
 # �📦 CHARGEMENT DES DONNÉES
 # =============================================================================
 
-def load_recipes_raw(db_path: Optional[Path] = None, limit: Optional[int] = None) -> pl.DataFrame:
+def load_recipes_raw(limit: Optional[int] = None) -> pl.DataFrame:
     """
-    Charge la table RAW_RECIPES depuis DuckDB.
+    Charge les données de recettes depuis la table RAW_recipes sur S3.
     
     Args:
-        db_path: Chemin vers la base DuckDB (par défaut: détection auto)
         limit: Nombre maximum de lignes à charger (optionnel)
         
     Returns:
         pl.DataFrame: DataFrame Polars avec les données brutes
-        
-    Colonnes attendues:
-        - id, name, minutes, contributor_id, submitted
-        - tags, nutrition, n_steps, steps, description
-        - ingredients, n_ingredients
     """
-    if db_path is None:
-        db_path = get_db_path()
-
-    sql = "SELECT * FROM RAW_RECIPES"
+    # Charger depuis S3
+    conn = get_s3_duckdb_connection()
+    
+    # Attacher la base DuckDB depuis S3 puis requêter la table
+    conn.execute("ATTACH 's3://mangetamain/mangetamain.duckdb' AS s3_db")
+    sql = "SELECT * FROM s3_db.RAW_recipes"
+    
     if limit:
         sql += f" LIMIT {limit}"
+    
+    df = conn.execute(sql).pl()
+    conn.close()
 
-    with duckdb.connect(database=str(db_path), read_only=True) as conn:
-        df = conn.execute(sql).pl()
-
-    print(f"✅ RAW_RECIPES chargée : {df.shape[0]:,} lignes × {df.shape[1]} colonnes")
+    print(f"✅ Recettes chargées depuis S3 : {df.shape[0]:,} lignes × {df.shape[1]} colonnes")
     return df
+
+
+def save_recipes_to_s3(df: pl.DataFrame, s3_path: str, format: str = "parquet") -> None:
+    """
+    Sauvegarde un DataFrame de recettes vers S3 (fichier indépendant, pas dans DuckDB).
+    
+    Args:
+        df: DataFrame Polars à sauvegarder
+        s3_path: Chemin S3 (ex: 's3://mangetamain/final_recipes.parquet')
+        format: Format de fichier ('parquet' ou 'csv')
+        
+    Example:
+        >>> df_clean = clean_recipes(df_raw)
+        >>> save_recipes_to_s3(df_clean, 's3://mangetamain/final_recipes.parquet')
+        ✅ Sauvegardé vers s3://mangetamain/final_recipes.parquet (123,456 lignes)
+    """
+    import boto3
+    from io import BytesIO
+    from configparser import ConfigParser
+    
+    # Extraire bucket et key du chemin S3
+    if not s3_path.startswith("s3://"):
+        raise ValueError(f"Le chemin doit commencer par 's3://': {s3_path}")
+    
+    # Parse s3://bucket/path/to/file.parquet
+    s3_parts = s3_path.replace("s3://", "").split("/", 1)
+    bucket = s3_parts[0]
+    key = s3_parts[1] if len(s3_parts) > 1 else ""
+    
+    # Charger les credentials depuis 96_keys/credentials
+    creds_path = get_s3_credentials_path()
+    config = ConfigParser()
+    config.read(creds_path)
+    
+    if 's3fast' not in config:
+        raise ValueError("Profil [s3fast] introuvable dans 96_keys/credentials")
+    
+    s3_config = config['s3fast']
+    endpoint_url = s3_config.get('endpoint_url', 'http://s3fast.lafrance.io')
+    access_key = s3_config.get('aws_access_key_id')
+    secret_key = s3_config.get('aws_secret_access_key')
+    region = s3_config.get('region', 'garage-fast')
+    
+    # Créer le client S3 avec les credentials chargés
+    s3_client = boto3.client(
+        's3',
+        endpoint_url=endpoint_url,
+        aws_access_key_id=access_key,
+        aws_secret_access_key=secret_key,
+        region_name=region,
+        use_ssl=False  # Pour s3fast.lafrance.io
+    )
+    
+    # Sauvegarder selon le format
+    if format.lower() == "parquet":
+        # Écrire en mémoire puis uploader
+        buffer = BytesIO()
+        df.write_parquet(buffer)
+        buffer.seek(0)
+        s3_client.put_object(Bucket=bucket, Key=key, Body=buffer.getvalue())
+        
+    elif format.lower() == "csv":
+        # Écrire CSV en mémoire puis uploader
+        buffer = BytesIO()
+        df.write_csv(buffer)
+        buffer.seek(0)
+        s3_client.put_object(Bucket=bucket, Key=key, Body=buffer.getvalue())
+        
+    else:
+        raise ValueError(f"Format non supporté: {format}. Utilisez 'parquet' ou 'csv'")
+    
+    print(f"✅ Sauvegardé vers {s3_path} ({df.shape[0]:,} lignes, format={format})")
 
 # =============================================================================
 # 🧹 HELPERS INTERNES - PARSING
@@ -520,18 +589,39 @@ def enrich_recipes(df: pl.DataFrame) -> pl.DataFrame:
 # 🚀 PIPELINE COMPLET
 # =============================================================================
 
-def load_clean_recipes(db_path: Optional[Path] = None) -> pl.DataFrame:
+def load_clean_recipes(limit: Optional[int] = None, save_to_s3: bool = False) -> pl.DataFrame:
     """
     Pipeline complet : charge, nettoie et enrichit les recettes en une seule commande.
+    Sauvegarde automatiquement le résultat sur S3.
 
-    Args: db_path: Chemin vers la base DuckDB (optionnel)
+    Args: 
+        limit: Nombre maximum de lignes à charger (optionnel)
+        save_to_s3: Si True, sauvegarde le DataFrame final sur S3
         
-    Returns: DataFrame prêt pour l'analyse
+    Returns: 
+        DataFrame prêt pour l'analyse
     """
-    df = load_recipes_raw(db_path)
-    df = clean_recipes(df)
-    df = enrich_recipes(df)
-    return df
+    # 1️⃣ Chargement brut
+    print("1️⃣ Chargement des données brutes...")
+    df_raw = load_recipes_raw(limit)
+    
+    # 2️⃣ Nettoyage
+    print("\n2️⃣ Nettoyage des données...")
+    df_clean = clean_recipes(df_raw)
+    
+    # 3️⃣ Enrichissement
+    print("\n3️⃣ Enrichissement des features...")
+    df_final = enrich_recipes(df_clean)
+    
+    # 4️⃣ Sauvegarde sur S3
+    if save_to_s3:
+        print("\n4️⃣ Sauvegarde sur S3...")
+        s3_path = "s3://mangetamain/final_recipes.parquet"
+        save_recipes_to_s3(df_final, s3_path, format="parquet")
+        print(f"💾 Dataset final sauvegardé : {s3_path}")
+    
+    print("\n✅ Pipeline complet terminé !")
+    return df_final
 
 # =============================================================================
 # 📊 ANALYSE DE QUALITÉ
