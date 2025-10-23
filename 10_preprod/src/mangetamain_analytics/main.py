@@ -18,7 +18,7 @@ from visualization.custom_charts import (
     create_time_series_plot,
     create_custom_scatter_plot,
 )
-from visualization.analyse_trendlines import (
+from visualization.analyse_trendlines_v2 import (
     analyse_trendline_volume,
     analyse_trendline_duree,
     analyse_trendline_complexite,
