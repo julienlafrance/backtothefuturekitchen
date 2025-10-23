@@ -1,0 +1,18 @@
+# Coverage reports
+.coverage
+coverage_html/
+htmlcov/
+*.coverage.*
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+
+# pytest cache
+.pytest_cache/

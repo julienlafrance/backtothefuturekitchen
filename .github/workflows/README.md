@@ -2,11 +2,11 @@
 
 ## Vue d'ensemble
 
-Ce répertoire contient les workflows GitHub Actions pour le CI/CD du projet Mangetamain Analytics.
+Ce répertoire contient le workflow GitHub Actions pour le CI du projet Mangetamain Analytics.
 
-## Workflows disponibles
+## Workflow disponible
 
-### 1. `ci.yml` - Pipeline CI (Intégration Continue)
+### `ci.yml` - Pipeline CI (Intégration Continue)
 
 **Déclencheurs:**
 - ✅ Push sur n'importe quelle branche
@@ -34,49 +34,12 @@ graph TD
 - **Tests Preprod**: pytest avec coverage >= 90% sur `10_preprod/`
 - **Tests Infrastructure**: Tests S3/DuckDB/Docker (continue si échec)
 
-### 2. `deploy.yml` - Pipeline CD (Déploiement Continu)
+## Badge de statut
 
-**Déclencheurs:**
-- ✅ Push sur `main` uniquement
-- ✅ Déclenchement manuel (workflow_dispatch)
-
-**Jobs exécutés:**
-
-```mermaid
-graph TD
-    A[Merge vers main] --> B[Build Docker Production]
-    B --> C[Test Docker Image]
-    C --> D[Tag Image]
-    D --> E[Push Registry - OPTIONNEL]
-    E --> F[Deploy Server - OPTIONNEL]
-```
-
-**Durée estimée:** ~2-3 minutes (sans déploiement réel)
-
-**Note:** Le déploiement automatique est configuré mais commenté. Pour l'activer, voir [README_CI_CD.md](../../README_CI_CD.md).
-
-## Configuration requise
-
-### Secrets GitHub (pour déploiement optionnel)
-
-Pour activer le déploiement automatique, configurer ces secrets dans:
-`Settings > Secrets and variables > Actions`
-
-```
-DOCKER_USERNAME     # Username Docker Hub
-DOCKER_PASSWORD     # Token Docker Hub
-SERVER_HOST         # IP/domaine du serveur
-SERVER_USER         # Utilisateur SSH
-SERVER_SSH_KEY      # Clé privée SSH
-```
-
-## Badges de statut
-
-Ajouter ces badges au README principal :
+Ajouter ce badge au README principal :
 
 ```markdown
 [![CI Pipeline](https://github.com/USERNAME/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/USERNAME/REPO/actions/workflows/ci.yml)
-[![CD Pipeline](https://github.com/USERNAME/REPO/actions/workflows/deploy.yml/badge.svg)](https://github.com/USERNAME/REPO/actions/workflows/deploy.yml)
 ```
 
 ## Logs et artefacts

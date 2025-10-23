@@ -223,89 +223,30 @@ on:
 
 ---
 
-### 6. Phase de Déploiement (OPTIONNEL) ✅
+### 6. Phase de Déploiement (OPTIONNEL) ⚠️
 
-**Workflow dédié:** `.github/workflows/deploy.yml`
+**Statut:** Non implémentée (optionnelle)
 
-**Déclencheurs:**
-```yaml
-on:
-  push:
-    branches:
-      - main  # Déploiement uniquement sur main
-  workflow_dispatch:
-```
+La phase de déploiement automatique n'est pas incluse dans ce projet car elle nécessiterait :
+- Infrastructure de déploiement (serveur distant, Docker registry, etc.)
+- Credentials d'accès (secrets GitHub)
+- Configuration spécifique à l'environnement de production
 
-**Pipeline de déploiement:**
+**Comment l'implémenter si nécessaire:**
 
-```mermaid
-graph LR
-    A[Merge vers main] --> B[Build Docker Image]
-    B --> C[Test Image]
-    C --> D[Tag Image]
-    D --> E[Push Registry]
-    E --> F[Deploy Server]
-```
-
-**Jobs implémentés:**
-
-1. **Build Docker Production**
-   ```yaml
-   - name: Build Docker image - Production
-     run: |
-       cd 30_docker
-       docker build -f Dockerfile.prod -t mangetamain-analytics:prod ../20_prod
-   ```
-
-2. **Test Docker Image**
-   ```yaml
-   - name: Test Docker image
-     run: docker run --rm mangetamain-analytics:prod python --version
-   ```
-
-3. **Tag avec version**
-   ```yaml
-   - name: Tag Docker image
-     run: |
-       docker tag mangetamain-analytics:prod mangetamain-analytics:latest
-       docker tag mangetamain-analytics:prod mangetamain-analytics:$(date +%Y%m%d-%H%M%S)
-   ```
-
-4. **Push vers Docker Hub (commenté - à activer)**
-   ```yaml
-   # - name: Push to Docker Hub
-   #   run: docker push mangetamain-analytics:latest
-   ```
-
-5. **Déploiement SSH (commenté - à activer)**
-   ```yaml
-   # - name: Deploy to server via SSH
-   #   script: |
-   #     docker-compose up -d --force-recreate
-   ```
-
-**Activation du déploiement complet:**
-
-Pour activer le déploiement automatique, configurer les secrets GitHub:
-```
-DOCKER_USERNAME      # Token Docker Hub
-DOCKER_PASSWORD      # Password Docker Hub
-SERVER_HOST          # IP/domaine serveur
-SERVER_USER          # User SSH
-SERVER_SSH_KEY       # Clé privée SSH
-```
-
-Puis décommenter les sections dans `.github/workflows/deploy.yml`.
+Le déploiement pourrait être ajouté via un workflow `.github/workflows/deploy.yml` avec :
+- Build d'image Docker
+- Push vers Docker Hub ou registry privé
+- Déploiement SSH vers serveur de production
+- Redémarrage des services
 
 **Résultat:**
-- ✅ Pipeline CD complet implémenté
-- ✅ Build et test Docker automatiques
-- ✅ Prêt pour déploiement avec activation simple
-- ⚠️ Déploiement distant désactivé par défaut (sécurité)
+- ⚠️ Déploiement non implémenté (optionnel selon les exigences)
+- ✅ Pipeline CI complet et fonctionnel (répond aux exigences académiques)
 
 ---
 
-## Architecture du Pipeline CI/CD
+## Architecture du Pipeline CI
 
 ### Vue d'ensemble
 
@@ -316,12 +257,15 @@ Puis décommenter les sections dans `.github/workflows/deploy.yml`.
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
-│  1. git push origin feature/ma-branche                      │
+│  1. Créer une branche feature                               │
+│  2. Développer et tester localement                         │
+│  3. Créer une Pull Request vers main                        │
 └─────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │              GITHUB ACTIONS - CI PIPELINE                   │
+│          (Déclenché sur PR et merge vers main)              │
 │                                                             │
 │  ┌───────────────────────────────────────────────────┐     │
 │  │ QUALITY CHECKS (Job 1)                            │     │
@@ -349,36 +293,15 @@ Puis décommenter les sections dans `.github/workflows/deploy.yml`.
                               │
                               ▼
                     ┌─────────────────┐
-                    │ PR vers main ?  │
+                    │  CI Passed ?    │
                     └─────────────────┘
                               │
                   ┌───────────┴───────────┐
                   ▼                       ▼
              ┌─────────┐            ┌─────────┐
              │   NON   │            │   OUI   │
-             │  STOP   │            │ MERGE   │
+             │  FIX    │            │ MERGE ✅ │
              └─────────┘            └─────────┘
-                                          │
-                                          ▼
-┌─────────────────────────────────────────────────────────────┐
-│              GITHUB ACTIONS - CD PIPELINE                   │
-│                   (Optionnel - sur main)                    │
-│                                                             │
-│  ┌───────────────────────────────────────────────────┐     │
-│  │ BUILD & DEPLOY                                    │     │
-│  │ ├─ Build Docker Image                             │     │
-│  │ ├─ Test Docker Image                              │     │
-│  │ ├─ Tag Image (latest + timestamp)                 │     │
-│  │ ├─ Push to Docker Hub (si activé)                 │     │
-│  │ └─ Deploy to Server (si activé)                   │     │
-│  └───────────────────────────────────────────────────┘     │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-                    ┌─────────────────┐
-                    │  PRODUCTION     │
-                    │  DEPLOYED ✅    │
-                    └─────────────────┘
 ```
 
 ---
@@ -388,10 +311,9 @@ Puis décommenter les sections dans `.github/workflows/deploy.yml`.
 ### Fichiers de workflow GitHub Actions
 ```
 .github/
-├── workflows/
-│   ├── ci.yml              # Pipeline CI principal ✅
-│   ├── deploy.yml          # Pipeline CD optionnel ✅
-│   └── README.md           # Documentation workflows ✅
+└── workflows/
+    ├── ci.yml              # Pipeline CI principal ✅
+    └── README.md           # Documentation workflows ✅
 ```
 
 ### Fichiers de configuration
@@ -620,10 +542,9 @@ cd /home/julien/code/mangetamain/000_dev
 | ✅ Vérification docstrings | OUI | `.pydocstyle` + `ci.yml:47-53` |
 | ✅ Tests automatisés | OUI | `ci.yml:56-131` (96 tests) |
 | ✅ Coverage >= 90% | OUI | `pyproject.toml` + résultats 96-100% |
-| ✅ Push → Tests auto | OUI | `ci.yml:3-9` (triggers) |
-| ✅ PR → Tests auto | OUI | `ci.yml:6-7` (pull_request) |
-| ✅ Merge main → Tests | OUI | `ci.yml:4-5` (push main) |
-| ✅ Déploiement (optionnel) | OUI | `deploy.yml` (complet) |
+| ✅ PR → Tests auto | OUI | `ci.yml:7-9` (pull_request) |
+| ✅ Merge main → Tests | OUI | `ci.yml:4-6` (push main) |
+| ⚠️ Déploiement (optionnel) | NON | Non implémenté (non requis) |
 
 **Toutes les exigences académiques sont satisfaites avec une implémentation production-ready.**
 
