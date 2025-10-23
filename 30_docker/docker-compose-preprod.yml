@@ -16,6 +16,7 @@ services:
       - ../10_preprod/uv.lock:/app/uv.lock:ro
       - ../10_preprod/README.md:/app/README.md:ro
       - ../10_preprod/utils:/app/utils:ro
+      - ../40_utils:/app/../40_utils:ro  # Monter le package data-utils
       - ../96_keys:/app/../96_keys:ro  # Monter les credentials en READ-ONLY
     working_dir: /app
     extra_hosts:
