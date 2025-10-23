@@ -18,15 +18,19 @@ Ce guide documente la méthodologie complète pour intégrer des analyses EDA (p
 1. **Graphiques uniquement**: Conversion Matplotlib → Plotly (structure visuelle)
 2. **Import des données**: Utiliser le package `mangetamain-data-utils` qui charge depuis S3
 3. **Ajout Streamlit**: `st.plotly_chart()`, `st.info()` pour affichage
+4. **Styles graphiques**: Utiliser `plotly_config.py` pour thème uniforme
 
 ### ❌ À NE PAS modifier
 1. **Logique d'analyse**: Calculs statistiques, régressions, agrégations
 2. **Interprétations**: Copier textuellement depuis balises `<INTERPRÉTATION>`
 3. **Structure des données**: Colonnes, filtres, transformations
 4. **Paramètres**: Seuils, méthodes statistiques (sauf demande explicite)
+5. **Fichiers sources EDA**: JAMAIS modifier les fichiers dans `00_eda/` - ils doivent rester fonctionnels
 
-### 📝 Règle d'or
-> **Si le code source fonctionne, COPIER exactement la logique métier. Modifier UNIQUEMENT la couche de visualisation (Matplotlib → Plotly) et l'affichage (Streamlit).**
+### 📝 Règles d'or
+> **1. Si le code source fonctionne, COPIER exactement la logique métier. Modifier UNIQUEMENT la couche de visualisation (Matplotlib → Plotly) et l'affichage (Streamlit).**
+
+> **2. Les fichiers dans `00_eda/` sont les SOURCES ORIGINALES et doivent TOUJOURS rester fonctionnels. On COPIE vers d'autres répertoires, on ne déplace JAMAIS.**
 
 ---
 
@@ -38,6 +42,7 @@ Ce guide documente la méthodologie complète pour intégrer des analyses EDA (p
 │   ├── main.py                          # Point d'entrée Streamlit
 │   └── visualization/
 │       ├── __init__.py
+│       ├── plotly_config.py             # ✅ CONFIG GRAPHIQUES (couleurs, thème)
 │       ├── analyse_ratings_simple.py    # Exemple existant
 │       ├── custom_charts.py
 │       └── analyse_trendlines.py        # ✅ NOUVEAU MODULE
@@ -48,6 +53,17 @@ Ce guide documente la méthodologie complète pour intégrer des analyses EDA (p
 │       └── test_analyse_trendlines.py   # ✅ NOUVEAUX TESTS
 ├── pyproject.toml                       # Configuration + dépendances
 └── README.md
+
+40_utils/                                # ✅ PACKAGE PARTAGÉ (copie de 00_eda/_data_utils)
+└── mangetamain_data_utils/
+    ├── pyproject.toml
+    └── src/mangetamain_data_utils/
+        ├── data_utils_common.py         # Connexion S3, outils communs
+        ├── data_utils_recipes.py        # Chargement recettes depuis S3
+        └── data_utils_ratings.py        # Chargement ratings
+
+00_eda/                                  # ⚠️ NE JAMAIS MODIFIER - Sources originales
+└── _data_utils/                         # Version originale pour notebooks EDA
 ```
 
 ---
@@ -187,11 +203,37 @@ def analyse_fonction_1():
 
 **🔑 Points clés**:
 1. ✅ Import direct: `from mangetamain_data_utils.data_utils_recipes import load_recipes_clean`
-2. ✅ Copier la logique: Garder tous les calculs statistiques identiques
-3. ✅ Convertir graphiques: Seulement Matplotlib → Plotly
-4. ✅ Copier interprétations: Texte exact depuis les balises XML
+2. ✅ Import config graphiques: `from .plotly_config import COLORS, apply_theme`
+3. ✅ Copier la logique: Garder tous les calculs statistiques identiques
+4. ✅ Convertir graphiques: Seulement Matplotlib → Plotly
+5. ✅ Copier interprétations: Texte exact depuis les balises XML
 
-#### 2.3 Règles de conversion Matplotlib → Plotly
+#### 2.3 Utilisation de plotly_config.py
+
+**Configuration centralisée des graphiques** - Tous les styles en un seul endroit:
+
+```python
+from .plotly_config import COLORS, apply_theme
+
+# Couleurs cohérentes
+marker = dict(color=COLORS["primary"], size=8, opacity=0.6)  # darkblue
+line = dict(color=COLORS["secondary"], width=2)  # red
+fillcolor = f"rgba(...)"  # Utiliser COLORS["success"] pour vert
+
+# Appliquer le thème blanc à la fin
+st.plotly_chart(apply_theme(fig), use_container_width=True)
+```
+
+**Palette disponible**:
+- `COLORS["primary"]` - #00416A (darkblue) - Données observées
+- `COLORS["secondary"]` - #E94B3C (red) - Lignes de régression
+- `COLORS["success"]` - #2E8B57 (green) - Intervalles de confiance
+- `COLORS["warning"]` - #FF8C00 (orange) - Intervalles de prédiction
+- `COLORS["coral"]` - #FF7F50 (coral) - Données secondaires
+
+**Important**: `apply_theme()` applique uniquement le fond blanc et la légende. Les grilles doivent être configurées manuellement dans chaque fonction avec `fig.update_xaxes(showgrid=True, gridcolor="#e0e0e0", ...)`.
+
+#### 2.4 Règles de conversion Matplotlib → Plotly
 
 | Matplotlib | Plotly | Notes |
 |------------|--------|-------|
