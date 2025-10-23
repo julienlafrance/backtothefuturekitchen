@@ -5,18 +5,19 @@ Note: Les fonctions UI Streamlit (display_*, create_*) sont exclues du coverage
 car elles nécessitent un contexte Streamlit actif.
 """
 
-import pytest
 import sys
 from pathlib import Path
-from unittest.mock import Mock, MagicMock, patch
-import pandas as pd
 
 # Ajouter le chemin streamlit pour les imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "streamlit"))
 
+import pytest
+from unittest.mock import MagicMock, patch
+import pandas as pd
+
 # Mock Streamlit et loguru avant l'import
-sys.modules['streamlit'] = MagicMock()
-sys.modules['loguru'] = MagicMock()
+sys.modules["streamlit"] = MagicMock()
+sys.modules["loguru"] = MagicMock()
 
 # Maintenant on peut importer main
 import main
@@ -37,7 +38,7 @@ class TestDetectEnvironment:
         """Test détection PREPROD depuis le chemin"""
         monkeypatch.delenv("APP_ENV", raising=False)
 
-        with patch('main.Path') as mock_path:
+        with patch("main.Path") as mock_path:
             # Simuler qu'on n'est pas dans Docker
             mock_path.return_value.exists.return_value = False
             # Simuler le cwd
@@ -51,7 +52,7 @@ class TestDetectEnvironment:
         """Test détection PROD depuis le chemin"""
         monkeypatch.delenv("APP_ENV", raising=False)
 
-        with patch('main.Path') as mock_path:
+        with patch("main.Path") as mock_path:
             mock_path.return_value.exists.return_value = False
             mock_path.cwd.return_value = Path("/home/user/projet/20_prod/streamlit")
 
@@ -63,7 +64,7 @@ class TestDetectEnvironment:
         """Test détection Docker"""
         monkeypatch.delenv("APP_ENV", raising=False)
 
-        with patch('main.Path') as mock_path:
+        with patch("main.Path") as mock_path:
             # /.dockerenv existe
             mock_path.return_value.exists.return_value = True
 
@@ -75,7 +76,7 @@ class TestDetectEnvironment:
         """Test détection environnement inconnu"""
         monkeypatch.delenv("APP_ENV", raising=False)
 
-        with patch('main.Path') as mock_path:
+        with patch("main.Path") as mock_path:
             mock_path.return_value.exists.return_value = False
             mock_path.cwd.return_value = Path("/some/random/path")
 
@@ -87,8 +88,8 @@ class TestDetectEnvironment:
 class TestGetDbConnection:
     """Tests pour get_db_connection"""
 
-    @patch('main.duckdb.connect')
-    @patch('main.Path')
+    @patch("main.duckdb.connect")
+    @patch("main.Path")
     def test_connection_success(self, mock_path_class, mock_connect):
         """Test connexion réussie"""
         # Mock du fichier qui existe
@@ -100,7 +101,9 @@ class TestGetDbConnection:
         # Mock de la connexion DuckDB
         mock_conn = MagicMock()
         mock_conn.execute.return_value.fetchall.return_value = [
-            ('table1',), ('table2',), ('table3',)
+            ("table1",),
+            ("table2",),
+            ("table3",),
         ]
         mock_connect.return_value = mock_conn
 
@@ -110,7 +113,7 @@ class TestGetDbConnection:
         assert result == mock_conn
         mock_connect.assert_called_once_with("data/mangetamain.duckdb")
 
-    @patch('main.Path')
+    @patch("main.Path")
     def test_connection_file_not_found(self, mock_path_class):
         """Test fichier DB introuvable"""
         mock_path = MagicMock()
@@ -121,8 +124,8 @@ class TestGetDbConnection:
 
         assert result is None
 
-    @patch('main.duckdb.connect')
-    @patch('main.Path')
+    @patch("main.duckdb.connect")
+    @patch("main.Path")
     def test_connection_failure(self, mock_path_class, mock_connect):
         """Test échec de connexion"""
         mock_path = MagicMock()
@@ -177,28 +180,25 @@ class TestDataValidation:
 
     def test_valid_table_names(self):
         """Test validation des noms de tables"""
-        valid_tables = ['RAW_interactions', 'PP_users', 'interactions_train']
+        valid_tables = ["RAW_interactions", "PP_users", "interactions_train"]
 
         for table in valid_tables:
             # Vérifier le format des noms
             assert isinstance(table, str)
             assert len(table) > 0
-            assert ' ' not in table  # Pas d'espaces
+            assert " " not in table  # Pas d'espaces
 
     def test_dataframe_structure(self):
         """Test structure des DataFrames"""
         # Simuler un DataFrame de ratings
-        df = pd.DataFrame({
-            'rating': [1, 2, 3, 4, 5],
-            'count': [10, 20, 30, 40, 50]
-        })
+        df = pd.DataFrame({"rating": [1, 2, 3, 4, 5], "count": [10, 20, 30, 40, 50]})
 
         # Vérifications
-        assert 'rating' in df.columns
-        assert 'count' in df.columns
+        assert "rating" in df.columns
+        assert "count" in df.columns
         assert len(df) == 5
-        assert df['rating'].min() >= 1
-        assert df['rating'].max() <= 5
+        assert df["rating"].min() >= 1
+        assert df["rating"].max() <= 5
 
 
 if __name__ == "__main__":

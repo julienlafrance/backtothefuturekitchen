@@ -18,3 +18,4 @@ exclude =
 # Chemins à vérifier
 per-file-ignores =
     __init__.py:F401
+    tests/*/test_*.py:E402
