@@ -10,6 +10,13 @@ venv/
 */venv/
 */.venv/
 
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+
 # Gros fichiers de données - ACTIVÉ
 */data/*.csv
 */data/*.duckdb  

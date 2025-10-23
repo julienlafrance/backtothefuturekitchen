@@ -1,0 +1,12 @@
+[pydocstyle]
+# Configuration pour la vérification des docstrings
+convention = google
+match = .*\.py
+match-dir = ^(?!(\.git|__pycache__|\.venv|venv|env|build|dist|htmlcov|96_keys)).*
+
+# Ignorer certaines erreurs pour être plus flexible
+add-ignore = D100,D104,D107
+
+# D100: Module docstring manquant
+# D104: Package docstring manquant
+# D107: __init__ docstring manquant
