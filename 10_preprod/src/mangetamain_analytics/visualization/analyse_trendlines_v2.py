@@ -257,12 +257,57 @@ def analyse_trendline_volume():
 # ============================================================================
 
 def analyse_trendline_duree():
-    """Analyse de l'évolution de la durée de préparation."""
+    """
+    Analyse interactive de l'évolution de la durée de préparation.
+    Version preprod avec filtres, régressions WLS et statistiques.
+    """
+
+    # Chargement des données
     df = load_and_prepare_data()
 
-    # Agrégation
+    # ========================================
+    # WIDGETS INTERACTIFS
+    # ========================================
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        # Filtre années
+        all_years = sorted(df["year"].unique().to_list())
+        year_range = st.slider(
+            "📅 Plage d'années",
+            min_value=int(all_years[0]),
+            max_value=int(all_years[-1]),
+            value=(int(all_years[0]), int(all_years[-1])),
+        )
+
+    with col2:
+        # Choix couleur moyenne
+        color_mean = st.selectbox(
+            "🎨 Couleur Moyenne", ["steelblue", "royalblue", "mediumblue", "dodgerblue"], index=0
+        )
+
+    with col3:
+        # Choix couleur médiane
+        color_median = st.selectbox(
+            "🎨 Couleur Médiane", ["coral", "tomato", "salmon", "lightsalmon"], index=0
+        )
+
+    with col4:
+        # Options d'affichage
+        show_iqr = st.checkbox("📊 Afficher IQR", value=True)
+        show_bubbles = st.checkbox("⭕ Bulles proportionnelles", value=True)
+
+    # ========================================
+    # FILTRAGE ET AGRÉGATION DES DONNÉES
+    # ========================================
+
+    df_filtered = df.filter(
+        (pl.col("year") >= year_range[0]) & (pl.col("year") <= year_range[1])
+    )
+
     minutes_by_year = (
-        df.group_by("year")
+        df_filtered.group_by("year")
         .agg(
             [
                 pl.mean("minutes").alias("mean_minutes"),
@@ -276,7 +321,10 @@ def analyse_trendline_duree():
         .to_pandas()
     )
 
-    # Calcul des régressions WLS
+    # ========================================
+    # CALCUL DES RÉGRESSIONS WLS
+    # ========================================
+
     X = minutes_by_year["year"].values
     w = minutes_by_year["n_recipes"].values
 
@@ -287,6 +335,8 @@ def analyse_trendline_duree():
         wls_model = sm.WLS(y, X_const, weights=w)
         wls_result = wls_model.fit()
         y_pred = wls_result.predict(X_const)
+
+        # R² pondéré
         r2_w = 1 - np.average((y - y_pred) ** 2, weights=w) / np.average(
             (y - np.average(y, weights=w)) ** 2, weights=w
         )
@@ -294,113 +344,310 @@ def analyse_trendline_duree():
         regressions[metric_col] = {
             "y_pred": y_pred,
             "slope": wls_result.params[1],
+            "intercept": wls_result.params[0],
             "r2": r2_w,
             "p_value": wls_result.pvalues[1],
         }
 
-    # Tailles de bulles
-    sizes = minutes_by_year["n_recipes"] / minutes_by_year["n_recipes"].max() * 20
+    # ========================================
+    # MÉTRIQUES EN BANNIÈRE
+    # ========================================
 
-    # Création du graphique avec Plotly
+    col_a, col_b, col_c, col_d = st.columns(4)
+
+    with col_a:
+        st.metric("⏱️ Moyenne actuelle", f"{minutes_by_year['mean_minutes'].iloc[-1]:.1f} min")
+
+    with col_b:
+        st.metric("📊 Médiane actuelle", f"{minutes_by_year['median_minutes'].iloc[-1]:.1f} min")
+
+    with col_c:
+        trend_mean = regressions["mean_minutes"]["slope"]
+        st.metric(
+            "📉 Tendance Moyenne",
+            f"{trend_mean:+.3f} min/an",
+            delta=f"{trend_mean * len(minutes_by_year):.1f} min sur période",
+            delta_color="inverse",
+        )
+
+    with col_d:
+        trend_median = regressions["median_minutes"]["slope"]
+        st.metric(
+            "📉 Tendance Médiane",
+            f"{trend_median:+.3f} min/an",
+            delta=f"{trend_median * len(minutes_by_year):.1f} min sur période",
+            delta_color="inverse",
+        )
+
+    # ========================================
+    # GRAPHIQUE PRINCIPAL
+    # ========================================
+
     fig = go.Figure()
 
-    # IQR (intervalle interquartile) - zone grise
-    fig.add_trace(
-        go.Scatter(
-            x=minutes_by_year["year"],
-            y=minutes_by_year["q25"],
-            fill=None,
-            mode="lines",
-            line=dict(width=0),
-            showlegend=False,
-            hoverinfo="skip",
-        )
-    )
+    # Taille des bulles proportionnelle au nombre de recettes
+    sizes = minutes_by_year["n_recipes"] / minutes_by_year["n_recipes"].max() * 40
 
-    fig.add_trace(
-        go.Scatter(
-            x=minutes_by_year["year"],
-            y=minutes_by_year["q75"],
-            fill="tonexty",
-            mode="lines",
-            line=dict(width=0),
-            name="IQR (Q25-Q75)",
-            fillcolor="rgba(200, 200, 200, 0.2)",
+    # Zone IQR (en arrière-plan)
+    if show_iqr:
+        fig.add_trace(
+            go.Scatter(
+                x=minutes_by_year["year"],
+                y=minutes_by_year["q75"],
+                fill=None,
+                mode="lines",
+                line=dict(width=0),
+                showlegend=False,
+                hoverinfo="skip",
+            )
         )
-    )
 
-    # Moyenne observée (steelblue)
+        fig.add_trace(
+            go.Scatter(
+                x=minutes_by_year["year"],
+                y=minutes_by_year["q25"],
+                fill="tonexty",
+                mode="lines",
+                line=dict(width=0),
+                fillcolor="rgba(70, 130, 180, 0.15)",
+                name="IQR (Q25-Q75)",
+                hovertemplate="<b>Année %{x}</b><br>Q25-Q75: %{y:.1f} min<extra></extra>",
+            )
+        )
+
+    # MOYENNE - Courbe observée
     fig.add_trace(
         go.Scatter(
             x=minutes_by_year["year"],
             y=minutes_by_year["mean_minutes"],
-            mode="lines+markers",
+            mode="lines",
             name="Moyenne (observée)",
-            line=dict(color="#4682B4", width=2),
-            marker=dict(size=sizes, color="#4682B4", opacity=0.6),
+            line=dict(color=color_mean, width=2.5),
+            hovertemplate="<b>Année %{x}</b><br>Moyenne: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
+            customdata=minutes_by_year["n_recipes"],
         )
     )
 
-    # Régression moyenne (darkblue)
+    # MOYENNE - Bulles
+    if show_bubbles:
+        fig.add_trace(
+            go.Scatter(
+                x=minutes_by_year["year"],
+                y=minutes_by_year["mean_minutes"],
+                mode="markers",
+                name="Moyenne (bulles)",
+                marker=dict(
+                    color=color_mean, size=sizes, opacity=0.6, line=dict(color="black", width=0.5)
+                ),
+                showlegend=False,
+                hoverinfo="skip",
+            )
+        )
+
+    # MOYENNE - Régression WLS
     fig.add_trace(
         go.Scatter(
             x=minutes_by_year["year"],
             y=regressions["mean_minutes"]["y_pred"],
             mode="lines",
             name=f"Régression Moyenne (R²={regressions['mean_minutes']['r2']:.3f})",
-            line=dict(color="#00416A", width=2, dash="dash"),
+            line=dict(color="darkblue", width=2.5, dash="dash"),
+            hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>",
         )
     )
 
-    # Médiane observée (coral)
+    # MÉDIANE - Courbe observée
     fig.add_trace(
         go.Scatter(
             x=minutes_by_year["year"],
             y=minutes_by_year["median_minutes"],
-            mode="lines+markers",
+            mode="lines",
             name="Médiane (observée)",
-            line=dict(color="#FF7F50", width=2),
-            marker=dict(size=sizes, color="#FF7F50", opacity=0.6),
+            line=dict(color=color_median, width=2),
+            hovertemplate="<b>Année %{x}</b><br>Médiane: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
+            customdata=minutes_by_year["n_recipes"],
         )
     )
 
-    # Régression médiane (darkred)
+    # MÉDIANE - Bulles
+    if show_bubbles:
+        fig.add_trace(
+            go.Scatter(
+                x=minutes_by_year["year"],
+                y=minutes_by_year["median_minutes"],
+                mode="markers",
+                name="Médiane (bulles)",
+                marker=dict(
+                    color=color_median,
+                    size=sizes,
+                    opacity=0.6,
+                    line=dict(color="black", width=0.5),
+                ),
+                showlegend=False,
+                hoverinfo="skip",
+            )
+        )
+
+    # MÉDIANE - Régression WLS
     fig.add_trace(
         go.Scatter(
             x=minutes_by_year["year"],
             y=regressions["median_minutes"]["y_pred"],
             mode="lines",
             name=f"Régression Médiane (R²={regressions['median_minutes']['r2']:.3f})",
-            line=dict(color="#8B0000", width=2, dash="dash"),
+            line=dict(color="darkred", width=2.5, dash="dash"),
+            hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>",
         )
     )
 
-    # Mise en forme
+    # ========================================
+    # MISE EN FORME
+    # ========================================
+
+    title_html = (
+        f"<b>Évolution de la durée de préparation (minutes)</b><br>"
+        f"<span style='font-size:12px;'>Moyenne: {regressions['mean_minutes']['slope']:+.4f} min/an | "
+        f"Médiane: {regressions['median_minutes']['slope']:+.4f} min/an</span>"
+    )
+
     fig.update_layout(
-        title=f"Évolution de la durée de préparation<br><sub>Moyenne: {regressions['mean_minutes']['slope']:+.4f} min/an | Médiane: {regressions['median_minutes']['slope']:+.4f} min/an</sub>",
-        xaxis_title="Année",
-        yaxis_title="Minutes",
+        title=dict(
+            text=title_html, font=dict(size=14, color="black", family="Arial, sans-serif")
+        ),
+        xaxis=dict(
+            title="Année",
+            title_font=dict(size=12, color="black"),
+            tickfont=dict(size=10, color="black"),
+            showgrid=True,
+            gridcolor="rgba(200,200,200,0.3)",
+        ),
+        yaxis=dict(
+            title="Minutes",
+            title_font=dict(size=12, color="black"),
+            tickfont=dict(size=10, color="black"),
+            showgrid=True,
+            gridcolor="rgba(200,200,200,0.3)",
+        ),
         height=600,
         plot_bgcolor="white",
         paper_bgcolor="white",
-        font=dict(size=12),
+        font=dict(size=11, color="black", family="Arial, sans-serif"),
+        legend=dict(
+            orientation="v",
+            yanchor="top",
+            y=0.99,
+            xanchor="right",
+            x=0.99,
+            bgcolor="rgba(255,255,255,0.8)",
+            bordercolor="black",
+            borderwidth=1,
+            font=dict(size=9),
+        ),
         hovermode="x unified",
-        legend=dict(bgcolor="rgba(255, 255, 255, 0.9)", bordercolor="#ddd", borderwidth=1),
     )
 
-    fig.update_xaxes(showgrid=True, gridcolor="#e0e0e0", gridwidth=1)
-    fig.update_yaxes(showgrid=True, gridcolor="#e0e0e0", gridwidth=1)
-
+    # Affichage
     st.plotly_chart(fig, use_container_width=True)
 
-    # Interprétation
-    st.info(
-        "⏱️ **Interprétation**: L'analyse de la durée moyenne de préparation montre une **tendance globale à la baisse** "
-        f"depuis la création du site. En moyenne, le temps de préparation diminue d'environ "
-        f"**{regressions['mean_minutes']['slope']:.2f} min/an**, tandis que la médiane recule de "
-        f"**{regressions['median_minutes']['slope']:.2f} min/an**, ce qui traduit une "
-        "**légère simplification des recettes** au fil du temps."
-    )
+    # ========================================
+    # STATISTIQUES DÉTAILLÉES
+    # ========================================
+
+    with st.expander("📊 Statistiques détaillées des régressions"):
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown("### 📈 Moyenne")
+            st.write(f"**Pente:** {regressions['mean_minutes']['slope']:.6f} min/an")
+            st.write(f"**Intercept:** {regressions['mean_minutes']['intercept']:.2f}")
+            st.write(f"**R² pondéré:** {regressions['mean_minutes']['r2']:.4f}")
+            st.write(f"**p-value:** {regressions['mean_minutes']['p_value']:.4e}")
+
+            if regressions["mean_minutes"]["p_value"] < 0.001:
+                st.success("✅ Tendance hautement significative (p < 0.001)")
+            elif regressions["mean_minutes"]["p_value"] < 0.05:
+                st.success("✅ Tendance significative (p < 0.05)")
+            else:
+                st.warning("⚠️ Tendance non significative")
+
+            # Calcul du changement total
+            total_change_mean = regressions["mean_minutes"]["slope"] * len(minutes_by_year)
+            pct_change_mean = (
+                total_change_mean / minutes_by_year["mean_minutes"].iloc[0]
+            ) * 100
+            st.info(f"📉 Changement total: {total_change_mean:+.1f} min ({pct_change_mean:+.1f}%)")
+
+        with col2:
+            st.markdown("### 📊 Médiane")
+            st.write(f"**Pente:** {regressions['median_minutes']['slope']:.6f} min/an")
+            st.write(f"**Intercept:** {regressions['median_minutes']['intercept']:.2f}")
+            st.write(f"**R² pondéré:** {regressions['median_minutes']['r2']:.4f}")
+            st.write(f"**p-value:** {regressions['median_minutes']['p_value']:.4e}")
+
+            if regressions["median_minutes"]["p_value"] < 0.001:
+                st.success("✅ Tendance hautement significative (p < 0.001)")
+            elif regressions["median_minutes"]["p_value"] < 0.05:
+                st.success("✅ Tendance significative (p < 0.05)")
+            else:
+                st.warning("⚠️ Tendance non significative")
+
+            # Calcul du changement total
+            total_change_median = regressions["median_minutes"]["slope"] * len(minutes_by_year)
+            pct_change_median = (
+                total_change_median / minutes_by_year["median_minutes"].iloc[0]
+            ) * 100
+            st.info(
+                f"📉 Changement total: {total_change_median:+.1f} min ({pct_change_median:+.1f}%)"
+            )
+
+        st.divider()
+        st.markdown("### 🔍 Interprétation")
+
+        if regressions["mean_minutes"]["slope"] < 0:
+            st.write(
+                f"""
+            L'analyse de la durée moyenne de préparation montre une **tendance globale à la baisse**
+            depuis la création du site. En moyenne, le temps de préparation diminue d'environ
+            **{regressions['mean_minutes']['slope']:.2f} min/an**, tandis que la médiane recule de
+            **{regressions['median_minutes']['slope']:.2f} min/an**, ce qui traduit une légère
+            **simplification des recettes** au fil du temps.
+            """
+            )
+        else:
+            st.write(
+                f"""
+            L'analyse de la durée moyenne de préparation montre une **tendance à la hausse**.
+            En moyenne, le temps de préparation augmente d'environ
+            **{regressions['mean_minutes']['slope']:+.2f} min/an**, tandis que la médiane progresse de
+            **{regressions['median_minutes']['slope']:+.2f} min/an**, ce qui pourrait indiquer une
+            **complexification des recettes** au fil du temps.
+            """
+            )
+
+    # ========================================
+    # TABLEAU DES DONNÉES
+    # ========================================
+
+    with st.expander("📋 Tableau des données"):
+        display_df = minutes_by_year.copy()
+        display_df["year"] = display_df["year"].astype(int)
+        display_df["mean_minutes"] = display_df["mean_minutes"].round(2)
+        display_df["median_minutes"] = display_df["median_minutes"].round(2)
+        display_df["q25"] = display_df["q25"].round(2)
+        display_df["q75"] = display_df["q75"].round(2)
+
+        st.dataframe(
+            display_df.style.format(
+                {
+                    "mean_minutes": "{:.2f}",
+                    "median_minutes": "{:.2f}",
+                    "q25": "{:.2f}",
+                    "q75": "{:.2f}",
+                    "n_recipes": "{:,}",
+                }
+            ),
+            use_container_width=True,
+        )
 
 
 # ============================================================================
