@@ -10,6 +10,26 @@ Ce guide documente la méthodologie complète pour intégrer des analyses EDA (p
 
 ---
 
+## ⚡ Principe Clé: Copier, Ne PAS Réinventer
+
+**IMPORTANT**: Les fichiers sources EDA avec balises XML sont déjà optimisés et testés. Le processus d'intégration doit **COPIER le code existant avec des modifications MINIMALES**:
+
+### ✅ Modifications autorisées
+1. **Graphiques uniquement**: Conversion Matplotlib → Plotly (structure visuelle)
+2. **Import des données**: Utiliser le package `mangetamain-data-utils` qui charge depuis S3
+3. **Ajout Streamlit**: `st.plotly_chart()`, `st.info()` pour affichage
+
+### ❌ À NE PAS modifier
+1. **Logique d'analyse**: Calculs statistiques, régressions, agrégations
+2. **Interprétations**: Copier textuellement depuis balises `<INTERPRÉTATION>`
+3. **Structure des données**: Colonnes, filtres, transformations
+4. **Paramètres**: Seuils, méthodes statistiques (sauf demande explicite)
+
+### 📝 Règle d'or
+> **Si le code source fonctionne, COPIER exactement la logique métier. Modifier UNIQUEMENT la couche de visualisation (Matplotlib → Plotly) et l'affichage (Streamlit).**
+
+---
+
 ## 🏗️ Architecture du Projet
 
 ```
@@ -87,6 +107,8 @@ from _data_utils import load_recipes_clean
 
 ### **ÉTAPE 2: Création du Module Streamlit** 🏗️
 
+**⚠️ PRINCIPE FONDAMENTAL**: Cette étape consiste à **COPIER** le code source avec modifications MINIMALES.
+
 #### 2.1 Nommer le module
 **Convention**: `analyse_<thème>.py`
 
@@ -105,11 +127,10 @@ Description détaillée de ce que fait le module:
 Utilise <méthode statistique> pour <objectif>.
 """
 
-import sys
-from pathlib import Path
 import warnings
+from pathlib import Path
 
-# Imports data science (ADAPTER SELON BESOINS)
+# Imports data science - COPIER depuis le fichier source
 import polars as pl
 import numpy as np
 import plotly.graph_objects as go
@@ -118,14 +139,8 @@ from scipy import stats
 import statsmodels.api as sm
 import streamlit as st
 
-# Ajout du chemin vers _data_utils
-sys.path.append(str(Path(__file__).parents[4] / "00_eda"))
-
-try:
-    from _data_utils import load_recipes_clean
-except ImportError:
-    st.error("❌ Module _data_utils non trouvé")
-    load_recipes_clean = None
+# Import du package data-utils qui charge depuis S3
+from mangetamain_data_utils.data_utils_recipes import load_recipes_clean
 
 warnings.filterwarnings("ignore")
 
@@ -142,27 +157,39 @@ def analyse_fonction_1():
         st.error("❌ Impossible de charger les données")
         return
 
-    # 1. CHARGEMENT DES DONNÉES
+    # 1. CHARGEMENT DES DONNÉES - Appel direct depuis le package
     df = load_recipes_clean()
 
-    # 2. TRANSFORMATION DES DONNÉES
-    # ...
+    # 2-3. TRANSFORMATION ET CALCULS - COPIER EXACTEMENT depuis le fichier source
+    # ⚠️ NE PAS MODIFIER LA LOGIQUE MÉTIER !
+    # Exemple: garder les mêmes group_by, agg, calculs statistiques
+    recipes_per_year = (
+        df.group_by("year").agg(pl.len().alias("n_recipes")).sort("year").to_pandas()
+    )
+    # ... reste des calculs COPIÉS
 
-    # 3. CALCULS STATISTIQUES
-    # ...
-
-    # 4. CRÉATION DES GRAPHIQUES PLOTLY (PAS MATPLOTLIB !)
+    # 4. GRAPHIQUES - UNIQUEMENT remplacer Matplotlib par Plotly
     fig = go.Figure()
-    # ... ou make_subplots() pour plusieurs graphiques
+    # OU make_subplots() pour plusieurs graphiques
+
+    # Exemple conversion:
+    # AVANT (Matplotlib): plt.bar(x, y)
+    # APRÈS (Plotly): fig.add_trace(go.Bar(x=x, y=y))
 
     # 5. AFFICHAGE STREAMLIT
     st.plotly_chart(fig, use_container_width=True)
 
-    # 6. INTERPRÉTATION (RÉCUPÉRÉE DES BALISES XML)
+    # 6. INTERPRÉTATION - COPIER TEXTUELLEMENT depuis <INTERPRÉTATION>
     st.info(
-        "📊 **Interprétation**: <copier depuis balise <INTERPRÉTATION>>"
+        "📊 **Interprétation**: <copier mot pour mot depuis la balise>"
     )
 ```
+
+**🔑 Points clés**:
+1. ✅ Import direct: `from mangetamain_data_utils.data_utils_recipes import load_recipes_clean`
+2. ✅ Copier la logique: Garder tous les calculs statistiques identiques
+3. ✅ Convertir graphiques: Seulement Matplotlib → Plotly
+4. ✅ Copier interprétations: Texte exact depuis les balises XML
 
 #### 2.3 Règles de conversion Matplotlib → Plotly
 
