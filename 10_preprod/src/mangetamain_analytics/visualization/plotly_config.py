@@ -43,13 +43,16 @@ AXIS_CONFIG = {
 }
 
 
-def apply_theme(fig, title=None, height=600):
+def apply_theme(fig, title=None, height=600, add_grids=False):
     """Applique le thème blanc cohérent à un graphique Plotly.
 
     Args:
         fig: Figure Plotly à styliser
         title: Titre optionnel du graphique
         height: Hauteur du graphique en pixels
+        add_grids: Si True, ajoute les grilles aux axes (défaut: False)
+                   Pour les subplots, il vaut mieux configurer les grilles
+                   directement dans le code de la fonction
 
     Returns:
         Figure Plotly avec thème appliqué
@@ -59,7 +62,9 @@ def apply_theme(fig, title=None, height=600):
         >>> fig.add_trace(go.Scatter(x=[1,2,3], y=[4,5,6]))
         >>> fig = apply_theme(fig, title="Mon graphique", height=500)
     """
-    # Appliquer le layout blanc
+    # Appliquer uniquement le layout blanc, SANS toucher aux axes
+    # Les axes doivent être configurés dans chaque fonction pour préserver
+    # les configurations spécifiques des subplots
     fig.update_layout(**WHITE_LAYOUT)
 
     if title:
@@ -68,9 +73,10 @@ def apply_theme(fig, title=None, height=600):
     if height:
         fig.update_layout(height=height)
 
-    # Appliquer la configuration des axes à TOUS les axes
-    fig.update_xaxes(**AXIS_CONFIG)
-    fig.update_yaxes(**AXIS_CONFIG)
+    # Optionnel: ajouter les grilles seulement si demandé explicitement
+    if add_grids:
+        fig.update_xaxes(**AXIS_CONFIG)
+        fig.update_yaxes(**AXIS_CONFIG)
 
     return fig
 
