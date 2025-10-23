@@ -270,7 +270,7 @@ def analyse_trendline_duree():
     # WIDGETS INTERACTIFS
     # ========================================
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         # Filtre années
@@ -287,6 +287,24 @@ def analyse_trendline_duree():
         # Option bulles
         show_bubbles = st.checkbox("⭕ Afficher les bulles proportionnelles", value=True)
 
+    with col3:
+        # Quantiles personnalisables
+        quantile_choice = st.selectbox(
+            "📊 Intervalle de dispersion",
+            ["Q25-Q75 (IQR classique)", "Q10-Q90 (Large)", "Q5-Q95 (Très large)", "Q33-Q66 (Étroit)"],
+            index=0
+        )
+
+        # Extraction des valeurs de quantiles
+        if "Q25-Q75" in quantile_choice:
+            q_low, q_high = 0.25, 0.75
+        elif "Q10-Q90" in quantile_choice:
+            q_low, q_high = 0.10, 0.90
+        elif "Q5-Q95" in quantile_choice:
+            q_low, q_high = 0.05, 0.95
+        else:  # Q33-Q66
+            q_low, q_high = 0.33, 0.66
+
     # ========================================
     # AGRÉGATION DURÉE PAR ANNÉE (IDENTIQUE À L'ORIGINAL)
     # ========================================
@@ -301,8 +319,8 @@ def analyse_trendline_duree():
         .agg([
             pl.mean("minutes").alias("mean_minutes"),
             pl.median("minutes").alias("median_minutes"),
-            pl.quantile("minutes", 0.25).alias("q25"),
-            pl.quantile("minutes", 0.75).alias("q75"),
+            pl.quantile("minutes", q_low).alias("q_low"),
+            pl.quantile("minutes", q_high).alias("q_high"),
             pl.len().alias("n_recipes")
         ])
         .sort("year")
@@ -352,7 +370,7 @@ def analyse_trendline_duree():
     # MÉTRIQUES EN BANNIÈRE
     # ========================================
 
-    col_a, col_b, col_c, col_d = st.columns(4)
+    col_a, col_b, col_c, col_d, col_e = st.columns(5)
 
     with col_a:
         st.metric(
@@ -380,6 +398,15 @@ def analyse_trendline_duree():
             f"{trend_median:+.4f} min/an"
         )
 
+    with col_e:
+        # Dispersion actuelle (écart interquantile)
+        dispersion_actuelle = minutes_by_year["q_high"].iloc[-1] - minutes_by_year["q_low"].iloc[-1]
+        st.metric(
+            "📏 Dispersion actuelle",
+            f"{dispersion_actuelle:.1f} min",
+            help=f"Écart entre Q{int(q_high*100)} et Q{int(q_low*100)}"
+        )
+
     st.markdown("---")
 
     # ========================================
@@ -388,10 +415,12 @@ def analyse_trendline_duree():
 
     fig = go.Figure()
 
-    # 1. ZONE IQR (Q25-Q75) - EN FOND
+    # 1. ZONE IQR (Q_LOW-Q_HIGH) - EN FOND
+    label_quantile = f"Intervalle Q{int(q_low*100)}-Q{int(q_high*100)}"
+
     fig.add_trace(go.Scatter(
         x=minutes_by_year["year"],
-        y=minutes_by_year["q75"],
+        y=minutes_by_year["q_high"],
         fill=None,
         mode="lines",
         line=dict(width=0),
@@ -401,13 +430,13 @@ def analyse_trendline_duree():
 
     fig.add_trace(go.Scatter(
         x=minutes_by_year["year"],
-        y=minutes_by_year["q25"],
+        y=minutes_by_year["q_low"],
         fill="tonexty",
         mode="lines",
         line=dict(width=0),
         fillcolor="rgba(70, 130, 180, 0.15)",
-        name="IQR (Q25-Q75)",
-        hovertemplate="<b>Année %{x}</b><br>IQR: Q25-Q75<extra></extra>"
+        name=label_quantile,
+        hovertemplate=f"<b>Année %{{x}}</b><br>{label_quantile}<extra></extra>"
     ))
 
     # 2. MOYENNE - Courbe observée
@@ -534,19 +563,35 @@ def analyse_trendline_duree():
         legend=dict(
             orientation="v",
             yanchor="top",
-            y=0.98,
+            y=0.99,
             xanchor="right",
-            x=0.98,
-            bgcolor="rgba(255,255,255,0.9)",
-            bordercolor="rgba(0,0,0,0.2)",
-            borderwidth=1,
-            font=dict(size=9)
+            x=0.99,
+            bgcolor="rgba(255,255,255,0.95)",
+            bordercolor="rgba(0,0,0,0.3)",
+            borderwidth=1.5,
+            font=dict(size=11, color="black"),
+            itemsizing="constant",
+            itemwidth=30
         ),
         hovermode="closest"
     )
 
     # Affichage
     st.plotly_chart(fig, use_container_width=True)
+
+    # ========================================
+    # EXPLICATION DE LA ZONE BLEUE
+    # ========================================
+
+    st.info(f"""
+    💡 **Zone bleue ({label_quantile})** : Représente la dispersion des durées de recettes.
+
+    - **Zone large** → Grande variété de durées (recettes courtes ET longues)
+    - **Zone étroite** → Durées homogènes (recettes similaires)
+    - **Changement de largeur** → Évolution de la diversité des recettes au fil du temps
+
+    📊 Dispersion actuelle : **{dispersion_actuelle:.1f} minutes** d'écart entre Q{int(q_low*100)} et Q{int(q_high*100)}
+    """)
 
     # ========================================
     # INTERPRÉTATION (IDENTIQUE À L'ORIGINAL)
@@ -596,14 +641,14 @@ def analyse_trendline_duree():
         st.dataframe(
             display_df[[
                 "year", "mean_minutes", "mean_pred", "median_minutes", "median_pred",
-                "q25", "q75", "n_recipes"
+                "q_low", "q_high", "n_recipes"
             ]].style.format({
                 "mean_minutes": "{:.2f}",
                 "mean_pred": "{:.2f}",
                 "median_minutes": "{:.2f}",
                 "median_pred": "{:.2f}",
-                "q25": "{:.2f}",
-                "q75": "{:.2f}",
+                "q_low": "{:.2f}",
+                "q_high": "{:.2f}",
                 "n_recipes": "{:,}"
             }),
             use_container_width=True
