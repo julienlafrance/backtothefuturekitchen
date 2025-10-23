@@ -1,10 +1,12 @@
 [project]
 name = "50-test"
 version = "0.1.0"
-description = "Add your description here"
+description = "Tests S3 parquet files accessibility"
 readme = "README.md"
 requires-python = ">=3.13.3"
 dependencies = [
     "boto3>=1.40.48",
     "duckdb>=1.4.1",
+    "pytest>=8.0.0",
+    "pandas>=2.0.0",
 ]
