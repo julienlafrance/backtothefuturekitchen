@@ -46,22 +46,73 @@ def load_and_prepare_data():
 # ============================================================================
 
 def analyse_trendline_volume():
-    """Conversion directe matplotlib vers Plotly."""
+    """
+    Analyse interactive du volume de recettes par année.
+    Version preprod avec filtres et statistiques.
+    """
+
+    # Chargement des données
     df = load_and_prepare_data()
 
-    # Préparation des données (identique)
+    # ========================================
+    # WIDGETS INTERACTIFS
+    # ========================================
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        # Filtre années
+        all_years = sorted(df["year"].unique().to_list())
+        year_range = st.slider(
+            "📅 Plage d'années",
+            min_value=int(all_years[0]),
+            max_value=int(all_years[-1]),
+            value=(int(all_years[0]), int(all_years[-1])),
+        )
+
+    with col2:
+        # Choix couleur barres
+        bar_color = st.selectbox(
+            "🎨 Couleur", ["steelblue", "coral", "lightgreen", "mediumpurple"], index=0
+        )
+
+    with col3:
+        # Afficher valeurs
+        show_values = st.checkbox("🔢 Afficher valeurs", value=True)
+
+    # ========================================
+    # FILTRAGE DES DONNÉES
+    # ========================================
+
+    df_filtered = df.filter(
+        (pl.col("year") >= year_range[0]) & (pl.col("year") <= year_range[1])
+    )
+
     recipes_per_year = (
-        df.group_by("year")
+        df_filtered.group_by("year")
         .agg(pl.len().alias("n_recipes"))
         .sort("year")
         .to_pandas()
     )
+
     data = recipes_per_year["n_recipes"].values
+
+    # Stats en bannière
+    col_a, col_b, col_c = st.columns(3)
+    with col_a:
+        st.metric("📊 Années", len(recipes_per_year))
+    with col_b:
+        st.metric("🍳 Total recettes", f"{data.sum():,}")
+    with col_c:
+        st.metric("📈 Moyenne/an", f"{data.mean():.0f}")
+
+    # ========================================
+    # GRAPHIQUE
+    # ========================================
 
     # Calcul Q-Q plot
     (osm, osr), (slope, intercept, r) = stats.probplot(data, dist="norm")
 
-    # Création des 2 subplots
     fig = make_subplots(
         rows=1,
         cols=2,
@@ -72,10 +123,10 @@ def analyse_trendline_volume():
     # SUBPLOT 1 : Bar chart
     fig.add_trace(
         go.Bar(
-            x=recipes_per_year["year"].astype(str),  # En string pour affichage
+            x=recipes_per_year["year"].astype(str),
             y=recipes_per_year["n_recipes"],
-            marker=dict(color="steelblue", opacity=0.8),
-            text=[f"{val:,}" for val in recipes_per_year["n_recipes"]],
+            marker=dict(color=bar_color, opacity=0.8),
+            text=[f"{val:,}" if show_values else "" for val in recipes_per_year["n_recipes"]],
             textposition="outside",
             textfont=dict(size=9, color="black"),
             showlegend=False,
@@ -98,6 +149,7 @@ def analyse_trendline_volume():
         row=1,
         col=2,
     )
+
     fig.add_trace(
         go.Scatter(
             x=[osm.min(), osm.max()],
@@ -116,7 +168,6 @@ def analyse_trendline_volume():
         title_text="Année",
         title_font=dict(size=12, color="black"),
         tickfont=dict(size=10, color="black"),
-        tickangle=0,
         showgrid=False,
         row=1,
         col=1,
@@ -158,21 +209,47 @@ def analyse_trendline_volume():
         showlegend=False,
     )
 
-    # Titres des subplots en noir et lisibles
+    # Titres des subplots
     for annotation in fig["layout"]["annotations"]:
         annotation["font"] = dict(
             size=13, color="black", family="Arial, sans-serif", weight="bold"
         )
 
+    # Affichage
     st.plotly_chart(fig, use_container_width=True)
 
-    # Interprétation
-    st.info(
-        "📊 **Interprétation**: Nous observons une **forte augmentation du nombre de recettes postées jusqu'en 2007**, "
-        "année du **pic d'activité**, suivie d'une **chute marquée** les années suivantes. "
-        "Les **tests de normalité** et les **Q-Q plots** montrent que la distribution du **nombre de recettes par an** "
-        "**n'est pas parfaitement normale**, avec des **écarts visibles** par rapport à la **loi normale théorique**."
-    )
+    # ========================================
+    # STATISTIQUES DÉTAILLÉES (EXPANDER)
+    # ========================================
+
+    with st.expander("📊 Statistiques détaillées"):
+        col1, col2, col3, col4 = st.columns(4)
+
+        with col1:
+            st.metric("Min", f"{data.min():,}")
+            st.metric("Q1", f"{np.percentile(data, 25):,.0f}")
+
+        with col2:
+            st.metric("Médiane", f"{np.median(data):,.0f}")
+            st.metric("Moyenne", f"{data.mean():,.0f}")
+
+        with col3:
+            st.metric("Q3", f"{np.percentile(data, 75):,.0f}")
+            st.metric("Max", f"{data.max():,}")
+
+        with col4:
+            st.metric("Écart-type", f"{data.std():.0f}")
+            st.metric("Coef. variation", f"{(data.std()/data.mean()*100):.1f}%")
+
+        st.divider()
+        st.write(f"**R² (test normalité):** {r**2:.4f}")
+
+        if r**2 > 0.95:
+            st.success("✅ Distribution proche de la normale")
+        elif r**2 > 0.90:
+            st.warning("⚠️ Distribution légèrement éloignée de la normale")
+        else:
+            st.error("❌ Distribution non normale")
 
 
 # ============================================================================
