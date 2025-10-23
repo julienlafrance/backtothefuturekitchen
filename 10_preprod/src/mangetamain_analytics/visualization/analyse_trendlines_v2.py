@@ -46,31 +46,30 @@ def load_and_prepare_data():
 # ============================================================================
 
 def analyse_trendline_volume():
-    """Analyse du volume de recettes par année avec Q-Q plot."""
+    """Conversion directe matplotlib vers Plotly."""
     df = load_and_prepare_data()
 
-    # Agrégation
+    # Préparation des données (identique)
     recipes_per_year = (
         df.group_by("year")
         .agg(pl.len().alias("n_recipes"))
         .sort("year")
         .to_pandas()
     )
-
-    # Données pour Q-Q plot
     data = recipes_per_year["n_recipes"].values
 
     # Calcul Q-Q plot
     (osm, osr), (slope, intercept, r) = stats.probplot(data, dist="norm")
 
-    # Créer subplots
+    # Création des 2 subplots
     fig = make_subplots(
         rows=1,
         cols=2,
         subplot_titles=("Nombre de recettes par année", "Q-Q Plot (Test de normalité)"),
+        horizontal_spacing=0.15,
     )
 
-    # SUBPLOT 1: Bar chart
+    # SUBPLOT 1 : Bar chart
     fig.add_trace(
         go.Bar(
             x=recipes_per_year["year"].astype(int),
@@ -78,84 +77,79 @@ def analyse_trendline_volume():
             marker=dict(color="steelblue", opacity=0.8),
             text=[f"{val:,}" for val in recipes_per_year["n_recipes"]],
             textposition="outside",
+            textfont=dict(size=10),
             showlegend=False,
         ),
         row=1,
         col=1,
     )
 
-    # SUBPLOT 2: Q-Q plot - Points
+    # SUBPLOT 2 : Q-Q plot
     fig.add_trace(
         go.Scatter(
             x=osm,
             y=osr,
             mode="markers",
-            marker=dict(color="steelblue", size=6),
+            marker=dict(color="darkblue", size=8, opacity=0.6),
             name="Observations",
-            showlegend=False,
         ),
         row=1,
         col=2,
     )
-
-    # SUBPLOT 2: Q-Q plot - Ligne de référence
     fig.add_trace(
         go.Scatter(
             x=[osm.min(), osm.max()],
             y=[slope * osm.min() + intercept, slope * osm.max() + intercept],
             mode="lines",
-            line=dict(color="red", dash="dash", width=2),
-            name="Loi normale",
-            showlegend=False,
+            line=dict(color="red", width=2, dash="dash"),
+            name="Ligne théorique",
         ),
         row=1,
         col=2,
     )
 
-    # Mise en forme des axes
+    # Mise en forme
     fig.update_xaxes(
         title_text="Année",
         tickvals=recipes_per_year["year"].astype(int),
         tickangle=45,
-        showgrid=True,
-        gridcolor="#e0e0e0",
-        gridwidth=1,
         row=1,
         col=1,
     )
     fig.update_yaxes(
         title_text="Nombre de recettes",
         showgrid=True,
-        gridcolor="#e0e0e0",
-        gridwidth=1,
+        gridcolor="rgba(128,128,128,0.3)",
         row=1,
         col=1,
     )
     fig.update_xaxes(
         title_text="Quantiles théoriques (loi normale)",
         showgrid=True,
-        gridcolor="#e0e0e0",
-        gridwidth=1,
+        gridcolor="rgba(128,128,128,0.3)",
         row=1,
         col=2,
     )
     fig.update_yaxes(
         title_text="Quantiles observés",
         showgrid=True,
-        gridcolor="#e0e0e0",
-        gridwidth=1,
+        gridcolor="rgba(128,128,128,0.3)",
         row=1,
         col=2,
     )
 
-    # Layout global
+    # Titres plus visibles
     fig.update_layout(
-        height=500,
+        height=600,
         plot_bgcolor="white",
         paper_bgcolor="white",
-        font=dict(size=12),
-        showlegend=False,
+        font=dict(size=12, color="black"),
+        showlegend=True,
     )
+
+    # Forcer les titres en noir et plus gros
+    for annotation in fig["layout"]["annotations"]:
+        annotation["font"] = dict(size=14, color="black", family="Arial, sans-serif")
 
     st.plotly_chart(fig, use_container_width=True)
 
