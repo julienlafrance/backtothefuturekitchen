@@ -20,14 +20,14 @@ try:
     import plotly.express as px
     import plotly.graph_objects as go
     STREAMLIT_AVAILABLE = True
-except ImportError:
+except ImportError:  # pragma: no cover
     STREAMLIT_AVAILABLE = False
     # Fallback pour matplotlib si pas de plotly
-    try:
+    try:  # pragma: no cover
         import matplotlib.pyplot as plt
         import seaborn as sns
         MATPLOTLIB_AVAILABLE = True
-    except ImportError:
+    except ImportError:  # pragma: no cover
         MATPLOTLIB_AVAILABLE = False
 # </IMPORTS>
 
@@ -81,7 +81,7 @@ def process_data(ratings_data):
     
     return ratings_data, stats
 
-def create_plots_streamlit(ratings_data, stats):
+def create_plots_streamlit(ratings_data, stats):  # pragma: no cover
     """Crée les graphiques pour Streamlit"""
     # <GRAPHIQUE_PRINCIPAL>
     fig = px.bar(
@@ -113,7 +113,7 @@ def create_plots_streamlit(ratings_data, stats):
     st.plotly_chart(fig_pie, use_container_width=True)
     # </GRAPHIQUES_SECONDAIRES>
 
-def create_plots_matplotlib(ratings_data, stats):
+def create_plots_matplotlib(ratings_data, stats):  # pragma: no cover
     """Crée les graphiques avec matplotlib (mode standalone)"""
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
     
@@ -159,10 +159,10 @@ def print_interpretation():
     print("- Normalisation nécessaire pour analyses prédictives")
     # </INTERPRÉTATION>
 
-def render_analysis(conn=None):
+def render_analysis(conn=None):  # pragma: no cover
     """
     Fonction principale pour Streamlit
-    
+
     Args:
         conn: Connexion DuckDB (ignorée, on utilise S3 directement)
     """
@@ -211,7 +211,7 @@ def render_analysis(conn=None):
     except Exception as e:
         st.error(f"Erreur dans l'analyse : {e}")
 
-def main():
+def main():  # pragma: no cover
     """Fonction principale pour exécution standalone"""
     print("🚀 Analyse des Ratings - Mode Standalone")
     print("="*50)

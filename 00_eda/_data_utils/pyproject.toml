@@ -1,36 +1,35 @@
 [project]
-name = "50-test"
+name = "data-utils"
 version = "0.1.0"
-description = "Tests S3 parquet files accessibility"
-readme = "README.md"
-requires-python = ">=3.13.3"
+description = "Utilitaires de chargement et nettoyage des données"
+requires-python = ">=3.11,<3.14"
 dependencies = [
-    "boto3>=1.40.48",
     "duckdb>=1.4.1",
+    "polars>=1.34.0",
+    "pandas>=2.3.3",
+    "numpy>=2.3.3",
+]
+
+[project.optional-dependencies]
+dev = [
     "pytest>=8.0.0",
-    "pytest-cov>=6.0.0",
-    "pandas>=2.0.0",
+    "pytest-cov>=7.0.0",
 ]
 
 [tool.pytest.ini_options]
-testpaths = ["."]
-python_files = ["test_*.py", "S3_duckdb_test.py"]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
-addopts = [
-    "-v",
-]
+addopts = "--cov=. --cov-report=html --cov-report=term-missing --cov-fail-under=90"
 
 [tool.coverage.run]
-source = ["."]
 omit = [
     "*/__pycache__/*",
-    "*/venv/*",
     "*/.venv/*",
     "*/tests/*",
-    "*/test_*.py",
-    "S3_duckdb_test.py",
-    "coverage_html/*",
+    "*/_data_utils.ipynb",
+    "__init__.py",
 ]
 
 [tool.coverage.report]
@@ -40,8 +39,4 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "raise AssertionError",
     "raise NotImplementedError",
-    "if 0:",
-    "if False:",
 ]
-precision = 2
-skip_empty = true

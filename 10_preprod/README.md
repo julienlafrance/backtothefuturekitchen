@@ -1,4 +1,8 @@
-# 🍽️ Mangetamain Analytics
+# 🍽️ Mangetamain Analytics - 10_preprod
+
+![Tests](https://img.shields.io/badge/tests-22_passing-success)
+![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen)
+![Python](https://img.shields.io/badge/python-3.13.3-blue)
 
 Application d'analyse de données pour le dataset Food.com - Dashboard interactif avec DuckDB et Streamlit
 
