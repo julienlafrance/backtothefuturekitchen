@@ -11,9 +11,8 @@ Analyse l'évolution des recettes entre 1999 et 2018:
 Utilise WLS (Weighted Least Squares) pour les régressions.
 """
 
-import sys
-from pathlib import Path
 import warnings
+from pathlib import Path
 
 import polars as pl
 import numpy as np
@@ -23,14 +22,7 @@ from scipy import stats
 import statsmodels.api as sm
 import streamlit as st
 
-# Ajout du chemin vers _data_utils
-sys.path.append(str(Path(__file__).parents[4] / "00_eda"))
-
-try:
-    from _data_utils import load_recipes_clean
-except ImportError:
-    st.error("❌ Module _data_utils non trouvé")
-    load_recipes_clean = None
+from mangetamain_data_utils.data_utils_recipes import load_recipes_clean
 
 warnings.filterwarnings("ignore")
 

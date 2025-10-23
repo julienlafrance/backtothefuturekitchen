@@ -1274,6 +1274,7 @@ dependencies = [
     { name = "ipykernel" },
     { name = "jupyter" },
     { name = "loguru" },
+    { name = "mangetamain-data-utils" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "pandas" },
@@ -1311,6 +1312,7 @@ requires-dist = [
     { name = "ipykernel", specifier = ">=6.30.1" },
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "loguru", specifier = ">=0.7.0" },
+    { name = "mangetamain-data-utils", directory = "../40_utils/mangetamain_data_utils" },
     { name = "matplotlib", specifier = ">=3.10.6" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.6.0" },
     { name = "numpy", specifier = ">=2.3.3" },
@@ -1330,6 +1332,28 @@ requires-dist = [
     { name = "sphinx-rtd-theme", marker = "extra == 'dev'", specifier = ">=1.3.0" },
     { name = "statsmodels", specifier = ">=0.14.0" },
     { name = "streamlit", specifier = ">=1.28.0" },
+]
+provides-extras = ["dev"]
+
+[[package]]
+name = "mangetamain-data-utils"
+version = "0.1.0"
+source = { directory = "../40_utils/mangetamain_data_utils" }
+dependencies = [
+    { name = "duckdb" },
+    { name = "numpy" },
+    { name = "pandas" },
+    { name = "polars" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "duckdb", specifier = ">=1.4.1" },
+    { name = "numpy", specifier = ">=2.3.3" },
+    { name = "pandas", specifier = ">=2.3.3" },
+    { name = "polars", specifier = ">=1.34.0" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0.0" },
+    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=7.0.0" },
 ]
 provides-extras = ["dev"]
 
