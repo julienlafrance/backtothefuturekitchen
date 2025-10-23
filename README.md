@@ -1,8 +1,8 @@
 # 🍳 Mangetamain Analytics
 
+[![CI Pipeline](https://github.com/julienlafrance/backtothefuturekitchen/actions/workflows/ci.yml/badge.svg)](https://github.com/julienlafrance/backtothefuturekitchen/actions/workflows/ci.yml)
 ![Tests](https://img.shields.io/badge/tests-96_passing-success)
 ![Coverage](https://img.shields.io/badge/coverage-98%25-brightgreen)
-![CI/CD](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-blue)
 ![10_preprod](https://img.shields.io/badge/10__preprod-96%25-brightgreen)
 ![20_prod](https://img.shields.io/badge/20__prod-100%25-brightgreen)
 ![Python](https://img.shields.io/badge/python-3.13.3-blue)
