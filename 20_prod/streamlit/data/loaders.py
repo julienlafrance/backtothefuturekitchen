@@ -2,7 +2,7 @@
 
 import pandas as pd
 from pathlib import Path
-from typing import Optional, List, Tuple
+from typing import List, Tuple
 
 
 def validate_db_path(db_path: str) -> bool:
@@ -47,21 +47,21 @@ def calculate_rating_stats(ratings_df: pd.DataFrame) -> dict:
     if ratings_df.empty:
         return {}
 
-    total_ratings = ratings_df['count'].sum()
-    avg_rating = (ratings_df['rating'] * ratings_df['count']).sum() / total_ratings
-    most_common_rating = ratings_df.loc[ratings_df['count'].idxmax(), 'rating']
+    total_ratings = ratings_df["count"].sum()
+    avg_rating = (ratings_df["rating"] * ratings_df["count"]).sum() / total_ratings
+    most_common_rating = ratings_df.loc[ratings_df["count"].idxmax(), "rating"]
 
     # Pourcentage de 5 étoiles
     pct_5_stars = 0.0
-    if 5 in ratings_df['rating'].values:
-        count_5 = ratings_df[ratings_df['rating'] == 5]['count'].iloc[0]
+    if 5 in ratings_df["rating"].values:
+        count_5 = ratings_df[ratings_df["rating"] == 5]["count"].iloc[0]
         pct_5_stars = (count_5 / total_ratings) * 100
 
     return {
-        'total': int(total_ratings),
-        'average': float(avg_rating),
-        'mode': int(most_common_rating),
-        'pct_5_stars': float(pct_5_stars)
+        "total": int(total_ratings),
+        "average": float(avg_rating),
+        "mode": int(most_common_rating),
+        "pct_5_stars": float(pct_5_stars),
     }
 
 
@@ -75,11 +75,11 @@ def categorize_table(table_name: str) -> str:
     Returns:
         Catégorie de la table
     """
-    if table_name.startswith('RAW_'):
+    if table_name.startswith("RAW_"):
         return "Données brutes"
-    elif table_name.startswith('PP_'):
+    elif table_name.startswith("PP_"):
         return "Données préprocessées"
-    elif 'interactions_' in table_name:
+    elif "interactions_" in table_name:
         return "Datasets ML"
     else:
         return "Autres"
@@ -98,7 +98,7 @@ def validate_rating_range(rating: float) -> bool:
     return 0 <= rating <= 5
 
 
-def filter_valid_ratings(df: pd.DataFrame, rating_col: str = 'rating') -> pd.DataFrame:
+def filter_valid_ratings(df: pd.DataFrame, rating_col: str = "rating") -> pd.DataFrame:
     """
     Filtre un DataFrame pour ne garder que les ratings valides.
 
@@ -126,17 +126,13 @@ def get_table_stats(tables_info: List[Tuple[str, int, int]]) -> dict:
         Dict avec statistiques
     """
     if not tables_info:
-        return {
-            'total_tables': 0,
-            'total_rows': 0,
-            'avg_columns': 0.0
-        }
+        return {"total_tables": 0, "total_rows": 0, "avg_columns": 0.0}
 
     total_rows = sum(rows for _, rows, _ in tables_info)
     total_columns = sum(cols for _, _, cols in tables_info)
 
     return {
-        'total_tables': len(tables_info),
-        'total_rows': total_rows,
-        'avg_columns': total_columns / len(tables_info) if tables_info else 0.0
+        "total_tables": len(tables_info),
+        "total_rows": total_rows,
+        "avg_columns": total_columns / len(tables_info) if tables_info else 0.0,
     }
