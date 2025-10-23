@@ -7,26 +7,38 @@ import pandas as pd
 # LOADING
 # =============================================================================
 
-def load_interactions_raw(db_path: Optional[Path] = None) -> pl.DataFrame:
-    """Charge la table RAW_interactions avec filtrage de base - EXCLUT les ratings à 0."""
-    if db_path is None:
-        db_path = get_db_path()
+def load_interactions_raw() -> pl.DataFrame:
+    """
+    Charge les données d'interactions depuis S3.
+    EXCLUT les ratings à 0 et les dates nulles.
     
+    Returns:
+        pl.DataFrame: Interactions filtrées (rating 1-5, date non-null)
+    """
+    # Charger depuis S3
+    conn = get_s3_duckdb_connection()
     sql = """
     SELECT *
-    FROM RAW_interactions
+    FROM 's3://mangetamain/interactions_train.csv'
     WHERE rating BETWEEN 1 AND 5
       AND date IS NOT NULL
     """
+    df = conn.execute(sql).pl()
+    conn.close()
     
-    with duckdb.connect(database=str(db_path), read_only=True) as conn:
-        return conn.execute(sql).pl()
+    print(f"✅ Interactions chargées depuis S3 : {df.shape[0]:,} lignes × {df.shape[1]} colonnes")
+    return df
 
-def load_enriched_interactions(db_path: Optional[Path] = None) -> pl.DataFrame:
-    """Charge interactions enrichies avec les données de recettes - EXCLUT les ratings à 0."""
-    if db_path is None:
-        db_path = get_db_path()
+def load_enriched_interactions() -> pl.DataFrame:
+    """
+    Charge interactions enrichies avec les données de recettes depuis S3.
+    EXCLUT les ratings à 0 et les dates nulles.
     
+    Returns:
+        pl.DataFrame: Interactions enrichies avec colonnes recette
+    """
+    # Charger depuis S3 avec JOIN
+    conn = get_s3_duckdb_connection()
     sql = """
     SELECT 
         i.user_id,
@@ -40,14 +52,16 @@ def load_enriched_interactions(db_path: Optional[Path] = None) -> pl.DataFrame:
         r.nutrition,
         r.n_steps,
         r.n_ingredients
-    FROM RAW_interactions i
-    LEFT JOIN RAW_recipes r ON i.recipe_id = r.id
+    FROM 's3://mangetamain/interactions_train.csv' i
+    LEFT JOIN 's3://mangetamain/PP_recipes.csv' r ON i.recipe_id = r.id
     WHERE i.rating BETWEEN 1 AND 5
       AND i.date IS NOT NULL
     """
+    df = conn.execute(sql).pl()
+    conn.close()
     
-    with duckdb.connect(database=str(db_path), read_only=True) as conn:
-        return conn.execute(sql).pl()
+    print(f"✅ Interactions enrichies chargées depuis S3 : {df.shape[0]:,} lignes × {df.shape[1]} colonnes")
+    return df
     
 
     
@@ -68,9 +82,9 @@ def add_rating_features(df: pl.DataFrame, rating_col: str = "rating") -> pl.Data
           .otherwise(pl.lit("Excellent")).alias("rating_category"),
     ])
 
-def load_clean_interactions(db_path: Optional[Path] = None) -> pl.DataFrame:
-    """Charge et nettoie les interactions en une seule fois - version transformée prête à l'emploi."""
-    raw_interactions = load_interactions_raw(db_path)
+def load_clean_interactions() -> pl.DataFrame:
+    """Charge et nettoie les interactions depuis S3 - version transformée prête à l'emploi."""
+    raw_interactions = load_interactions_raw()
     return clean_and_enrich_interactions(raw_interactions)
 
 # =============================================================================
@@ -153,23 +167,19 @@ def show_transformed_sample(df: pl.DataFrame, n: int = 5):
     return sample_df
 
 def test_data_pipeline():
-    """Test rapide du pipeline de données."""
-    print("🧪 Test du pipeline de données...")
+    """Test rapide du pipeline de données S3."""
+    print("🧪 Test du pipeline de données S3...")
     
-    # Test connexion
-    db_path = get_db_path()
-    print(f"✅ DB trouvée: {db_path}")
-    
-    # Test chargement RAW (original, non modifié)
-    df_raw = load_interactions_raw(db_path)
-    print(f"✅ RAW_interactions chargées: {df_raw.shape}")
+    # Test chargement RAW depuis S3
+    df_raw = load_interactions_raw()
+    print(f"✅ RAW_interactions chargées depuis S3: {df_raw.shape}")
     
     # Test qualité RAW
     report_raw = analyze_data_quality(df_raw, "RAW_interactions")
     print_quality_report(report_raw)
     
     # Test version transformée (copie enrichie)
-    df_transformed = load_clean_interactions(db_path)
+    df_transformed = load_clean_interactions()
     print(f"\n✅ Interactions transformées: {df_transformed.shape}")
     
     # Test qualité transformée
@@ -187,12 +197,11 @@ def test_data_pipeline():
 
 def load_ratings_for_longterm_analysis(
     min_interactions: int = 100,
-    db_path: Optional[Path] = None,
     return_metadata: bool = True,
     verbose: bool = True
 ) -> Union[pd.DataFrame, Tuple[pd.DataFrame, Dict]]:
     """
-    Charge les statistiques mensuelles de ratings avec filtrage de robustesse statistique.
+    Charge les statistiques mensuelles de ratings avec filtrage de robustesse statistique depuis S3.
     
     Conçue pour analyses de tendances long-terme (Mann-Kendall, régression linéaire).
     Élimine les mois avec volume insuffisant pour garantir la fiabilité statistique.
@@ -200,7 +209,6 @@ def load_ratings_for_longterm_analysis(
     Args:
         min_interactions: Seuil minimum d'interactions par mois (défaut: 100)
                          Recommandé: >=100 pour robustesse, >=50 minimum acceptable
-        db_path: Chemin vers la base DuckDB (auto-détecté si None)
         return_metadata: Si True, retourne aussi les métadonnées de filtrage
         verbose: Si True, affiche les logs de progression
         
@@ -224,8 +232,8 @@ def load_ratings_for_longterm_analysis(
     if verbose:
         print(f"🔄 Chargement avec seuil de robustesse: {min_interactions}")
     
-    # 1. Chargement données de base (filtrées: rating 1-5, date non-null)
-    df_clean = load_clean_interactions(db_path)
+    # 1. Chargement données de base depuis S3 (filtrées: rating 1-5, date non-null)
+    df_clean = load_clean_interactions()
     
     # 2. Agrégation mensuelle complète (avant filtrage)
     monthly_raw = df_clean.group_by(["year", "month"]).agg([
@@ -386,19 +394,18 @@ def get_ingredients_for_analysis(analysis_type: str) -> List[str]:
         raise ValueError(f"Type d'analyse non supporté: {analysis_type}. "
                         f"Utilisez 'long_term', 'seasonality', ou 'weekend'.")
 
-def load_ingredient_ratings(target_ingredients: List[str], db_path: Optional[Path] = None) -> pl.DataFrame:
+def load_ingredient_ratings(target_ingredients: List[str]) -> pl.DataFrame:
     """
-    Charge les données de ratings filtrées par ingrédients cibles.
+    Charge les données de ratings filtrées par ingrédients cibles depuis S3.
     
     Args:
         target_ingredients: Liste des ingrédients à analyser
-        db_path: Chemin vers la base DuckDB (auto-détecté si None)
     
     Returns:
         DataFrame Polars avec les ratings des ingrédients sélectionnés
     """
-    if db_path is None:
-        db_path = get_db_path()
+    # Charger depuis S3 avec connexion
+    conn = get_s3_duckdb_connection()
     
     # Création de la clause WHERE pour les ingrédients
     ingredients_clause = "', '".join(target_ingredients)
@@ -439,10 +446,14 @@ def load_ingredient_ratings(target_ingredients: List[str], db_path: Optional[Pat
     ORDER BY i.date, ingredient.value
     """
     
-    with duckdb.connect(database=str(db_path), read_only=True) as conn:
-        df = conn.execute(query).pl()
+    # Remplacer les noms de tables par les chemins S3
+    query_s3 = query.replace("RAW_interactions", "'s3://mangetamain/interactions_train.csv'")
+    query_s3 = query_s3.replace("RAW_recipes", "'s3://mangetamain/PP_recipes.csv'")
     
-    print(f"✅ Données chargées: {df.shape[0]:,} interactions pour {len(target_ingredients)} ingrédients")
+    df = conn.execute(query_s3).pl()
+    conn.close()
+    
+    print(f"✅ Données chargées depuis S3: {df.shape[0]:,} interactions pour {len(target_ingredients)} ingrédients")
     
     return df
 
