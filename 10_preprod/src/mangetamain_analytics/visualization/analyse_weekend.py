@@ -1123,7 +1123,7 @@ def render_weekend_analysis():
 
     Format: Page continue affichant toutes les analyses d'un coup (comme Tendances).
     """
-    st.header("📆 Analyses Effet Jour/Week-end (1999-2018)")
+    st.markdown('<h1 style="margin-top: 0; padding-top: 0;">📆 Analyses Effet Jour/Week-end (1999-2018)</h1>', unsafe_allow_html=True)
 
     st.markdown(
         """

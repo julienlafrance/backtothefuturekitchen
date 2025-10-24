@@ -704,7 +704,7 @@ def main():
 
     # Main content - Display selected analysis
     if selected_page == "📈 Tendances 1999-2018 - test":
-        st.header("📈 Analyses des tendances temporelles (1999-2018)")
+        st.markdown('<h1 style="margin-top: 0; padding-top: 0;">📈 Analyses des tendances temporelles (1999-2018)</h1>', unsafe_allow_html=True)
         st.markdown(
             """
             Cette section présente les **analyses de tendances à long terme** des recettes Food.com
@@ -801,7 +801,7 @@ def main():
         render_weekend_analysis()
 
     elif selected_page == "📊 Recommandations":
-        st.header("⭐ Système de Recommandations")
+        st.markdown('<h1 style="margin-top: 0; padding-top: 0;">⭐ Système de Recommandations</h1>', unsafe_allow_html=True)
         st.info("🚧 Cette analyse sera disponible prochainement.")
         st.markdown(
             """
@@ -814,7 +814,7 @@ def main():
 
     else:
         # Fallback
-        st.header(selected_page)
+        st.markdown(f'<h1 style="margin-top: 0; padding-top: 0;">{selected_page}</h1>', unsafe_allow_html=True)
         st.info("🚧 Cette analyse sera disponible prochainement.")
 
     # Footer - Cartouche gris visible (pas fixe)
