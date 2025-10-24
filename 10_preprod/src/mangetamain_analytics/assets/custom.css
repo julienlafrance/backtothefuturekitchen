@@ -29,11 +29,34 @@
    ============================================================================ */
 
 .main {
-    background-color: #1e1e1e;
+    background-color: #1e1e1e !important;
 }
 
 .stApp {
-    background-color: #1e1e1e;
+    background-color: #1e1e1e !important;
+}
+
+/* Force le fond noir partout */
+.block-container {
+    background-color: #1e1e1e !important;
+}
+
+/* Éliminer tout fond blanc */
+.element-container {
+    background-color: transparent !important;
+}
+
+section[data-testid="stSidebar"] {
+    background-color: #000000 !important;
+}
+
+/* Header et frame en haut */
+header[data-testid="stHeader"] {
+    background-color: #1e1e1e !important;
+}
+
+[data-testid="stToolbar"] {
+    background-color: #1e1e1e !important;
 }
 
 /* ============================================================================

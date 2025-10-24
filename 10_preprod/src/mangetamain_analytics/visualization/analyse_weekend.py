@@ -1131,51 +1131,41 @@ def render_weekend_analysis():
     """
     Point d'entrée principal pour les analyses d'effet week-end.
 
-    Propose un sélecteur pour naviguer entre les 6 analyses.
+    Format: Page continue affichant toutes les analyses d'un coup (comme Tendances).
     """
-    st.title("📆 Analyses Effet Jour/Week-end")
+    st.header("📆 Analyses Effet Jour/Week-end (1999-2018)")
 
     st.markdown(
         """
-        Cette page présente **6 analyses exploratoires** comparant les recettes publiées
-        **en semaine (Weekday)** vs. **le week-end (Weekend)**.
+        Cette section présente les analyses de l'**effet week-end** sur les recettes publiées sur Food.com (1999-2018).
 
-        **Dimensions analysées:**
-        - Volume de publication
-        - Durée de préparation
-        - Complexité (score, étapes, ingrédients)
-        - Profil nutritionnel
-        - Ingrédients les plus variables
-        - Tags les plus variables
+        Les analyses comparent les caractéristiques des recettes **Weekday** (Lundi-Vendredi) vs. **Weekend** (Samedi-Dimanche).
         """
     )
 
-    # Sélecteur d'analyse
-    analyse_choice = st.selectbox(
-        "Choisissez une analyse:",
-        [
-            "1️⃣ Volume de recettes (Weekday vs Weekend)",
-            "2️⃣ Durée des recettes",
-            "3️⃣ Complexité (score, steps, ingredients)",
-            "4️⃣ Profil nutritionnel",
-            "5️⃣ Ingrédients les plus variables",
-            "6️⃣ Tags les plus variables"
-        ],
-        key="weekend_analysis_selector"
-    )
+    # Affichage de toutes les analyses en continu (comme page Tendances)
 
+    st.subheader("📊 Volume de recettes (Weekday vs Weekend)")
+    analyse_weekend_volume()
     st.markdown("---")
 
-    # Routing
-    if analyse_choice.startswith("1️⃣"):
-        analyse_weekend_volume()
-    elif analyse_choice.startswith("2️⃣"):
-        analyse_weekend_duree()
-    elif analyse_choice.startswith("3️⃣"):
-        analyse_weekend_complexite()
-    elif analyse_choice.startswith("4️⃣"):
-        analyse_weekend_nutrition()
-    elif analyse_choice.startswith("5️⃣"):
-        analyse_weekend_ingredients()
-    elif analyse_choice.startswith("6️⃣"):
-        analyse_weekend_tags()
+    st.subheader("⏱️ Durée de préparation")
+    analyse_weekend_duree()
+    st.markdown("---")
+
+    st.subheader("🔧 Complexité (score, étapes, ingrédients)")
+    analyse_weekend_complexite()
+    st.markdown("---")
+
+    st.subheader("🥗 Profil nutritionnel")
+    analyse_weekend_nutrition()
+    st.markdown("---")
+
+    st.subheader("🥘 Ingrédients les plus variables")
+    st.info("💡 Analyse des top 20 ingrédients les plus variables entre Weekday et Weekend")
+    analyse_weekend_ingredients()
+    st.markdown("---")
+
+    st.subheader("🏷️ Tags les plus variables")
+    st.info("💡 Analyse des top 20 tags les plus variables entre Weekday et Weekend")
+    analyse_weekend_tags()

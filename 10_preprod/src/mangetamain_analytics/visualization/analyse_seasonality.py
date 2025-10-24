@@ -1070,12 +1070,14 @@ def render_seasonality_analysis():
 
     Cette fonction sera appelée depuis main.py lors de la sélection du menu
     "📅 Analyses Saisonnières".
+
+    Format: Page continue affichant toutes les analyses d'un coup (comme Tendances).
     """
 
-    st.title("📅 Analyses Saisonnières")
+    st.header("📅 Analyses Saisonnières (1999-2018)")
 
     st.markdown("""
-    Cette page présente les analyses de **saisonnalité** des recettes publiées sur Food.com (1999-2018).
+    Cette section présente les analyses de **saisonnalité** des recettes publiées sur Food.com (1999-2018).
 
     Les analyses comparent les caractéristiques des recettes selon les **4 saisons** :
     - **Winter** (Hiver) : Décembre, Janvier, Février
@@ -1084,37 +1086,32 @@ def render_seasonality_analysis():
     - **Autumn** (Automne) : Septembre, Octobre, Novembre
     """)
 
+    # Affichage de toutes les analyses en continu (comme page Tendances)
+
+    st.subheader("📊 Volume de recettes par saison")
+    analyse_seasonality_volume()
     st.markdown("---")
 
-    # Sélecteur d'analyse
-    analyse_choice = st.selectbox(
-        "📊 Choisir une analyse",
-        [
-            "1. Volume de recettes par saison",
-            "2. Durée de préparation par saison",
-            "3. Complexité (étapes/ingrédients) par saison",
-            "4. Profil nutritionnel par saison",
-            "5. Ingrédients fréquents par saison",
-            "6. Tags populaires par saison",
-        ],
-        index=0
-    )
-
+    st.subheader("⏱️ Durée de préparation par saison")
+    analyse_seasonality_duree()
     st.markdown("---")
 
-    # Affichage de l'analyse sélectionnée
-    if "1." in analyse_choice:
-        analyse_seasonality_volume()
-    elif "2." in analyse_choice:
-        analyse_seasonality_duree()
-    elif "3." in analyse_choice:
-        analyse_seasonality_complexite()
-    elif "4." in analyse_choice:
-        analyse_seasonality_nutrition()
-    elif "5." in analyse_choice:
-        analyse_seasonality_ingredients()
-    elif "6." in analyse_choice:
-        analyse_seasonality_tags()
+    st.subheader("🔧 Complexité (étapes/ingrédients) par saison")
+    analyse_seasonality_complexite()
+    st.markdown("---")
+
+    st.subheader("🥗 Profil nutritionnel par saison")
+    analyse_seasonality_nutrition()
+    st.markdown("---")
+
+    st.subheader("🥘 Ingrédients fréquents par saison")
+    st.info("💡 Analyse des top 20 ingrédients les plus variables entre saisons")
+    analyse_seasonality_ingredients()
+    st.markdown("---")
+
+    st.subheader("🏷️ Tags populaires par saison")
+    st.info("💡 Analyse des top 20 tags les plus variables entre saisons")
+    analyse_seasonality_tags()
 
 
 # ============================================================================
