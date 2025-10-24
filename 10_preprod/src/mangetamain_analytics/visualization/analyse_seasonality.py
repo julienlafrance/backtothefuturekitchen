@@ -1076,7 +1076,7 @@ def render_seasonality_analysis():
     Format: Page continue affichant toutes les analyses d'un coup (comme Tendances).
     """
 
-    st.header("📅 Analyses Saisonnières (1999-2018)")
+    st.markdown('<h1 style="margin-top: 0; padding-top: 0;">📅 Analyses Saisonnières (1999-2018)</h1>', unsafe_allow_html=True)
 
     st.markdown("""
     Cette section présente les analyses de **saisonnalité** des recettes publiées sur Food.com (1999-2018).
