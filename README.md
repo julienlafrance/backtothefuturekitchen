@@ -210,3 +210,4 @@ uv run pytest tests/unit/ -v --cov=streamlit --cov-report=html
 
 **Équipe** : Data Analytics Team
 **Dernière mise à jour** : 2025-10-23
+# Test CD workflow
