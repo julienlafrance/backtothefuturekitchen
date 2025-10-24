@@ -26,6 +26,7 @@ from visualization.analyse_trendlines_v2 import (
     analyse_trendline_ingredients,
     analyse_trendline_tags,
 )
+from utils import colors
 
 
 def detect_environment():
@@ -54,35 +55,22 @@ def display_environment_badge():
     env = detect_environment()
 
     if "PREPROD" in env:
-        st.sidebar.markdown(
-            """
-            <div style="background-color: #6c757d; padding: 6px; border-radius: 5px; text-align: center; margin-top: 15px;">
-                <small style="color: white; margin: 0; font-weight: bold;">🔧 PREPROD</small>
-                <p style="color: white; margin: 0; font-size: 9px;">Environnement de développement</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    elif "PROD (Docker)" in env:
-        st.sidebar.markdown(
-            """
-            <div style="background-color: #6c757d; padding: 6px; border-radius: 5px; text-align: center; margin-top: 15px;">
-                <small style="color: white; margin: 0; font-weight: bold;">🐳 PROD (Docker)</small>
-                <p style="color: white; margin: 0; font-size: 9px;">Environnement production Docker</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        badge_config = colors.ENV_PREPROD
+        label = "PREPROD"
     elif "PROD" in env:
-        st.sidebar.markdown(
-            """
-            <div style="background-color: #28a745; padding: 6px; border-radius: 5px; text-align: center; margin-top: 15px;">
-                <small style="color: white; margin: 0; font-weight: bold;">🚀 PRODUCTION</small>
-                <p style="color: white; margin: 0; font-size: 9px;">Environnement de production</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        badge_config = colors.ENV_PROD
+        label = "PRODUCTION"
+    else:
+        return
+
+    st.sidebar.markdown(
+        f"""
+        <div style="background-color: {badge_config['bg']}; padding: 8px; border-radius: 8px; text-align: center; margin-top: 15px;">
+            <small style="color: {badge_config['text']}; margin: 0; font-weight: bold; font-size: 11px;">{badge_config['icon']} {label}</small>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 # Ensure logs directory exists
@@ -140,58 +128,9 @@ def get_db_connection():
 
 
 def display_database_info(conn):
-    """Display comprehensive database information."""
-    st.header("📊 Base de données")
-
-    # Database file info
-    db_path = "data/mangetamain.duckdb"
-    if Path(db_path).exists():
-        file_size = Path(db_path).stat().st_size / (1024 * 1024)
-        st.success("✅ **Fichier DuckDB connecté**")
-        st.code(f"📁 {db_path}")
-        st.write(f"📏 Taille: {file_size:.1f} MB")
-    else:
-        st.error(f"❌ Fichier non trouvé: {db_path}")
-        return
-
-    st.markdown("---")
-
-    # Available tables with detailed stats
-    st.subheader("🗂️ Tables disponibles")
-    tables = conn.execute("SHOW TABLES").fetchall()
-
-    total_rows = 0
-    for (table_name,) in tables:
-        count = conn.execute(f"SELECT COUNT(*) FROM {table_name}").fetchone()[0]
-        columns = conn.execute(f"DESCRIBE {table_name}").fetchall()
-        total_rows += count
-
-        # Color coding by table type
-        if table_name.startswith("RAW_"):
-            emoji = "📥"  # Raw data
-            color = "#ff9999"
-        elif table_name.startswith("PP_"):
-            emoji = "⚙️"  # Preprocessed data
-            color = "#99ccff"
-        elif "interactions_" in table_name:
-            emoji = "🎯"  # ML datasets
-            color = "#99ff99"
-        else:
-            emoji = "📊"
-            color = "#ffcc99"
-
-        st.markdown(
-            f"""
-        <div style="background-color: {color}; padding: 8px; border-radius: 5px; margin: 2px 0;">
-            <strong>{emoji} {table_name}</strong>: {count:,} lignes, {len(columns)} colonnes
-        </div>
-        """,
-            unsafe_allow_html=True,
-        )
-
-    st.write(f"**📈 Total**: {total_rows:,} lignes dans {len(tables)} tables")
-
-    st.markdown("---")
+    """Display comprehensive database information in sidebar."""
+    # This function is now empty - database info removed from sidebar
+    pass
 
 
 def create_tables_overview(conn):
@@ -565,11 +504,6 @@ def main():
     """Main Streamlit application - Enhanced version."""
     logger.info("🚀 Enhanced Streamlit application starting")
 
-    st.title("🍽️ Mangetamain Analytics - Version Complète")
-    st.markdown(
-        "*Analyse complète des données Food.com avec toutes les tables importées*"
-    )
-
     # Database connection
     conn = get_db_connection()
     if not conn:
@@ -577,43 +511,157 @@ def main():
         st.info("💡 Assurez-vous que le fichier `data/mangetamain.duckdb` existe")
         return
 
-    # Sidebar
+    # Load custom CSS from external file
+    css_path = Path("src/mangetamain_analytics/assets/custom.css")
+    if css_path.exists():
+        with open(css_path) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    else:
+        logger.warning(f"CSS file not found: {css_path}")
+
+    # Sidebar with navigation
     with st.sidebar:
-        display_database_info(conn)
-        display_environment_badge()
+        # Logo at the top
+        logo_path = Path("src/mangetamain_analytics/assets/back_to_the_kitchen_logo.png")
+        if logo_path.exists():
+            st.image(str(logo_path), use_container_width=True)
+        else:
+            # Fallback: display text logo if image not found
+            st.markdown("### 🍳 Back to the Kitchen")
 
-    # Main content tabs
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
-        [
-            "📊 Vue d'ensemble",
-            "⭐ Analyses des notes",
-            "📅 Analyse temporelle",
-            "👥 Utilisateurs",
-            "🔍 Données brutes",
-            "📈 Graphiques personnalisés",
-            "📈 Tendances 1999-2018",
-        ]
-    )
+        st.markdown("---")
 
-    with tab1:
-        create_tables_overview(conn)
+        # Navigation menu with Analyses title
+        st.markdown("### Analyses")
 
-    with tab2:
-        create_rating_analysis(conn)
+        # Menu items with icons
+        menu_options = {
+            "📈 Tendances 1999-2018": "📈",
+            "📊 Saisonnalité": "🌡️",
+            "📊 Effet weekend": "📅",
+            "📊 Recommandations": "⭐"
+        }
 
-    with tab3:
-        create_temporal_analysis(conn)
+        selected_page = st.radio(
+            "Choisir une analyse:",
+            list(menu_options.keys()),
+            index=0,
+            label_visibility="collapsed"
+        )
 
-    with tab4:
-        create_user_analysis(conn)
+        # Container HTML pour les boutons fixés en bas
+        st.markdown(
+            """
+            <style>
+            /* Forcer les boutons du bas à rester en bas */
+            [data-testid="stSidebar"] {
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            .sidebar-bottom-buttons {
+                margin-top: auto;
+                padding-top: 20px;
+                border-top: 1px solid #333;
+            }
+            </style>
+            <div class="sidebar-bottom-buttons">
+            """,
+            unsafe_allow_html=True
+        )
 
-    with tab5:
-        display_raw_data_explorer(conn)
+        # BOUTON 1: Rafraîchir (Orange)
+        st.markdown(
+            f"""
+            <div style="margin-bottom: 10px;">
+                <button onclick="window.location.reload();" style="
+                    background: linear-gradient(135deg, {colors.ORANGE_PRIMARY} 0%, {colors.ORANGE_SECONDARY} 100%);
+                    color: white;
+                    border: none;
+                    padding: 14px 20px;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    width: 100%;
+                    font-size: 15px;
+                    box-shadow: 0 4px 6px rgba(217, 123, 58, 0.3);
+                    transition: all 0.3s ease;
+                    font-family: sans-serif;
+                ">
+                    🔄 Rafraîchir
+                </button>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-    with tab6:
-        create_custom_visualizations(conn)
+        # BOUTON 2: Fichier DuckDB (Bleu ou Rouge selon statut)
+        db_path = "data/mangetamain.duckdb"
+        db_exists = Path(db_path).exists()
+        db_color = "#3498db" if db_exists else "#e74c3c"
+        db_icon = "✅" if db_exists else "❌"
+        db_text = "Fichier DuckDB connecté" if db_exists else "Fichier DuckDB non trouvé"
 
-    with tab7:
+        st.markdown(
+            f"""
+            <div style="margin-bottom: 10px;">
+                <div style="
+                    background-color: {db_color};
+                    color: white;
+                    border: none;
+                    padding: 14px 20px;
+                    border-radius: 25px;
+                    font-weight: 600;
+                    width: 100%;
+                    font-size: 15px;
+                    text-align: center;
+                    font-family: sans-serif;
+                ">
+                    {db_icon} {db_text}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # BOUTON 3: Badge environnement (Orange/Vert selon env)
+        env = detect_environment()
+        if "PREPROD" in env:
+            badge_config = colors.ENV_PREPROD
+            label = "PREPROD"
+        elif "PROD" in env:
+            badge_config = colors.ENV_PROD
+            label = "PRODUCTION"
+        else:
+            badge_config = {"bg": "#666666", "text": "#ffffff", "icon": "❓"}
+            label = "UNKNOWN"
+
+        st.markdown(
+            f"""
+            <div style="margin-bottom: 10px;">
+                <div style="
+                    background-color: {badge_config['bg']};
+                    color: {badge_config['text']};
+                    border: none;
+                    padding: 14px 20px;
+                    border-radius: 25px;
+                    font-weight: 600;
+                    width: 100%;
+                    font-size: 15px;
+                    text-align: center;
+                    font-family: sans-serif;
+                ">
+                    {badge_config['icon']} {label}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # Fermer le container des boutons du bas
+        st.markdown("</div>", unsafe_allow_html=True)
+
+    # Main content - Display selected analysis
+    if selected_page == "📈 Tendances 1999-2018":
         st.header("📈 Analyses des tendances temporelles (1999-2018)")
         st.markdown(
             """
@@ -623,40 +671,168 @@ def main():
             """
         )
 
-        # Sélecteur d'analyse
-        analyse_choice = st.selectbox(
-            "Choisir une analyse:",
-            [
-                "📊 Volume de recettes",
-                "⏱️ Durée de préparation",
-                "🔧 Complexité des recettes",
-                "🥗 Valeurs nutritionnelles",
-                "🥘 Ingrédients",
-                "🏷️ Tags/Catégories",
-            ],
+        # Métriques clés en cartouches stylés
+        col1, col2, col3, col4 = st.columns(4)
+
+        with col1:
+            st.markdown(
+                f"""
+                <div style="background-color: {colors.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {colors.CARD_BORDER};">
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📅 Période</div>
+                    <div style="color: {colors.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">1999-2018</div>
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">20 années</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with col2:
+            st.markdown(
+                f"""
+                <div style="background-color: {colors.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {colors.CARD_BORDER};">
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">🍽️ Recettes</div>
+                    <div style="color: {colors.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">178,265</div>
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Total analysées</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with col3:
+            st.markdown(
+                f"""
+                <div style="background-color: {colors.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {colors.CARD_BORDER};">
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📊 Analyses</div>
+                    <div style="color: {colors.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">6</div>
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Dimensions étudiées</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with col4:
+            st.markdown(
+                f"""
+                <div style="background-color: {colors.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {colors.CARD_BORDER};">
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📈 Méthode</div>
+                    <div style="color: {colors.ORANGE_PRIMARY}; font-size: 1.25rem; font-weight: 700;">WLS</div>
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Weighted Least Squares</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        st.markdown("---")
+
+        # Display all 6 analyses without dropdown
+        st.subheader("📊 Volume de recettes")
+        analyse_trendline_volume()
+        st.markdown("---")
+
+        st.subheader("⏱️ Durée de préparation")
+        analyse_trendline_duree()
+        st.markdown("---")
+
+        st.subheader("🔧 Complexité des recettes")
+        analyse_trendline_complexite()
+        st.markdown("---")
+
+        st.subheader("🥗 Valeurs nutritionnelles")
+        analyse_trendline_nutrition()
+        st.markdown("---")
+
+        st.subheader("🥘 Ingrédients")
+        st.info("💡 Analyse des 10 ingrédients les plus populaires")
+        analyse_trendline_ingredients(top_n=10)
+        st.markdown("---")
+
+        st.subheader("🏷️ Tags/Catégories")
+        st.info("💡 Analyse des 10 tags les plus fréquents")
+        analyse_trendline_tags(top_n=10)
+
+    elif selected_page == "📊 Saisonnalité":
+        st.header("🌡️ Analyse de Saisonnalité")
+        st.info("🚧 Cette analyse sera disponible prochainement.")
+        st.markdown(
+            """
+            Analyse des patterns saisonniers dans les données Food.com :
+            - Tendances par mois/saison
+            - Ingrédients saisonniers
+            - Popularité des recettes selon les saisons
+            """
         )
 
-        # Affichage de l'analyse sélectionnée
-        if analyse_choice == "📊 Volume de recettes":
-            analyse_trendline_volume()
-        elif analyse_choice == "⏱️ Durée de préparation":
-            analyse_trendline_duree()
-        elif analyse_choice == "🔧 Complexité des recettes":
-            analyse_trendline_complexite()
-        elif analyse_choice == "🥗 Valeurs nutritionnelles":
-            analyse_trendline_nutrition()
-        elif analyse_choice == "🥘 Ingrédients":
-            top_n = st.slider("Nombre d'ingrédients dans les tops", 5, 20, 10)
-            analyse_trendline_ingredients(top_n=top_n)
-        elif analyse_choice == "🏷️ Tags/Catégories":
-            top_n = st.slider("Nombre de tags dans les tops", 5, 20, 10)
-            analyse_trendline_tags(top_n=top_n)
+    elif selected_page == "📊 Effet weekend":
+        st.header("📅 Analyse de l'Effet Weekend")
+        st.info("🚧 Cette analyse sera disponible prochainement.")
+        st.markdown(
+            """
+            Analyse des comportements différenciés weekend vs semaine :
+            - Volume d'activité par jour de semaine
+            - Types de recettes préférées
+            - Durée de préparation
+            """
+        )
 
-    # Footer
-    st.markdown("---")
-    st.markdown(
-        "*📊 Mangetamain Analytics - Données Food.com | 🔧 PREPROD Environment*"
-    )
+    elif selected_page == "📊 Recommandations":
+        st.header("⭐ Système de Recommandations")
+        st.info("🚧 Cette analyse sera disponible prochainement.")
+        st.markdown(
+            """
+            Système de recommandations basé sur le ML :
+            - Recommandations personnalisées
+            - Clustering d'utilisateurs
+            - Prédiction de popularité
+            """
+        )
+
+    else:
+        # Fallback
+        st.header(selected_page)
+        st.info("🚧 Cette analyse sera disponible prochainement.")
+
+    # Footer - Cartouche gris visible (pas fixe)
+    from datetime import datetime
+    today = datetime.now().strftime("%Y-%m-%d")
+
+    st.markdown("<br><br>", unsafe_allow_html=True)  # Espace avant footer
+
+    # Footer en 3 colonnes
+    footer_col1, footer_col2, footer_col3 = st.columns(3)
+
+    with footer_col1:
+        st.markdown(
+            f"""
+            <div style="background-color: {colors.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {colors.CARD_BORDER}; text-align: center;">
+                <span style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem;">🕒 Dernière màj: </span>
+                <span style="color: {colors.TEXT_PRIMARY}; font-weight: 600;">{today}</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with footer_col2:
+        st.markdown(
+            f"""
+            <div style="background-color: {colors.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {colors.CARD_BORDER}; text-align: center;">
+                <span style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem;">📦 Version: </span>
+                <span style="color: {colors.TEXT_PRIMARY}; font-weight: 600;">1.0.0</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with footer_col3:
+        st.markdown(
+            f"""
+            <div style="background-color: {colors.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {colors.CARD_BORDER}; text-align: center;">
+                <a href="https://github.com/julienlafrance/backtothefuturekitchen" target="_blank" style="color: {colors.ORANGE_PRIMARY}; text-decoration: none; font-weight: 600;">
+                    📚 Documentation
+                </a>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
     logger.info("✅ Application fully loaded")
 

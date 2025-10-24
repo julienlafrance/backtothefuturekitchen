@@ -1,0 +1,302 @@
+/**
+ * Charte graphique Back to the Kitchen
+ * Styles personnalisés pour Streamlit
+ */
+
+/* ============================================================================
+   SIDEBAR - Fond noir avec layout flex pour boutons en bas
+   ============================================================================ */
+
+[data-testid="stSidebar"] {
+    background-color: #000000;
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    background-color: #000000;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Container pour le contenu qui scroll */
+[data-testid="stSidebar"] .block-container {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* ============================================================================
+   ZONE PRINCIPALE - Gris foncé
+   ============================================================================ */
+
+.main {
+    background-color: #1e1e1e;
+}
+
+.stApp {
+    background-color: #1e1e1e;
+}
+
+/* ============================================================================
+   TYPOGRAPHIE
+   ============================================================================ */
+
+/* Headers orange */
+h1, h2, h3 {
+    color: #ff8c42 !important;
+}
+
+/* Texte global - Hiérarchie des gris */
+p, div, span {
+    color: #e0e0e0;  /* TEXT_PRIMARY - gris clair */
+}
+
+label {
+    color: #e0e0e0;  /* TEXT_PRIMARY */
+}
+
+small, .caption {
+    color: #888888;  /* TEXT_SECONDARY - gris moyen */
+}
+
+/* ============================================================================
+   NAVIGATION - Boutons radio stylisés SANS checkboxes
+   ============================================================================ */
+
+/* Label du groupe radio */
+[data-testid="stSidebar"] .stRadio > label {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Items de navigation */
+[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"] {
+    background-color: transparent;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+}
+
+/* Cacher les cercles de radio */
+[data-testid="stSidebar"] .stRadio input[type="radio"] {
+    display: none;
+}
+
+[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-child {
+    display: none;
+}
+
+/* Hover sur items */
+[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:hover {
+    background-color: #2a2a2a;
+}
+
+/* Item sélectionné - Gradient orange MOINS PÉTANT */
+[data-testid="stSidebar"] .stRadio input:checked + div {
+    background: linear-gradient(135deg, #d97b3a 0%, #c66a2f 100%);
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-weight: bold;
+}
+
+/* ============================================================================
+   MÉTRIQUES ET CARDS
+   ============================================================================ */
+
+/* Métriques Streamlit */
+[data-testid="stMetricValue"] {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+[data-testid="stMetricLabel"] {
+    color: #888888;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================================================
+   INPUTS ET CONTRÔLES
+   ============================================================================ */
+
+/* Sliders */
+.stSlider {
+    padding: 10px 0;
+}
+
+/* Selectbox et autres inputs */
+[data-baseweb="select"] {
+    background-color: #2a2a2a;
+}
+
+[data-baseweb="select"] > div {
+    background-color: #2a2a2a;
+    border-color: #444444;
+}
+
+/* Focus sur inputs */
+[data-baseweb="select"]:focus-within > div {
+    border-color: #ff8c42;
+}
+
+/* ============================================================================
+   BOUTONS
+   ============================================================================ */
+
+/* Bouton primaire (orange) */
+.stButton > button {
+    background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(255, 140, 66, 0.3);
+    transition: all 0.3s ease;
+}
+
+.stButton > button:hover {
+    background: linear-gradient(135deg, #ffa560 0%, #ff8c42 100%);
+    box-shadow: 0 6px 8px rgba(255, 140, 66, 0.4);
+    transform: translateY(-2px);
+}
+
+/* ============================================================================
+   EXPANDERS
+   ============================================================================ */
+
+[data-testid="stExpander"] {
+    background-color: #2a2a2a;
+    border: 1px solid #333333;
+    border-radius: 8px;
+}
+
+[data-testid="stExpander"] summary {
+    color: #ff8c42;
+    font-weight: 600;
+}
+
+/* ============================================================================
+   TABS
+   ============================================================================ */
+
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background-color: transparent;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-radius: 8px 8px 0 0;
+    padding: 12px 24px;
+    border: none;
+}
+
+.stTabs [aria-selected="true"] {
+    background-color: #ff8c42;
+    color: white;
+}
+
+/* ============================================================================
+   DATAFRAMES ET TABLEAUX
+   ============================================================================ */
+
+[data-testid="stDataFrame"] {
+    background-color: #2a2a2a;
+}
+
+/* Headers de tableau */
+.stDataFrame thead tr th {
+    background-color: #1a1a1a;
+    color: #ff8c42;
+    font-weight: 600;
+}
+
+/* ============================================================================
+   MESSAGES (info, success, warning, error) - STYLE UNIFORMISÉ BLEU
+   ============================================================================ */
+
+/* Toutes les boîtes info en bleu uniforme */
+[data-baseweb="notification"] {
+    background: linear-gradient(135deg, #2980b9 0%, #3498db 100%) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 20px !important;
+    color: #ffffff !important;
+}
+
+[data-baseweb="notification"] div {
+    color: #ffffff !important;
+}
+
+/* Icône des messages info */
+[data-baseweb="notification"] svg {
+    fill: #ffffff !important;
+}
+
+/* Success - garde le vert */
+[data-baseweb="notification"][kind="success"] {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+}
+
+/* Warning - garde l'orange/jaune */
+[data-baseweb="notification"][kind="warning"] {
+    background: linear-gradient(135deg, #d68910 0%, #f39c12 100%) !important;
+}
+
+/* Error - garde le rouge */
+[data-baseweb="notification"][kind="error"] {
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%) !important;
+}
+
+/* ============================================================================
+   LIENS
+   ============================================================================ */
+
+a {
+    color: #ff8c42;  /* ORANGE_PRIMARY */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #ffa560;  /* ORANGE_LIGHT */
+}
+
+/* ============================================================================
+   SCROLLBARS PERSONNALISÉES
+   ============================================================================ */
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #444444;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555555;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .footer {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+    }
+}
