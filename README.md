@@ -94,18 +94,30 @@ docker-compose -f docker-compose-prod.yml up -d
 
 ### Pipeline CI/CD Automatisé
 
+**Pipeline complet avec self-hosted runner:**
+- ✅ **CI** - Tests automatiques sur chaque push/PR
+- ✅ **CD Preprod** - Déploiement auto sur https://mangetamain.lafrance.io/
+- ✅ **CD Prod** - Déploiement manuel sur https://backtothefuturekitchen.lafrance.io/
+- 📬 **Notifications Discord** - Alertes temps réel pour chaque déploiement
+
 **Vérification locale avant push**
 ```bash
 ./run_ci_checks.sh prod    # Teste 20_prod
 ./run_ci_checks.sh preprod # Teste 10_preprod
 ```
 
-Le pipeline CI/CD GitHub Actions vérifie automatiquement :
+**GitHub Actions vérifie automatiquement:**
 - ✅ **PEP8 compliance** (flake8)
 - ✅ **Code formatting** (black)
 - ✅ **Docstrings** (pydocstyle - Google style)
 - ✅ **Tests unitaires** avec coverage >= 90%
 - ✅ **Type checking** (mypy - optionnel)
+
+**Déploiement automatique:**
+- 🚀 **Preprod** - Auto-deploy sur push vers `main`
+- 🔒 **Prod** - Déploiement manuel avec confirmation "DEPLOY"
+- 🏥 **Health checks** - Vérification automatique des URLs
+- 📬 **Discord** - Notifications succès/échec avec instructions rollback
 
 📚 **Documentation complète:** Voir [README_CI_CD.md](README_CI_CD.md)
 
@@ -157,11 +169,11 @@ uv run pytest tests/unit/ -v --cov=streamlit --cov-report=html
 
 ## 🔧 Environnements
 
-| Environnement | Port | Status | Python | Usage |
-|---------------|------|--------|--------|--------|
-| **PREPROD** | 8500 | ✅ | 3.13.3 | Développement |
-| **PROD** | 8501 | ✅ | 3.13.3 | Production |
-| **Containers** | 8500/8501 | ✅ | 3.13.3 | Déploiement |
+| Environnement | Port | URL | Status | CD |
+|---------------|------|-----|--------|-----|
+| **PREPROD** | 8500 | https://mangetamain.lafrance.io/ | ✅ | Auto-deploy |
+| **PROD** | 8501 | https://backtothefuturekitchen.lafrance.io/ | ✅ | Manuel |
+| **Self-hosted Runner** | - | dataia (VPN) | ✅ | Active |
 
 ## 📈 Performance
 
@@ -193,18 +205,24 @@ uv run pytest tests/unit/ -v --cov=streamlit --cov-report=html
 
 ## 🏷️ Version
 
-**Version actuelle** : 2025-10-23
+**Version actuelle** : 2025-10-24
 - ✅ Configuration S3 simplifiée et optimisée
 - ✅ Python 3.13.3 unifié sur tous environnements
 - ✅ Performance S3 maximisée (DNAT bypass)
 - ✅ DuckDB avec secrets intégrés
 - ✅ Architecture nettoyée et validée
 - ✅ **Tests et coverage complets (96 tests, 98% coverage)**
-- ✅ **Pipeline CI/CD avec GitHub Actions**
+- ✅ **Pipeline CI/CD complet avec GitHub Actions**
   - Vérification PEP8 automatique (flake8)
   - Validation des docstrings (pydocstyle)
   - Tests automatisés sur PR et merge vers main
   - Coverage minimum 90% obligatoire
+- ✅ **Déploiement automatisé (CD)**
+  - Self-hosted runner sur dataia (VPN)
+  - CD Preprod: auto-deploy sur push main
+  - CD Prod: déploiement manuel avec confirmation
+  - Health checks automatiques sur URLs publiques
+  - Notifications Discord temps réel
 
 ---
 
