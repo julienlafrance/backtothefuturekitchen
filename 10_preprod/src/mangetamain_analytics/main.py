@@ -525,6 +525,16 @@ def main():
 
     # Sidebar with navigation
     with st.sidebar:
+        # Logo at the top
+        logo_path = Path("src/mangetamain_analytics/assets/back_to_the_kitchen_logo.png")
+        if logo_path.exists():
+            st.image(str(logo_path), use_container_width=True)
+        else:
+            # Fallback: display text logo if image not found
+            st.markdown("### 🍳 Back to the Kitchen")
+
+        st.markdown("---")
+
         # Navigation menu with Analyses title
         st.markdown("### Analyses")
         selected_page = st.radio(
