@@ -72,6 +72,9 @@ omit = [
     "*/pages/*",
     "*/__pycache__/*",
     "*/.venv/*",
+    "*/utils/colors.py",  # Fichier de configuration de couleurs
+    "*/utils/chart_theme.py",  # Fichier de thème graphique
+    "*/visualization/analyse_trendlines_v2.py",  # Version v2 en développement
 ]
 
 [tool.coverage.report]
