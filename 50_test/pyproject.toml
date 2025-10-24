@@ -16,8 +16,14 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = []
+# Désactive complètement l'auto-discovery
+# 50_test est un répertoire de tests uniquement, pas un package
 py-modules = []
+
+[tool.setuptools.packages.find]
+# Liste vide = aucun package à découvrir
+where = ["."]
+include = []
 
 [tool.setuptools.package-data]
 "*" = []
