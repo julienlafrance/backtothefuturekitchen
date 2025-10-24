@@ -9,6 +9,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* ============================================================================
+   SUPPRESSION ESPACE EN HAUT - Padding/Margin global
+   ============================================================================ */
+
+/* Supprime tout padding/margin de la zone principale */
+.main .block-container {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+.main {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Supprime padding de la section principale */
+section.main > div {
+    padding-top: 0 !important;
+}
+
+/* ============================================================================
    SIDEBAR - Fond noir avec layout flex pour boutons en bas
    ============================================================================ */
 
