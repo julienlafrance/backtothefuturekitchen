@@ -26,6 +26,7 @@ from visualization.analyse_trendlines_v2 import (
     analyse_trendline_ingredients,
     analyse_trendline_tags,
 )
+from utils import colors
 
 
 def detect_environment():
@@ -54,32 +55,22 @@ def display_environment_badge():
     env = detect_environment()
 
     if "PREPROD" in env:
-        st.sidebar.markdown(
-            """
-            <div style="background-color: #5cb85c; padding: 8px; border-radius: 8px; text-align: center; margin-top: 15px;">
-                <small style="color: white; margin: 0; font-weight: bold; font-size: 11px;">● PREPROD</small>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    elif "PROD (Docker)" in env:
-        st.sidebar.markdown(
-            """
-            <div style="background-color: #5cb85c; padding: 8px; border-radius: 8px; text-align: center; margin-top: 15px;">
-                <small style="color: white; margin: 0; font-weight: bold; font-size: 11px;">● PRODUCTION</small>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        badge_config = colors.ENV_PREPROD
+        label = "PREPROD"
     elif "PROD" in env:
-        st.sidebar.markdown(
-            """
-            <div style="background-color: #5cb85c; padding: 8px; border-radius: 8px; text-align: center; margin-top: 15px;">
-                <small style="color: white; margin: 0; font-weight: bold; font-size: 11px;">● PRODUCTION</small>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        badge_config = colors.ENV_PROD
+        label = "PRODUCTION"
+    else:
+        return
+
+    st.sidebar.markdown(
+        f"""
+        <div style="background-color: {badge_config['bg']}; padding: 8px; border-radius: 8px; text-align: center; margin-top: 15px;">
+            <small style="color: {badge_config['text']}; margin: 0; font-weight: bold; font-size: 11px;">{badge_config['icon']} {label}</small>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 # Ensure logs directory exists
@@ -520,86 +511,13 @@ def main():
         st.info("💡 Assurez-vous que le fichier `data/mangetamain.duckdb` existe")
         return
 
-    # Custom CSS - Charte graphique Back to the Kitchen
-    st.markdown(
-        """
-        <style>
-        /* Sidebar - Fond noir */
-        [data-testid="stSidebar"] {
-            background-color: #000000;
-        }
-        [data-testid="stSidebar"] > div:first-child {
-            background-color: #000000;
-        }
-
-        /* Zone principale - Gris foncé */
-        .main {
-            background-color: #1e1e1e;
-        }
-        .stApp {
-            background-color: #1e1e1e;
-        }
-
-        /* Headers orange */
-        h1, h2, h3 {
-            color: #ff8c42 !important;
-        }
-
-        /* Boutons radio stylisés */
-        [data-testid="stSidebar"] .stRadio > label {
-            color: #ffffff;
-        }
-
-        [data-testid="stSidebar"] .stRadio label[data-baseweb="radio"] {
-            background-color: transparent;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin: 5px 0;
-            transition: all 0.3s ease;
-        }
-
-        [data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:hover {
-            background-color: #2a2a2a;
-        }
-
-        /* Item sélectionné en orange */
-        [data-testid="stSidebar"] .stRadio input:checked + div {
-            background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
-            border-radius: 8px;
-            padding: 10px 15px;
-            font-weight: bold;
-        }
-
-        /* Footer fixe */
-        .footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #1a1a1a;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #333;
-            font-size: 12px;
-            color: #888;
-            z-index: 999;
-        }
-
-        .footer a {
-            color: #ff8c42;
-            text-decoration: none;
-        }
-
-        /* Texte global */
-        p, div, span {
-            color: #e0e0e0;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    # Load custom CSS from external file
+    css_path = Path("src/mangetamain_analytics/assets/custom.css")
+    if css_path.exists():
+        with open(css_path) as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    else:
+        logger.warning(f"CSS file not found: {css_path}")
 
     # Sidebar with navigation
     with st.sidebar:
@@ -631,28 +549,9 @@ def main():
             label_visibility="collapsed"
         )
 
-        # Bouton Rafraîchir orange
-        st.markdown(
-            """
-            <div style="margin: 20px 0;">
-                <button onclick="window.location.reload();" style="
-                    background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
-                    color: white;
-                    border: none;
-                    padding: 12px 20px;
-                    border-radius: 25px;
-                    cursor: pointer;
-                    font-weight: bold;
-                    width: 100%;
-                    font-size: 14px;
-                    box-shadow: 0 4px 6px rgba(255, 140, 66, 0.3);
-                ">
-                    🔄 Rafraîchir
-                </button>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        # Bouton Rafraîchir orange avec Streamlit
+        if st.button("🔄 Rafraîchir", use_container_width=True):
+            st.rerun()
 
         # Spacer to push badges to bottom
         for _ in range(5):
@@ -679,6 +578,58 @@ def main():
             pour identifier les évolutions significatives.
             """
         )
+
+        # Métriques clés en cartouches stylés
+        col1, col2, col3, col4 = st.columns(4)
+
+        with col1:
+            st.markdown(
+                f"""
+                <div style="background-color: {colors.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {colors.CARD_BORDER};">
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📅 Période</div>
+                    <div style="color: {colors.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">1999-2018</div>
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">20 années</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with col2:
+            st.markdown(
+                f"""
+                <div style="background-color: {colors.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {colors.CARD_BORDER};">
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">🍽️ Recettes</div>
+                    <div style="color: {colors.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">178,265</div>
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Total analysées</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with col3:
+            st.markdown(
+                f"""
+                <div style="background-color: {colors.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {colors.CARD_BORDER};">
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📊 Analyses</div>
+                    <div style="color: {colors.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">6</div>
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Dimensions étudiées</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        with col4:
+            st.markdown(
+                f"""
+                <div style="background-color: {colors.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {colors.CARD_BORDER};">
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📈 Méthode</div>
+                    <div style="color: {colors.ORANGE_PRIMARY}; font-size: 1.25rem; font-weight: 700;">WLS</div>
+                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Weighted Least Squares</div>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
         st.markdown("---")
 
         # Display all 6 analyses without dropdown
@@ -748,26 +699,48 @@ def main():
         st.header(selected_page)
         st.info("🚧 Cette analyse sera disponible prochainement.")
 
-    # Footer - Style Back to the Kitchen
+    # Footer - Cartouche gris visible (pas fixe)
     from datetime import datetime
     today = datetime.now().strftime("%Y-%m-%d")
 
-    st.markdown(
-        f"""
-        <div class="footer">
-            <div style="display: flex; gap: 20px; align-items: center;">
-                <span>🕒 Dernière màj: {today}</span>
-                <span>📦 Version 1.0.0</span>
+    st.markdown("<br><br>", unsafe_allow_html=True)  # Espace avant footer
+
+    # Footer en 3 colonnes
+    footer_col1, footer_col2, footer_col3 = st.columns(3)
+
+    with footer_col1:
+        st.markdown(
+            f"""
+            <div style="background-color: {colors.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {colors.CARD_BORDER}; text-align: center;">
+                <span style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem;">🕒 Dernière màj: </span>
+                <span style="color: {colors.TEXT_PRIMARY}; font-weight: 600;">{today}</span>
             </div>
-            <div>
-                <a href="https://github.com/julienlafrance/backtothefuturekitchen" target="_blank">
+            """,
+            unsafe_allow_html=True
+        )
+
+    with footer_col2:
+        st.markdown(
+            f"""
+            <div style="background-color: {colors.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {colors.CARD_BORDER}; text-align: center;">
+                <span style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem;">📦 Version: </span>
+                <span style="color: {colors.TEXT_PRIMARY}; font-weight: 600;">1.0.0</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with footer_col3:
+        st.markdown(
+            f"""
+            <div style="background-color: {colors.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {colors.CARD_BORDER}; text-align: center;">
+                <a href="https://github.com/julienlafrance/backtothefuturekitchen" target="_blank" style="color: {colors.ORANGE_PRIMARY}; text-decoration: none; font-weight: 600;">
                     📚 Documentation
                 </a>
             </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+            """,
+            unsafe_allow_html=True
+        )
 
     logger.info("✅ Application fully loaded")
 

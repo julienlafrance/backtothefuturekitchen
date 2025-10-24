@@ -1,0 +1,60 @@
+# Configuration Streamlit - Mangetamain Analytics
+# Charte graphique Back to the Kitchen
+
+[theme]
+# Couleur principale (boutons, liens)
+primaryColor = "#ff8c42"
+
+# Fond de la page principale
+backgroundColor = "#1e1e1e"
+
+# Fond des widgets et sidebar
+secondaryBackgroundColor = "#2a2a2a"
+
+# Couleur du texte
+textColor = "#e0e0e0"
+
+# Police de caractères
+font = "sans serif"
+
+[server]
+# Mode headless (sans interface graphique)
+headless = true
+
+# Port par défaut
+port = 8500
+
+# Adresse d'écoute
+address = "0.0.0.0"
+
+# Activer CORS
+enableCORS = false
+
+# Activer XSRF protection
+enableXsrfProtection = true
+
+[browser]
+# Collecter les métriques d'utilisation
+gatherUsageStats = false
+
+# Ouvrir automatiquement le navigateur
+serverAddress = "localhost"
+
+[runner]
+# Activer le mode fast rerun
+fastReruns = true
+
+# Format des nombres
+magicEnabled = true
+
+[logger]
+# Niveau de log
+level = "info"
+
+# Format des messages
+messageFormat = "%(asctime)s %(message)s"
+
+[client]
+# Afficher le logo Streamlit
+showErrorDetails = true
+toolbarMode = "minimal"
