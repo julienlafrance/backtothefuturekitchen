@@ -12,6 +12,7 @@ from loguru import logger
 import sys
 import os
 import plotly.express as px
+from streamlit_extras.stylable_container import stylable_container
 from visualization.custom_charts import (
     create_correlation_heatmap,
     create_distribution_plot,
@@ -29,6 +30,21 @@ from visualization.analyse_trendlines_v2 import (
 from visualization.analyse_seasonality import render_seasonality_analysis
 from visualization.analyse_weekend import render_weekend_analysis
 from utils import colors
+
+# Fonction helper pour créer des options de menu avec icônes Lucide
+def create_nav_option_with_icon(icon_name, text):
+    """Crée une option de navigation avec icône Lucide inline."""
+    # SVG Lucide inline pour meilleur contrôle
+    lucide_icons = {
+        "calendar-days": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>',
+        "sun": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>',
+        "sparkles": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>',
+        "bar-chart-2": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>',
+        "refresh-cw": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>'
+    }
+
+    icon_svg = lucide_icons.get(icon_name, "")
+    return f'<div style="display: flex; align-items: center; gap: 10px;">{icon_svg}<span>{text}</span></div>'
 
 
 def detect_environment():
@@ -534,21 +550,25 @@ def main():
         st.markdown("---")
 
         # Navigation menu with Analyses title
-        st.markdown("### Analyses")
+        st.markdown('<p style="color: #FF8C00; font-family: \'Michroma\', sans-serif; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px; font-weight: 600;">Analyses</p>', unsafe_allow_html=True)
 
-        # Menu items with icons (réorganisé: Tendances en bas avec "- test")
-        menu_options = {
-            "📅 Analyses Saisonnières": "📅",
-            "📆 Effet Jour/Week-end": "📆",
-            "📊 Recommandations": "⭐",
-            "📈 Tendances 1999-2018 - test": "📈"
-        }
+        # Menu items with Lucide icons
+        menu_options = [
+            ("calendar-days", "Analyses Saisonnières"),
+            ("sun", "Effet Jour/Week-end"),
+            ("sparkles", "Recommandations"),
+            ("bar-chart-2", "Tendances 1999-2018 - test")
+        ]
+
+        # Options pour st.radio (texte simple)
+        menu_labels = [opt[1] for opt in menu_options]
 
         selected_page = st.radio(
             "Choisir une analyse:",
-            list(menu_options.keys()),
+            menu_labels,
             index=0,
-            label_visibility="collapsed"
+            label_visibility="collapsed",
+            format_func=lambda x: f"  {x}"  # Ajout d'espace pour l'icône CSS
         )
 
         # Container HTML pour les boutons fixés en bas
@@ -702,7 +722,7 @@ def main():
         st.markdown("</div>", unsafe_allow_html=True)
 
     # Main content - Display selected analysis
-    if selected_page == "📈 Tendances 1999-2018 - test":
+    if selected_page == "Tendances 1999-2018 - test":
         st.markdown('<h1 style="margin-top: 0; padding-top: 0;">📈 Analyses des tendances temporelles (1999-2018)</h1>', unsafe_allow_html=True)
         st.markdown(
             """
@@ -791,15 +811,15 @@ def main():
         st.info("💡 Analyse des 10 tags les plus fréquents")
         analyse_trendline_tags(top_n=10)
 
-    elif selected_page == "📅 Analyses Saisonnières":
+    elif selected_page == "Analyses Saisonnières":
         # Appel du module d'analyse saisonnière avec charte graphique
         render_seasonality_analysis()
 
-    elif selected_page == "📆 Effet Jour/Week-end":
+    elif selected_page == "Effet Jour/Week-end":
         # Appel du module d'analyse weekend avec charte graphique
         render_weekend_analysis()
 
-    elif selected_page == "📊 Recommandations":
+    elif selected_page == "Recommandations":
         st.markdown('<h1 style="margin-top: 0; padding-top: 0;">⭐ Système de Recommandations</h1>', unsafe_allow_html=True)
         st.info("🚧 Cette analyse sera disponible prochainement.")
         st.markdown(
