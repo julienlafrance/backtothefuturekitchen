@@ -83,6 +83,12 @@ ENV_PREPROD = {
     "icon": "🔍",
 }
 
+# Constantes séparées pour utilisation directe
+ENV_PROD_BG = SUCCESS
+ENV_PROD_TEXT = TEXT_WHITE
+ENV_PREPROD_BG = WARNING
+ENV_PREPROD_TEXT = "#333333"
+
 # ============================================================================
 # COMPOSANTS UI
 # ============================================================================
@@ -184,6 +190,10 @@ __all__ = [
     # Badges
     "ENV_PROD",
     "ENV_PREPROD",
+    "ENV_PROD_BG",
+    "ENV_PROD_TEXT",
+    "ENV_PREPROD_BG",
+    "ENV_PREPROD_TEXT",
     # Composants
     "BUTTON_PRIMARY_BG",
     "BUTTON_PRIMARY_TEXT",

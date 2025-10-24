@@ -537,6 +537,10 @@ def main():
     else:
         logger.warning(f"CSS file not found: {css_path}")
 
+    # Initialize session state for current page if not exists
+    if 'current_page' not in st.session_state:
+        st.session_state.current_page = "Analyses Saisonnières"
+
     # Sidebar with navigation
     with st.sidebar:
         # Logo at the top
@@ -547,17 +551,18 @@ def main():
             # Fallback: display text logo if image not found
             st.markdown("### 🍳 Back to the Kitchen")
 
-        st.markdown("---")
+        # Séparateur subtil
+        st.markdown("<hr style='border: 0.5px solid rgba(240, 240, 240, 0.1); margin: 20px 0;'>", unsafe_allow_html=True)
 
         # Titre de section ANALYSES avec classe CSS
         st.markdown(
-            '<h3 class="analyses-title">ANALYSES</h3>',
+            f'<h3 class="sidebar-category-title">ANALYSES</h3>',
             unsafe_allow_html=True
         )
 
         # Texte introductif
         st.markdown(
-            '<p class="intro-text">Choisir une analyse :</p>',
+            f'<p class="sidebar-subtitle">CHOISIR UNE ANALYSE:</p>',
             unsafe_allow_html=True
         )
 
@@ -572,61 +577,48 @@ def main():
         # Options pour st.radio (texte simple)
         menu_labels = [opt[1] for opt in menu_options]
 
+        # Radio avec icônes en préfixe (les icônes seront ajoutées via CSS)
         selected_page = st.radio(
             "Navigation",
             menu_labels,
-            index=0,
+            index=menu_labels.index(st.session_state.current_page) if st.session_state.current_page in menu_labels else 0,
             label_visibility="collapsed",
-            format_func=lambda x: f"  {x}"  # Ajout d'espace pour l'icône CSS
+            key="main_nav"
         )
 
-        # Container HTML pour les badges fixés en bas
-        st.markdown(
-            """
-            <style>
-            /* Forcer les badges du bas à rester en bas */
-            [data-testid="stSidebar"] {
-                display: flex !important;
-                flex-direction: column !important;
-            }
-            .sidebar-badges {
-                margin-top: auto;
-                padding-top: 20px;
-                border-top: 1px solid rgba(240, 240, 240, 0.1);
-            }
-            </style>
-            <div class="sidebar-badges">
-            """,
-            unsafe_allow_html=True
-        )
+        # Mettre à jour session state
+        if selected_page != st.session_state.current_page:
+            st.session_state.current_page = selected_page
+
+        # Séparateur avant bouton Rafraîchir
+        st.markdown("<hr style='border: 0.5px solid rgba(240, 240, 240, 0.1); margin: 20px 0;'>", unsafe_allow_html=True)
+
+        # Bouton Rafraîchir stylisé
+        if st.button("🔄 Rafraîchir", key="btn_refresh", use_container_width=True):
+            st.cache_data.clear()
+            st.rerun()
+
+        # Spacer pour pousser les badges en bas (via CSS flexbox)
+        st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 
         # BADGE STATUT S3 - Style pill avec icône
-        s3_error_msg = ""
+        s3_ready = False
         try:
-            # Test S3 en listant le bucket
+            # Test S3 simplifié
             import boto3
             from configparser import ConfigParser
 
             config = ConfigParser()
-            # Essayer différents chemins pour trouver credentials
             possible_paths = [
-                Path("/app/96_keys/credentials"),  # Docker
-                Path("../../96_keys/credentials"),  # Local dev
-                Path("/home/dataia25/mangetamain/96_keys/credentials"),  # Direct sur dataia
+                Path("/app/96_keys/credentials"),
+                Path("../../96_keys/credentials"),
+                Path("/home/dataia25/mangetamain/96_keys/credentials"),
             ]
 
-            credentials_path = None
-            for p in possible_paths:
-                if p.exists():
-                    credentials_path = p
-                    break
+            credentials_path = next((p for p in possible_paths if p.exists()), None)
 
-            if credentials_path is None:
-                s3_ready = False
-                s3_error_msg = "Credentials non trouvés"
-            else:
+            if credentials_path:
                 config.read(str(credentials_path))
-
                 s3 = boto3.client(
                     's3',
                     endpoint_url='http://s3fast.lafrance.io',
@@ -634,27 +626,19 @@ def main():
                     aws_secret_access_key=config['s3fast']['aws_secret_access_key'],
                     region_name='garage-fast'
                 )
-
-                # Test simple: list objects dans le bucket
                 response = s3.list_objects_v2(Bucket='mangetamain', MaxKeys=1)
                 s3_ready = 'Contents' in response
-                s3_error_msg = ""
-        except Exception as e:
+        except Exception:
             s3_ready = False
-            s3_error_msg = str(e)[:50]  # Premiers 50 caractères de l'erreur
 
-        # Badge S3 style pill avec classe CSS
-        db_status_class = "success" if s3_ready else "error"
-        db_icon = "●"  # Icône circle-dot (Unicode)
-        db_text = "S3 Ready" if s3_ready else "S3 Error"
-
+        # Indicateur S3 Ready avec classe CSS
         st.markdown(
             f"""
-            <div style="text-align: center;">
-                <span class="badge-s3 {db_status_class}">
-                    <span class="badge-icon"></span>
-                    {db_text}
-                </span>
+            <div class="s3-ready-indicator">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <span>S3 {"Ready" if s3_ready else "Error"}</span>
             </div>
             """,
             unsafe_allow_html=True
@@ -663,29 +647,26 @@ def main():
         # BADGE ENVIRONNEMENT - Style pill avec classe CSS
         env = detect_environment()
         if "PREPROD" in env:
-            badge_class = "badge-preprod"
+            badge_class = "env-badge preprod-badge"
             label = "PREPROD"
         elif "PROD" in env:
-            badge_class = "badge-prod"
+            badge_class = "env-badge prod-badge"
             label = "PRODUCTION"
         else:
-            badge_class = "badge-preprod"  # Fallback sur PREPROD style
+            badge_class = "env-badge preprod-badge"
             label = "UNKNOWN"
 
         st.markdown(
             f"""
-            <div style="text-align: center;">
-                <span class="{badge_class}">
-                    <span class="badge-icon"></span>
-                    {label}
-                </span>
+            <div class="{badge_class}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="2"/>
+                </svg>
+                <span>{label}</span>
             </div>
             """,
             unsafe_allow_html=True
         )
-
-        # Fermer le container des boutons du bas
-        st.markdown("</div>", unsafe_allow_html=True)
 
     # Main content - Display selected analysis
     if selected_page == "Tendances 1999-2018 - test":
