@@ -583,7 +583,8 @@ def main():
             menu_labels,
             index=menu_labels.index(st.session_state.current_page) if st.session_state.current_page in menu_labels else 0,
             label_visibility="collapsed",
-            key="main_nav"
+            key="main_nav",
+            horizontal=False
         )
 
         # Mettre à jour session state
