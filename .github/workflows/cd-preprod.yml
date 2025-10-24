@@ -14,8 +14,9 @@ jobs:
     steps:
       - name: Notify deployment start
         run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"🚀 **Déploiement Preprod démarré**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n👤 Par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"🚀 **Déploiement Preprod démarré**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 Message: ${COMMIT_MSG}\n👤 Par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: Pull latest code
@@ -66,13 +67,15 @@ jobs:
       - name: Notify deployment success
         if: success()
         run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"✅ **Déploiement Preprod réussi!**\n🌐 URL: https://mangetamain.lafrance.io/\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
+            -d "{\"content\":\"✅ **Déploiement Preprod réussi!**\n🌐 URL: https://mangetamain.lafrance.io/\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 ${COMMIT_MSG}\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: Notify deployment failure
         if: failure()
         run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"❌ **ÉCHEC Déploiement Preprod**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n⚠️  **Container dans état cassé - intervention manuelle requise**\n📋 Vérifier les logs: \`docker-compose -f docker-compose-preprod.yml logs\`\n👤 Commit par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"❌ **ÉCHEC Déploiement Preprod**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 ${COMMIT_MSG}\n⚠️  **Container dans état cassé - intervention manuelle requise**\n📋 Vérifier les logs: \`docker-compose -f docker-compose-preprod.yml logs\`\n👤 Commit par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
