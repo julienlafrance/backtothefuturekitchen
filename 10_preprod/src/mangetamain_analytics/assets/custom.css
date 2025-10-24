@@ -50,7 +50,7 @@ small, .caption {
 }
 
 /* ============================================================================
-   NAVIGATION - Boutons radio stylisés
+   NAVIGATION - Boutons radio stylisés SANS checkboxes
    ============================================================================ */
 
 /* Label du groupe radio */
@@ -68,14 +68,23 @@ small, .caption {
     transition: all 0.3s ease;
 }
 
+/* Cacher les cercles de radio */
+[data-testid="stSidebar"] .stRadio input[type="radio"] {
+    display: none;
+}
+
+[data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-child {
+    display: none;
+}
+
 /* Hover sur items */
 [data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:hover {
     background-color: #2a2a2a;
 }
 
-/* Item sélectionné - Gradient orange */
+/* Item sélectionné - Gradient orange MOINS PÉTANT */
 [data-testid="stSidebar"] .stRadio input:checked + div {
-    background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
+    background: linear-gradient(135deg, #d97b3a 0%, #c66a2f 100%);
     border-radius: 8px;
     padding: 10px 15px;
     font-weight: bold;
@@ -198,32 +207,40 @@ small, .caption {
 }
 
 /* ============================================================================
-   MESSAGES (info, success, warning, error)
+   MESSAGES (info, success, warning, error) - STYLE UNIFORMISÉ BLEU
    ============================================================================ */
 
-.stAlert {
-    background-color: #2a2a2a;
-    border-left: 4px solid;
+/* Toutes les boîtes info en bleu uniforme */
+[data-baseweb="notification"] {
+    background: linear-gradient(135deg, #2980b9 0%, #3498db 100%) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 20px !important;
+    color: #ffffff !important;
 }
 
-/* Info */
-[data-baseweb="notification"][kind="info"] {
-    border-left-color: #5bc0de;
+[data-baseweb="notification"] div {
+    color: #ffffff !important;
 }
 
-/* Success */
+/* Icône des messages info */
+[data-baseweb="notification"] svg {
+    fill: #ffffff !important;
+}
+
+/* Success - garde le vert */
 [data-baseweb="notification"][kind="success"] {
-    border-left-color: #5cb85c;
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
 }
 
-/* Warning */
+/* Warning - garde l'orange/jaune */
 [data-baseweb="notification"][kind="warning"] {
-    border-left-color: #f0ad4e;
+    background: linear-gradient(135deg, #d68910 0%, #f39c12 100%) !important;
 }
 
-/* Error */
+/* Error - garde le rouge */
 [data-baseweb="notification"][kind="error"] {
-    border-left-color: #d9534f;
+    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%) !important;
 }
 
 /* ============================================================================
