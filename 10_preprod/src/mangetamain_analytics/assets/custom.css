@@ -255,40 +255,65 @@ small, .caption {
 }
 
 /* ============================================================================
-   MESSAGES (info, success, warning, error) - STYLE UNIFORMISÉ BLEU
+   MESSAGES (info, success, warning, error) - STYLE AMBIANCE CHALEUREUSE
    ============================================================================ */
 
-/* Toutes les boîtes info en bleu uniforme */
+/* Messages info - Style carte avec accent orange */
 [data-baseweb="notification"] {
-    background: linear-gradient(135deg, #2980b9 0%, #3498db 100%) !important;
+    background: #333333 !important;
     border: none !important;
+    border-left: 4px solid #FF8C00 !important;
     border-radius: 8px !important;
     padding: 20px !important;
-    color: #ffffff !important;
+    color: #F0F0F0 !important;
+    box-shadow: 0 2px 8px rgba(255, 140, 0, 0.15) !important;
 }
 
 [data-baseweb="notification"] div {
-    color: #ffffff !important;
+    color: #F0F0F0 !important;
 }
 
-/* Icône des messages info */
+/* Icône des messages info - Jaune doré */
 [data-baseweb="notification"] svg {
-    fill: #ffffff !important;
+    fill: #FFD700 !important;
 }
 
-/* Success - garde le vert */
+/* Success - Style carte vert */
 [data-baseweb="notification"][kind="success"] {
-    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%) !important;
+    background: #333333 !important;
+    border-left: 4px solid #28A745 !important;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.15) !important;
 }
 
-/* Warning - garde l'orange/jaune */
+[data-baseweb="notification"][kind="success"] svg {
+    fill: #28A745 !important;
+}
+
+/* Warning - Style carte jaune */
 [data-baseweb="notification"][kind="warning"] {
-    background: linear-gradient(135deg, #d68910 0%, #f39c12 100%) !important;
+    background: #333333 !important;
+    border-left: 4px solid #FFC107 !important;
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.15) !important;
+    color: #F0F0F0 !important;
 }
 
-/* Error - garde le rouge */
+[data-baseweb="notification"][kind="warning"] div {
+    color: #F0F0F0 !important;
+}
+
+[data-baseweb="notification"][kind="warning"] svg {
+    fill: #FFC107 !important;
+}
+
+/* Error - Style carte rouge */
 [data-baseweb="notification"][kind="error"] {
-    background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%) !important;
+    background: #333333 !important;
+    border-left: 4px solid #DC3545 !important;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.15) !important;
+}
+
+[data-baseweb="notification"][kind="error"] svg {
+    fill: #DC3545 !important;
 }
 
 /* ============================================================================
