@@ -56,9 +56,8 @@ def display_environment_badge():
     if "PREPROD" in env:
         st.sidebar.markdown(
             """
-            <div style="background-color: #6c757d; padding: 6px; border-radius: 5px; text-align: center; margin-top: 15px;">
-                <small style="color: white; margin: 0; font-weight: bold;">🔧 PREPROD</small>
-                <p style="color: white; margin: 0; font-size: 9px;">Environnement de développement</p>
+            <div style="background-color: #5cb85c; padding: 8px; border-radius: 8px; text-align: center; margin-top: 15px;">
+                <small style="color: white; margin: 0; font-weight: bold; font-size: 11px;">● PREPROD</small>
             </div>
             """,
             unsafe_allow_html=True,
@@ -66,9 +65,8 @@ def display_environment_badge():
     elif "PROD (Docker)" in env:
         st.sidebar.markdown(
             """
-            <div style="background-color: #6c757d; padding: 6px; border-radius: 5px; text-align: center; margin-top: 15px;">
-                <small style="color: white; margin: 0; font-weight: bold;">🐳 PROD (Docker)</small>
-                <p style="color: white; margin: 0; font-size: 9px;">Environnement production Docker</p>
+            <div style="background-color: #5cb85c; padding: 8px; border-radius: 8px; text-align: center; margin-top: 15px;">
+                <small style="color: white; margin: 0; font-weight: bold; font-size: 11px;">● PRODUCTION</small>
             </div>
             """,
             unsafe_allow_html=True,
@@ -76,9 +74,8 @@ def display_environment_badge():
     elif "PROD" in env:
         st.sidebar.markdown(
             """
-            <div style="background-color: #28a745; padding: 6px; border-radius: 5px; text-align: center; margin-top: 15px;">
-                <small style="color: white; margin: 0; font-weight: bold;">🚀 PRODUCTION</small>
-                <p style="color: white; margin: 0; font-size: 9px;">Environnement de production</p>
+            <div style="background-color: #5cb85c; padding: 8px; border-radius: 8px; text-align: center; margin-top: 15px;">
+                <small style="color: white; margin: 0; font-weight: bold; font-size: 11px;">● PRODUCTION</small>
             </div>
             """,
             unsafe_allow_html=True,
@@ -523,15 +520,81 @@ def main():
         st.info("💡 Assurez-vous que le fichier `data/mangetamain.duckdb` existe")
         return
 
-    # Custom CSS for black sidebar background
+    # Custom CSS - Charte graphique Back to the Kitchen
     st.markdown(
         """
         <style>
+        /* Sidebar - Fond noir */
         [data-testid="stSidebar"] {
             background-color: #000000;
         }
         [data-testid="stSidebar"] > div:first-child {
             background-color: #000000;
+        }
+
+        /* Zone principale - Gris foncé */
+        .main {
+            background-color: #1e1e1e;
+        }
+        .stApp {
+            background-color: #1e1e1e;
+        }
+
+        /* Headers orange */
+        h1, h2, h3 {
+            color: #ff8c42 !important;
+        }
+
+        /* Boutons radio stylisés */
+        [data-testid="stSidebar"] .stRadio > label {
+            color: #ffffff;
+        }
+
+        [data-testid="stSidebar"] .stRadio label[data-baseweb="radio"] {
+            background-color: transparent;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        [data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:hover {
+            background-color: #2a2a2a;
+        }
+
+        /* Item sélectionné en orange */
+        [data-testid="stSidebar"] .stRadio input:checked + div {
+            background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-weight: bold;
+        }
+
+        /* Footer fixe */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1a1a1a;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #333;
+            font-size: 12px;
+            color: #888;
+            z-index: 999;
+        }
+
+        .footer a {
+            color: #ff8c42;
+            text-decoration: none;
+        }
+
+        /* Texte global */
+        p, div, span {
+            color: #e0e0e0;
         }
         </style>
         """,
@@ -552,20 +615,47 @@ def main():
 
         # Navigation menu with Analyses title
         st.markdown("### Analyses")
+
+        # Menu items with icons
+        menu_options = {
+            "📈 Tendances 1999-2018": "📈",
+            "📊 Saisonnalité": "🌡️",
+            "📊 Effet weekend": "📅",
+            "📊 Recommandations": "⭐"
+        }
+
         selected_page = st.radio(
             "Choisir une analyse:",
-            [
-                "📈 Tendances 1999-2018",
-                "📊 [Analyse à venir]",
-                "📊 [Analyse à venir]",
-                "📊 [Analyse à venir]",
-            ],
+            list(menu_options.keys()),
             index=0,
             label_visibility="collapsed"
         )
 
+        # Bouton Rafraîchir orange
+        st.markdown(
+            """
+            <div style="margin: 20px 0;">
+                <button onclick="window.location.reload();" style="
+                    background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
+                    color: white;
+                    border: none;
+                    padding: 12px 20px;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    font-weight: bold;
+                    width: 100%;
+                    font-size: 14px;
+                    box-shadow: 0 4px 6px rgba(255, 140, 66, 0.3);
+                ">
+                    🔄 Rafraîchir
+                </button>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
         # Spacer to push badges to bottom
-        for _ in range(10):
+        for _ in range(5):
             st.markdown("")
 
         # Database status and environment badge at bottom (within sidebar)
@@ -617,24 +707,66 @@ def main():
         st.info("💡 Analyse des 10 tags les plus fréquents")
         analyse_trendline_tags(top_n=10)
 
-    else:
-        # Placeholder for future analyses
-        st.header(selected_page)
+    elif selected_page == "📊 Saisonnalité":
+        st.header("🌡️ Analyse de Saisonnalité")
         st.info("🚧 Cette analyse sera disponible prochainement.")
         st.markdown(
             """
-            Cette page est réservée pour les prochaines analyses qui seront intégrées :
-            - Analyse de saisonnalité
-            - Analyse d'effet weekend
-            - Système de recommandations
-            - Et bien plus...
+            Analyse des patterns saisonniers dans les données Food.com :
+            - Tendances par mois/saison
+            - Ingrédients saisonniers
+            - Popularité des recettes selon les saisons
             """
         )
 
-    # Footer
-    st.markdown("---")
+    elif selected_page == "📊 Effet weekend":
+        st.header("📅 Analyse de l'Effet Weekend")
+        st.info("🚧 Cette analyse sera disponible prochainement.")
+        st.markdown(
+            """
+            Analyse des comportements différenciés weekend vs semaine :
+            - Volume d'activité par jour de semaine
+            - Types de recettes préférées
+            - Durée de préparation
+            """
+        )
+
+    elif selected_page == "📊 Recommandations":
+        st.header("⭐ Système de Recommandations")
+        st.info("🚧 Cette analyse sera disponible prochainement.")
+        st.markdown(
+            """
+            Système de recommandations basé sur le ML :
+            - Recommandations personnalisées
+            - Clustering d'utilisateurs
+            - Prédiction de popularité
+            """
+        )
+
+    else:
+        # Fallback
+        st.header(selected_page)
+        st.info("🚧 Cette analyse sera disponible prochainement.")
+
+    # Footer - Style Back to the Kitchen
+    from datetime import datetime
+    today = datetime.now().strftime("%Y-%m-%d")
+
     st.markdown(
-        "*📊 Mangetamain Analytics - Données Food.com | 🔧 PREPROD Environment*"
+        f"""
+        <div class="footer">
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <span>🕒 Dernière màj: {today}</span>
+                <span>📦 Version 1.0.0</span>
+            </div>
+            <div>
+                <a href="https://github.com/julienlafrance/backtothefuturekitchen" target="_blank">
+                    📚 Documentation
+                </a>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
     )
 
     logger.info("✅ Application fully loaded")
