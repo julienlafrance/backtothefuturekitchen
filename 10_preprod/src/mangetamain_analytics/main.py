@@ -596,7 +596,7 @@ def main():
             unsafe_allow_html=True
         )
 
-        # BOUTON 2: Test S3 (Bleu ou Rouge selon statut)
+        # BADGE STATUT S3 - Style pill avec icône
         s3_error_msg = ""
         try:
             # Test S3 en listant le bucket
@@ -639,24 +639,24 @@ def main():
             s3_ready = False
             s3_error_msg = str(e)[:50]  # Premiers 50 caractères de l'erreur
 
-        db_color = "#3498db" if s3_ready else "#e74c3c"
-        db_icon = "✅" if s3_ready else "❌"
-        db_text = "S3 Ready" if s3_ready else "S3 Connection Error"
+        # Badge S3 style pill
+        db_color = colors.INFO if s3_ready else colors.ERROR
+        db_icon = "●" if s3_ready else "●"  # Icône circle-dot (Unicode)
+        db_text = "S3 Ready" if s3_ready else "S3 Error"
 
         st.markdown(
             f"""
-            <div style="margin-bottom: 10px;">
+            <div style="margin-bottom: 10px; text-align: center;">
                 <div style="
+                    display: inline-block;
                     background-color: {db_color};
                     color: white;
                     border: none;
-                    padding: 14px 20px;
-                    border-radius: 25px;
+                    padding: 8px 16px;
+                    border-radius: 20px;
                     font-weight: 600;
-                    width: 100%;
-                    font-size: 15px;
-                    text-align: center;
-                    font-family: sans-serif;
+                    font-size: 12px;
+                    font-family: 'Inter', sans-serif;
                 ">
                     {db_icon} {db_text}
                 </div>
@@ -665,7 +665,7 @@ def main():
             unsafe_allow_html=True
         )
 
-        # BOUTON 3: Badge environnement (Orange/Vert selon env)
+        # BADGE ENVIRONNEMENT - Style pill, positionné en bas
         env = detect_environment()
         if "PREPROD" in env:
             badge_config = colors.ENV_PREPROD
@@ -674,25 +674,24 @@ def main():
             badge_config = colors.ENV_PROD
             label = "PRODUCTION"
         else:
-            badge_config = {"bg": "#666666", "text": "#ffffff", "icon": "❓"}
+            badge_config = {"bg": "#666666", "text": "#ffffff", "icon": "●"}
             label = "UNKNOWN"
 
         st.markdown(
             f"""
-            <div style="margin-bottom: 10px;">
+            <div style="margin-bottom: 10px; text-align: center;">
                 <div style="
+                    display: inline-block;
                     background-color: {badge_config['bg']};
                     color: {badge_config['text']};
                     border: none;
-                    padding: 14px 20px;
-                    border-radius: 25px;
+                    padding: 8px 16px;
+                    border-radius: 20px;
                     font-weight: 600;
-                    width: 100%;
-                    font-size: 15px;
-                    text-align: center;
-                    font-family: sans-serif;
+                    font-size: 12px;
+                    font-family: 'Inter', sans-serif;
                 ">
-                    {badge_config['icon']} {label}
+                    ● {label}
                 </div>
             </div>
             """,
