@@ -204,6 +204,8 @@ small, .caption {
     width: 100% !important;
     box-sizing: border-box !important;
     max-width: none !important;
+    min-height: 48px !important;
+    height: 48px !important;
 }
 
 /* Force les divs internes du label à prendre 100% aussi */
@@ -279,6 +281,10 @@ small, .caption {
     box-shadow: 0 2px 8px rgba(255, 140, 0, 0.3);
     width: 100% !important;
     box-sizing: border-box !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 /* Texte de l'item sélectionné - Noir pur pour meilleure lisibilité */
