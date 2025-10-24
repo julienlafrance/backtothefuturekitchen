@@ -16,3 +16,8 @@ venv/
 
 # pytest cache
 .pytest_cache/
+
+# Build artifacts
+*.egg-info/
+build/
+dist/
