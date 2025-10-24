@@ -119,17 +119,25 @@ small, .caption {
 
 /* Label du groupe radio */
 [data-testid="stSidebar"] .stRadio > label {
-    color: #ffffff;
+    color: #FF8C00;
     font-weight: 600;
+    font-family: 'Michroma', sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    display: block;
 }
 
-/* Items de navigation */
+/* Items de navigation - État inactif */
 [data-testid="stSidebar"] .stRadio label[data-baseweb="radio"] {
-    background-color: transparent;
-    padding: 10px 15px;
+    background-color: rgba(51, 51, 51, 0.5);
+    padding: 12px 15px;
     border-radius: 8px;
-    margin: 5px 0;
+    margin: 6px 0;
     transition: all 0.3s ease;
+    border: 1px solid rgba(240, 240, 240, 0.1);
+    font-family: 'Inter', sans-serif;
 }
 
 /* Cacher les cercles de radio */
@@ -141,17 +149,26 @@ small, .caption {
     display: none;
 }
 
-/* Hover sur items */
+/* Hover sur items inactifs */
 [data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:hover {
-    background-color: #2a2a2a;
+    background-color: rgba(255, 215, 0, 0.1);
+    border-color: #FFD700;
 }
 
-/* Item sélectionné - Gradient orange vif */
+/* Item sélectionné - Orange vif avec bordure dorée */
 [data-testid="stSidebar"] .stRadio input:checked + div {
-    background: linear-gradient(135deg, #FF8C00 0%, #E24E1B 100%);
+    background: linear-gradient(90deg, #FF8C00 0%, #FFD700 100%);
     border-radius: 8px;
-    padding: 10px 15px;
+    padding: 12px 15px;
     font-weight: bold;
+    color: #1E1E1E;
+    border: 1px solid #FFD700;
+    box-shadow: 0 2px 8px rgba(255, 140, 0, 0.3);
+}
+
+/* Texte de l'item sélectionné */
+[data-testid="stSidebar"] .stRadio input:checked + div > div {
+    color: #1E1E1E !important;
 }
 
 /* ============================================================================
@@ -200,23 +217,26 @@ small, .caption {
    BOUTONS
    ============================================================================ */
 
-/* Bouton primaire (orange) */
+/* Bouton primaire (orange) - Rafraîchir */
 .stButton > button {
-    background: linear-gradient(135deg, #FF8C00 0%, #E24E1B 100%);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 25px;
+    background: linear-gradient(90deg, #FF8C00 0%, #FFD700 100%);
+    color: #1E1E1E;
+    border: 1px solid #FFD700;
+    padding: 12px 24px;
+    border-radius: 8px;
     font-weight: bold;
     font-family: 'Inter', sans-serif;
-    box-shadow: 0 4px 6px rgba(255, 140, 0, 0.3);
+    box-shadow: 0 2px 8px rgba(255, 140, 0, 0.3);
     transition: all 0.3s ease;
+    width: 100%;
+    font-size: 15px;
 }
 
 .stButton > button:hover {
-    background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
-    box-shadow: 0 6px 8px rgba(255, 140, 0, 0.4);
-    transform: translateY(-2px);
+    background: linear-gradient(90deg, #FFD700 0%, #FF8C00 100%);
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.5);
+    transform: translateY(-1px);
+    border-color: #FF8C00;
 }
 
 /* ============================================================================
