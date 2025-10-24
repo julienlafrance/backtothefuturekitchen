@@ -596,11 +596,30 @@ def main():
 
         # BOUTON 2: Test S3 (Bleu ou Rouge selon statut)
         try:
-            # Test simple: tenter de lire depuis S3 via DuckDB
-            conn = duckdb.connect("data/mangetamain.duckdb", read_only=True)
-            result = conn.execute("SELECT COUNT(*) FROM recipes LIMIT 1").fetchone()
-            conn.close()
-            s3_ready = result is not None
+            # Test S3 en listant le bucket
+            import boto3
+            from configparser import ConfigParser
+
+            config = ConfigParser()
+            # Chemin relatif depuis le dossier de l'app
+            credentials_path = Path("../../96_keys/credentials")
+            if not credentials_path.exists():
+                # Fallback pour Docker ou autre environnement
+                credentials_path = Path("/app/../96_keys/credentials")
+
+            config.read(str(credentials_path))
+
+            s3 = boto3.client(
+                's3',
+                endpoint_url='http://s3fast.lafrance.io',
+                aws_access_key_id=config['s3fast']['aws_access_key_id'],
+                aws_secret_access_key=config['s3fast']['aws_secret_access_key'],
+                region_name='garage-fast'
+            )
+
+            # Test simple: list objects dans le bucket
+            response = s3.list_objects_v2(Bucket='mangetamain', MaxKeys=1)
+            s3_ready = 'Contents' in response
         except Exception:
             s3_ready = False
 
