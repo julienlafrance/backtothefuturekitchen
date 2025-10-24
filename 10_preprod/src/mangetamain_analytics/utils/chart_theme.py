@@ -145,8 +145,8 @@ def apply_subplot_theme(fig, num_rows=1, num_cols=2):
                 showgrid=True,
                 gridcolor='#444444',
                 gridwidth=1,
-                tickfont=dict(color=colors.TEXT_PRIMARY, size=10),
-                title_font=dict(color=colors.TEXT_SECONDARY, size=11),
+                tickfont=dict(color=colors.TEXT_PRIMARY, size=12),
+                title_font=dict(color=colors.TEXT_SECONDARY, size=13),
                 row=row,
                 col=col
             )
@@ -154,8 +154,8 @@ def apply_subplot_theme(fig, num_rows=1, num_cols=2):
                 showgrid=True,
                 gridcolor='#444444',
                 gridwidth=1,
-                tickfont=dict(color=colors.TEXT_PRIMARY, size=10),
-                title_font=dict(color=colors.TEXT_SECONDARY, size=11),
+                tickfont=dict(color=colors.TEXT_PRIMARY, size=12),
+                title_font=dict(color=colors.TEXT_SECONDARY, size=13),
                 row=row,
                 col=col
             )
