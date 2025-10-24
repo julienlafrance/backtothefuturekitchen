@@ -18,8 +18,9 @@ jobs:
     steps:
       - name: Notify deployment start
         run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"🚨 **Déploiement PRODUCTION démarré**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n👤 Par: ${{ github.actor }}\n⚠️  Déploiement manuel confirmé\"}" \
+            -d "{\"content\":\"🚨 **Déploiement PRODUCTION démarré**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 Message: ${COMMIT_MSG}\n👤 Par: ${{ github.actor }}\n⚠️  Déploiement manuel confirmé\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: Backup current production version
@@ -78,16 +79,18 @@ jobs:
       - name: Notify deployment success
         if: success()
         run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"✅ **Déploiement PRODUCTION réussi!**\n🌐 URL: https://backtothefuturekitchen.lafrance.io/\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n👤 Déployé par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"✅ **Déploiement PRODUCTION réussi!**\n🌐 URL: https://backtothefuturekitchen.lafrance.io/\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 ${COMMIT_MSG}\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n👤 Déployé par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: Notify deployment failure
         if: failure()
         run: |
           OLD_COMMIT=$(cat /tmp/prod-backup-commit.txt)
+          COMMIT_MSG=$(git log -1 --pretty=%B | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"🚨 **ÉCHEC CRITIQUE - Déploiement PRODUCTION**\n❌ Health check échoué\n📦 Commit tenté: \`${GITHUB_SHA:0:7}\`\n🔙 Backup disponible: \`${OLD_COMMIT:0:7}\`\n⚠️  **PRODUCTION POTENTIELLEMENT CASSÉE**\n📋 Rollback manuel requis:\n\`\`\`\ncd /home/dataia25/mangetamain/20_prod\ngit reset --hard $OLD_COMMIT\ncd ../30_docker\ndocker-compose -f docker-compose-prod.yml restart\n\`\`\`\n👤 Tenté par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"🚨 **ÉCHEC CRITIQUE - Déploiement PRODUCTION**\n❌ Health check échoué\n📦 Commit tenté: \`${GITHUB_SHA:0:7}\`\n💬 ${COMMIT_MSG}\n🔙 Backup disponible: \`${OLD_COMMIT:0:7}\`\n⚠️  **PRODUCTION POTENTIELLEMENT CASSÉE**\n📋 Rollback manuel requis:\n\`\`\`\ncd /home/dataia25/mangetamain/20_prod\ngit reset --hard $OLD_COMMIT\ncd ../30_docker\ndocker-compose -f docker-compose-prod.yml restart\n\`\`\`\n👤 Tenté par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
   cancelled:
