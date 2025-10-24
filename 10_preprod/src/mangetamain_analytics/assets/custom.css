@@ -206,6 +206,8 @@ small, .caption {
     max-width: none !important;
     min-height: 48px !important;
     height: 48px !important;
+    cursor: pointer !important;
+    position: relative;
 }
 
 /* Force les divs internes du label à prendre 100% aussi */
@@ -255,13 +257,15 @@ small, .caption {
     background-repeat: no-repeat;
 }
 
-/* Cacher les cercles de radio */
+/* Cacher les cercles de radio visuellement mais garder fonctionnalité */
 [data-testid="stSidebar"] .stRadio input[type="radio"] {
-    display: none;
+    opacity: 0;
+    position: absolute;
+    pointer-events: none;
 }
 
 [data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-child {
-    display: none;
+    display: none !important;
 }
 
 /* Hover sur items inactifs */
