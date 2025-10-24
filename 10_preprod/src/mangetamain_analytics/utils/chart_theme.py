@@ -41,20 +41,20 @@ def apply_chart_theme(fig, title=None):
             xanchor='center'
         ) if title else None,
 
-        # Grille
+        # Grille et axes
         xaxis=dict(
             showgrid=True,
             gridcolor='#444444',
             gridwidth=1,
             tickfont=dict(color=colors.TEXT_PRIMARY, size=11),
-            titlefont=dict(color=colors.TEXT_SECONDARY, size=12)
+            title=dict(font=dict(color=colors.TEXT_SECONDARY, size=12))
         ),
         yaxis=dict(
             showgrid=True,
             gridcolor='#444444',
             gridwidth=1,
             tickfont=dict(color=colors.TEXT_PRIMARY, size=11),
-            titlefont=dict(color=colors.TEXT_SECONDARY, size=12)
+            title=dict(font=dict(color=colors.TEXT_SECONDARY, size=12))
         ),
 
         # Légende
@@ -146,7 +146,7 @@ def apply_subplot_theme(fig, num_rows=1, num_cols=2):
                 gridcolor='#444444',
                 gridwidth=1,
                 tickfont=dict(color=colors.TEXT_PRIMARY, size=10),
-                titlefont=dict(color=colors.TEXT_SECONDARY, size=11),
+                title_font=dict(color=colors.TEXT_SECONDARY, size=11),
                 row=row,
                 col=col
             )
@@ -155,7 +155,7 @@ def apply_subplot_theme(fig, num_rows=1, num_cols=2):
                 gridcolor='#444444',
                 gridwidth=1,
                 tickfont=dict(color=colors.TEXT_PRIMARY, size=10),
-                titlefont=dict(color=colors.TEXT_SECONDARY, size=11),
+                title_font=dict(color=colors.TEXT_SECONDARY, size=11),
                 row=row,
                 col=col
             )
