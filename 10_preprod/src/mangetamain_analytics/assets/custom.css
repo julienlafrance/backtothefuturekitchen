@@ -157,7 +157,7 @@ small, .caption {
 
 /* Conteneur du groupe radio */
 [data-testid="stSidebar"] .stRadio {
-    width: 100%;
+    width: 100% !important;
 }
 
 /* Label du groupe radio */
@@ -172,9 +172,11 @@ small, .caption {
     display: block;
 }
 
-/* Container des options radio */
-[data-testid="stSidebar"] .stRadio > div {
-    width: 100%;
+/* Container des options radio - TOUS les divs enfants */
+[data-testid="stSidebar"] .stRadio > div,
+[data-testid="stSidebar"] .stRadio > div > div,
+[data-testid="stSidebar"] .stRadio div[role="radiogroup"] {
+    width: 100% !important;
 }
 
 /* Items de navigation - État inactif */
@@ -191,6 +193,13 @@ small, .caption {
     gap: 10px !important;
     width: 100% !important;
     box-sizing: border-box !important;
+    max-width: none !important;
+}
+
+/* Force les divs internes du label à prendre 100% aussi */
+[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"] > div {
+    width: 100% !important;
+    flex: 1 !important;
 }
 
 /* Icônes Lucide avant le texte */
