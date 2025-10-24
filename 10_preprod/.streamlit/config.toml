@@ -3,16 +3,16 @@
 
 [theme]
 # Couleur principale (boutons, liens)
-primaryColor = "#ff8c42"
+primaryColor = "#FF8C00"
 
 # Fond de la page principale
-backgroundColor = "#1e1e1e"
+backgroundColor = "#1E1E1E"
 
 # Fond des widgets et sidebar
-secondaryBackgroundColor = "#2a2a2a"
+secondaryBackgroundColor = "#333333"
 
 # Couleur du texte
-textColor = "#e0e0e0"
+textColor = "#F0F0F0"
 
 # Police de caractères
 font = "sans serif"

@@ -25,7 +25,7 @@ def apply_chart_theme(fig, title=None):
         # Police et couleurs de texte
         font=dict(
             color=colors.TEXT_PRIMARY,
-            family='sans-serif',
+            family='Inter, sans-serif',
             size=12
         ),
 
@@ -33,9 +33,9 @@ def apply_chart_theme(fig, title=None):
         title=dict(
             text=title,
             font=dict(
-                color=colors.ORANGE_PRIMARY,
+                color=colors.PRIMARY,
                 size=16,
-                family='sans-serif'
+                family='Michroma, sans-serif'
             ),
             x=0.5,
             xanchor='center'
@@ -69,9 +69,9 @@ def apply_chart_theme(fig, title=None):
         hoverlabel=dict(
             bgcolor=colors.BACKGROUND_CARD,
             font_size=12,
-            font_family='sans-serif',
+            font_family='Inter, sans-serif',
             font_color=colors.TEXT_WHITE,
-            bordercolor=colors.ORANGE_PRIMARY
+            bordercolor=colors.PRIMARY
         ),
 
         # Marges
@@ -81,7 +81,7 @@ def apply_chart_theme(fig, title=None):
         modebar=dict(
             bgcolor='rgba(0,0,0,0)',
             color=colors.TEXT_SECONDARY,
-            activecolor=colors.ORANGE_PRIMARY
+            activecolor=colors.PRIMARY
         )
     )
 
@@ -162,7 +162,7 @@ def apply_subplot_theme(fig, num_rows=1, num_cols=2):
 
     # Titres de subplots en orange
     fig.update_annotations(
-        font=dict(color=colors.ORANGE_PRIMARY, size=13)
+        font=dict(color=colors.PRIMARY, size=13, family='Inter, sans-serif')
     )
 
     return fig
