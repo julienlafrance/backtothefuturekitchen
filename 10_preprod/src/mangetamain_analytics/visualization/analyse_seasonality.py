@@ -693,10 +693,12 @@ def analyse_seasonality_nutrition():
         textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
         hovertemplate='<b>%{y}</b><br>Saison: %{x}<br>Z-score: %{z:.2f}<extra></extra>',
         colorbar=dict(
-            title="Z-score<br>(écart à la moyenne)",
-            titleside="right",
-            tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY),
-            titlefont=dict(color=chart_theme.colors.TEXT_PRIMARY)
+            title=dict(
+                text="Z-score<br>(écart à la moyenne)",
+                side="right",
+                font=dict(color=chart_theme.colors.TEXT_PRIMARY)
+            ),
+            tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY)
         )
     ))
 
@@ -869,10 +871,12 @@ def analyse_seasonality_ingredients():
         textfont=dict(size=10),
         hovertemplate='<b>%{y}</b><br>Saison: %{x}<br>Fréquence: %{z:.1f}%<extra></extra>',
         colorbar=dict(
-            title="Utilisation<br>saisonnière (%)",
-            titleside="right",
-            tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY),
-            titlefont=dict(color=chart_theme.colors.TEXT_PRIMARY)
+            title=dict(
+                text="Utilisation<br>saisonnière (%)",
+                side="right",
+                font=dict(color=chart_theme.colors.TEXT_PRIMARY)
+            ),
+            tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY)
         )
     ))
 
@@ -1021,10 +1025,12 @@ def analyse_seasonality_tags():
         textfont=dict(size=10),
         hovertemplate='<b>%{y}</b><br>Saison: %{x}<br>Fréquence: %{z:.1f}%<extra></extra>',
         colorbar=dict(
-            title="Utilisation<br>saisonnière (%)",
-            titleside="right",
-            tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY),
-            titlefont=dict(color=chart_theme.colors.TEXT_PRIMARY)
+            title=dict(
+                text="Utilisation<br>saisonnière (%)",
+                side="right",
+                font=dict(color=chart_theme.colors.TEXT_PRIMARY)
+            ),
+            tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY)
         )
     ))
 
