@@ -131,7 +131,7 @@ def analyse_trendline_volume():
             ),
             text=[f"{val:,}" if show_values else "" for val in recipes_per_year["n_recipes"]],
             textposition="outside",
-            textfont=dict(size=10, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
             showlegend=False,
             hovertemplate="<b>Année %{x}</b><br>Recettes: %{y:,}<extra></extra>",
         ),
