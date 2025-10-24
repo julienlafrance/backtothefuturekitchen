@@ -26,6 +26,8 @@ from visualization.analyse_trendlines_v2 import (
     analyse_trendline_ingredients,
     analyse_trendline_tags,
 )
+from visualization.analyse_seasonality import render_seasonality_analysis
+from visualization.analyse_weekend import render_weekend_analysis
 from utils import colors
 
 
@@ -534,12 +536,12 @@ def main():
         # Navigation menu with Analyses title
         st.markdown("### Analyses")
 
-        # Menu items with icons
+        # Menu items with icons (réorganisé: Tendances en bas avec "- test")
         menu_options = {
-            "📈 Tendances 1999-2018": "📈",
-            "📊 Saisonnalité": "🌡️",
-            "📊 Effet weekend": "📅",
-            "📊 Recommandations": "⭐"
+            "📅 Analyses Saisonnières": "📅",
+            "📆 Effet Jour/Week-end": "📆",
+            "📊 Recommandations": "⭐",
+            "📈 Tendances 1999-2018 - test": "📈"
         }
 
         selected_page = st.radio(
@@ -701,7 +703,7 @@ def main():
         st.markdown("</div>", unsafe_allow_html=True)
 
     # Main content - Display selected analysis
-    if selected_page == "📈 Tendances 1999-2018":
+    if selected_page == "📈 Tendances 1999-2018 - test":
         st.header("📈 Analyses des tendances temporelles (1999-2018)")
         st.markdown(
             """
@@ -790,29 +792,13 @@ def main():
         st.info("💡 Analyse des 10 tags les plus fréquents")
         analyse_trendline_tags(top_n=10)
 
-    elif selected_page == "📊 Saisonnalité":
-        st.header("🌡️ Analyse de Saisonnalité")
-        st.info("🚧 Cette analyse sera disponible prochainement.")
-        st.markdown(
-            """
-            Analyse des patterns saisonniers dans les données Food.com :
-            - Tendances par mois/saison
-            - Ingrédients saisonniers
-            - Popularité des recettes selon les saisons
-            """
-        )
+    elif selected_page == "📅 Analyses Saisonnières":
+        # Appel du module d'analyse saisonnière avec charte graphique
+        render_seasonality_analysis()
 
-    elif selected_page == "📊 Effet weekend":
-        st.header("📅 Analyse de l'Effet Weekend")
-        st.info("🚧 Cette analyse sera disponible prochainement.")
-        st.markdown(
-            """
-            Analyse des comportements différenciés weekend vs semaine :
-            - Volume d'activité par jour de semaine
-            - Types de recettes préférées
-            - Durée de préparation
-            """
-        )
+    elif selected_page == "📆 Effet Jour/Week-end":
+        # Appel du module d'analyse weekend avec charte graphique
+        render_weekend_analysis()
 
     elif selected_page == "📊 Recommandations":
         st.header("⭐ Système de Recommandations")
