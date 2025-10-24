@@ -155,6 +155,11 @@ small, .caption {
     font-weight: 400;
 }
 
+/* Conteneur du groupe radio */
+[data-testid="stSidebar"] .stRadio {
+    width: 100%;
+}
+
 /* Label du groupe radio */
 [data-testid="stSidebar"] .stRadio > label {
     color: var(--primary-color);
@@ -165,6 +170,11 @@ small, .caption {
     letter-spacing: 0.5px;
     margin-bottom: 10px;
     display: block;
+}
+
+/* Container des options radio */
+[data-testid="stSidebar"] .stRadio > div {
+    width: 100%;
 }
 
 /* Items de navigation - État inactif */
@@ -179,6 +189,8 @@ small, .caption {
     display: flex !important;
     align-items: center !important;
     gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
 /* Icônes Lucide avant le texte */
