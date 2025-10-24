@@ -282,17 +282,21 @@ Les fichiers source font 85K (recipe) et 43K (rating).
 
 ## 🎨 Mapping Couleurs
 
-### Conversions à faire
+### Conversions appliquées ✅
 
-**Saisons (à adapter au thème orange/noir):**
-- Winter: `#87CEEB` → À remapper vers palette "Back to the Kitchen"
-- Spring: `#90EE90` → Idem
-- Summer: `#FFD700` → Idem
-- Autumn: `#FF8C00` → Peut rester (proche ORANGE_LIGHT)
+**Saisons (adaptées au thème orange/noir):**
+- Winter: `#87CEEB` → `#6ec1e4` (CHART_COLORS[1] - Bleu clair)
+- Spring: `#90EE90` → `#e89050` (CHART_COLORS[2] - Orange clair)
+- Summer: `#FFD700` → `#d97b3a` (ORANGE_PRIMARY - Orange principal)
+- Autumn: `#FF8C00` → `#c66a2f` (ORANGE_SECONDARY - Orange foncé)
 
 **Week-end:**
-- Weekday: `#4C72B0` → Utiliser `CHART_COLORS[1]` (bleu clair #6ec1e4)
-- Weekend: `#D62728` → Utiliser `ORANGE_PRIMARY` (#d97b3a)
+- Weekday: `#4C72B0` → `#6ec1e4` (CHART_COLORS[1] - Bleu clair)
+- Weekend: `#D62728` → `#d97b3a` (ORANGE_PRIMARY - Orange principal)
+
+**Couleurs hardcodées remplacées:**
+- `"black"` → `#888888` (TEXT_SECONDARY)
+- `"white"` → `#e0e0e0` (TEXT_PRIMARY)
 
 ---
 
