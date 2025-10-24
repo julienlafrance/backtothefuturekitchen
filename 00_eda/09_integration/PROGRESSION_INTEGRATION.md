@@ -331,10 +331,10 @@ TOTAL: 12/12 analyses complétées (100%) ✅🎉
 ### Charte Graphique
 
 ✅ **Palette couleurs:**
-- Winter: `#6ec1e4` (bleu clair CHART_COLORS[1])
-- Spring: `#90EE90` (vert clair - conservé)
-- Summer: `#e89050` (ORANGE_LIGHT)
-- Autumn: `#d97b3a` (ORANGE_PRIMARY)
+- Winter: `#FFD700` (Jaune doré CHART_COLORS[1])
+- Spring: `#E24E1B` (Rouge/Orange profond CHART_COLORS[2])
+- Summer: `#FF8C00` (Orange vif ORANGE_PRIMARY)
+- Autumn: `#E24E1B` (Rouge/Orange profond ORANGE_SECONDARY)
 
 ✅ **Typographie:**
 - Tick labels: 12px minimum

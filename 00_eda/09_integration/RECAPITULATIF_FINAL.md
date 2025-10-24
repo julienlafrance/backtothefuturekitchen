@@ -62,11 +62,11 @@ TOTAL: ~50K documentation
 ### Charte Graphique "Back to the Kitchen"
 
 ✅ **Palette cohérente:**
-- Orange primary: `#d97b3a`
-- Orange secondary: `#c66a2f`
-- Orange light: `#e89050`
-- Bleu clair: `#6ec1e4`
-- Texte: `#e0e0e0`
+- Orange primary: `#FF8C00` (Orange vif)
+- Orange secondary: `#E24E1B` (Rouge/Orange profond)
+- Orange light: `#FFA07A` (Saumon)
+- Jaune doré: `#FFD700` (CHART_COLORS[1])
+- Texte: `#F0F0F0` (TEXT_PRIMARY)
 
 ✅ **Typographie:**
 - Fonts ≥12px partout
