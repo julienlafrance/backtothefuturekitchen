@@ -19,10 +19,10 @@ TEXT_PRIMARY = "#e0e0e0"  # Gris clair - texte principal
 TEXT_SECONDARY = "#888888"  # Gris moyen - texte secondaire
 TEXT_WHITE = "#ffffff"  # Blanc pur - texte sur fond sombre
 
-# Orange primaire (accent principal)
-ORANGE_PRIMARY = "#ff8c42"  # Orange principal - titres, liens
-ORANGE_SECONDARY = "#ff6b35"  # Orange secondaire - dégradés
-ORANGE_LIGHT = "#ffa560"  # Orange clair - hover
+# Orange primaire (accent principal) - COULEURS DU LOGO
+ORANGE_PRIMARY = "#d97b3a"  # Orange moyen du logo - titres, liens
+ORANGE_SECONDARY = "#c66a2f"  # Orange foncé du logo - dégradés
+ORANGE_LIGHT = "#e89050"  # Orange clair - hover
 
 # ============================================================================
 # COULEURS D'ÉTAT
