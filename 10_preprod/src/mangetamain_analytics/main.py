@@ -549,24 +549,102 @@ def main():
             label_visibility="collapsed"
         )
 
-        # Bouton Rafraîchir orange avec Streamlit
-        if st.button("🔄 Rafraîchir", use_container_width=True):
-            st.rerun()
+        # Spacer flexible pour pousser les boutons en bas
+        # Calcul dynamique : nombre de lignes vides basé sur le contenu
+        # 4 items de menu + titre = environ 250px, sidebar height ~ 800px
+        # On veut que les 3 boutons (environ 180px) soient en bas
+        st.markdown("<br>" * 10, unsafe_allow_html=True)
 
-        # Spacer to push badges to bottom
-        for _ in range(5):
-            st.markdown("")
-
-        # Database status and environment badge at bottom (within sidebar)
+        # Séparateur avant les boutons du bas
         st.markdown("---")
-        db_path = "data/mangetamain.duckdb"
-        if Path(db_path).exists():
-            st.success("✅ **Fichier DuckDB connecté**")
-        else:
-            st.error("❌ **Fichier DuckDB non trouvé**")
 
-        # Environment badge
-        display_environment_badge()
+        # BOUTON 1: Rafraîchir (Orange)
+        st.markdown(
+            f"""
+            <div style="margin-bottom: 10px;">
+                <button onclick="window.location.reload();" style="
+                    background: linear-gradient(135deg, {colors.ORANGE_PRIMARY} 0%, {colors.ORANGE_SECONDARY} 100%);
+                    color: white;
+                    border: none;
+                    padding: 14px 20px;
+                    border-radius: 25px;
+                    cursor: pointer;
+                    font-weight: 600;
+                    width: 100%;
+                    font-size: 15px;
+                    box-shadow: 0 4px 6px rgba(217, 123, 58, 0.3);
+                    transition: all 0.3s ease;
+                    font-family: sans-serif;
+                ">
+                    🔄 Rafraîchir
+                </button>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # BOUTON 2: Fichier DuckDB (Bleu ou Rouge selon statut)
+        db_path = "data/mangetamain.duckdb"
+        db_exists = Path(db_path).exists()
+        db_color = "#3498db" if db_exists else "#e74c3c"
+        db_icon = "✅" if db_exists else "❌"
+        db_text = "Fichier DuckDB connecté" if db_exists else "Fichier DuckDB non trouvé"
+
+        st.markdown(
+            f"""
+            <div style="margin-bottom: 10px;">
+                <div style="
+                    background-color: {db_color};
+                    color: white;
+                    border: none;
+                    padding: 14px 20px;
+                    border-radius: 25px;
+                    font-weight: 600;
+                    width: 100%;
+                    font-size: 15px;
+                    text-align: center;
+                    font-family: sans-serif;
+                ">
+                    {db_icon} {db_text}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        # BOUTON 3: Badge environnement (Orange/Vert selon env)
+        env = detect_environment()
+        if "PREPROD" in env:
+            badge_config = colors.ENV_PREPROD
+            label = "PREPROD"
+        elif "PROD" in env:
+            badge_config = colors.ENV_PROD
+            label = "PRODUCTION"
+        else:
+            badge_config = {"bg": "#666666", "text": "#ffffff", "icon": "❓"}
+            label = "UNKNOWN"
+
+        st.markdown(
+            f"""
+            <div style="margin-bottom: 10px;">
+                <div style="
+                    background-color: {badge_config['bg']};
+                    color: {badge_config['text']};
+                    border: none;
+                    padding: 14px 20px;
+                    border-radius: 25px;
+                    font-weight: 600;
+                    width: 100%;
+                    font-size: 15px;
+                    text-align: center;
+                    font-family: sans-serif;
+                ">
+                    {badge_config['icon']} {label}
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
     # Main content - Display selected analysis
     if selected_page == "📈 Tendances 1999-2018":
