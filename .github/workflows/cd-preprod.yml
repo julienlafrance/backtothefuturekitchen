@@ -1,0 +1,78 @@
+name: CD - Preprod Deployment
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Permet déclenchement manuel
+
+jobs:
+  deploy-preprod:
+    name: Deploy to Preprod
+    runs-on: self-hosted
+
+    steps:
+      - name: Notify deployment start
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"🚀 **Déploiement Preprod démarré**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n👤 Par: ${{ github.actor }}\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
+      - name: Pull latest code
+        run: |
+          cd /home/dataia25/mangetamain/10_preprod
+          git fetch origin
+          git reset --hard origin/main
+          echo "✅ Code mis à jour vers $(git rev-parse --short HEAD)"
+
+      - name: Restart preprod container
+        run: |
+          cd /home/dataia25/mangetamain/30_docker
+          docker-compose -f docker-compose-preprod.yml restart
+          echo "✅ Container preprod redémarré"
+
+      - name: Wait for container to start
+        run: |
+          echo "⏳ Attente démarrage Streamlit (60s)..."
+          sleep 60
+
+      - name: Health check preprod
+        run: |
+          echo "🔍 Test santé preprod sur https://mangetamain.lafrance.io/"
+
+          # Retry 10 fois avec 10s d'intervalle
+          for i in {1..10}; do
+            echo "Tentative $i/10..."
+
+            if curl -f -s --max-time 10 https://mangetamain.lafrance.io/ > /dev/null; then
+              echo "✅ Preprod est accessible!"
+
+              # Vérifier que c'est bien Streamlit
+              if curl -s https://mangetamain.lafrance.io/ | grep -q "Back to the Kitchen\|Streamlit\|streamlit"; then
+                echo "✅ Preprod répond correctement (contenu Streamlit détecté)"
+                exit 0
+              else
+                echo "⚠️  Preprod répond mais contenu inattendu"
+              fi
+            else
+              echo "❌ Preprod non accessible, attente 10s..."
+              sleep 10
+            fi
+          done
+
+          echo "❌ Preprod health check échoué après 10 tentatives"
+          exit 1
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"✅ **Déploiement Preprod réussi!**\n🌐 URL: https://mangetamain.lafrance.io/\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
+      - name: Notify deployment failure
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"❌ **ÉCHEC Déploiement Preprod**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n⚠️  **Container dans état cassé - intervention manuelle requise**\n📋 Vérifier les logs: \`docker-compose -f docker-compose-preprod.yml logs\`\n👤 Commit par: ${{ github.actor }}\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"

@@ -1,0 +1,104 @@
+name: CD - Production Deployment
+
+on:
+  workflow_dispatch:  # Déclenchement MANUEL uniquement
+    inputs:
+      confirm:
+        description: 'Taper "DEPLOY" pour confirmer le déploiement en production'
+        required: true
+        default: ''
+
+jobs:
+  deploy-prod:
+    name: Deploy to Production
+    runs-on: self-hosted
+    # Vérifier que l'utilisateur a bien tapé "DEPLOY"
+    if: github.event.inputs.confirm == 'DEPLOY'
+
+    steps:
+      - name: Notify deployment start
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"🚨 **Déploiement PRODUCTION démarré**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n👤 Par: ${{ github.actor }}\n⚠️  Déploiement manuel confirmé\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
+      - name: Backup current production version
+        run: |
+          cd /home/dataia25/mangetamain/20_prod
+          CURRENT_COMMIT=$(git rev-parse HEAD)
+          echo "📝 Version prod actuelle: $CURRENT_COMMIT"
+          echo "$CURRENT_COMMIT" > /tmp/prod-backup-commit.txt
+          echo "✅ Backup commit ID sauvegardé"
+
+      - name: Pull latest code
+        run: |
+          cd /home/dataia25/mangetamain/20_prod
+          git fetch origin
+          git reset --hard origin/main
+          NEW_COMMIT=$(git rev-parse --short HEAD)
+          echo "✅ Code prod mis à jour vers $NEW_COMMIT"
+
+      - name: Restart production container
+        run: |
+          cd /home/dataia25/mangetamain/30_docker
+          docker-compose -f docker-compose-prod.yml restart
+          echo "✅ Container production redémarré"
+
+      - name: Wait for container to start
+        run: |
+          echo "⏳ Attente démarrage Streamlit production (60s)..."
+          sleep 60
+
+      - name: Health check production
+        run: |
+          echo "🔍 Test santé production sur https://mangetamain-prod.lafrance.io/"
+
+          # Retry 10 fois avec 10s d'intervalle
+          for i in {1..10}; do
+            echo "Tentative $i/10..."
+
+            # Remplace par l'URL de prod si différente de preprod
+            if curl -f -s --max-time 10 https://mangetamain-prod.lafrance.io/ > /dev/null; then
+              echo "✅ Production est accessible!"
+
+              if curl -s https://mangetamain-prod.lafrance.io/ | grep -q "Back to the Kitchen\|Streamlit\|streamlit"; then
+                echo "✅ Production répond correctement"
+                exit 0
+              else
+                echo "⚠️  Production répond mais contenu inattendu"
+              fi
+            else
+              echo "❌ Production non accessible, attente 10s..."
+              sleep 10
+            fi
+          done
+
+          echo "❌ Production health check échoué après 10 tentatives"
+          exit 1
+
+      - name: Notify deployment success
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"✅ **Déploiement PRODUCTION réussi!**\n🌐 URL: https://mangetamain-prod.lafrance.io/\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n👤 Déployé par: ${{ github.actor }}\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
+      - name: Notify deployment failure
+        if: failure()
+        run: |
+          OLD_COMMIT=$(cat /tmp/prod-backup-commit.txt)
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"🚨 **ÉCHEC CRITIQUE - Déploiement PRODUCTION**\n❌ Health check échoué\n📦 Commit tenté: \`${GITHUB_SHA:0:7}\`\n🔙 Backup disponible: \`${OLD_COMMIT:0:7}\`\n⚠️  **PRODUCTION POTENTIELLEMENT CASSÉE**\n📋 Rollback manuel requis:\n\`\`\`\ncd /home/dataia25/mangetamain/20_prod\ngit reset --hard $OLD_COMMIT\ncd ../30_docker\ndocker-compose -f docker-compose-prod.yml restart\n\`\`\`\n👤 Tenté par: ${{ github.actor }}\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
+  cancelled:
+    name: Deployment Cancelled
+    runs-on: self-hosted
+    if: github.event.inputs.confirm != 'DEPLOY'
+
+    steps:
+      - name: Notify cancellation
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"⚠️  **Déploiement PRODUCTION annulé**\nConfirmation incorrecte (attendu: DEPLOY)\n👤 Par: ${{ github.actor }}\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
