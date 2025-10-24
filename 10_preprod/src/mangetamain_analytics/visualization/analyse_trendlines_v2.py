@@ -18,6 +18,7 @@ import matplotlib.cm as cm
 import matplotlib.colors as mcolors
 
 from mangetamain_data_utils.data_utils_recipes import load_recipes_clean
+from utils import chart_theme
 
 warnings.filterwarnings("ignore")
 
@@ -71,10 +72,8 @@ def analyse_trendline_volume():
         )
 
     with col2:
-        # Choix couleur barres
-        bar_color = st.selectbox(
-            "🎨 Couleur", ["steelblue", "coral", "lightgreen", "mediumpurple"], index=0
-        )
+        # Choix couleur barres (utilise maintenant la charte)
+        bar_color = chart_theme.get_bar_color()
 
     with col3:
         # Afficher valeurs
@@ -120,15 +119,19 @@ def analyse_trendline_volume():
         horizontal_spacing=0.12,
     )
 
-    # SUBPLOT 1 : Bar chart
+    # SUBPLOT 1 : Bar chart - THÈME APPLIQUÉ
     fig.add_trace(
         go.Bar(
             x=recipes_per_year["year"].astype(str),
             y=recipes_per_year["n_recipes"],
-            marker=dict(color=bar_color, opacity=0.8),
+            marker=dict(
+                color=bar_color,
+                opacity=0.85,
+                line=dict(width=0)
+            ),
             text=[f"{val:,}" if show_values else "" for val in recipes_per_year["n_recipes"]],
             textposition="outside",
-            textfont=dict(size=9, color="black"),
+            textfont=dict(size=10, color=chart_theme.colors.TEXT_PRIMARY),
             showlegend=False,
             hovertemplate="<b>Année %{x}</b><br>Recettes: %{y:,}<extra></extra>",
         ),
@@ -136,13 +139,18 @@ def analyse_trendline_volume():
         col=1,
     )
 
-    # SUBPLOT 2 : Q-Q plot
+    # SUBPLOT 2 : Q-Q plot - THÈME APPLIQUÉ
     fig.add_trace(
         go.Scatter(
             x=osm,
             y=osr,
             mode="markers",
-            marker=dict(color="#5470c6", size=8, opacity=0.8),
+            marker=dict(
+                color=chart_theme.get_scatter_color(),
+                size=8,
+                opacity=0.7,
+                line=dict(width=1, color=chart_theme.colors.TEXT_PRIMARY)
+            ),
             name="Observations",
             hovertemplate="Théorique: %{x:.2f}<br>Observé: %{y:,.0f}<extra></extra>",
         ),
@@ -150,12 +158,17 @@ def analyse_trendline_volume():
         col=2,
     )
 
+    # Ligne de référence rouge
     fig.add_trace(
         go.Scatter(
             x=[osm.min(), osm.max()],
             y=[slope * osm.min() + intercept, slope * osm.max() + intercept],
             mode="lines",
-            line=dict(color="red", width=2, dash="dash"),
+            line=dict(
+                color=chart_theme.get_reference_line_color(),
+                width=2,
+                dash="dash"
+            ),
             name="Ligne théorique",
             hoverinfo="skip",
         ),
@@ -163,57 +176,20 @@ def analyse_trendline_volume():
         col=2,
     )
 
-    # Mise en forme axes
-    fig.update_xaxes(
-        title_text="Année",
-        title_font=dict(size=12, color="black"),
-        tickfont=dict(size=10, color="black"),
-        showgrid=False,
-        row=1,
-        col=1,
-    )
-    fig.update_yaxes(
-        title_text="Nombre de recettes",
-        title_font=dict(size=12, color="black"),
-        tickfont=dict(size=10, color="black"),
-        showgrid=True,
-        gridcolor="rgba(200,200,200,0.4)",
-        row=1,
-        col=1,
-    )
-    fig.update_xaxes(
-        title_text="Quantiles théoriques (loi normale)",
-        title_font=dict(size=12, color="black"),
-        tickfont=dict(size=10, color="black"),
-        showgrid=True,
-        gridcolor="rgba(200,200,200,0.4)",
-        row=1,
-        col=2,
-    )
-    fig.update_yaxes(
-        title_text="Quantiles observés",
-        title_font=dict(size=12, color="black"),
-        tickfont=dict(size=10, color="black"),
-        showgrid=True,
-        gridcolor="rgba(200,200,200,0.4)",
-        row=1,
-        col=2,
-    )
+    # THÈME : Mise en forme axes avec titres personnalisés
+    fig.update_xaxes(title_text="Année", row=1, col=1)
+    fig.update_yaxes(title_text="Nombre de recettes", row=1, col=1)
+    fig.update_xaxes(title_text="Quantiles théoriques (loi normale)", row=1, col=2)
+    fig.update_yaxes(title_text="Quantiles observés", row=1, col=2)
 
-    # Layout global
+    # Application du thème global
+    chart_theme.apply_subplot_theme(fig, num_rows=1, num_cols=2)
+
+    # Layout spécifique
     fig.update_layout(
         height=600,
-        plot_bgcolor="white",
-        paper_bgcolor="white",
-        font=dict(size=11, color="black", family="Arial, sans-serif"),
         showlegend=False,
     )
-
-    # Titres des subplots
-    for annotation in fig["layout"]["annotations"]:
-        annotation["font"] = dict(
-            size=13, color="black", family="Arial, sans-serif", weight="bold"
-        )
 
     # Affichage
     st.plotly_chart(fig, use_container_width=True)
