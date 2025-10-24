@@ -797,11 +797,6 @@ def analyse_weekend_ingredients():
 
     week_period_order = ['Weekday', 'Weekend']
 
-    st.info(
-        "⏳ **Traitement en cours:** Cette analyse traite ~178K recettes avec explosion de la colonne `ingredients` (liste). "
-        "Le calcul peut prendre quelques secondes..."
-    )
-
     # Extraction des ingrédients par période
     ingredients_by_period = {}
     n_recipes_by_period = {}
@@ -970,11 +965,6 @@ def analyse_weekend_tags():
     )
 
     week_period_order = ['Weekday', 'Weekend']
-
-    st.info(
-        "⏳ **Traitement en cours:** Cette analyse traite ~178K recettes avec explosion de la colonne `tags` (liste). "
-        "Le calcul peut prendre quelques secondes..."
-    )
 
     # Extraction des tags par période
     tags_by_period = {}
@@ -1162,10 +1152,8 @@ def render_weekend_analysis():
     st.markdown("---")
 
     st.subheader("🥘 Ingrédients les plus variables")
-    st.info("💡 Analyse des top 20 ingrédients les plus variables entre Weekday et Weekend")
     analyse_weekend_ingredients()
     st.markdown("---")
 
     st.subheader("🏷️ Tags les plus variables")
-    st.info("💡 Analyse des top 20 tags les plus variables entre Weekday et Weekend")
     analyse_weekend_tags()

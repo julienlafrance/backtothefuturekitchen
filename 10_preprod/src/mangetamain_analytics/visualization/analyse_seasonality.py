@@ -773,8 +773,6 @@ def analyse_seasonality_ingredients():
     # Ordre des saisons
     season_order = ["Winter", "Spring", "Summer", "Autumn"]
 
-    st.info("🔄 Extraction et analyse des ingrédients par saison (peut prendre quelques secondes)...")
-
     # Extraction des ingrédients par saison
     ingredients_by_season = {}
     n_recipes_by_season = {}
@@ -932,8 +930,6 @@ def analyse_seasonality_tags():
 
     # Ordre des saisons
     season_order = ["Winter", "Spring", "Summer", "Autumn"]
-
-    st.info("🔄 Extraction et analyse des tags par saison (peut prendre quelques secondes)...")
 
     # Extraction des tags par saison
     tags_by_season = {}
@@ -1111,12 +1107,10 @@ def render_seasonality_analysis():
     st.markdown("---")
 
     st.subheader("🥘 Ingrédients fréquents par saison")
-    st.info("💡 Analyse des top 20 ingrédients les plus variables entre saisons")
     analyse_seasonality_ingredients()
     st.markdown("---")
 
     st.subheader("🏷️ Tags populaires par saison")
-    st.info("💡 Analyse des top 20 tags les plus variables entre saisons")
     analyse_seasonality_tags()
 
 
