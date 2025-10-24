@@ -64,9 +64,9 @@ def analyse_seasonality_volume():
     # Adaptation des couleurs saisonnières au thème orange/noir/gris
     season_colors_btk = {
         "Winter": chart_theme.colors.CHART_COLORS[1],   # Bleu clair (#6ec1e4)
-        "Spring": "#90EE90",                             # Vert clair (gardé)
-        "Summer": chart_theme.colors.ORANGE_LIGHT,       # Orange clair (#e89050)
-        "Autumn": chart_theme.colors.ORANGE_PRIMARY,     # Orange principal (#d97b3a)
+        "Spring": chart_theme.colors.CHART_COLORS[2],   # Orange clair (#e89050)
+        "Summer": chart_theme.colors.ORANGE_PRIMARY,    # Orange principal (#d97b3a)
+        "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Orange foncé (#c66a2f)
     }
 
     # Calcul des statistiques
@@ -242,10 +242,10 @@ def analyse_seasonality_duree():
 
     # Palette de couleurs
     season_colors_btk = {
-        "Winter": chart_theme.colors.CHART_COLORS[1],   # Bleu clair
-        "Spring": "#90EE90",                             # Vert clair
-        "Summer": chart_theme.colors.ORANGE_LIGHT,       # Orange clair
-        "Autumn": chart_theme.colors.ORANGE_PRIMARY,     # Orange principal
+        "Winter": chart_theme.colors.CHART_COLORS[1],   # Bleu clair (#6ec1e4)
+        "Spring": chart_theme.colors.CHART_COLORS[2],   # Orange clair (#e89050)
+        "Summer": chart_theme.colors.ORANGE_PRIMARY,    # Orange principal (#d97b3a)
+        "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Orange foncé (#c66a2f)
     }
 
     # ========================================
@@ -456,10 +456,10 @@ def analyse_seasonality_complexite():
 
     # Palette de couleurs
     season_colors_btk = {
-        "Winter": chart_theme.colors.CHART_COLORS[1],
-        "Spring": "#90EE90",
-        "Summer": chart_theme.colors.ORANGE_LIGHT,
-        "Autumn": chart_theme.colors.ORANGE_PRIMARY,
+        "Winter": chart_theme.colors.CHART_COLORS[1],   # Bleu clair (#6ec1e4)
+        "Spring": chart_theme.colors.CHART_COLORS[2],   # Orange clair (#e89050)
+        "Summer": chart_theme.colors.ORANGE_PRIMARY,    # Orange principal (#d97b3a)
+        "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Orange foncé (#c66a2f)
     }
 
     # ========================================

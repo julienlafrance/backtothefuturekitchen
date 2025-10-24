@@ -137,7 +137,7 @@ def analyse_weekend_volume():
             y=recipes_week_period["recipes_per_day"],
             marker=dict(
                 color=period_colors_btk,
-                line=dict(color="black", width=1.2)
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)
             ),
             text=[f"{val:,.0f}/jour" for val in recipes_week_period["recipes_per_day"]],
             textposition="outside",
@@ -161,7 +161,7 @@ def analyse_weekend_volume():
             y=recipes_per_day['n_recipes'],
             marker=dict(
                 color=day_colors_btk,
-                line=dict(color="black", width=1.2)
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)
             ),
             text=[f"{val:,}" for val in recipes_per_day['n_recipes']],
             textposition="outside",
@@ -175,7 +175,7 @@ def analyse_weekend_volume():
     # Lignes moyennes
     fig.add_hline(
         y=mean_all,
-        line=dict(color="white", dash="dash", width=2),
+        line=dict(color=chart_theme.colors.TEXT_PRIMARY, dash="dash", width=2),
         annotation_text=f"Moy. globale: {mean_all:,.0f}",
         annotation_position="top right",
         annotation_font=dict(size=10, color=chart_theme.colors.TEXT_PRIMARY),
@@ -195,7 +195,7 @@ def analyse_weekend_volume():
             y=recipes_per_day['deviation_pct'],
             marker=dict(
                 color=colors_deviation,
-                line=dict(color="black", width=1.2)
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)
             ),
             text=[f"{val:+.1f}%" for val in recipes_per_day['deviation_pct']],
             textposition="outside",
@@ -208,7 +208,7 @@ def analyse_weekend_volume():
 
     fig.add_hline(
         y=0,
-        line=dict(color="white", width=1.5),
+        line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1.5),
         row=1, col=3
     )
 
@@ -317,7 +317,7 @@ def analyse_weekend_duree():
             y=minutes_by_period['mean_minutes'],
             marker=dict(
                 color=period_colors_btk,
-                line=dict(color="black", width=1.2)
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)
             ),
             text=[f"{val:.1f} m" for val in minutes_by_period['mean_minutes']],
             textposition="outside",
@@ -334,8 +334,8 @@ def analyse_weekend_duree():
             x=minutes_by_period['week_period'],
             y=minutes_by_period['median_minutes'],
             mode='lines+markers',
-            line=dict(color="white", width=2, dash="dash"),
-            marker=dict(size=8, color="white", symbol="circle"),
+            line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=2, dash="dash"),
+            marker=dict(size=8, color=chart_theme.colors.TEXT_PRIMARY, symbol="circle"),
             name="Médiane"
         ),
         row=1, col=1
@@ -352,7 +352,7 @@ def analyse_weekend_duree():
                 x=[period, period],
                 y=[q25, q75],
                 mode='lines',
-                line=dict(color="white", width=3),
+                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=3),
                 showlegend=False,
                 hoverinfo='skip'
             ),
@@ -365,7 +365,7 @@ def analyse_weekend_duree():
                 x=[period],
                 y=[q25],
                 mode='markers',
-                marker=dict(size=6, color="white", symbol="circle"),
+                marker=dict(size=6, color=chart_theme.colors.TEXT_PRIMARY, symbol="circle"),
                 showlegend=False,
                 hovertemplate=f"Q1: {q25:.1f}",
             ),
@@ -376,7 +376,7 @@ def analyse_weekend_duree():
                 x=[period],
                 y=[q75],
                 mode='markers',
-                marker=dict(size=6, color="white", symbol="circle"),
+                marker=dict(size=6, color=chart_theme.colors.TEXT_PRIMARY, symbol="circle"),
                 showlegend=False,
                 hovertemplate=f"Q3: {q75:.1f}",
             ),
@@ -503,7 +503,7 @@ def analyse_weekend_complexite():
             y=complexity_by_period['mean_complexity'],
             marker=dict(
                 color=period_colors_btk,
-                line=dict(color="black", width=1.2)
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)
             ),
             text=[f"{val:.2f}" for val in complexity_by_period['mean_complexity']],
             textposition="outside",
@@ -519,8 +519,8 @@ def analyse_weekend_complexite():
             x=complexity_by_period['week_period'],
             y=complexity_by_period['median_complexity'],
             mode='lines+markers',
-            line=dict(color="white", width=2, dash="dash"),
-            marker=dict(size=8, color="white", symbol="square"),
+            line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=2, dash="dash"),
+            marker=dict(size=8, color=chart_theme.colors.TEXT_PRIMARY, symbol="square"),
             name="Médiane"
         ),
         row=1, col=1
@@ -533,7 +533,7 @@ def analyse_weekend_complexite():
             y=complexity_by_period['mean_steps'],
             marker=dict(
                 color=period_colors_btk,
-                line=dict(color="black", width=1.2)
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)
             ),
             text=[f"{val:.1f}" for val in complexity_by_period['mean_steps']],
             textposition="outside",
@@ -549,8 +549,8 @@ def analyse_weekend_complexite():
             x=complexity_by_period['week_period'],
             y=complexity_by_period['median_steps'],
             mode='lines+markers',
-            line=dict(color="white", width=2, dash="dash"),
-            marker=dict(size=8, color="white", symbol="square"),
+            line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=2, dash="dash"),
+            marker=dict(size=8, color=chart_theme.colors.TEXT_PRIMARY, symbol="square"),
             name="Médiane"
         ),
         row=1, col=2
@@ -563,7 +563,7 @@ def analyse_weekend_complexite():
             y=complexity_by_period['mean_ingredients'],
             marker=dict(
                 color=period_colors_btk,
-                line=dict(color="black", width=1.2)
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)
             ),
             text=[f"{val:.1f}" for val in complexity_by_period['mean_ingredients']],
             textposition="outside",
@@ -579,8 +579,8 @@ def analyse_weekend_complexite():
             x=complexity_by_period['week_period'],
             y=complexity_by_period['median_ingredients'],
             mode='lines+markers',
-            line=dict(color="white", width=2, dash="dash"),
-            marker=dict(size=8, color="white", symbol="square"),
+            line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=2, dash="dash"),
+            marker=dict(size=8, color=chart_theme.colors.TEXT_PRIMARY, symbol="square"),
             name="Médiane"
         ),
         row=1, col=3
@@ -720,7 +720,7 @@ def analyse_weekend_nutrition():
             orientation='h',
             marker=dict(
                 color=colors,
-                line=dict(color="black", width=1.2)
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)
             ),
             text=[
                 f"{row['diff_pct']:+.1f}%" + (" *" if row['significant'] else "")
@@ -743,7 +743,7 @@ def analyse_weekend_nutrition():
     # Ligne zéro
     fig.add_vline(
         x=0,
-        line=dict(color="white", width=2)
+        line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=2)
     )
 
     # Mise en page
@@ -894,7 +894,7 @@ def analyse_weekend_ingredients():
                 orientation='h',
                 marker=dict(
                     color=colors,
-                    line=dict(color="black", width=1)
+                    line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)
                 ),
                 text=[f"{val:+.2f}" for val in top_ingredients['diff_abs']],
                 textposition="outside",
@@ -909,7 +909,7 @@ def analyse_weekend_ingredients():
         )
 
         # Ligne zéro
-        fig.add_vline(x=0, line=dict(color="white", width=1.5))
+        fig.add_vline(x=0, line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1.5))
 
         # Axes
         fig.update_xaxes(
@@ -1062,7 +1062,7 @@ def analyse_weekend_tags():
                 orientation='h',
                 marker=dict(
                     color=colors,
-                    line=dict(color="black", width=1)
+                    line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)
                 ),
                 text=[f"{val:+.2f}" for val in top_tags['diff_abs']],
                 textposition="outside",
@@ -1077,7 +1077,7 @@ def analyse_weekend_tags():
         )
 
         # Ligne zéro
-        fig.add_vline(x=0, line=dict(color="white", width=1.5))
+        fig.add_vline(x=0, line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1.5))
 
         # Axes
         fig.update_xaxes(
