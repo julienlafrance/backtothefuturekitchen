@@ -595,33 +595,47 @@ def main():
         )
 
         # BOUTON 2: Test S3 (Bleu ou Rouge selon statut)
+        s3_error_msg = ""
         try:
             # Test S3 en listant le bucket
             import boto3
             from configparser import ConfigParser
 
             config = ConfigParser()
-            # Chemin relatif depuis le dossier de l'app
-            credentials_path = Path("../../96_keys/credentials")
-            if not credentials_path.exists():
-                # Fallback pour Docker ou autre environnement
-                credentials_path = Path("/app/../96_keys/credentials")
+            # Essayer différents chemins pour trouver credentials
+            possible_paths = [
+                Path("/app/96_keys/credentials"),  # Docker
+                Path("../../96_keys/credentials"),  # Local dev
+                Path("/home/dataia25/mangetamain/96_keys/credentials"),  # Direct sur dataia
+            ]
 
-            config.read(str(credentials_path))
+            credentials_path = None
+            for p in possible_paths:
+                if p.exists():
+                    credentials_path = p
+                    break
 
-            s3 = boto3.client(
-                's3',
-                endpoint_url='http://s3fast.lafrance.io',
-                aws_access_key_id=config['s3fast']['aws_access_key_id'],
-                aws_secret_access_key=config['s3fast']['aws_secret_access_key'],
-                region_name='garage-fast'
-            )
+            if credentials_path is None:
+                s3_ready = False
+                s3_error_msg = "Credentials non trouvés"
+            else:
+                config.read(str(credentials_path))
 
-            # Test simple: list objects dans le bucket
-            response = s3.list_objects_v2(Bucket='mangetamain', MaxKeys=1)
-            s3_ready = 'Contents' in response
-        except Exception:
+                s3 = boto3.client(
+                    's3',
+                    endpoint_url='http://s3fast.lafrance.io',
+                    aws_access_key_id=config['s3fast']['aws_access_key_id'],
+                    aws_secret_access_key=config['s3fast']['aws_secret_access_key'],
+                    region_name='garage-fast'
+                )
+
+                # Test simple: list objects dans le bucket
+                response = s3.list_objects_v2(Bucket='mangetamain', MaxKeys=1)
+                s3_ready = 'Contents' in response
+                s3_error_msg = ""
+        except Exception as e:
             s3_ready = False
+            s3_error_msg = str(e)[:50]  # Premiers 50 caractères de l'erreur
 
         db_color = "#3498db" if s3_ready else "#e74c3c"
         db_icon = "✅" if s3_ready else "❌"
