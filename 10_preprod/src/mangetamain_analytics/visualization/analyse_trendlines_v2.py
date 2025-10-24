@@ -74,6 +74,7 @@ def analyse_trendline_volume():
     with col2:
         # Choix couleur barres (utilise maintenant la charte)
         bar_color = chart_theme.get_bar_color()
+        st.markdown("")  # Colonne vide (espace pour futurs contrôles)
 
     with col3:
         # Afficher valeurs
