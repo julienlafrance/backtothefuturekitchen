@@ -55,13 +55,18 @@ section[data-testid="stSidebar"] {
     background-color: #000000 !important;
 }
 
-/* Header et frame en haut */
+/* Header et frame en haut - CACHÉ */
 header[data-testid="stHeader"] {
     background-color: #1e1e1e !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    visibility: hidden !important;
 }
 
 [data-testid="stToolbar"] {
     background-color: #1e1e1e !important;
+    display: none !important;
 }
 
 /* ============================================================================
