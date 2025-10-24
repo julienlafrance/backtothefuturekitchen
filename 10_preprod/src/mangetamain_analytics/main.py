@@ -549,14 +549,25 @@ def main():
             label_visibility="collapsed"
         )
 
-        # Spacer flexible pour pousser les boutons en bas
-        # Calcul dynamique : nombre de lignes vides basé sur le contenu
-        # 4 items de menu + titre = environ 250px, sidebar height ~ 800px
-        # On veut que les 3 boutons (environ 180px) soient en bas
-        st.markdown("<br>" * 10, unsafe_allow_html=True)
-
-        # Séparateur avant les boutons du bas
-        st.markdown("---")
+        # Container HTML pour les boutons fixés en bas
+        st.markdown(
+            """
+            <style>
+            /* Forcer les boutons du bas à rester en bas */
+            [data-testid="stSidebar"] {
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            .sidebar-bottom-buttons {
+                margin-top: auto;
+                padding-top: 20px;
+                border-top: 1px solid #333;
+            }
+            </style>
+            <div class="sidebar-bottom-buttons">
+            """,
+            unsafe_allow_html=True
+        )
 
         # BOUTON 1: Rafraîchir (Orange)
         st.markdown(
@@ -645,6 +656,9 @@ def main():
             """,
             unsafe_allow_html=True
         )
+
+        # Fermer le container des boutons du bas
+        st.markdown("</div>", unsafe_allow_html=True)
 
     # Main content - Display selected analysis
     if selected_page == "📈 Tendances 1999-2018":
