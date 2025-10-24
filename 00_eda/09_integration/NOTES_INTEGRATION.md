@@ -137,20 +137,20 @@ from scipy import stats
 
 ### Palette couleurs utilisée
 
-**Saisons:**
+**Saisons (palette BACK TO THE KITCHEN):**
 ```python
-season_colors = {
-    "Winter": "#87CEEB",   # Bleu ciel
-    "Spring": "#90EE90",   # Vert clair
-    "Summer": "#FFD700",   # Or
-    "Autumn": "#FF8C00"    # Orange foncé
+season_colors_btk = {
+    "Winter": "#FFD700",   # Jaune doré (CHART_COLORS[1])
+    "Spring": "#E24E1B",   # Rouge/Orange profond (CHART_COLORS[2])
+    "Summer": "#FF8C00",   # Orange vif (ORANGE_PRIMARY)
+    "Autumn": "#E24E1B"    # Rouge/Orange profond (ORANGE_SECONDARY)
 }
 ```
 
-**Jours de semaine:**
+**Jours de semaine (palette BACK TO THE KITCHEN):**
 ```python
-# Weekday: '#4C72B0' (bleu)
-# Weekend: '#D62728' (rouge)
+# Weekday: '#FFD700' (Jaune doré - CHART_COLORS[1])
+# Weekend: '#FF8C00' (Orange vif - ORANGE_PRIMARY)
 ```
 
 ### Structure type d'une analyse
@@ -284,19 +284,19 @@ Les fichiers source font 85K (recipe) et 43K (rating).
 
 ### Conversions appliquées ✅
 
-**Saisons (adaptées au thème orange/noir):**
-- Winter: `#87CEEB` → `#6ec1e4` (CHART_COLORS[1] - Bleu clair)
-- Spring: `#90EE90` → `#e89050` (CHART_COLORS[2] - Orange clair)
-- Summer: `#FFD700` → `#d97b3a` (ORANGE_PRIMARY - Orange principal)
-- Autumn: `#FF8C00` → `#c66a2f` (ORANGE_SECONDARY - Orange foncé)
+**Saisons (palette BACK TO THE KITCHEN):**
+- Winter: `#87CEEB` → `#FFD700` (CHART_COLORS[1] - Jaune doré)
+- Spring: `#90EE90` → `#E24E1B` (CHART_COLORS[2] - Rouge/Orange profond)
+- Summer: `#FFD700` → `#FF8C00` (ORANGE_PRIMARY - Orange vif)
+- Autumn: `#FF8C00` → `#E24E1B` (ORANGE_SECONDARY - Rouge/Orange profond)
 
-**Week-end:**
-- Weekday: `#4C72B0` → `#6ec1e4` (CHART_COLORS[1] - Bleu clair)
-- Weekend: `#D62728` → `#d97b3a` (ORANGE_PRIMARY - Orange principal)
+**Week-end (palette BACK TO THE KITCHEN):**
+- Weekday: `#4C72B0` → `#FFD700` (CHART_COLORS[1] - Jaune doré)
+- Weekend: `#D62728` → `#FF8C00` (ORANGE_PRIMARY - Orange vif)
 
 **Couleurs hardcodées remplacées:**
-- `"black"` → `#888888` (TEXT_SECONDARY)
-- `"white"` → `#e0e0e0` (TEXT_PRIMARY)
+- `"black"` → `#1E1E1E` (BACKGROUND_MAIN)
+- `"white"` → `#F0F0F0` (TEXT_PRIMARY)
 
 ---
 

@@ -63,10 +63,10 @@ def analyse_seasonality_volume():
     # Palette de couleurs "Back to the Kitchen" pour les saisons
     # Adaptation des couleurs saisonnières au thème orange/noir/gris
     season_colors_btk = {
-        "Winter": chart_theme.colors.CHART_COLORS[1],   # Bleu clair (#6ec1e4)
-        "Spring": chart_theme.colors.CHART_COLORS[2],   # Orange clair (#e89050)
-        "Summer": chart_theme.colors.ORANGE_PRIMARY,    # Orange principal (#d97b3a)
-        "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Orange foncé (#c66a2f)
+        "Winter": chart_theme.colors.CHART_COLORS[1],   # Jaune doré (#FFD700)
+        "Spring": chart_theme.colors.CHART_COLORS[2],   # Rouge/Orange profond (#E24E1B)
+        "Summer": chart_theme.colors.ORANGE_PRIMARY,    # Orange vif (#FF8C00)
+        "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Rouge/Orange profond (#E24E1B)
     }
 
     # Calcul des statistiques
@@ -242,10 +242,10 @@ def analyse_seasonality_duree():
 
     # Palette de couleurs
     season_colors_btk = {
-        "Winter": chart_theme.colors.CHART_COLORS[1],   # Bleu clair (#6ec1e4)
-        "Spring": chart_theme.colors.CHART_COLORS[2],   # Orange clair (#e89050)
-        "Summer": chart_theme.colors.ORANGE_PRIMARY,    # Orange principal (#d97b3a)
-        "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Orange foncé (#c66a2f)
+        "Winter": chart_theme.colors.CHART_COLORS[1],   # Jaune doré (#FFD700)
+        "Spring": chart_theme.colors.CHART_COLORS[2],   # Rouge/Orange profond (#E24E1B)
+        "Summer": chart_theme.colors.ORANGE_PRIMARY,    # Orange vif (#FF8C00)
+        "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Rouge/Orange profond (#E24E1B)
     }
 
     # ========================================
@@ -456,10 +456,10 @@ def analyse_seasonality_complexite():
 
     # Palette de couleurs
     season_colors_btk = {
-        "Winter": chart_theme.colors.CHART_COLORS[1],   # Bleu clair (#6ec1e4)
-        "Spring": chart_theme.colors.CHART_COLORS[2],   # Orange clair (#e89050)
-        "Summer": chart_theme.colors.ORANGE_PRIMARY,    # Orange principal (#d97b3a)
-        "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Orange foncé (#c66a2f)
+        "Winter": chart_theme.colors.CHART_COLORS[1],   # Jaune doré (#FFD700)
+        "Spring": chart_theme.colors.CHART_COLORS[2],   # Rouge/Orange profond (#E24E1B)
+        "Summer": chart_theme.colors.ORANGE_PRIMARY,    # Orange vif (#FF8C00)
+        "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Rouge/Orange profond (#E24E1B)
     }
 
     # ========================================

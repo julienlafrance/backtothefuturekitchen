@@ -32,9 +32,9 @@ Charte graphique dark theme inspirée du logo "Back to the Kitchen" avec palette
 
 ### Couleurs principales (logo)
 ```python
-ORANGE_PRIMARY = "#d97b3a"    # Orange moyen - titres, accents
-ORANGE_SECONDARY = "#c66a2f"  # Orange foncé - dégradés
-ORANGE_LIGHT = "#e89050"      # Orange clair - hover
+ORANGE_PRIMARY = "#FF8C00"    # Orange vif - couleur principale du logo
+ORANGE_SECONDARY = "#E24E1B"  # Rouge/Orange profond - base dégradé logo
+ORANGE_LIGHT = "#FFA07A"      # Saumon - teinte douce du dégradé
 ```
 
 ### Fonds et surfaces
@@ -54,20 +54,23 @@ TEXT_WHITE = "#ffffff"      # Blanc - texte important
 ### Couleurs graphiques
 ```python
 CHART_COLORS = [
-    "#d97b3a",  # Orange principal
-    "#6ec1e4",  # Bleu clair
-    "#e89050",  # Orange clair
-    "#54a0c8",  # Bleu moyen
-    "#c66a2f",  # Orange foncé
+    "#FF8C00",  # Base Orange (du milieu du dégradé du logo)
+    "#FFD700",  # Base Jaune (du point lumineux du dégradé du logo)
+    "#E24E1B",  # Rouge/Orange Profond (de la base du dégradé du logo)
+    "#1E90FF",  # Bleu Vif (du contour et des effets de vitesse)
+    "#00CED1",  # Cyan (accent technologique du logo)
+    "#FFA07A",  # Saumon (teinte plus douce du dégradé orange)
+    "#B0E0E6",  # Bleu Clair (teinte plus claire du contour bleu)
+    "#DAA520",  # Jaune Doré (pour une variation riche du jaune)
 ]
 ```
 
 ### États
 ```python
-SUCCESS = "#2ecc71"   # Vert
-WARNING = "#f39c12"   # Orange/Jaune
-ERROR = "#e74c3c"     # Rouge
-INFO = "#3498db"      # Bleu
+SUCCESS = "#28A745"   # Vert - succès, PROD badge
+WARNING = "#FFC107"   # Jaune - warnings, PREPROD badge
+ERROR = "#DC3545"     # Rouge - erreurs
+INFO = "#17A2B8"      # Cyan - informations
 ```
 
 ---
@@ -153,37 +156,55 @@ with open("src/mangetamain_analytics/assets/custom.css") as f:
 }
 ```
 
-**Navigation (radio buttons sans checkboxes)**
+**Navigation (radio buttons avec états)**
 ```css
-/* Cacher les cercles de radio */
-[data-testid="stSidebar"] .stRadio input[type="radio"] {
-    display: none;
+/* État inactif */
+[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"] {
+    background-color: rgba(51, 51, 51, 0.5);
+    padding: 12px 15px;
+    border: 1px solid rgba(240, 240, 240, 0.1);
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
 }
 
-/* Item sélectionné - Gradient orange */
+/* État actif - Gradient orange-jaune */
 [data-testid="stSidebar"] .stRadio input:checked + div {
-    background: linear-gradient(135deg, #d97b3a 0%, #c66a2f 100%);
-    border-radius: 8px;
-    padding: 10px 15px;
-    font-weight: bold;
+    background: linear-gradient(90deg, #FF8C00 0%, #FFD700 100%);
+    color: #1E1E1E;
+    border: 1px solid #FFD700;
+    box-shadow: 0 2px 8px rgba(255, 140, 0, 0.3);
+}
+
+/* État hover */
+[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:hover {
+    background-color: rgba(255, 215, 0, 0.1);
+    border-color: #FFD700;
 }
 ```
 
 **Boutons primaires (orange)**
 ```css
 .stButton > button {
-    background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
-    color: white;
-    border-radius: 25px;
-    box-shadow: 0 4px 6px rgba(255, 140, 66, 0.3);
+    background: linear-gradient(90deg, #FF8C00 0%, #FFD700 100%);
+    color: #1E1E1E;
+    border: 1px solid #FFD700;
+    font-family: 'Inter', sans-serif;
+    width: 100%;
 }
 ```
 
-**Messages info (bleu uniforme)**
+**Messages info (warm kitchen theme)**
 ```css
 [data-baseweb="notification"] {
-    background: linear-gradient(135deg, #2980b9 0%, #3498db 100%) !important;
-    color: #ffffff !important;
+    background: #333333 !important;
+    border-left: 4px solid #FF8C00 !important;
+    box-shadow: 0 2px 8px rgba(255, 140, 0, 0.15) !important;
+    color: #F0F0F0 !important;
+}
+
+[data-baseweb="notification"] svg {
+    fill: #FFD700 !important;
 }
 ```
 
@@ -210,10 +231,10 @@ with open("src/mangetamain_analytics/assets/custom.css") as f:
 
 ```toml
 [theme]
-primaryColor = "#ff8c42"
-backgroundColor = "#1e1e1e"
-secondaryBackgroundColor = "#2a2a2a"
-textColor = "#e0e0e0"
+primaryColor = "#FF8C00"
+backgroundColor = "#1E1E1E"
+secondaryBackgroundColor = "#333333"
+textColor = "#F0F0F0"
 font = "sans serif"
 ```
 
