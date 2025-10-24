@@ -594,12 +594,19 @@ def main():
             unsafe_allow_html=True
         )
 
-        # BOUTON 2: Fichier DuckDB (Bleu ou Rouge selon statut)
-        db_path = "data/mangetamain.duckdb"
-        db_exists = Path(db_path).exists()
-        db_color = "#3498db" if db_exists else "#e74c3c"
-        db_icon = "✅" if db_exists else "❌"
-        db_text = "Fichier DuckDB connecté" if db_exists else "Fichier DuckDB non trouvé"
+        # BOUTON 2: Test S3 (Bleu ou Rouge selon statut)
+        try:
+            # Test simple: tenter de lire depuis S3 via DuckDB
+            conn = duckdb.connect("data/mangetamain.duckdb", read_only=True)
+            result = conn.execute("SELECT COUNT(*) FROM recipes LIMIT 1").fetchone()
+            conn.close()
+            s3_ready = result is not None
+        except Exception:
+            s3_ready = False
+
+        db_color = "#3498db" if s3_ready else "#e74c3c"
+        db_icon = "✅" if s3_ready else "❌"
+        db_text = "S3 Ready" if s3_ready else "S3 Connection Error"
 
         st.markdown(
             f"""
