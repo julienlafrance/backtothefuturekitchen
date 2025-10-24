@@ -1,6 +1,7 @@
 # Guide Charte Graphique "Back to the Kitchen"
 
-**Date:** 2025-10-24
+**Date de création:** 2025-10-24
+**Dernière mise à jour:** 2025-10-25
 **Projet:** Mangetamain Analytics - Application Streamlit Preprod
 
 ---
@@ -414,6 +415,316 @@ chart_theme.apply_subplot_theme(fig, num_rows=1, num_cols=2)
 - Vérifier lisibilité sur fond #1e1e1e
 - Vérifier contraste des textes
 - Vérifier hover labels
+
+---
+
+## 🎨 Menu Sidebar - Navigation et Badges
+
+### Vue d'ensemble
+
+La sidebar contient 3 zones principales :
+1. **Logo** - "Back to the Kitchen" en haut
+2. **Navigation** - Menu avec titre, intro et options analysées
+3. **Badges** - Statut S3 et environnement (PREPROD/PROD) en bas
+
+### CSS Variables
+
+Toutes les couleurs sont centralisées dans `:root` pour faciliter la maintenance :
+
+```css
+:root {
+    --primary-color: #FF8C00;
+    --secondary-accent: #FFD700;
+    --background-color: #1E1E1E;
+    --secondary-background-color: #333333;
+    --text-color: #F0F0F0;
+    --text-secondary-color: #888888;
+    --font-heading: 'Michroma', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --success-color: #28A745;
+    --warning-color: #FFC107;
+    --error-color: #DC3545;
+    --info-color: #17A2B8;
+}
+```
+
+### Titre "ANALYSES"
+
+**HTML Python:**
+```python
+st.markdown('<h3 class="analyses-title">ANALYSES</h3>', unsafe_allow_html=True)
+```
+
+**CSS:**
+```css
+[data-testid="stSidebar"] h3.analyses-title {
+    font-family: var(--font-heading);  /* Michroma */
+    color: var(--primary-color);        /* #FF8C00 */
+    font-size: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-top: 20px;
+    margin-bottom: 5px;
+}
+```
+
+### Texte Introductif
+
+**HTML Python:**
+```python
+st.markdown('<p class="intro-text">Choisir une analyse :</p>', unsafe_allow_html=True)
+```
+
+**CSS:**
+```css
+[data-testid="stSidebar"] .intro-text {
+    font-family: var(--font-body);  /* Inter */
+    color: var(--text-color);       /* #F0F0F0 */
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    font-weight: 400;
+}
+```
+
+### Navigation - États des Boutons
+
+Les boutons de navigation ont 3 états : **inactif**, **hover**, **actif**.
+
+**Structure HTML:**
+```python
+selected_page = st.radio(
+    "Navigation",
+    ["Analyses Saisonnières", "Effet Jour/Week-end", "Recommandations", "Tendances 1999-2018 - test"],
+    index=0,
+    label_visibility="collapsed"
+)
+```
+
+**CSS - État Inactif:**
+```css
+[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"] {
+    background-color: rgba(51, 51, 51, 0.5);
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin: 6px 0;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(240, 240, 240, 0.1);
+    font-family: 'Inter', sans-serif;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+```
+
+**CSS - État Hover:**
+```css
+[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:hover {
+    background-color: rgba(255, 215, 0, 0.1);
+    border-color: #FFD700;
+}
+```
+
+**CSS - État Actif:**
+```css
+[data-testid="stSidebar"] .stRadio input:checked + div {
+    background: linear-gradient(90deg, #FF8C00 0%, #FFD700 100%);
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-weight: bold;
+    color: #1E1E1E;  /* Texte noir sur fond orange */
+    border: 1px solid #FFD700;
+    box-shadow: 0 2px 8px rgba(255, 140, 0, 0.3);
+}
+```
+
+### Icônes Lucide
+
+Les icônes sont injectées via CSS `::before` avec SVG en data URL :
+
+| Option | Icône Lucide | Usage |
+|--------|--------------|-------|
+| Analyses Saisonnières | `calendar-days` | Analyses par saison |
+| Effet Jour/Week-end | `sun` | Analyses week-end |
+| Recommandations | `sparkles` | Système recommandations |
+| Tendances 1999-2018 | `bar-chart-2` | Analyses temporelles |
+
+**Exemple CSS icône:**
+```css
+/* Icône calendar-days - blanc quand inactif */
+[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:nth-child(1)::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg"...stroke="%23F0F0F0"...</svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/* Icône calendar-days - noir quand actif */
+[data-testid="stSidebar"] .stRadio input:checked + div[data-baseweb="radio"]:nth-child(1)::before {
+    background-image: url('data:image/svg+xml,...stroke="%231E1E1E"...');
+}
+```
+
+### Badges Pill
+
+Les badges sont positionnés en bas de la sidebar avec classes CSS réutilisables.
+
+**Badge S3 Ready/Error:**
+
+```python
+# Python
+db_status_class = "success" if s3_ready else "error"
+db_text = "S3 Ready" if s3_ready else "S3 Error"
+
+st.markdown(
+    f"""
+    <div style="text-align: center;">
+        <span class="badge-s3 {db_status_class}">
+            <span class="badge-icon"></span>
+            {db_text}
+        </span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+```
+
+```css
+/* CSS */
+.badge-s3 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--info-color);  /* #17A2B8 par défaut */
+    color: var(--text-color);
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font-body);
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.badge-s3.error {
+    background-color: var(--error-color);  /* #DC3545 */
+}
+
+.badge-s3.success {
+    background-color: var(--success-color);  /* #28A745 */
+}
+```
+
+**Badge PREPROD/PROD:**
+
+```python
+# Python
+if "PREPROD" in env:
+    badge_class = "badge-preprod"
+    label = "PREPROD"
+elif "PROD" in env:
+    badge_class = "badge-prod"
+    label = "PRODUCTION"
+
+st.markdown(
+    f"""
+    <div style="text-align: center;">
+        <span class="{badge_class}">
+            <span class="badge-icon"></span>
+            {label}
+        </span>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+```
+
+```css
+/* CSS */
+.badge-preprod {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--warning-color);  /* #FFC107 */
+    color: var(--secondary-background-color);  /* #333333 - texte foncé */
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: var(--font-body);
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-prod {
+    background-color: var(--success-color);  /* #28A745 */
+    color: var(--text-color);  /* #F0F0F0 - texte clair */
+}
+
+.badge-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: currentColor;
+    display: inline-block;
+}
+```
+
+### Container Badges en Bas
+
+```css
+.sidebar-badges {
+    margin-top: auto;  /* Pousse en bas avec flexbox */
+    padding: 15px 0;
+    border-top: 1px solid rgba(240, 240, 240, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+```
+
+### Structure Finale Sidebar
+
+```
+┌─────────────────────────────┐
+│  🍳 Back to the Kitchen     │ ← Logo
+│  (Image PNG)                │
+├─────────────────────────────┤
+│  ANALYSES                   │ ← Titre h3 (Michroma, orange)
+│  Choisir une analyse :      │ ← Texte p (Inter, gris clair)
+│                             │
+│  📅 Analyses Saisonnières   │ ← st.radio avec icônes Lucide
+│  ☀️ Effet Jour/Week-end     │   États: inactif/hover/actif
+│  ✨ Recommandations         │   Gradient orange → jaune actif
+│  📊 Tendances 1999-2018     │
+│                             │
+│         (espace flex)       │
+│                             │
+├─────────────────────────────┤
+│  ● S3 Ready                 │ ← Badge pill (cyan/vert/rouge)
+│  ● PREPROD                  │ ← Badge pill (jaune/vert)
+└─────────────────────────────┘
+```
+
+### Checklist Menu Sidebar
+
+- [ ] Titre "ANALYSES" avec classe `analyses-title`
+- [ ] Texte intro avec classe `intro-text`
+- [ ] Navigation `st.radio` avec `label_visibility="collapsed"`
+- [ ] Icônes Lucide injectées via CSS `::before`
+- [ ] 3 états navigation (inactif/hover/actif) stylisés
+- [ ] Badge S3 avec classe `badge-s3` + modificateur `success`/`error`
+- [ ] Badge environnement avec classe `badge-preprod`/`badge-prod`
+- [ ] Container badges avec classe `sidebar-badges`
+- [ ] CSS Variables `:root` utilisées partout
+- [ ] Pas de bouton "Rafraîchir" (inutile)
 
 ---
 
