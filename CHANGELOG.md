@@ -7,6 +7,108 @@ et ce projet adhère au [Versionnement Sémantique](https://semver.org/lang/fr/)
 
 ---
 
+## [1.1.0] - 2025-10-25
+
+### ✨ Ajouté
+
+#### Charte Graphique "Back to the Kitchen"
+- **CSS Variables centralisées** dans `custom.css`
+  - `:root` avec `--primary-color`, `--secondary-accent`, `--font-heading`, `--font-body`
+  - Variables pour couleurs d'état : `--success-color`, `--warning-color`, `--error-color`, `--info-color`
+  - Facilite la maintenance et la cohérence visuelle
+
+#### Menu Sidebar Amélioré
+- **Titre "ANALYSES"** avec classe CSS `analyses-title`
+  - Police Michroma, couleur PRIMARY (#FF8C00)
+  - Text-transform uppercase, letter-spacing 1px
+- **Texte introductif** "Choisir une analyse :" avec classe `intro-text`
+  - Police Inter, couleur TEXT (#F0F0F0)
+- **Navigation avec 3 états** (inactif/hover/actif)
+  - Inactif : Fond gris semi-transparent, bordure fine
+  - Hover : Fond jaune transparent (10%), bordure jaune doré
+  - Actif : Gradient orange → jaune, texte noir, shadow orange
+- **Icônes Lucide** injectées via CSS `::before`
+  - `calendar-days`, `sun`, `sparkles`, `bar-chart-2`
+  - Couleur adaptée : blanc (inactif), noir (actif)
+
+#### Badges Pill Stylisés
+- **Badge S3 Ready/Error** avec classes CSS
+  - `.badge-s3` avec modificateurs `.success` / `.error`
+  - Couleurs : Cyan (INFO), Vert (SUCCESS), Rouge (ERROR)
+  - Style pill avec border-radius 50px
+- **Badge PREPROD/PROD** avec classes CSS
+  - `.badge-preprod` : Jaune (WARNING), texte foncé
+  - `.badge-prod` : Vert (SUCCESS), texte clair
+  - Icône circle-dot avec classe `.badge-icon`
+- **Container `.sidebar-badges`** en bas de sidebar
+  - Flexbox avec `margin-top: auto`
+  - Border-top subtil, gap entre badges
+
+### 🔄 Modifié
+
+#### Palette de Couleurs Harmonisée
+- **Mise à jour complète** de `utils/colors.py`
+  - PRIMARY : `#d97b3a` → `#FF8C00` (Orange vif)
+  - SECONDARY : `#c66a2f` → `#E24E1B` (Rouge/Orange profond)
+  - CHART_COLORS : 8 couleurs du logo (vs 5 anciennes)
+- **Documentation synchronisée**
+  - CHARTE_GRAPHIQUE_GUIDE.md
+  - NOTES_INTEGRATION.md
+  - PROGRESSION_INTEGRATION.md
+  - RECAPITULATIF_FINAL.md
+- **Commentaires code mis à jour**
+  - `analyse_seasonality.py` : 3 occurrences corrigées
+  - Commentaires HEX alignés avec vraies valeurs
+
+#### Navigation Sidebar
+- **Titre** : Passage de `<p>` inline à `<h3>` avec classe CSS
+- **Container badges** : Renommé `sidebar-bottom-buttons` → `sidebar-badges`
+- **Border subtle** : `#333` → `rgba(240, 240, 240, 0.1)`
+
+### ❌ Supprimé
+
+#### Menu Sidebar
+- **Bouton "Rafraîchir"** retiré (inutile avec Streamlit)
+  - 24 lignes supprimées dans `main.py`
+  - Gradient orange, onclick reload() non nécessaire
+
+### 📚 Documentation
+
+#### Nouvelle Section CHARTE_GRAPHIQUE_GUIDE.md
+- **Section "Menu Sidebar - Navigation et Badges"** (300+ lignes)
+  - Vue d'ensemble avec 3 zones principales
+  - CSS Variables expliquées
+  - Titre et texte introductif (HTML + CSS)
+  - Navigation avec 3 états détaillés
+  - Icônes Lucide avec tableau de mapping
+  - Badges Pill (S3 et ENV) avec code complet
+  - Structure finale sidebar en ASCII art
+  - Checklist menu sidebar (10 points)
+
+#### Fichiers Mis à Jour
+- **CHARTE_GRAPHIQUE_GUIDE.md** : Section menu sidebar ajoutée
+- **NOTES_INTEGRATION.md** : Mapping couleurs mis à jour
+- **PROGRESSION_INTEGRATION.md** : Palette cohérente
+- **RECAPITULATIF_FINAL.md** : Nouvelles couleurs
+- **Date** : Ajout "Dernière mise à jour: 2025-10-25"
+
+### 🐛 Corrections
+
+#### Commentaires Code
+- **analyse_seasonality.py** : 3 palettes de couleurs corrigées
+  - Commentaires HEX alignés avec nouvelles valeurs
+  - `#6ec1e4` → `#FFD700`, `#e89050` → `#E24E1B`, etc.
+
+### 🎨 Amélioration UX
+
+#### Cohérence Visuelle
+- **CSS Variables** : Toutes les couleurs utilisent `var(--*)`
+- **Classes réutilisables** : `.badge-s3`, `.badge-preprod`, `.analyses-title`, `.intro-text`
+- **États navigation** : Transitions fluides (0.3s ease)
+- **Accessibilité** : Contraste texte/fond respecté (noir sur orange actif)
+
+---
+
 ## [1.0.0] - 2025-10-23
 
 ### ✨ Ajouté
