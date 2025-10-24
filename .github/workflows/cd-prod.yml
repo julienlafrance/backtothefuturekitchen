@@ -51,17 +51,16 @@ jobs:
 
       - name: Health check production
         run: |
-          echo "🔍 Test santé production sur https://mangetamain-prod.lafrance.io/"
+          echo "🔍 Test santé production sur https://backtothefuturekitchen.lafrance.io/"
 
           # Retry 10 fois avec 10s d'intervalle
           for i in {1..10}; do
             echo "Tentative $i/10..."
 
-            # Remplace par l'URL de prod si différente de preprod
-            if curl -f -s --max-time 10 https://mangetamain-prod.lafrance.io/ > /dev/null; then
+            if curl -f -s --max-time 10 https://backtothefuturekitchen.lafrance.io/ > /dev/null; then
               echo "✅ Production est accessible!"
 
-              if curl -s https://mangetamain-prod.lafrance.io/ | grep -q "Back to the Kitchen\|Streamlit\|streamlit"; then
+              if curl -s https://backtothefuturekitchen.lafrance.io/ | grep -q "Back to the Kitchen\|Streamlit\|streamlit"; then
                 echo "✅ Production répond correctement"
                 exit 0
               else
@@ -80,7 +79,7 @@ jobs:
         if: success()
         run: |
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"✅ **Déploiement PRODUCTION réussi!**\n🌐 URL: https://mangetamain-prod.lafrance.io/\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n👤 Déployé par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"✅ **Déploiement PRODUCTION réussi!**\n🌐 URL: https://backtothefuturekitchen.lafrance.io/\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n👤 Déployé par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: Notify deployment failure
