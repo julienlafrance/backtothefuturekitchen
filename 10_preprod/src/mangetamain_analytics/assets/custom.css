@@ -255,14 +255,17 @@ small, .caption {
     border-radius: 8px;
     padding: 12px 15px;
     font-weight: bold;
-    color: #1E1E1E;
+    color: #000000;
     border: 1px solid #FFD700;
     box-shadow: 0 2px 8px rgba(255, 140, 0, 0.3);
+    width: 100% !important;
+    box-sizing: border-box !important;
 }
 
-/* Texte de l'item sélectionné */
+/* Texte de l'item sélectionné - Noir pur pour meilleure lisibilité */
 [data-testid="stSidebar"] .stRadio input:checked + div > div {
-    color: #1E1E1E !important;
+    color: #000000 !important;
+    font-weight: 700 !important;
 }
 
 /* Icônes de l'item sélectionné - Noir */
