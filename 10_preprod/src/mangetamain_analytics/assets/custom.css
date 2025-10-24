@@ -207,7 +207,6 @@ small, .caption {
     min-height: 48px !important;
     height: 48px !important;
     cursor: pointer !important;
-    position: relative;
 }
 
 /* Force les divs internes du label à prendre 100% aussi */
@@ -257,11 +256,13 @@ small, .caption {
     background-repeat: no-repeat;
 }
 
-/* Cacher les cercles de radio visuellement mais garder fonctionnalité */
+/* Cacher les cercles de radio visuellement */
 [data-testid="stSidebar"] .stRadio input[type="radio"] {
     opacity: 0;
-    position: absolute;
-    pointer-events: none;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
 }
 
 [data-testid="stSidebar"] .stRadio [data-baseweb="radio"] > div:first-child {
