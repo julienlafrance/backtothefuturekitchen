@@ -13,6 +13,7 @@ COLORS = {
     "primary": "#00416A",  # darkblue
     "secondary": "#4682B4",  # steelblue
     "tertiary": "#FF7F50",  # coral
+    "coral": "#FF7F50",  # coral (alias pour tertiary)
     "success": "#2E8B57",  # green
     "warning": "#FF8C00",  # orange
     "danger": "#E94B3C",  # red
