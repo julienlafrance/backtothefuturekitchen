@@ -516,11 +516,6 @@ def main():
     """Main Streamlit application - Enhanced version."""
     logger.info("🚀 Enhanced Streamlit application starting")
 
-    st.title("🍽️ Mangetamain Analytics - Version Complète")
-    st.markdown(
-        "*Analyse complète des données Food.com avec toutes les tables importées*"
-    )
-
     # Database connection
     conn = get_db_connection()
     if not conn:
