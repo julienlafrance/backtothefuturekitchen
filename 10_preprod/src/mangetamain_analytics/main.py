@@ -140,58 +140,36 @@ def get_db_connection():
 
 
 def display_database_info(conn):
-    """Display comprehensive database information."""
-    st.header("📊 Base de données")
-
-    # Database file info
+    """Display comprehensive database information in sidebar."""
     db_path = "data/mangetamain.duckdb"
-    if Path(db_path).exists():
-        file_size = Path(db_path).stat().st_size / (1024 * 1024)
-        st.success("✅ **Fichier DuckDB connecté**")
-        st.code(f"📁 {db_path}")
-        st.write(f"📏 Taille: {file_size:.1f} MB")
-    else:
-        st.error(f"❌ Fichier non trouvé: {db_path}")
+    if not Path(db_path).exists():
         return
 
-    st.markdown("---")
+    file_size = Path(db_path).stat().st_size / (1024 * 1024)
 
-    # Available tables with detailed stats
-    st.subheader("🗂️ Tables disponibles")
+    # Database info section (after PREPROD badge)
+    st.markdown("### Analyses")
+    st.code(f"📁 {db_path}")
+    st.write(f"📏 Taille: {file_size:.1f} MB")
+
+    st.markdown("#### 🗂️ Tables disponibles")
     tables = conn.execute("SHOW TABLES").fetchall()
 
-    total_rows = 0
     for (table_name,) in tables:
         count = conn.execute(f"SELECT COUNT(*) FROM {table_name}").fetchone()[0]
         columns = conn.execute(f"DESCRIBE {table_name}").fetchall()
-        total_rows += count
 
-        # Color coding by table type
+        # Emoji coding by table type
         if table_name.startswith("RAW_"):
             emoji = "📥"  # Raw data
-            color = "#ff9999"
         elif table_name.startswith("PP_"):
             emoji = "⚙️"  # Preprocessed data
-            color = "#99ccff"
         elif "interactions_" in table_name:
             emoji = "🎯"  # ML datasets
-            color = "#99ff99"
         else:
             emoji = "📊"
-            color = "#ffcc99"
 
-        st.markdown(
-            f"""
-        <div style="background-color: {color}; padding: 8px; border-radius: 5px; margin: 2px 0;">
-            <strong>{emoji} {table_name}</strong>: {count:,} lignes, {len(columns)} colonnes
-        </div>
-        """,
-            unsafe_allow_html=True,
-        )
-
-    st.write(f"**📈 Total**: {total_rows:,} lignes dans {len(tables)} tables")
-
-    st.markdown("---")
+        st.write(f"{emoji} **{table_name}**: {count:,} lignes, {len(columns)} colonnes")
 
 
 def create_tables_overview(conn):
@@ -577,43 +555,37 @@ def main():
         st.info("💡 Assurez-vous que le fichier `data/mangetamain.duckdb` existe")
         return
 
-    # Sidebar
+    # Sidebar with navigation
     with st.sidebar:
-        display_database_info(conn)
+        # First: Database connection status
+        db_path = "data/mangetamain.duckdb"
+        if Path(db_path).exists():
+            st.success("✅ **Fichier DuckDB connecté**")
+        else:
+            st.error("❌ **Fichier DuckDB non trouvé**")
+
+        # Second: Environment badge
         display_environment_badge()
 
-    # Main content tabs
-    tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
-        [
-            "📊 Vue d'ensemble",
-            "⭐ Analyses des notes",
-            "📅 Analyse temporelle",
-            "👥 Utilisateurs",
-            "🔍 Données brutes",
-            "📈 Graphiques personnalisés",
-            "📈 Tendances 1999-2018",
-        ]
-    )
+        # Third: Database info
+        display_database_info(conn)
 
-    with tab1:
-        create_tables_overview(conn)
+        # Fourth: Navigation menu
+        st.markdown("---")
+        st.markdown("### 📚 Navigation")
+        selected_page = st.radio(
+            "Choisir une analyse:",
+            [
+                "📈 Tendances 1999-2018",
+                "📊 [Analyse à venir]",
+                "📊 [Analyse à venir]",
+                "📊 [Analyse à venir]",
+            ],
+            index=0,
+        )
 
-    with tab2:
-        create_rating_analysis(conn)
-
-    with tab3:
-        create_temporal_analysis(conn)
-
-    with tab4:
-        create_user_analysis(conn)
-
-    with tab5:
-        display_raw_data_explorer(conn)
-
-    with tab6:
-        create_custom_visualizations(conn)
-
-    with tab7:
+    # Main content - Display selected analysis
+    if selected_page == "📈 Tendances 1999-2018":
         st.header("📈 Analyses des tendances temporelles (1999-2018)")
         st.markdown(
             """
@@ -622,35 +594,47 @@ def main():
             pour identifier les évolutions significatives.
             """
         )
+        st.markdown("---")
 
-        # Sélecteur d'analyse
-        analyse_choice = st.selectbox(
-            "Choisir une analyse:",
-            [
-                "📊 Volume de recettes",
-                "⏱️ Durée de préparation",
-                "🔧 Complexité des recettes",
-                "🥗 Valeurs nutritionnelles",
-                "🥘 Ingrédients",
-                "🏷️ Tags/Catégories",
-            ],
+        # Display all 6 analyses without dropdown
+        st.subheader("📊 Volume de recettes")
+        analyse_trendline_volume()
+        st.markdown("---")
+
+        st.subheader("⏱️ Durée de préparation")
+        analyse_trendline_duree()
+        st.markdown("---")
+
+        st.subheader("🔧 Complexité des recettes")
+        analyse_trendline_complexite()
+        st.markdown("---")
+
+        st.subheader("🥗 Valeurs nutritionnelles")
+        analyse_trendline_nutrition()
+        st.markdown("---")
+
+        st.subheader("🥘 Ingrédients")
+        st.info("💡 Analyse des 10 ingrédients les plus populaires")
+        analyse_trendline_ingredients(top_n=10)
+        st.markdown("---")
+
+        st.subheader("🏷️ Tags/Catégories")
+        st.info("💡 Analyse des 10 tags les plus fréquents")
+        analyse_trendline_tags(top_n=10)
+
+    else:
+        # Placeholder for future analyses
+        st.header(selected_page)
+        st.info("🚧 Cette analyse sera disponible prochainement.")
+        st.markdown(
+            """
+            Cette page est réservée pour les prochaines analyses qui seront intégrées :
+            - Analyse de saisonnalité
+            - Analyse d'effet weekend
+            - Système de recommandations
+            - Et bien plus...
+            """
         )
-
-        # Affichage de l'analyse sélectionnée
-        if analyse_choice == "📊 Volume de recettes":
-            analyse_trendline_volume()
-        elif analyse_choice == "⏱️ Durée de préparation":
-            analyse_trendline_duree()
-        elif analyse_choice == "🔧 Complexité des recettes":
-            analyse_trendline_complexite()
-        elif analyse_choice == "🥗 Valeurs nutritionnelles":
-            analyse_trendline_nutrition()
-        elif analyse_choice == "🥘 Ingrédients":
-            top_n = st.slider("Nombre d'ingrédients dans les tops", 5, 20, 10)
-            analyse_trendline_ingredients(top_n=top_n)
-        elif analyse_choice == "🏷️ Tags/Catégories":
-            top_n = st.slider("Nombre de tags dans les tops", 5, 20, 10)
-            analyse_trendline_tags(top_n=top_n)
 
     # Footer
     st.markdown("---")
