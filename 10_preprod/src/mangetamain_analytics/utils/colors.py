@@ -9,45 +9,48 @@ Mangetamain Analytics, inspirées du style rétro années 80.
 # ============================================================================
 
 # Fond et surfaces
-BACKGROUND_MAIN = "#1e1e1e"  # Gris foncé - zone principale
+BACKGROUND = "#1E1E1E"  # Fond sombre principal
+SECONDARY_BACKGROUND = "#333333"  # Fond des widgets/cartes
+BACKGROUND_MAIN = "#1E1E1E"  # Gris foncé - zone principale (alias)
 BACKGROUND_SIDEBAR = "#000000"  # Noir pur - sidebar
 BACKGROUND_FOOTER = "#1a1a1a"  # Noir foncé - footer
-BACKGROUND_CARD = "#2a2a2a"  # Gris moyen - cards et widgets
+BACKGROUND_CARD = "#333333"  # Gris moyen - cards et widgets
 
 # Texte
-TEXT_PRIMARY = "#e0e0e0"  # Gris clair - texte principal
+TEXT = "#F0F0F0"  # Texte clair principal
+TEXT_PRIMARY = "#F0F0F0"  # Gris clair - texte principal (alias)
 TEXT_SECONDARY = "#888888"  # Gris moyen - texte secondaire
 TEXT_WHITE = "#ffffff"  # Blanc pur - texte sur fond sombre
 
 # Orange primaire (accent principal) - COULEURS DU LOGO
-ORANGE_PRIMARY = "#d97b3a"  # Orange moyen du logo - titres, liens
-ORANGE_SECONDARY = "#c66a2f"  # Orange foncé du logo - dégradés
-ORANGE_LIGHT = "#e89050"  # Orange clair - hover
+PRIMARY = "#FF8C00"  # Orange vif - couleur principale
+SECONDARY_ACCENT = "#FFD700"  # Jaune doré - accent secondaire
+ORANGE_PRIMARY = "#FF8C00"  # Orange vif (alias de PRIMARY)
+ORANGE_SECONDARY = "#E24E1B"  # Rouge/Orange profond du logo
+ORANGE_LIGHT = "#FFA07A"  # Saumon - teinte douce du dégradé
 
 # ============================================================================
 # COULEURS D'ÉTAT
 # ============================================================================
 
-SUCCESS = "#5cb85c"  # Vert - succès, PROD badge
-WARNING = "#f0ad4e"  # Jaune/Orange - warnings, PREPROD badge
-ERROR = "#d9534f"  # Rouge - erreurs
-INFO = "#5bc0de"  # Bleu clair - informations
+SUCCESS = "#28A745"  # Vert - succès, PROD badge
+WARNING = "#FFC107"  # Jaune - warnings, PREPROD badge
+ERROR = "#DC3545"  # Rouge - erreurs
+INFO = "#17A2B8"  # Cyan - informations
 
 # ============================================================================
 # PALETTE GRAPHIQUES (Plotly/Matplotlib)
 # ============================================================================
 
 CHART_COLORS = [
-    "#ff8c42",  # Orange principal
-    "#5bc0de",  # Bleu clair
-    "#5cb85c",  # Vert
-    "#f0ad4e",  # Jaune/Orange
-    "#d9534f",  # Rouge
-    "#9b59b6",  # Violet
-    "#1abc9c",  # Turquoise
-    "#e74c3c",  # Rouge vif
-    "#3498db",  # Bleu
-    "#95a5a6",  # Gris
+    "#FF8C00",  # Base Orange (du milieu du dégradé du logo)
+    "#FFD700",  # Base Jaune (du point lumineux du dégradé du logo)
+    "#E24E1B",  # Rouge/Orange Profond (de la base du dégradé du logo)
+    "#1E90FF",  # Bleu Vif (du contour et des effets de vitesse)
+    "#00CED1",  # Cyan (accent technologique du logo)
+    "#FFA07A",  # Saumon (teinte plus douce du dégradé orange)
+    "#B0E0E6",  # Bleu Clair (teinte plus claire du contour bleu)
+    "#DAA520",  # Jaune Doré (pour une variation riche du jaune)
 ]
 
 # Palette steelblue (comme dans les wireframes)
@@ -61,7 +64,7 @@ STEELBLUE_PALETTE = [
 # DÉGRADÉS
 # ============================================================================
 
-GRADIENT_ORANGE = f"linear-gradient(135deg, {ORANGE_PRIMARY} 0%, {ORANGE_SECONDARY} 100%)"
+GRADIENT_ORANGE = f"linear-gradient(135deg, {PRIMARY} 0%, {ORANGE_SECONDARY} 100%)"
 GRADIENT_DARK = f"linear-gradient(180deg, {BACKGROUND_SIDEBAR} 0%, {BACKGROUND_MAIN} 100%)"
 
 # ============================================================================
@@ -76,7 +79,7 @@ ENV_PROD = {
 
 ENV_PREPROD = {
     "bg": WARNING,
-    "text": TEXT_WHITE,
+    "text": "#333333",  # Texte sombre sur fond jaune pour meilleure lisibilité
     "icon": "🔍",
 }
 
@@ -152,6 +155,11 @@ def get_plotly_theme() -> dict:
 
 __all__ = [
     # Couleurs principales
+    "PRIMARY",
+    "SECONDARY_ACCENT",
+    "BACKGROUND",
+    "SECONDARY_BACKGROUND",
+    "TEXT",
     "BACKGROUND_MAIN",
     "BACKGROUND_SIDEBAR",
     "BACKGROUND_FOOTER",

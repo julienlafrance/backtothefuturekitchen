@@ -4,6 +4,11 @@
  */
 
 /* ============================================================================
+   GOOGLE FONTS - Michroma (titres) + Inter (corps)
+   ============================================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ============================================================================
    SIDEBAR - Fond noir avec layout flex pour boutons en bas
    ============================================================================ */
 
@@ -63,18 +68,20 @@ header[data-testid="stHeader"] {
    TYPOGRAPHIE
    ============================================================================ */
 
-/* Headers orange */
+/* Headers orange - Police Michroma */
 h1, h2, h3 {
-    color: #ff8c42 !important;
+    font-family: 'Michroma', sans-serif !important;
+    color: #FF8C00 !important;
 }
 
-/* Texte global - Hiérarchie des gris */
-p, div, span {
-    color: #e0e0e0;  /* TEXT_PRIMARY - gris clair */
+/* Texte global - Police Inter */
+p, div, span, label, button, input, select, textarea {
+    font-family: 'Inter', sans-serif !important;
+    color: #F0F0F0;  /* TEXT - texte clair */
 }
 
 label {
-    color: #e0e0e0;  /* TEXT_PRIMARY */
+    color: #F0F0F0;  /* TEXT */
 }
 
 small, .caption {
@@ -114,9 +121,9 @@ small, .caption {
     background-color: #2a2a2a;
 }
 
-/* Item sélectionné - Gradient orange MOINS PÉTANT */
+/* Item sélectionné - Gradient orange vif */
 [data-testid="stSidebar"] .stRadio input:checked + div {
-    background: linear-gradient(135deg, #d97b3a 0%, #c66a2f 100%);
+    background: linear-gradient(135deg, #FF8C00 0%, #E24E1B 100%);
     border-radius: 8px;
     padding: 10px 15px;
     font-weight: bold;
@@ -161,7 +168,7 @@ small, .caption {
 
 /* Focus sur inputs */
 [data-baseweb="select"]:focus-within > div {
-    border-color: #ff8c42;
+    border-color: #FF8C00;
 }
 
 /* ============================================================================
@@ -170,19 +177,20 @@ small, .caption {
 
 /* Bouton primaire (orange) */
 .stButton > button {
-    background: linear-gradient(135deg, #ff8c42 0%, #ff6b35 100%);
+    background: linear-gradient(135deg, #FF8C00 0%, #E24E1B 100%);
     color: white;
     border: none;
     padding: 12px 20px;
     border-radius: 25px;
     font-weight: bold;
-    box-shadow: 0 4px 6px rgba(255, 140, 66, 0.3);
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 4px 6px rgba(255, 140, 0, 0.3);
     transition: all 0.3s ease;
 }
 
 .stButton > button:hover {
-    background: linear-gradient(135deg, #ffa560 0%, #ff8c42 100%);
-    box-shadow: 0 6px 8px rgba(255, 140, 66, 0.4);
+    background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+    box-shadow: 0 6px 8px rgba(255, 140, 0, 0.4);
     transform: translateY(-2px);
 }
 
@@ -197,8 +205,9 @@ small, .caption {
 }
 
 [data-testid="stExpander"] summary {
-    color: #ff8c42;
+    color: #FF8C00;
     font-weight: 600;
+    font-family: 'Inter', sans-serif;
 }
 
 /* ============================================================================
@@ -219,8 +228,9 @@ small, .caption {
 }
 
 .stTabs [aria-selected="true"] {
-    background-color: #ff8c42;
+    background-color: #FF8C00;
     color: white;
+    font-family: 'Inter', sans-serif;
 }
 
 /* ============================================================================
@@ -234,8 +244,9 @@ small, .caption {
 /* Headers de tableau */
 .stDataFrame thead tr th {
     background-color: #1a1a1a;
-    color: #ff8c42;
+    color: #FF8C00;
     font-weight: 600;
+    font-family: 'Inter', sans-serif;
 }
 
 /* ============================================================================
@@ -280,13 +291,14 @@ small, .caption {
    ============================================================================ */
 
 a {
-    color: #ff8c42;  /* ORANGE_PRIMARY */
+    color: #FF8C00;  /* PRIMARY */
     text-decoration: none;
     transition: color 0.3s ease;
+    font-family: 'Inter', sans-serif;
 }
 
 a:hover {
-    color: #ffa560;  /* ORANGE_LIGHT */
+    color: #FFD700;  /* SECONDARY_ACCENT */
 }
 
 /* ============================================================================

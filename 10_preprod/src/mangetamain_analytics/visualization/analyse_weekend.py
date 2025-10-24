@@ -686,7 +686,7 @@ def analyse_weekend_nutrition():
     results_df = pl.DataFrame(results)
 
     # 📊 MÉTRIQUES BANNIÈRE
-    signif_count = results_df.filter(pl.col('significant'))['nutrient'].len()
+    signif_count = results_df.filter(pl.col('significant') == True)['nutrient'].len()
     max_diff = results_df.sort(pl.col('diff_pct').abs(), descending=True).row(0, named=True)
 
     col1, col2, col3 = st.columns(3)
