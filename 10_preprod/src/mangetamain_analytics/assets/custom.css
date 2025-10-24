@@ -12,10 +12,11 @@
    SUPPRESSION ESPACE EN HAUT - Padding/Margin global
    ============================================================================ */
 
-/* Supprime tout padding/margin de la zone principale */
+/* Supprime TOUT l'espace en haut - Mode agressif */
 .main .block-container {
     padding-top: 0 !important;
     margin-top: 0 !important;
+    padding: 0 1rem 10rem !important;
 }
 
 .main {
@@ -23,8 +24,37 @@
     margin-top: 0 !important;
 }
 
-/* Supprime padding de la section principale */
+section.main {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Supprime padding de tous les divs dans main */
 section.main > div {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+section.main > div:first-child {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Force tous les éléments en haut */
+[data-testid="stVerticalBlock"] {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    gap: 0 !important;
+}
+
+[data-testid="stVerticalBlock"] > div:first-child {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Supprime l'espace du premier élément */
+.element-container:first-child {
+    margin-top: 0 !important;
     padding-top: 0 !important;
 }
 
