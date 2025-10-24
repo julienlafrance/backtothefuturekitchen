@@ -9,6 +9,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* ============================================================================
+   CSS VARIABLES - Palette de couleurs centralisée
+   ============================================================================ */
+:root {
+    --primary-color: #FF8C00;
+    --secondary-accent: #FFD700;
+    --background-color: #1E1E1E;
+    --secondary-background-color: #333333;
+    --text-color: #F0F0F0;
+    --text-secondary-color: #888888;
+    --font-heading: 'Michroma', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --success-color: #28A745;
+    --warning-color: #FFC107;
+    --error-color: #DC3545;
+    --info-color: #17A2B8;
+}
+
+/* ============================================================================
    SUPPRESSION ESPACE EN HAUT - Padding/Margin global
    ============================================================================ */
 
@@ -117,11 +135,31 @@ small, .caption {
    NAVIGATION - Boutons radio stylisés SANS checkboxes
    ============================================================================ */
 
+/* Titre de section ANALYSES */
+[data-testid="stSidebar"] h3.analyses-title {
+    font-family: var(--font-heading);
+    color: var(--primary-color);
+    font-size: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-top: 20px;
+    margin-bottom: 5px;
+}
+
+/* Texte introductif "Choisir une analyse" */
+[data-testid="stSidebar"] .intro-text {
+    font-family: var(--font-body);
+    color: var(--text-color);
+    font-size: 0.9em;
+    margin-bottom: 15px;
+    font-weight: 400;
+}
+
 /* Label du groupe radio */
 [data-testid="stSidebar"] .stRadio > label {
-    color: #FF8C00;
+    color: var(--primary-color);
     font-weight: 600;
-    font-family: 'Michroma', sans-serif;
+    font-family: var(--font-heading);
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -430,6 +468,79 @@ a {
 
 a:hover {
     color: #FFD700;  /* SECONDARY_ACCENT */
+}
+
+/* ============================================================================
+   BADGES PILL - S3 Ready et PREPROD
+   ============================================================================ */
+
+/* Badge S3 Ready - Style pill */
+.badge-s3 {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--info-color);
+    color: var(--text-color);
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--font-body);
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.badge-s3.error {
+    background-color: var(--error-color);
+}
+
+.badge-s3.success {
+    background-color: var(--success-color);
+}
+
+/* Badge PREPROD - Style pill avec icône */
+.badge-preprod {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: var(--warning-color);
+    color: var(--secondary-background-color);
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: var(--font-body);
+    margin: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.badge-prod {
+    background-color: var(--success-color);
+    color: var(--text-color);
+}
+
+/* Icône circle-dot pour les badges */
+.badge-icon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: currentColor;
+    display: inline-block;
+}
+
+/* Container pour les badges en bas de sidebar */
+.sidebar-badges {
+    margin-top: auto;
+    padding: 15px 0;
+    border-top: 1px solid rgba(240, 240, 240, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
 }
 
 /* ============================================================================

@@ -549,8 +549,17 @@ def main():
 
         st.markdown("---")
 
-        # Navigation menu with Analyses title
-        st.markdown('<p style="color: #FF8C00; font-family: \'Michroma\', sans-serif; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px; font-weight: 600;">Analyses</p>', unsafe_allow_html=True)
+        # Titre de section ANALYSES avec classe CSS
+        st.markdown(
+            '<h3 class="analyses-title">ANALYSES</h3>',
+            unsafe_allow_html=True
+        )
+
+        # Texte introductif
+        st.markdown(
+            '<p class="intro-text">Choisir une analyse :</p>',
+            unsafe_allow_html=True
+        )
 
         # Menu items with Lucide icons
         menu_options = [
@@ -564,54 +573,29 @@ def main():
         menu_labels = [opt[1] for opt in menu_options]
 
         selected_page = st.radio(
-            "Choisir une analyse:",
+            "Navigation",
             menu_labels,
             index=0,
             label_visibility="collapsed",
             format_func=lambda x: f"  {x}"  # Ajout d'espace pour l'icône CSS
         )
 
-        # Container HTML pour les boutons fixés en bas
+        # Container HTML pour les badges fixés en bas
         st.markdown(
             """
             <style>
-            /* Forcer les boutons du bas à rester en bas */
+            /* Forcer les badges du bas à rester en bas */
             [data-testid="stSidebar"] {
                 display: flex !important;
                 flex-direction: column !important;
             }
-            .sidebar-bottom-buttons {
+            .sidebar-badges {
                 margin-top: auto;
                 padding-top: 20px;
-                border-top: 1px solid #333;
+                border-top: 1px solid rgba(240, 240, 240, 0.1);
             }
             </style>
-            <div class="sidebar-bottom-buttons">
-            """,
-            unsafe_allow_html=True
-        )
-
-        # BOUTON 1: Rafraîchir (Orange)
-        st.markdown(
-            f"""
-            <div style="margin-bottom: 10px;">
-                <button onclick="window.location.reload();" style="
-                    background: linear-gradient(135deg, {colors.ORANGE_PRIMARY} 0%, {colors.ORANGE_SECONDARY} 100%);
-                    color: white;
-                    border: none;
-                    padding: 14px 20px;
-                    border-radius: 25px;
-                    cursor: pointer;
-                    font-weight: 600;
-                    width: 100%;
-                    font-size: 15px;
-                    box-shadow: 0 4px 6px rgba(217, 123, 58, 0.3);
-                    transition: all 0.3s ease;
-                    font-family: sans-serif;
-                ">
-                    🔄 Rafraîchir
-                </button>
-            </div>
+            <div class="sidebar-badges">
             """,
             unsafe_allow_html=True
         )
@@ -659,60 +643,42 @@ def main():
             s3_ready = False
             s3_error_msg = str(e)[:50]  # Premiers 50 caractères de l'erreur
 
-        # Badge S3 style pill
-        db_color = colors.INFO if s3_ready else colors.ERROR
-        db_icon = "●" if s3_ready else "●"  # Icône circle-dot (Unicode)
+        # Badge S3 style pill avec classe CSS
+        db_status_class = "success" if s3_ready else "error"
+        db_icon = "●"  # Icône circle-dot (Unicode)
         db_text = "S3 Ready" if s3_ready else "S3 Error"
 
         st.markdown(
             f"""
-            <div style="margin-bottom: 10px; text-align: center;">
-                <div style="
-                    display: inline-block;
-                    background-color: {db_color};
-                    color: white;
-                    border: none;
-                    padding: 8px 16px;
-                    border-radius: 20px;
-                    font-weight: 600;
-                    font-size: 12px;
-                    font-family: 'Inter', sans-serif;
-                ">
-                    {db_icon} {db_text}
-                </div>
+            <div style="text-align: center;">
+                <span class="badge-s3 {db_status_class}">
+                    <span class="badge-icon"></span>
+                    {db_text}
+                </span>
             </div>
             """,
             unsafe_allow_html=True
         )
 
-        # BADGE ENVIRONNEMENT - Style pill, positionné en bas
+        # BADGE ENVIRONNEMENT - Style pill avec classe CSS
         env = detect_environment()
         if "PREPROD" in env:
-            badge_config = colors.ENV_PREPROD
+            badge_class = "badge-preprod"
             label = "PREPROD"
         elif "PROD" in env:
-            badge_config = colors.ENV_PROD
+            badge_class = "badge-prod"
             label = "PRODUCTION"
         else:
-            badge_config = {"bg": "#666666", "text": "#ffffff", "icon": "●"}
+            badge_class = "badge-preprod"  # Fallback sur PREPROD style
             label = "UNKNOWN"
 
         st.markdown(
             f"""
-            <div style="margin-bottom: 10px; text-align: center;">
-                <div style="
-                    display: inline-block;
-                    background-color: {badge_config['bg']};
-                    color: {badge_config['text']};
-                    border: none;
-                    padding: 8px 16px;
-                    border-radius: 20px;
-                    font-weight: 600;
-                    font-size: 12px;
-                    font-family: 'Inter', sans-serif;
-                ">
-                    ● {label}
-                </div>
+            <div style="text-align: center;">
+                <span class="{badge_class}">
+                    <span class="badge-icon"></span>
+                    {label}
+                </span>
             </div>
             """,
             unsafe_allow_html=True
