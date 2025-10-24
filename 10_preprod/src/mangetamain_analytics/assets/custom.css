@@ -155,8 +155,18 @@ small, .caption {
     font-weight: 400;
 }
 
+/* Conteneur parent du radio - Force 100% */
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"] > div:has(.stRadio) {
+    width: 100% !important;
+}
+
 /* Conteneur du groupe radio */
 [data-testid="stSidebar"] .stRadio {
+    width: 100% !important;
+}
+
+/* Force TOUS les divs ancêtres à 100% */
+[data-testid="stSidebar"] div:has(> .stRadio) {
     width: 100% !important;
 }
 
