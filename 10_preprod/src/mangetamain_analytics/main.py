@@ -141,35 +141,8 @@ def get_db_connection():
 
 def display_database_info(conn):
     """Display comprehensive database information in sidebar."""
-    db_path = "data/mangetamain.duckdb"
-    if not Path(db_path).exists():
-        return
-
-    file_size = Path(db_path).stat().st_size / (1024 * 1024)
-
-    # Database info section (after PREPROD badge)
-    st.markdown("### Analyses")
-    st.code(f"📁 {db_path}")
-    st.write(f"📏 Taille: {file_size:.1f} MB")
-
-    st.markdown("#### 🗂️ Tables disponibles")
-    tables = conn.execute("SHOW TABLES").fetchall()
-
-    for (table_name,) in tables:
-        count = conn.execute(f"SELECT COUNT(*) FROM {table_name}").fetchone()[0]
-        columns = conn.execute(f"DESCRIBE {table_name}").fetchall()
-
-        # Emoji coding by table type
-        if table_name.startswith("RAW_"):
-            emoji = "📥"  # Raw data
-        elif table_name.startswith("PP_"):
-            emoji = "⚙️"  # Preprocessed data
-        elif "interactions_" in table_name:
-            emoji = "🎯"  # ML datasets
-        else:
-            emoji = "📊"
-
-        st.write(f"{emoji} **{table_name}**: {count:,} lignes, {len(columns)} colonnes")
+    # This function is now empty - database info removed from sidebar
+    pass
 
 
 def create_tables_overview(conn):
@@ -557,12 +530,8 @@ def main():
 
     # Sidebar with navigation
     with st.sidebar:
-        # First: Database info (Analyses section)
-        display_database_info(conn)
-
-        # Second: Navigation menu
-        st.markdown("---")
-        st.markdown("### 📚 Navigation")
+        # Navigation menu with Analyses title
+        st.markdown("### Analyses")
         selected_page = st.radio(
             "Choisir une analyse:",
             [
@@ -572,9 +541,10 @@ def main():
                 "📊 [Analyse à venir]",
             ],
             index=0,
+            label_visibility="collapsed"
         )
 
-        # Third: Database connection status (at the bottom)
+        # Database connection status (at the bottom)
         st.markdown("---")
         db_path = "data/mangetamain.duckdb"
         if Path(db_path).exists():
@@ -582,7 +552,7 @@ def main():
         else:
             st.error("❌ **Fichier DuckDB non trouvé**")
 
-        # Fourth: Environment badge (very bottom)
+        # Environment badge (very bottom)
         display_environment_badge()
 
     # Main content - Display selected analysis
