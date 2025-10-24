@@ -523,6 +523,21 @@ def main():
         st.info("💡 Assurez-vous que le fichier `data/mangetamain.duckdb` existe")
         return
 
+    # Custom CSS for black sidebar background
+    st.markdown(
+        """
+        <style>
+        [data-testid="stSidebar"] {
+            background-color: #000000;
+        }
+        [data-testid="stSidebar"] > div:first-child {
+            background-color: #000000;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
     # Sidebar with navigation
     with st.sidebar:
         # Logo at the top
@@ -549,32 +564,20 @@ def main():
             label_visibility="collapsed"
         )
 
-        # Spacer to push content to bottom
-        st.markdown("<div style='flex-grow: 1;'></div>", unsafe_allow_html=True)
+        # Spacer to push badges to bottom
+        for _ in range(10):
+            st.markdown("")
 
-        # Fixed bottom section with database status and environment badge
+        # Database status and environment badge at bottom (within sidebar)
+        st.markdown("---")
         db_path = "data/mangetamain.duckdb"
-        db_status = "✅ **Fichier DuckDB connecté**" if Path(db_path).exists() else "❌ **Fichier DuckDB non trouvé**"
+        if Path(db_path).exists():
+            st.success("✅ **Fichier DuckDB connecté**")
+        else:
+            st.error("❌ **Fichier DuckDB non trouvé**")
 
-        env = detect_environment()
-        env_badge = ""
-        if "PREPROD" in env:
-            env_badge = """
-            <div style="background-color: #6c757d; padding: 6px; border-radius: 5px; text-align: center; margin-top: 10px;">
-                <small style="color: white; margin: 0; font-weight: bold;">🔧 PREPROD</small>
-                <p style="color: white; margin: 0; font-size: 9px;">Environnement de développement</p>
-            </div>
-            """
-
-        st.markdown(
-            f"""
-            <div style="position: fixed; bottom: 10px; left: 10px; width: calc(100% - 2rem); background-color: var(--background-color); padding: 10px; border-top: 1px solid #333;">
-                <p style="margin: 0; padding: 5px 0; color: #28a745; font-size: 14px;">{db_status}</p>
-                {env_badge}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        # Environment badge
+        display_environment_badge()
 
     # Main content - Display selected analysis
     if selected_page == "📈 Tendances 1999-2018":
