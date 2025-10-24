@@ -557,20 +557,10 @@ def main():
 
     # Sidebar with navigation
     with st.sidebar:
-        # First: Database connection status
-        db_path = "data/mangetamain.duckdb"
-        if Path(db_path).exists():
-            st.success("✅ **Fichier DuckDB connecté**")
-        else:
-            st.error("❌ **Fichier DuckDB non trouvé**")
-
-        # Second: Environment badge
-        display_environment_badge()
-
-        # Third: Database info
+        # First: Database info (Analyses section)
         display_database_info(conn)
 
-        # Fourth: Navigation menu
+        # Second: Navigation menu
         st.markdown("---")
         st.markdown("### 📚 Navigation")
         selected_page = st.radio(
@@ -583,6 +573,17 @@ def main():
             ],
             index=0,
         )
+
+        # Third: Database connection status (at the bottom)
+        st.markdown("---")
+        db_path = "data/mangetamain.duckdb"
+        if Path(db_path).exists():
+            st.success("✅ **Fichier DuckDB connecté**")
+        else:
+            st.error("❌ **Fichier DuckDB non trouvé**")
+
+        # Fourth: Environment badge (very bottom)
+        display_environment_badge()
 
     # Main content - Display selected analysis
     if selected_page == "📈 Tendances 1999-2018":
