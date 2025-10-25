@@ -32,6 +32,10 @@ from visualization.analyse_weekend import render_weekend_analysis
 from visualization.analyse_ratings import render_ratings_analysis
 from utils import colors
 
+# Configuration des chemins relatifs (fonctionne en PREPROD et PROD)
+SCRIPT_DIR = Path(__file__).parent
+ASSETS_DIR = SCRIPT_DIR / "assets"
+
 # Fonction helper pour créer des options de menu avec icônes Lucide
 def create_nav_option_with_icon(icon_name, text):
     """Crée une option de navigation avec icône Lucide inline."""
@@ -118,7 +122,11 @@ if not any(
     logger.add(sys.stderr, level="DEBUG")
 
 # Page configuration
-st.set_page_config(page_title="Mangetamain Analytics", page_icon="🍽️", layout="wide")
+st.set_page_config(
+    page_title="Mangetamain Analytics",
+    page_icon=str(ASSETS_DIR / "favicon.png"),
+    layout="wide"
+)
 
 
 def get_db_connection():
@@ -531,7 +539,7 @@ def main():
         return
 
     # Load custom CSS from external file
-    css_path = Path("src/mangetamain_analytics/assets/custom.css")
+    css_path = ASSETS_DIR / "custom.css"
     if css_path.exists():
         with open(css_path) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
@@ -545,7 +553,7 @@ def main():
     # Sidebar with navigation
     with st.sidebar:
         # Logo at the top
-        logo_path = Path("src/mangetamain_analytics/assets/back_to_the_kitchen_logo.png")
+        logo_path = ASSETS_DIR / "back_to_the_kitchen_logo.png"
         if logo_path.exists():
             st.image(str(logo_path), use_container_width=True)
         else:
