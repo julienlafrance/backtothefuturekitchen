@@ -765,7 +765,7 @@ def analyse_weekend_nutrition():
                 "weekend": we_val,
                 "diff_pct": diff_pct,
                 "p_value": p_value,
-                "significant": p_value < 0.05,
+                "significant": bool(p_value < 0.05),
                 "decimals": decimals,
             }
         )

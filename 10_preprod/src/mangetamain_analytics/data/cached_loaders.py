@@ -29,10 +29,14 @@ def get_interactions_sample():
 
 
 @st.cache_data(ttl=3600, show_spinner="🔄 Chargement des ratings depuis S3...")
-def get_ratings_longterm():
+def get_ratings_longterm(min_interactions=100, return_metadata=False, verbose=False):
     """Charge les ratings pour analyse long-terme depuis S3 avec cache (1h)."""
     from mangetamain_data_utils.data_utils_ratings import (
         load_ratings_for_longterm_analysis,
     )
 
-    return load_ratings_for_longterm_analysis()
+    return load_ratings_for_longterm_analysis(
+        min_interactions=min_interactions,
+        return_metadata=return_metadata,
+        verbose=verbose,
+    )
