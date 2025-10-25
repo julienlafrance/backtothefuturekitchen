@@ -592,9 +592,16 @@ def main():
             unsafe_allow_html=True,
         )
 
-        # Bouton Rafraîchir stylisé
+        # Bouton Rafraîchir - Vide tous les caches et recharge
         if st.button("🔄 Rafraîchir", key="btn_refresh", use_container_width=True):
+            # Vider tous les types de cache Streamlit
             st.cache_data.clear()
+            st.cache_resource.clear()
+
+            # Afficher un toast de confirmation
+            st.toast("✅ Cache vidé - Rechargement...", icon="🔄")
+
+            # Recharger l'application
             st.rerun()
 
         # Spacer pour pousser les badges en bas (via CSS flexbox)
