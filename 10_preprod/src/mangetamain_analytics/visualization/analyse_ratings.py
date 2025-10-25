@@ -163,9 +163,10 @@ def analyse_ratings_validation_ponderee():
                 line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=0.5),
                 colorbar=dict(
                     title="Volume",
-                    x=0.46,
+                    x=1.0,  # Position à droite du graphique
                     len=0.4,
-                    y=0.25
+                    y=0.25,
+                    yanchor="middle"
                 )
             ),
             showlegend=False
