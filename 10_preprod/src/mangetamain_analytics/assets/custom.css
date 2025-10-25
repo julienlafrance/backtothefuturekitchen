@@ -438,15 +438,42 @@ small, .caption {
    ============================================================================ */
 
 [data-testid="stDataFrame"] {
-    background-color: #2a2a2a;
+    background-color: #2a2a2a !important;
+}
+
+/* Conteneur du dataframe */
+[data-testid="stDataFrame"] > div {
+    background-color: #2a2a2a !important;
 }
 
 /* Headers de tableau */
+[data-testid="stDataFrame"] thead tr th,
 .stDataFrame thead tr th {
-    background-color: #1a1a1a;
-    color: #FF8C00;
-    font-weight: 600;
-    font-family: 'Inter', sans-serif;
+    background-color: #1a1a1a !important;
+    color: #FF8C00 !important;
+    font-weight: 600 !important;
+    font-family: 'Inter', sans-serif !important;
+    border-bottom: 2px solid #444444 !important;
+}
+
+/* Cellules du corps du tableau */
+[data-testid="stDataFrame"] tbody tr td,
+.stDataFrame tbody tr td {
+    background-color: #2a2a2a !important;
+    color: #F0F0F0 !important;
+    border-bottom: 1px solid #444444 !important;
+}
+
+/* Lignes alternées pour meilleure lisibilité */
+[data-testid="stDataFrame"] tbody tr:nth-child(even) td,
+.stDataFrame tbody tr:nth-child(even) td {
+    background-color: #333333 !important;
+}
+
+/* Hover sur les lignes */
+[data-testid="stDataFrame"] tbody tr:hover td,
+.stDataFrame tbody tr:hover td {
+    background-color: #3a3a3a !important;
 }
 
 /* ============================================================================
