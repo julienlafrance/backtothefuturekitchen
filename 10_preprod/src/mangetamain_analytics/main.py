@@ -568,10 +568,10 @@ def main():
 
         # Menu items with Lucide icons
         menu_options = [
+            ("bar-chart-2", "Tendances 1999-2018"),
             ("calendar-days", "Analyses Saisonnières"),
             ("sun", "Effet Jour/Week-end"),
-            ("sparkles", "Recommandations"),
-            ("bar-chart-2", "Tendances 1999-2018 - test")
+            ("sparkles", "Recommandations")
         ]
 
         # Options pour st.radio (texte simple)
@@ -670,7 +670,7 @@ def main():
         )
 
     # Main content - Display selected analysis
-    if selected_page == "Tendances 1999-2018 - test":
+    if selected_page == "Tendances 1999-2018":
         st.markdown('<h1 style="margin-top: 0; padding-top: 0;">📈 Analyses des tendances temporelles (1999-2018)</h1>', unsafe_allow_html=True)
         st.markdown(
             """
