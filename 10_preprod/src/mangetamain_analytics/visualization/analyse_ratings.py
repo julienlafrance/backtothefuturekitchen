@@ -125,7 +125,7 @@ def analyse_ratings_validation_ponderee():
             marker=dict(
                 color=chart_theme.colors.CHART_COLORS[0],
                 opacity=0.7,
-                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1)
+                line=dict(width=0)  # Pas de contour
             ),
             showlegend=False
         ),
@@ -194,7 +194,7 @@ def analyse_ratings_validation_ponderee():
             marker=dict(
                 color=[chart_theme.colors.CHART_COLORS[2], chart_theme.colors.CHART_COLORS[0]],
                 opacity=0.8,
-                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1)
+                line=dict(width=0)  # Pas de contour
             ),
             text=[f'{var_unweighted:.4f}', f'{var_weighted:.4f}'],
             textposition='outside',
@@ -221,7 +221,8 @@ def analyse_ratings_validation_ponderee():
     fig.update_layout(
         height=900,
         showlegend=True,
-        title_text="Impact de la pondération par volume sur l'analyse"
+        title_text="Impact de la pondération par volume sur l'analyse",
+        bargap=0  # Supprime l'espace entre les barres de l'histogramme
     )
 
     # Application du thème "Back to the Kitchen"
