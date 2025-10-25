@@ -1,29 +1,35 @@
-name: CD - Preprod Deployment
+name: CD - Preprod Immediate Deploy
 
 on:
-  workflow_run:
-    workflows: ["CI Pipeline - Quality & Tests"]
-    types:
-      - completed
+  push:
     branches:
       - main
   workflow_dispatch:  # Permet déclenchement manuel
 
 jobs:
-  deploy-preprod:
-    name: Deploy to Preprod
+  immediate-deploy:
+    name: Deploy to Preprod (Immediate)
     runs-on: self-hosted
-    # Ne déployer que si le CI a réussi
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    outputs:
+      previous_sha: ${{ steps.save-state.outputs.previous_sha }}
+      new_sha: ${{ steps.save-state.outputs.new_sha }}
 
     steps:
-      - name: Notify deployment start
-        env:
-          COMMIT_MSG: ${{ github.event.workflow_run.head_commit.message }}
+      - name: Save current state for potential rollback
+        id: save-state
         run: |
-          COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
+          cd /home/dataia25/mangetamain/10_preprod
+          PREVIOUS_SHA=$(git rev-parse HEAD)
+          echo "previous_sha=$PREVIOUS_SHA" >> $GITHUB_OUTPUT
+          echo "new_sha=${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "📸 État sauvegardé: $PREVIOUS_SHA (pour rollback si besoin)"
+
+      - name: Notify deployment start
+        run: |
+          COMMIT_MSG_FIRST_LINE=$(git log -1 --pretty=%B ${{ github.sha }} | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"🚀 **Déploiement Preprod démarré**\n📦 Commit: \`${{ github.event.workflow_run.head_sha }}\`\n💬 Message: ${COMMIT_MSG_FIRST_LINE}\n👤 Par: ${{ github.event.workflow_run.head_commit.author.name }}\"}" \
+            -d "{\"content\":\"🚀 **Déploiement Preprod IMMÉDIAT démarré**\n📦 Commit: \`${{ github.sha }}\`\n💬 Message: ${COMMIT_MSG_FIRST_LINE}\n👤 Par: ${{ github.actor }}\n⚡ Deploy d'abord, tests en parallèle\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: Pull latest code
@@ -73,33 +79,109 @@ jobs:
 
       - name: Notify deployment success
         if: success()
-        env:
-          COMMIT_MSG: ${{ github.event.workflow_run.head_commit.message }}
         run: |
-          COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
+          COMMIT_MSG_FIRST_LINE=$(git log -1 --pretty=%B ${{ github.sha }} | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"✅ **Déploiement Preprod réussi!**\n🌐 URL: https://mangetamain.lafrance.io/\n📦 Commit: \`${{ github.event.workflow_run.head_sha }}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
+            -d "{\"content\":\"✅ **Déploiement Preprod réussi!**\n🌐 URL: https://mangetamain.lafrance.io/\n📦 Commit: \`${{ github.sha }}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⏳ Tests CI en cours...\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: Notify deployment failure
         if: failure()
-        env:
-          COMMIT_MSG: ${{ github.event.workflow_run.head_commit.message }}
         run: |
-          COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
+          COMMIT_MSG_FIRST_LINE=$(git log -1 --pretty=%B ${{ github.sha }} | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"❌ **ÉCHEC Déploiement Preprod**\n📦 Commit: \`${{ github.event.workflow_run.head_sha }}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⚠️  **Container dans état cassé - intervention manuelle requise**\n📋 Vérifier les logs: \`docker-compose -f docker-compose-preprod.yml logs\`\n👤 Commit par: ${{ github.event.workflow_run.head_commit.author.name }}\"}" \
+            -d "{\"content\":\"❌ **ÉCHEC Déploiement Preprod**\n📦 Commit: \`${{ github.sha }}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⚠️  **Container dans état cassé - rollback manuel requis**\n📋 Vérifier les logs: \`docker-compose -f docker-compose-preprod.yml logs\`\n👤 Commit par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
-  notify-ci-failure:
-    name: Notify CI Failure
+  watch-ci-and-rollback:
+    name: Watch CI & Rollback if Failed
     runs-on: self-hosted
-    # Ne notifier que si le CI a échoué
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    needs: immediate-deploy
+    if: always()  # Toujours exécuter pour surveiller le CI
 
     steps:
-      - name: Notify CI failure blocks deployment
+      - name: Wait for CI completion
+        id: wait-ci
+        run: |
+          echo "⏳ Attente de la fin du CI Pipeline..."
+
+          # Attendre max 5 minutes que le CI démarre
+          echo "Attente démarrage CI..."
+          sleep 30
+
+          # Attendre que le CI se termine (max 10 minutes)
+          for i in {1..60}; do
+            # Récupérer le statut du dernier workflow CI pour ce commit
+            CI_STATUS=$(gh run list \
+              --workflow="CI Pipeline - Quality & Tests" \
+              --commit "${{ github.sha }}" \
+              --json conclusion \
+              --jq '.[0].conclusion' \
+              2>/dev/null || echo "pending")
+
+            echo "Tentative $i/60 - CI Status: $CI_STATUS"
+
+            if [ "$CI_STATUS" = "success" ]; then
+              echo "✅ CI a réussi!"
+              echo "ci_result=success" >> $GITHUB_OUTPUT
+              exit 0
+            elif [ "$CI_STATUS" = "failure" ]; then
+              echo "❌ CI a échoué!"
+              echo "ci_result=failure" >> $GITHUB_OUTPUT
+              exit 0
+            elif [ "$CI_STATUS" = "null" ] || [ "$CI_STATUS" = "pending" ] || [ "$CI_STATUS" = "" ]; then
+              echo "CI en cours..."
+              sleep 10
+            else
+              echo "⚠️  CI status inattendu: $CI_STATUS"
+              sleep 10
+            fi
+          done
+
+          echo "⏱️  Timeout CI (10min) - considéré comme échec"
+          echo "ci_result=timeout" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Rollback if CI failed
+        if: steps.wait-ci.outputs.ci_result == 'failure' || steps.wait-ci.outputs.ci_result == 'timeout'
+        run: |
+          echo "🔄 ROLLBACK en cours vers ${{ needs.immediate-deploy.outputs.previous_sha }}..."
+
+          cd /home/dataia25/mangetamain/10_preprod
+          git fetch origin
+          git reset --hard ${{ needs.immediate-deploy.outputs.previous_sha }}
+          echo "✅ Code restauré vers $(git rev-parse --short HEAD)"
+
+          cd /home/dataia25/mangetamain/30_docker
+          docker-compose -f docker-compose-preprod.yml restart
+          echo "✅ Container preprod redémarré avec version précédente"
+
+          sleep 60
+
+          # Vérifier que le rollback fonctionne
+          if curl -f -s --max-time 10 https://mangetamain.lafrance.io/ > /dev/null; then
+            echo "✅ Rollback réussi - preprod opérationnelle"
+          else
+            echo "❌ Rollback échoué - intervention manuelle requise!"
+            exit 1
+          fi
+
+      - name: Notify CI success
+        if: steps.wait-ci.outputs.ci_result == 'success'
         run: |
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"⛔ **Déploiement Preprod annulé**\n❌ Le CI Pipeline a échoué - déploiement bloqué\n📦 Commit: \`${{ github.event.workflow_run.head_sha }}\`\n🔧 Corriger les erreurs CI avant de déployer\n👤 Commit par: ${{ github.event.workflow_run.head_commit.author.name }}\"}" \
+            -d "{\"content\":\"✅ **CI Pipeline réussi pour Preprod**\n📦 Commit: \`${{ github.sha }}\`\n🌐 https://mangetamain.lafrance.io/\n✨ Déploiement validé!\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
+      - name: Notify rollback
+        if: steps.wait-ci.outputs.ci_result == 'failure' || steps.wait-ci.outputs.ci_result == 'timeout'
+        run: |
+          REASON="CI a échoué"
+          if [ "${{ steps.wait-ci.outputs.ci_result }}" = "timeout" ]; then
+            REASON="CI timeout (>10min)"
+          fi
+
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"🔄 **ROLLBACK Preprod effectué**\n❌ Raison: ${REASON}\n📦 Commit annulé: \`${{ github.sha }}\`\n↩️  Restauré vers: \`${{ needs.immediate-deploy.outputs.previous_sha }}\`\n🌐 https://mangetamain.lafrance.io/\n⚠️  Corriger les erreurs avant de re-pusher\n👤 Commit par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"

@@ -507,11 +507,39 @@ small, .caption {
 }
 
 /* ============================================================================
-   DATAFRAMES ET TABLEAUX
+/* DATAFRAMES ET TABLEAUX
    ============================================================================ */
 
 [data-testid="stDataFrame"] {
     background-color: #2a2a2a !important;
+}
+
+/* Barre d'outils flottante des éléments (download/copy/fullscreen) */
+[data-testid="stElementToolbar"],
+[data-testid="stElementToolbar"]:hover,
+[data-testid="stElementToolbar"]:focus {
+    background-color: #2a2a2a !important;
+    border: 1px solid #444444 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+    color: var(--text-color) !important;
+}
+
+/* Icônes/btns dans la toolbar en mode sombre */
+[data-testid="stElementToolbar"] *,
+[data-testid="stElementToolbar"] svg {
+    color: var(--text-color) !important;
+    fill: var(--text-color) !important;
+}
+
+[data-testid="stElementToolbar"] button:hover {
+    background-color: #3a3a3a !important;
+}
+
+/* Tooltips (Download as CSV, etc.) en sombre */
+[data-baseweb="tooltip"],
+[data-baseweb="tooltip"] * {
+    background-color: #333333 !important;
+    color: #F0F0F0 !important;
 }
 
 /* Conteneur du dataframe */
