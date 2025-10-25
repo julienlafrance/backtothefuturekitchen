@@ -1812,7 +1812,7 @@ def analyse_trendline_ingredients(top_n=10):
             y=top_global["ingredient_norm"],
             x=top_global["total_count"],
             orientation="h",
-            marker=dict(color="#4682B4", opacity=0.8),
+            marker=dict(color=chart_theme.colors.CHART_COLORS[0], opacity=0.8),
             showlegend=False,
         ),
         row=1,
@@ -1828,8 +1828,8 @@ def analyse_trendline_ingredients(top_n=10):
             x=unique_per_year["year"],
             y=unique_per_year["n_unique"],
             mode="lines+markers",
-            line=dict(color="#9370DB", width=2),
-            marker=dict(size=sizes_div, color="#9370DB", opacity=0.6),
+            line=dict(color=chart_theme.colors.CHART_COLORS[1], width=2),
+            marker=dict(size=sizes_div, color=chart_theme.colors.CHART_COLORS[1], opacity=0.6),
             showlegend=False,
         ),
         row=1,
@@ -1842,7 +1842,7 @@ def analyse_trendline_ingredients(top_n=10):
             y=biggest_increase["ingredient_norm"],
             x=biggest_increase["delta"],
             orientation="h",
-            marker=dict(color="#2E8B57", opacity=0.8),
+            marker=dict(color=chart_theme.colors.CHART_COLORS[0], opacity=0.8),
             showlegend=False,
         ),
         row=2,
@@ -1855,19 +1855,25 @@ def analyse_trendline_ingredients(top_n=10):
             y=biggest_decrease["ingredient_norm"],
             x=biggest_decrease["delta"],
             orientation="h",
-            marker=dict(color="#E94B3C", opacity=0.8),
+            marker=dict(color=chart_theme.colors.CHART_COLORS[2], opacity=0.8),
             showlegend=False,
         ),
         row=2,
         col=2,
     )
 
-    # (5) Évolution hausses
-    greens = cm.Greens(np.linspace(0.4, 0.9, N_VARIATIONS))
+    # (5) Évolution hausses - Utilisation du dégradé orange de la charte
+    orange_gradient = [
+        chart_theme.colors.CHART_COLORS[0],  # Orange primary
+        chart_theme.colors.CHART_COLORS[5],  # Orange light
+        chart_theme.colors.CHART_COLORS[7],  # Yellow gold
+        chart_theme.colors.CHART_COLORS[1],  # Yellow
+        chart_theme.colors.CHART_COLORS[0],  # Orange (repeat for more variations)
+    ]
     for idx, (_, row_data) in enumerate(biggest_increase.head(N_VARIATIONS).iterrows()):
         ing = row_data["ingredient_norm"]
         data_ing = freq_year_ing[freq_year_ing["ingredient_norm"] == ing].sort_values("year")
-        color = mcolors.rgb2hex(greens[idx])
+        color = orange_gradient[idx % len(orange_gradient)]
         fig.add_trace(
             go.Scatter(
                 x=data_ing["year"],
@@ -1883,12 +1889,18 @@ def analyse_trendline_ingredients(top_n=10):
             col=1,
         )
 
-    # (6) Évolution baisses
-    reds = cm.Reds(np.linspace(0.4, 0.9, N_VARIATIONS))
+    # (6) Évolution baisses - Utilisation du dégradé rouge-orange de la charte
+    red_gradient = [
+        chart_theme.colors.CHART_COLORS[2],  # Red-orange primary
+        chart_theme.colors.CHART_COLORS[0],  # Orange
+        chart_theme.colors.CHART_COLORS[5],  # Orange light
+        chart_theme.colors.CHART_COLORS[2],  # Red-orange (repeat)
+        chart_theme.colors.CHART_COLORS[0],  # Orange (repeat)
+    ]
     for idx, (_, row_data) in enumerate(biggest_decrease.head(N_VARIATIONS).iterrows()):
         ing = row_data["ingredient_norm"]
         data_ing = freq_year_ing[freq_year_ing["ingredient_norm"] == ing].sort_values("year")
-        color = mcolors.rgb2hex(reds[idx])
+        color = red_gradient[idx % len(red_gradient)]
         fig.add_trace(
             go.Scatter(
                 x=data_ing["year"],
@@ -1906,49 +1918,33 @@ def analyse_trendline_ingredients(top_n=10):
 
     # Axes
     fig.update_xaxes(title_text="Occurrences totales", row=1, col=1)
-    fig.update_yaxes(showgrid=True, gridcolor="#e0e0e0", row=1, col=1)
+    fig.update_yaxes(row=1, col=1)
 
-    fig.update_xaxes(
-        title_text="Année", showgrid=True, gridcolor="#e0e0e0", row=1, col=2
-    )
-    fig.update_yaxes(
-        title_text="Nombre d'ingrédients uniques",
-        showgrid=True,
-        gridcolor="#e0e0e0",
-        row=1,
-        col=2,
-    )
+    fig.update_xaxes(title_text="Année", row=1, col=2)
+    fig.update_yaxes(title_text="Nombre d'ingrédients uniques", row=1, col=2)
 
     label_delta = "Variation (normalisée)" if NORMALIZE else "Variation (occurrences)"
     fig.update_xaxes(title_text=label_delta, row=2, col=1)
-    fig.update_yaxes(showgrid=True, gridcolor="#e0e0e0", row=2, col=1)
+    fig.update_yaxes(row=2, col=1)
 
     fig.update_xaxes(title_text=label_delta, row=2, col=2)
-    fig.update_yaxes(showgrid=True, gridcolor="#e0e0e0", row=2, col=2)
+    fig.update_yaxes(row=2, col=2)
 
     ylabel_freq = "Fréquence" if NORMALIZE else "Occurrences"
-    fig.update_xaxes(
-        title_text="Année", showgrid=True, gridcolor="#e0e0e0", row=3, col=1
-    )
-    fig.update_yaxes(
-        title_text=ylabel_freq, showgrid=True, gridcolor="#e0e0e0", row=3, col=1
-    )
+    fig.update_xaxes(title_text="Année", row=3, col=1)
+    fig.update_yaxes(title_text=ylabel_freq, row=3, col=1)
 
-    fig.update_xaxes(
-        title_text="Année", showgrid=True, gridcolor="#e0e0e0", row=3, col=2
-    )
-    fig.update_yaxes(
-        title_text=ylabel_freq, showgrid=True, gridcolor="#e0e0e0", row=3, col=2
-    )
+    fig.update_xaxes(title_text="Année", row=3, col=2)
+    fig.update_yaxes(title_text=ylabel_freq, row=3, col=2)
 
     # Mise en forme
     fig.update_layout(
         height=1200,
-        plot_bgcolor="white",
-        paper_bgcolor="white",
-        font=dict(size=11),
         showlegend=True,
     )
+
+    # Application du thème "Back to the Kitchen"
+    chart_theme.apply_subplot_theme(fig, num_rows=3, num_cols=2)
 
     st.plotly_chart(fig, use_container_width=True)
 
@@ -2065,7 +2061,7 @@ def analyse_trendline_tags(top_n=10):
             y=top_global_tags["tag_norm"],
             x=top_global_tags["total_count"],
             orientation="h",
-            marker=dict(color="#4682B4", opacity=0.8),
+            marker=dict(color=chart_theme.colors.CHART_COLORS[0], opacity=0.8),
             showlegend=False,
         ),
         row=1,
@@ -2081,8 +2077,8 @@ def analyse_trendline_tags(top_n=10):
             x=unique_per_year_tags["year"],
             y=unique_per_year_tags["n_unique"],
             mode="lines+markers",
-            line=dict(color="#9370DB", width=2),
-            marker=dict(size=sizes_div_tags, color="#9370DB", opacity=0.6),
+            line=dict(color=chart_theme.colors.CHART_COLORS[1], width=2),
+            marker=dict(size=sizes_div_tags, color=chart_theme.colors.CHART_COLORS[1], opacity=0.6),
             showlegend=False,
         ),
         row=1,
@@ -2095,7 +2091,7 @@ def analyse_trendline_tags(top_n=10):
             y=biggest_increase_tags["tag_norm"],
             x=biggest_increase_tags["delta"],
             orientation="h",
-            marker=dict(color="#2E8B57", opacity=0.8),
+            marker=dict(color=chart_theme.colors.CHART_COLORS[0], opacity=0.8),
             showlegend=False,
         ),
         row=2,
@@ -2108,19 +2104,25 @@ def analyse_trendline_tags(top_n=10):
             y=biggest_decrease_tags["tag_norm"],
             x=biggest_decrease_tags["delta"],
             orientation="h",
-            marker=dict(color="#E94B3C", opacity=0.8),
+            marker=dict(color=chart_theme.colors.CHART_COLORS[2], opacity=0.8),
             showlegend=False,
         ),
         row=2,
         col=2,
     )
 
-    # (5) Évolution hausses
-    greens = cm.Greens(np.linspace(0.4, 0.9, N_VARIATIONS))
+    # (5) Évolution hausses - Utilisation du dégradé orange de la charte
+    orange_gradient_tags = [
+        chart_theme.colors.CHART_COLORS[0],  # Orange primary
+        chart_theme.colors.CHART_COLORS[5],  # Orange light
+        chart_theme.colors.CHART_COLORS[7],  # Yellow gold
+        chart_theme.colors.CHART_COLORS[1],  # Yellow
+        chart_theme.colors.CHART_COLORS[0],  # Orange (repeat for more variations)
+    ]
     for idx, (_, row_data) in enumerate(biggest_increase_tags.head(N_VARIATIONS).iterrows()):
         tag = row_data["tag_norm"]
         data_tag = freq_year_tag[freq_year_tag["tag_norm"] == tag].sort_values("year")
-        color = mcolors.rgb2hex(greens[idx])
+        color = orange_gradient_tags[idx % len(orange_gradient_tags)]
         fig.add_trace(
             go.Scatter(
                 x=data_tag["year"],
@@ -2136,12 +2138,18 @@ def analyse_trendline_tags(top_n=10):
             col=1,
         )
 
-    # (6) Évolution baisses
-    reds = cm.Reds(np.linspace(0.4, 0.9, N_VARIATIONS))
+    # (6) Évolution baisses - Utilisation du dégradé rouge-orange de la charte
+    red_gradient_tags = [
+        chart_theme.colors.CHART_COLORS[2],  # Red-orange primary
+        chart_theme.colors.CHART_COLORS[0],  # Orange
+        chart_theme.colors.CHART_COLORS[5],  # Orange light
+        chart_theme.colors.CHART_COLORS[2],  # Red-orange (repeat)
+        chart_theme.colors.CHART_COLORS[0],  # Orange (repeat)
+    ]
     for idx, (_, row_data) in enumerate(biggest_decrease_tags.head(N_VARIATIONS).iterrows()):
         tag = row_data["tag_norm"]
         data_tag = freq_year_tag[freq_year_tag["tag_norm"] == tag].sort_values("year")
-        color = mcolors.rgb2hex(reds[idx])
+        color = red_gradient_tags[idx % len(red_gradient_tags)]
         fig.add_trace(
             go.Scatter(
                 x=data_tag["year"],
@@ -2159,49 +2167,33 @@ def analyse_trendline_tags(top_n=10):
 
     # Axes
     fig.update_xaxes(title_text="Occurrences totales", row=1, col=1)
-    fig.update_yaxes(showgrid=True, gridcolor="#e0e0e0", row=1, col=1)
+    fig.update_yaxes(row=1, col=1)
 
-    fig.update_xaxes(
-        title_text="Année", showgrid=True, gridcolor="#e0e0e0", row=1, col=2
-    )
-    fig.update_yaxes(
-        title_text="Nombre de tags uniques",
-        showgrid=True,
-        gridcolor="#e0e0e0",
-        row=1,
-        col=2,
-    )
+    fig.update_xaxes(title_text="Année", row=1, col=2)
+    fig.update_yaxes(title_text="Nombre de tags uniques", row=1, col=2)
 
     label_delta_tags = "Variation (normalisée)" if NORMALIZE else "Variation (occurrences)"
     fig.update_xaxes(title_text=label_delta_tags, row=2, col=1)
-    fig.update_yaxes(showgrid=True, gridcolor="#e0e0e0", row=2, col=1)
+    fig.update_yaxes(row=2, col=1)
 
     fig.update_xaxes(title_text=label_delta_tags, row=2, col=2)
-    fig.update_yaxes(showgrid=True, gridcolor="#e0e0e0", row=2, col=2)
+    fig.update_yaxes(row=2, col=2)
 
     ylabel_freq_tags = "Fréquence" if NORMALIZE else "Occurrences"
-    fig.update_xaxes(
-        title_text="Année", showgrid=True, gridcolor="#e0e0e0", row=3, col=1
-    )
-    fig.update_yaxes(
-        title_text=ylabel_freq_tags, showgrid=True, gridcolor="#e0e0e0", row=3, col=1
-    )
+    fig.update_xaxes(title_text="Année", row=3, col=1)
+    fig.update_yaxes(title_text=ylabel_freq_tags, row=3, col=1)
 
-    fig.update_xaxes(
-        title_text="Année", showgrid=True, gridcolor="#e0e0e0", row=3, col=2
-    )
-    fig.update_yaxes(
-        title_text=ylabel_freq_tags, showgrid=True, gridcolor="#e0e0e0", row=3, col=2
-    )
+    fig.update_xaxes(title_text="Année", row=3, col=2)
+    fig.update_yaxes(title_text=ylabel_freq_tags, row=3, col=2)
 
     # Mise en forme
     fig.update_layout(
         height=1200,
-        plot_bgcolor="white",
-        paper_bgcolor="white",
-        font=dict(size=11),
         showlegend=True,
     )
+
+    # Application du thème "Back to the Kitchen"
+    chart_theme.apply_subplot_theme(fig, num_rows=3, num_cols=2)
 
     st.plotly_chart(fig, use_container_width=True)
 
