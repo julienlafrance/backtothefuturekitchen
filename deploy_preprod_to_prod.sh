@@ -59,7 +59,13 @@ echo "✅ streamlit/ (code source)"
 
 # 2. pyproject.toml
 cp "$BASE_DIR/10_preprod/pyproject.toml" "$PROD_DIR/"
-echo "✅ pyproject.toml"
+
+# Commenter [build-system] (PROD ne build pas de package, juste installe deps)
+sed -i 's/^\[build-system\]$/# [build-system] (disabled in PROD - no package build needed)/' "$PROD_DIR/pyproject.toml"
+sed -i 's/^requires = \["hatchling"\]$/# requires = ["hatchling"]/' "$PROD_DIR/pyproject.toml"
+sed -i 's/^build-backend = "hatchling.build"$/# build-backend = "hatchling.build"/' "$PROD_DIR/pyproject.toml"
+
+echo "✅ pyproject.toml (build-system commenté pour PROD)"
 
 # 3. README.md
 cp "$BASE_DIR/10_preprod/README.md" "$PROD_DIR/"
