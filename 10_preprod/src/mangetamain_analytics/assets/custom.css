@@ -432,12 +432,30 @@ small, .caption {
     color: #FF8C00 !important;
     font-weight: 600 !important;
     font-family: 'Inter', sans-serif !important;
-    padding: 12px 16px !important; /* uniform padding, no extra left offset */
+    padding: 12px 16px !important; /* uniform padding */
     cursor: pointer !important;
     min-height: 48px !important;
     display: flex !important;            /* lay out icon + text without overlap */
     align-items: center !important;
     gap: 8px !important;
+    background-color: #2a2a2a !important;           /* force fond sombre */
+    border-radius: 8px !important;
+    border: 1px solid #333333 !important;
+}
+
+/* États focus/hover/active pour garder le fond sombre */
+[data-testid="stExpander"] summary:hover,
+[data-testid="stExpander"] summary:focus,
+[data-testid="stExpander"] summary:active,
+[data-testid="stExpander"] details[open] > summary {
+    background-color: #333333 !important;
+    outline: none !important;
+}
+
+/* Éviter tout fond blanc sur les enfants du summary (icônes, wrappers) */
+[data-testid="stExpander"] summary > *,
+[data-testid="stExpander"] summary * {
+    background-color: transparent !important;
 }
 
 /* Texte du summary: take full width, avoid overlap/wrapping glitches */
