@@ -24,21 +24,42 @@ jobs:
             -d "{\"content\":\"🚨 **Déploiement PRODUCTION démarré**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 Message: ${COMMIT_MSG_FIRST_LINE}\n👤 Par: ${{ github.actor }}\n⚠️  Déploiement manuel confirmé\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
-      - name: Backup current production version
+      - name: Backup current production files
         run: |
-          cd /home/dataia25/mangetamain/20_prod
-          CURRENT_COMMIT=$(git rev-parse HEAD)
-          echo "📝 Version prod actuelle: $CURRENT_COMMIT"
-          echo "$CURRENT_COMMIT" > /tmp/prod-backup-commit.txt
-          echo "✅ Backup commit ID sauvegardé"
+          cd /home/dataia25/mangetamain
+          BACKUP_DIR="/home/dataia25/mangetamain/backups/prod/backup-$(date +%Y%m%d_%H%M%S)"
+          echo "📝 Création backup PROD versionné dans: $BACKUP_DIR"
+
+          mkdir -p "$BACKUP_DIR"
+          cp -r 20_prod/streamlit/* "$BACKUP_DIR/"
+
+          # Sauvegarder le chemin du backup pour rollback
+          echo "$BACKUP_DIR" > /tmp/prod-backup-path.txt
+
+          # Vérifier le backup
+          BACKUP_SIZE=$(du -sh "$BACKUP_DIR" | cut -f1)
+          echo "✅ Backup PROD créé: $BACKUP_SIZE"
+          ls -lh "$BACKUP_DIR/" | head -10
+
+          # Lister tous les backups existants
+          echo "📂 Backups PROD disponibles:"
+          ls -lht /home/dataia25/mangetamain/backups/prod/ | head -5
 
       - name: Pull latest code
         run: |
-          cd /home/dataia25/mangetamain/20_prod
+          cd /home/dataia25/mangetamain
           git fetch origin
           git reset --hard origin/main
           NEW_COMMIT=$(git rev-parse --short HEAD)
-          echo "✅ Code prod mis à jour vers $NEW_COMMIT"
+          echo "✅ Code repository mis à jour vers $NEW_COMMIT"
+          echo "$NEW_COMMIT" > /tmp/prod-commit.txt
+
+      - name: Deploy PREPROD to PROD
+        run: |
+          cd /home/dataia25/mangetamain
+          echo "🚀 Exécution du script de déploiement PREPROD → PROD"
+          ./deploy_preprod_to_prod.sh
+          echo "✅ Fichiers copiés de PREPROD vers PROD"
 
       - name: Restart production container
         run: |
@@ -80,20 +101,22 @@ jobs:
       - name: Notify deployment success
         if: success()
         run: |
+          BACKUP_DIR=$(cat /tmp/prod-backup-path.txt 2>/dev/null || echo "inconnu")
           COMMIT_MSG="${{ github.event.head_commit.message }}"
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"✅ **Déploiement PRODUCTION réussi!**\n🌐 URL: https://backtothefuturekitchen.lafrance.io/\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n👤 Déployé par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"✅ **Déploiement PRODUCTION réussi!**\n🌐 URL: https://backtothefuturekitchen.lafrance.io/\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n📂 Backup: \`$BACKUP_DIR\`\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n👤 Déployé par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: Notify deployment failure
         if: failure()
         run: |
-          OLD_COMMIT=$(cat /tmp/prod-backup-commit.txt)
+          BACKUP_DIR=$(cat /tmp/prod-backup-path.txt 2>/dev/null || echo "inconnu")
+          NEW_COMMIT=$(cat /tmp/prod-commit.txt 2>/dev/null || echo "${GITHUB_SHA:0:7}")
           COMMIT_MSG="${{ github.event.head_commit.message }}"
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"🚨 **ÉCHEC CRITIQUE - Déploiement PRODUCTION**\n❌ Health check échoué\n📦 Commit tenté: \`${GITHUB_SHA:0:7}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n🔙 Backup disponible: \`${OLD_COMMIT:0:7}\`\n⚠️  **PRODUCTION POTENTIELLEMENT CASSÉE**\n📋 Rollback manuel requis:\n\`\`\`\ncd /home/dataia25/mangetamain/20_prod\ngit reset --hard $OLD_COMMIT\ncd ../30_docker\ndocker-compose -f docker-compose-prod.yml restart\n\`\`\`\n👤 Tenté par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"🚨 **ÉCHEC - Déploiement PRODUCTION**\n❌ Health check échoué\n📦 Commit tenté: \`$NEW_COMMIT\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⚠️  **PRODUCTION POTENTIELLEMENT CASSÉE**\n\n**Options:**\n1️⃣ Corriger l'erreur directement en PROD\n2️⃣ Rollback manuel vers backup:\n\`\`\`bash\nssh dataia\ncd /home/dataia25/mangetamain/20_prod/streamlit\nrm -rf *\ncp -r $BACKUP_DIR/* .\ncd /home/dataia25/mangetamain/30_docker\ndocker-compose -f docker-compose-prod.yml restart\n\`\`\`\n\n📂 Backup disponible: \`$BACKUP_DIR\`\n🌐 Vérifier: https://backtothefuturekitchen.lafrance.io/\n👤 Tenté par: ${{ github.actor }}\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
   cancelled:

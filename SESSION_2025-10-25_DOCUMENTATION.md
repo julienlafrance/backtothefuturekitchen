@@ -141,9 +141,149 @@ mangetamain/
 
 ---
 
+---
+
+#### 3. Préparation Déploiement PREPROD → PROD (15:00 - 16:30)
+
+**Problème Initial** : PROD utilise une ancienne version (512 lignes) vs PREPROD à jour (845 lignes).
+
+**Découverte Critique** : Les structures Docker sont différentes
+- PREPROD : `/app/src/mangetamain_analytics/main.py`
+- PROD : `/app/streamlit/main.py`
+
+Les chemins en dur `src/mangetamain_analytics/assets/...` ne fonctionnent pas en PROD.
+
+**Solution Implémentée** : Chemins relatifs avec `Path(__file__).parent`
+
+**Actions Réalisées** :
+
+1. ✅ **Analyse des montages Docker**
+   - Document créé : `ANALYSE_STRUCTURE_DOCKER.md`
+   - Identification du problème de chemins
+   - Solution : Utiliser `Path(__file__).parent / "assets"`
+
+2. ✅ **Modifications du code PREPROD**
+   ```python
+   # Ajout après les imports (ligne 35-37)
+   SCRIPT_DIR = Path(__file__).parent
+   ASSETS_DIR = SCRIPT_DIR / "assets"
+
+   # 3 occurrences modifiées :
+   - page_icon=str(ASSETS_DIR / "favicon.png")
+   - css_path = ASSETS_DIR / "custom.css"
+   - logo_path = ASSETS_DIR / "back_to_the_kitchen_logo.png"
+   ```
+
+3. ✅ **Création script de déploiement**
+   - Fichier : `deploy_preprod_to_prod.sh`
+   - Logging complet avec timestamps
+   - Gestion d'erreurs robuste
+   - Copie automatisée : visualization/ + utils/ + assets/ + main.py
+   - Script exécutable : `chmod +x`
+
+4. ✅ **Git Commit + Push**
+   ```bash
+   git add 10_preprod/src/mangetamain_analytics/main.py \
+           deploy_preprod_to_prod.sh \
+           ANALYSE_STRUCTURE_DOCKER.md \
+           ANALYSE_SYNC_PREPROD_PROD.md \
+           SESSION_2025-10-25_DOCUMENTATION.md
+
+   git commit -m "feat: Utiliser chemins relatifs dans main.py pour compatibilité PREPROD/PROD"
+   git push origin main
+   ```
+
+   **Commit hash** : `f8928d5`
+   **Fichiers modifiés** : 5 files, +1126 insertions, -3 deletions
+
+5. ✅ **GitHub Actions déclenché**
+   - Workflow : `cd-preprod.yml` (auto-deploy)
+   - Runner self-hosted sur dataia va pull + redémarrer PREPROD
+
+**Documents Créés** :
+- ✅ `ANALYSE_STRUCTURE_DOCKER.md` (analyse montages Docker)
+- ✅ `ANALYSE_SYNC_PREPROD_PROD.md` (plan synchronisation détaillé)
+- ✅ `SESSION_2025-10-25_DOCUMENTATION.md` (ce document)
+- ✅ `deploy_preprod_to_prod.sh` (script automatisé)
+
+**Résultat Attendu** :
+- ✅ Main.py fonctionne avec chemins relatifs en PREPROD
+- ✅ Le même fichier fonctionnera en PROD sans modification
+- ✅ Script prêt pour MEP futures (GitHub Actions pourra l'appeler)
+
+---
+
+#### 4. Vérification Déploiement PREPROD (16:30 - 16:35)
+
+**Objectif** : Vérifier que les modifications avec chemins relatifs fonctionnent en PREPROD.
+
+**Commandes de vérification** :
+
+1. **État du container** :
+   ```bash
+   ssh dataia "docker ps | grep mange"
+
+   # Résultat
+   mange_preprod   Up About a minute (healthy)   0.0.0.0:8500->8501/tcp
+   ```
+   ✅ Container redémarré automatiquement par GitHub Actions (~1 min après push)
+
+2. **Vérification logs - Erreurs assets** :
+   ```bash
+   ssh dataia "docker logs mange_preprod --tail=200 | grep -iE 'error|not found|failed|favicon|css|logo|assets'"
+
+   # Résultat
+   - Aucune erreur liée aux chemins d'assets
+   - Warnings deprecation: use_container_width (non bloquant)
+   ```
+   ✅ Aucune erreur sur favicon.png, custom.css, ou logo.png
+
+3. **Vérification HTTP** :
+   ```bash
+   ssh dataia "curl -f http://localhost:8500"
+
+   # Résultat
+   - HTTP 200 OK
+   - HTML complet retourné
+   - Application Streamlit opérationnelle
+   ```
+   ✅ Application accessible
+
+4. **Vérification logs complets** :
+   ```bash
+   ssh dataia "docker logs mange_preprod --tail=100"
+
+   # Résultat (extraits clés)
+   - Python 3.13.3-slim
+   - uv sync : 53 packages
+   - DuckDB connection : 581.0 MB, 7 tables
+   - ✅ Application fully loaded
+   - Streamlit running : http://localhost:8501
+   ```
+   ✅ Tous les composants chargés correctement
+
+**Résultat Final** :
+- ✅ **Chemins relatifs fonctionnent parfaitement en PREPROD**
+- ✅ **Aucune erreur d'assets (favicon, CSS, logo)**
+- ✅ **Application complètement opérationnelle**
+- ✅ **Déploiement automatique GitHub Actions réussi**
+- ✅ **Container healthy**
+
+**Conclusion** : La modification des chemins en relatifs est validée. Le code est prêt pour copie en PROD.
+
+---
+
 ## 🎯 Prochaines Actions
 
-**En attente des instructions utilisateur.**
+### ✅ Actions Complétées
+1. ✅ Attendre que GitHub Actions déploie PREPROD (1-2 min)
+2. ✅ Vérifier que PREPROD fonctionne : https://mangetamain.lafrance.io/
+3. ✅ Documenter le résultat du déploiement auto
+
+### Prochaine MEP PROD (à planifier)
+4. 🚀 Exécuter `deploy_preprod_to_prod.sh` sur dataia pour copier vers PROD
+5. 📝 GitHub Actions devra redémarrer container PROD (workflow cd-prod.yml)
+6. ✅ Vérifier que PROD fonctionne : https://backtothefuturekitchen.lafrance.io/
 
 ---
 
@@ -217,4 +357,4 @@ ssh dataia "cd ~/mangetamain/30_docker && docker-compose -f docker-compose-prod.
 
 **Document vivant** : Ce fichier sera mis à jour au fur et à mesure de la session.
 
-**Dernière mise à jour** : 2025-10-25 14:45
+**Dernière mise à jour** : 2025-10-25 16:35
