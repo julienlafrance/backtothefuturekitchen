@@ -216,7 +216,19 @@ small, .caption {
 }
 
 /* Icônes Lucide avant le texte */
+/* 1. bar-chart-2 (Tendances 1999-2018) */
 [data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:nth-child(1)::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23F0F0F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+/* 2. calendar-days (Analyses Saisonnières) */
+[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:nth-child(2)::before {
     content: "";
     display: inline-block;
     width: 18px;
@@ -226,7 +238,8 @@ small, .caption {
     background-repeat: no-repeat;
 }
 
-[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:nth-child(2)::before {
+/* 3. sun (Effet Jour/Week-end) */
+[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:nth-child(3)::before {
     content: "";
     display: inline-block;
     width: 18px;
@@ -236,22 +249,13 @@ small, .caption {
     background-repeat: no-repeat;
 }
 
-[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:nth-child(3)::before {
-    content: "";
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23F0F0F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>');
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-
+/* 4. sparkles (Recommandations) */
 [data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:nth-child(4)::before {
     content: "";
     display: inline-block;
     width: 18px;
     height: 18px;
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23F0F0F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>');
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23F0F0F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>');
     background-size: contain;
     background-repeat: no-repeat;
 }
@@ -310,20 +314,24 @@ small, .caption {
 }
 
 /* Icônes de l'item sélectionné - Noir */
+/* 1. bar-chart-2 (Tendances 1999-2018) - SELECTED */
 [data-testid="stSidebar"] .stRadio input:checked + div[data-baseweb="radio"]:nth-child(1)::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%231E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>') !important;
+}
+
+/* 2. calendar-days (Analyses Saisonnières) - SELECTED */
+[data-testid="stSidebar"] .stRadio input:checked + div[data-baseweb="radio"]:nth-child(2)::before {
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%231E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>') !important;
 }
 
-[data-testid="stSidebar"] .stRadio input:checked + div[data-baseweb="radio"]:nth-child(2)::before {
+/* 3. sun (Effet Jour/Week-end) - SELECTED */
+[data-testid="stSidebar"] .stRadio input:checked + div[data-baseweb="radio"]:nth-child(3)::before {
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%231E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>') !important;
 }
 
-[data-testid="stSidebar"] .stRadio input:checked + div[data-baseweb="radio"]:nth-child(3)::before {
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%231E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>') !important;
-}
-
+/* 4. sparkles (Recommandations) - SELECTED */
 [data-testid="stSidebar"] .stRadio input:checked + div[data-baseweb="radio"]:nth-child(4)::before {
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%231E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>') !important;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%231E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>') !important;
 }
 
 /* ============================================================================
