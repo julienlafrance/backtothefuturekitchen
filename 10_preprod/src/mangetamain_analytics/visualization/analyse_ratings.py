@@ -421,11 +421,11 @@ def analyse_ratings_tendance_temporelle():
             y=ratings,
             mode='markers',
             marker=dict(
-                size=sizes_scatter / 15,
+                size=sizes_scatter * 2,  # Points plus gros
                 color=weights_normalized,
-                colorscale='Viridis',
+                colorscale='YlOrRd',  # Colorscale charte: Jaune → Orange → Rouge
                 opacity=0.7,
-                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1),
+                line=dict(width=0),  # Pas de contour
                 colorbar=dict(
                     title="Poids",
                     x=1.0,
@@ -690,11 +690,11 @@ def analyse_ratings_distribution():
             y=ratings,
             mode='markers',
             marker=dict(
-                size=sizes_detailed / 40,
+                size=sizes_detailed * 2,  # Points plus gros
                 color=monthly_df['n_interactions'],
-                colorscale='Viridis',
+                colorscale='YlOrRd',  # Colorscale charte: Jaune → Orange → Rouge
                 opacity=0.7,
-                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1),
+                line=dict(width=0),  # Pas de contour
                 colorbar=dict(
                     title="Volume",
                     x=1.0,
