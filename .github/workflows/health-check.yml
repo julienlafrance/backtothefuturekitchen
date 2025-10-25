@@ -1,0 +1,91 @@
+name: Health Check - Monitoring
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Toutes les heures à la minute 0
+  workflow_dispatch:  # Permet déclenchement manuel
+
+jobs:
+  health-check:
+    name: Check PREPROD & PROD Health
+    runs-on: self-hosted
+
+    steps:
+      - name: Check PREPROD health
+        id: preprod
+        run: |
+          echo "🔍 Test PREPROD: https://mangetamain.lafrance.io/"
+
+          if curl -f -s --max-time 10 https://mangetamain.lafrance.io/ > /dev/null; then
+            if curl -s https://mangetamain.lafrance.io/ | grep -q "Back to the Kitchen\|Streamlit\|streamlit"; then
+              echo "✅ PREPROD OK"
+              echo "status=ok" >> $GITHUB_OUTPUT
+            else
+              echo "⚠️ PREPROD répond mais contenu inattendu"
+              echo "status=warning" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "❌ PREPROD DOWN"
+            echo "status=down" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check PROD health
+        id: prod
+        run: |
+          echo "🔍 Test PROD: https://backtothefuturekitchen.lafrance.io/"
+
+          if curl -f -s --max-time 10 https://backtothefuturekitchen.lafrance.io/ > /dev/null; then
+            if curl -s https://backtothefuturekitchen.lafrance.io/ | grep -q "Back to the Kitchen\|Streamlit\|streamlit"; then
+              echo "✅ PROD OK"
+              echo "status=ok" >> $GITHUB_OUTPUT
+            else
+              echo "⚠️ PROD répond mais contenu inattendu"
+              echo "status=warning" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "❌ PROD DOWN"
+            echo "status=down" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Notify if PREPROD is down
+        if: steps.preprod.outputs.status != 'ok'
+        env:
+          PREPROD_STATUS: ${{ steps.preprod.outputs.status }}
+        run: |
+          if [ "$PREPROD_STATUS" = "down" ]; then
+            MESSAGE="🚨 **ALERTE - PREPROD DOWN**\n❌ Site non accessible: https://mangetamain.lafrance.io/\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n\n**Actions recommandées:**\n1. Vérifier container: \`docker ps | grep mange_preprod\`\n2. Voir logs: \`docker logs mange_preprod --tail=50\`\n3. Redémarrer si nécessaire"
+          else
+            MESSAGE="⚠️ **WARNING - PREPROD**\n⚠️ Site répond mais contenu inattendu\n🌐 URL: https://mangetamain.lafrance.io/\n🕐 $(date +'%Y-%m-%d %H:%M:%S')"
+          fi
+
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"$MESSAGE\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
+      - name: Notify if PROD is down
+        if: steps.prod.outputs.status != 'ok'
+        env:
+          PROD_STATUS: ${{ steps.prod.outputs.status }}
+        run: |
+          if [ "$PROD_STATUS" = "down" ]; then
+            MESSAGE="🚨 **ALERTE CRITIQUE - PRODUCTION DOWN**\n❌ Site non accessible: https://backtothefuturekitchen.lafrance.io/\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n\n**INTERVENTION URGENTE REQUISE:**\n1. Vérifier container: \`docker ps | grep mange_prod\`\n2. Voir logs: \`docker logs mange_prod --tail=50\`\n3. Redémarrer: \`cd ~/mangetamain/30_docker && docker-compose -f docker-compose-prod.yml restart\`\n\n@everyone"
+          else
+            MESSAGE="⚠️ **WARNING - PRODUCTION**\n⚠️ Site répond mais contenu inattendu\n🌐 URL: https://backtothefuturekitchen.lafrance.io/\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n\n@everyone"
+          fi
+
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"$MESSAGE\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
+      - name: Summary
+        run: |
+          echo "📊 Health Check Summary"
+          echo "PREPROD: ${{ steps.preprod.outputs.status }}"
+          echo "PROD: ${{ steps.prod.outputs.status }}"
+
+          if [ "${{ steps.preprod.outputs.status }}" = "ok" ] && [ "${{ steps.prod.outputs.status }}" = "ok" ]; then
+            echo "✅ Tous les services sont opérationnels"
+          else
+            echo "⚠️ Au moins un service a un problème"
+            exit 1
+          fi
