@@ -98,5 +98,5 @@ jobs:
       - name: Notify CI failure blocks deployment
         run: |
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"⛔ **Déploiement Preprod annulé**\n❌ Le CI Pipeline a échoué - déploiement bloqué\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n🔧 Corriger les erreurs CI avant de déployer\n👤 Commit par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"⛔ **Déploiement Preprod annulé**\n❌ Le CI Pipeline a échoué - déploiement bloqué\n📦 Commit: \`${{ github.event.workflow_run.head_sha }}\`\n🔧 Corriger les erreurs CI avant de déployer\n👤 Commit par: ${{ github.event.workflow_run.head_commit.author.name }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
