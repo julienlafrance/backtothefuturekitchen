@@ -22,11 +22,34 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+          cache: 'pip'  # Active le cache pip
+
+      - name: Cache uv binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/uv
+          key: uv-binary-${{ runner.os }}
+
+      - name: Cache uv packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: uv-packages-${{ runner.os }}-${{ hashFiles('10_preprod/uv.lock') }}
+          restore-keys: |
+            uv-packages-${{ runner.os }}-
+
+      - name: Cache venv
+        uses: actions/cache@v4
+        with:
+          path: 10_preprod/.venv
+          key: venv-quality-${{ runner.os }}-py3.13-${{ hashFiles('10_preprod/uv.lock') }}
 
       - name: Install uv
         run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          if ! command -v uv &> /dev/null; then
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          fi
 
       - name: Install dev dependencies (PREPROD)
         run: |
@@ -34,7 +57,9 @@ jobs:
           # Créer un symlink /app/40_utils pour que le path absolu dans pyproject.toml fonctionne
           sudo mkdir -p /app
           sudo ln -s "$(pwd)/../40_utils" /app/40_utils
-          uv venv
+          if [ ! -d .venv ]; then
+            uv venv
+          fi
           source .venv/bin/activate
           uv pip install -e ".[dev]"
 
@@ -91,11 +116,34 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+          cache: 'pip'  # Active le cache pip
+
+      - name: Cache uv binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/uv
+          key: uv-binary-${{ runner.os }}
+
+      - name: Cache uv packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: uv-packages-${{ runner.os }}-${{ hashFiles('10_preprod/uv.lock') }}
+          restore-keys: |
+            uv-packages-${{ runner.os }}-
+
+      - name: Cache venv
+        uses: actions/cache@v4
+        with:
+          path: 10_preprod/.venv
+          key: venv-tests-${{ runner.os }}-py3.13-${{ hashFiles('10_preprod/uv.lock') }}
 
       - name: Install uv
         run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          if ! command -v uv &> /dev/null; then
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          fi
 
       - name: Install dependencies
         run: |
@@ -103,7 +151,9 @@ jobs:
           # Créer un symlink /app/40_utils pour que le path absolu dans pyproject.toml fonctionne
           sudo mkdir -p /app
           sudo ln -s "$(pwd)/../40_utils" /app/40_utils
-          uv venv
+          if [ ! -d .venv ]; then
+            uv venv
+          fi
           source .venv/bin/activate
           uv pip install -e ".[dev]"
 
@@ -135,16 +185,41 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+          cache: 'pip'  # Active le cache pip
+
+      - name: Cache uv binary
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/bin/uv
+          key: uv-binary-${{ runner.os }}
+
+      - name: Cache uv packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: uv-packages-${{ runner.os }}-${{ hashFiles('50_test/pyproject.toml', '50_test/uv.lock') }}
+          restore-keys: |
+            uv-packages-${{ runner.os }}-
+
+      - name: Cache venv
+        uses: actions/cache@v4
+        with:
+          path: 50_test/.venv
+          key: venv-infra-${{ runner.os }}-py3.13-${{ hashFiles('50_test/pyproject.toml') }}
 
       - name: Install uv
         run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          if ! command -v uv &> /dev/null; then
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          fi
 
       - name: Install test dependencies
         run: |
           cd 50_test
-          uv venv
+          if [ ! -d .venv ]; then
+            uv venv
+          fi
           source .venv/bin/activate
           uv pip install -e .
 
