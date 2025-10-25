@@ -601,38 +601,6 @@ def analyse_trendline_duree():
     # TABLEAU DES DONNÉES
     # ========================================
 
-    with st.expander("Tableau des données"):
-        display_df = minutes_by_year.copy()
-        display_df["year"] = display_df["year"].astype(int)
-        display_df["mean_pred"] = regressions["mean_minutes"]["y_pred"]
-        display_df["median_pred"] = regressions["median_minutes"]["y_pred"]
-
-        st.dataframe(
-            display_df[
-                [
-                    "year",
-                    "mean_minutes",
-                    "mean_pred",
-                    "median_minutes",
-                    "median_pred",
-                    "q_low",
-                    "q_high",
-                    "n_recipes",
-                ]
-            ].style.format(
-                {
-                    "mean_minutes": "{:.2f}",
-                    "mean_pred": "{:.2f}",
-                    "median_minutes": "{:.2f}",
-                    "median_pred": "{:.2f}",
-                    "q_low": "{:.2f}",
-                    "q_high": "{:.2f}",
-                    "n_recipes": "{:,}",
-                }
-            ),
-            use_container_width=True,
-            hide_index=True,
-        )
 
 
 def analyse_trendline_duree_old_intervals():
@@ -999,34 +967,6 @@ def analyse_trendline_duree_old_intervals():
         st.markdown("**Résumé complet du modèle :**")
         st.text(wls_result.summary())
 
-    with st.expander("Tableau des données avec prédictions"):
-        df_table = pl.DataFrame(
-            {
-                "Année": X,
-                f"{metric_choice} observée": y,
-                "Prédiction WLS": y_pred,
-                "Résidu": residuals,
-                f"IC inf ({confidence_level}%)": conf_lower,
-                f"IC sup ({confidence_level}%)": conf_upper,
-                f"IP inf ({confidence_level}%)": pred_lower,
-                f"IP sup ({confidence_level}%)": pred_upper,
-            }
-        )
-
-        st.dataframe(
-            df_table.to_pandas().style.format(
-                {
-                    f"{metric_choice} observée": "{:.1f}",
-                    "Prédiction WLS": "{:.1f}",
-                    "Résidu": "{:.2f}",
-                    f"IC inf ({confidence_level}%)": "{:.1f}",
-                    f"IC sup ({confidence_level}%)": "{:.1f}",
-                    f"IP inf ({confidence_level}%)": "{:.1f}",
-                    f"IP sup ({confidence_level}%)": "{:.1f}",
-                }
-            ),
-            use_container_width=True,
-        )
 
 
 def analyse_trendline_duree_old():
@@ -1418,26 +1358,6 @@ def analyse_trendline_duree_old():
     # TABLEAU DES DONNÉES
     # ========================================
 
-    with st.expander("Tableau des données"):
-        display_df = minutes_by_year.copy()
-        display_df["year"] = display_df["year"].astype(int)
-        display_df["mean_minutes"] = display_df["mean_minutes"].round(2)
-        display_df["median_minutes"] = display_df["median_minutes"].round(2)
-        display_df["q25"] = display_df["q25"].round(2)
-        display_df["q75"] = display_df["q75"].round(2)
-
-        st.dataframe(
-            display_df.style.format(
-                {
-                    "mean_minutes": "{:.2f}",
-                    "median_minutes": "{:.2f}",
-                    "q25": "{:.2f}",
-                    "q75": "{:.2f}",
-                    "n_recipes": "{:,}",
-                }
-            ),
-            use_container_width=True,
-        )
 
 
 # ============================================================================
