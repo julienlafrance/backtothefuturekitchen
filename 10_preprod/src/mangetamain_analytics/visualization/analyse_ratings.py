@@ -812,7 +812,13 @@ def analyse_ratings_seasonality_1():
     )
 
     # (1) Volume d'interactions
-    colors_season = ['#90EE90', '#FFD700', '#FFA500', '#87CEEB']
+    # Couleurs saisonnières "Back to the Kitchen"
+    colors_season = [
+        chart_theme.colors.ORANGE_PRIMARY,     # Spring: Orange vif
+        chart_theme.colors.CHART_COLORS[1],    # Summer: Jaune doré
+        chart_theme.colors.ORANGE_SECONDARY,   # Autumn: Rouge/Orange profond
+        chart_theme.colors.CHART_COLORS[1]     # Winter: Jaune doré
+    ]
     fig.add_trace(
         go.Bar(
             x=seasonal_stats['season'],
@@ -820,7 +826,7 @@ def analyse_ratings_seasonality_1():
             marker=dict(
                 color=colors_season,
                 opacity=0.8,
-                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1.5)
+                line=dict(width=0)
             ),
             text=[f"{int(v/1000)}K" for v in seasonal_stats['count_ratings']],
             textposition='outside',
@@ -839,7 +845,7 @@ def analyse_ratings_seasonality_1():
             marker=dict(
                 color=colors_season,
                 opacity=0.8,
-                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1.5)
+                line=dict(width=0)
             ),
             text=[f"{v:.4f}" for v in seasonal_stats['mean_rating']],
             textposition='outside',
@@ -962,7 +968,13 @@ def analyse_ratings_seasonality_2():
         vertical_spacing=0.15
     )
 
-    colors_season = ['#90EE90', '#FFD700', '#FFA500', '#87CEEB']
+    # Couleurs saisonnières "Back to the Kitchen"
+    colors_season = [
+        chart_theme.colors.ORANGE_PRIMARY,     # Spring: Orange vif
+        chart_theme.colors.CHART_COLORS[1],    # Summer: Jaune doré
+        chart_theme.colors.ORANGE_SECONDARY,   # Autumn: Rouge/Orange profond
+        chart_theme.colors.CHART_COLORS[1]     # Winter: Jaune doré
+    ]
 
     # 1. Radar chart
     theta = list(seasonal_ratings["season"]) + [seasonal_ratings["season"].iloc[0]]
@@ -990,7 +1002,7 @@ def analyse_ratings_seasonality_2():
         go.Bar(
             x=seasonal_ratings['season'],
             y=seasonal_ratings['mean_rating'],
-            marker=dict(color=colors_season, opacity=0.8, line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1.5)),
+            marker=dict(color=colors_season, opacity=0.8, line=dict(width=0)),
             text=[f"{v:.4f}" for v in seasonal_ratings['mean_rating']],
             textposition='outside',
             textfont=dict(size=9, color=chart_theme.colors.TEXT_PRIMARY),
@@ -1006,7 +1018,7 @@ def analyse_ratings_seasonality_2():
         go.Bar(
             x=seasonal_perfect['season'],
             y=seasonal_perfect['pct_5_stars'],
-            marker=dict(color=colors_season, opacity=0.8, line=dict(color='darkgreen', width=1.5)),
+            marker=dict(color=colors_season, opacity=0.8, line=dict(width=0)),
             text=[f"{v:.2f}%" for v in seasonal_perfect['pct_5_stars']],
             textposition='outside',
             textfont=dict(size=9, color=chart_theme.colors.TEXT_PRIMARY),
@@ -1022,7 +1034,7 @@ def analyse_ratings_seasonality_2():
         go.Bar(
             x=seasonal_negative['season'],
             y=seasonal_negative['pct_negative'],
-            marker=dict(color=colors_season, opacity=0.8, line=dict(color='darkred', width=1.5)),
+            marker=dict(color=colors_season, opacity=0.8, line=dict(width=0)),
             text=[f"{v:.2f}%" for v in seasonal_negative['pct_negative']],
             textposition='outside',
             textfont=dict(size=9, color=chart_theme.colors.TEXT_PRIMARY),
@@ -1038,7 +1050,7 @@ def analyse_ratings_seasonality_2():
         go.Bar(
             x=seasonal_ratings['season'],
             y=seasonal_ratings['std_rating'],
-            marker=dict(color=colors_season, opacity=0.8, line=dict(color='purple', width=1.5)),
+            marker=dict(color=colors_season, opacity=0.8, line=dict(width=0)),
             text=[f"{v:.3f}" for v in seasonal_ratings['std_rating']],
             textposition='outside',
             textfont=dict(size=9, color=chart_theme.colors.TEXT_PRIMARY),
@@ -1054,7 +1066,7 @@ def analyse_ratings_seasonality_2():
         go.Bar(
             x=seasonal_ratings['season'],
             y=seasonal_ratings['n_interactions'] / 1000,
-            marker=dict(color=colors_season, opacity=0.8, line=dict(color='navy', width=1.5)),
+            marker=dict(color=colors_season, opacity=0.8, line=dict(width=0)),
             text=[f"{int(v/1000)}K" for v in seasonal_ratings['n_interactions']],
             textposition='outside',
             textfont=dict(size=9, color=chart_theme.colors.TEXT_PRIMARY),
