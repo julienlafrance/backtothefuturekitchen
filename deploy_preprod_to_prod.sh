@@ -193,9 +193,13 @@ if [ -f "$PROD_ROOT/pyproject.toml" ]; then
     log "INFO" "Backup pyproject.toml créé : $backup_pyproject"
 fi
 
-# Copier pyproject.toml
+# Copier pyproject.toml et adapter pour PROD (retirer dépendance 40_utils)
 cp "$PREPROD_ROOT/pyproject.toml" "$PROD_ROOT/pyproject.toml" || handle_error "Copie pyproject.toml" "Échec de la copie"
-log "SUCCESS" "pyproject.toml copié"
+
+# Commenter la ligne mangetamain-data-utils car 40_utils n'est pas monté en PROD
+sed -i 's/^\(\s*\)"mangetamain-data-utils.*$/# \1"mangetamain-data-utils (disabled in PROD - 40_utils not mounted)",/' "$PROD_ROOT/pyproject.toml"
+
+log "SUCCESS" "pyproject.toml copié et adapté pour PROD (40_utils désactivé)"
 
 # Copier uv.lock si présent
 if [ -f "$PREPROD_ROOT/uv.lock" ]; then
