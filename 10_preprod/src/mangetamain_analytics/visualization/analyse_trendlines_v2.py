@@ -1411,21 +1411,22 @@ def analyse_trendline_complexite():
     X = complexity_by_year["year"].values
     w = complexity_by_year["count_recipes"].values
 
+    # Couleurs de la charte "Back to the Kitchen"
     metrics_config = {
         "mean_complexity": {
-            "color": "#9370DB",
+            "color": chart_theme.colors.CHART_COLORS[0],  # Orange
             "title": "Score de complexité",
             "ylabel": "Complexity Score",
             "show_std": True,
         },
         "mean_steps": {
-            "color": "#FF8C00",
+            "color": chart_theme.colors.CHART_COLORS[1],  # Jaune
             "title": "Nombre d'étapes",
             "ylabel": "Nombre d'étapes",
             "show_std": False,
         },
         "mean_ingredients": {
-            "color": "#2E8B57",
+            "color": chart_theme.colors.CHART_COLORS[2],  # Orange foncé
             "title": "Nombre d'ingrédients",
             "ylabel": "Nombre d'ingrédients",
             "show_std": False,
@@ -1492,7 +1493,7 @@ def analyse_trendline_complexite():
                     mode="lines",
                     line=dict(width=0),
                     name="±1 std",
-                    fillcolor=f"rgba({int(config['color'][1:3], 16)}, {int(config['color'][3:5], 16)}, {int(config['color'][5:7], 16)}, 0.15)",
+                    fillcolor=f"rgba{tuple(list(mcolors.hex2color(config['color'])) + [0.15])}",
                     showlegend=(idx == 1),
                 ),
                 row=1,
@@ -1521,7 +1522,7 @@ def analyse_trendline_complexite():
                 y=reg["y_pred"],
                 mode="lines",
                 name=f"Régression WLS (R²={reg['r2']:.3f})",
-                line=dict(color="#E94B3C", width=2, dash="dash"),
+                line=dict(color=chart_theme.colors.CHART_COLORS[3], width=2, dash="dash"),
                 showlegend=(idx == 1),
             ),
             row=1,
@@ -1531,27 +1532,20 @@ def analyse_trendline_complexite():
         # Axes
         fig.update_xaxes(
             title_text="Année",
-            showgrid=True,
-            gridcolor="#e0e0e0",
-            gridwidth=1,
             row=1,
             col=idx,
         )
         fig.update_yaxes(
             title_text=config["ylabel"],
-            showgrid=True,
-            gridcolor="#e0e0e0",
-            gridwidth=1,
             row=1,
             col=idx,
         )
 
-    # Mise en forme
+    # Application du thème "Back to the Kitchen"
+    chart_theme.apply_subplot_theme(fig, num_rows=1, num_cols=3)
+
     fig.update_layout(
         height=500,
-        plot_bgcolor="white",
-        paper_bgcolor="white",
-        font=dict(size=12),
         hovermode="x unified",
     )
 
@@ -1598,18 +1592,18 @@ def analyse_trendline_nutrition():
 
     metrics_config = {
         "mean_calories": {
-            "color": "#FF6347",
+            "color": chart_theme.colors.CHART_COLORS[0],
             "title": "Calories moyennes",
             "ylabel": "Calories",
         },
         "mean_carbs": {
-            "color": "#4169E1",
+            "color": chart_theme.colors.CHART_COLORS[1],
             "title": "Glucides (%)",
             "ylabel": "Carbs %",
         },
-        "mean_fat": {"color": "#FF8C00", "title": "Lipides (%)", "ylabel": "Fat %"},
+        "mean_fat": {"color": chart_theme.colors.CHART_COLORS[2], "title": "Lipides (%)", "ylabel": "Fat %"},
         "mean_protein": {
-            "color": "#2E8B57",
+            "color": chart_theme.colors.CHART_COLORS[3],
             "title": "Protéines (%)",
             "ylabel": "Protein %",
         },
@@ -1673,7 +1667,7 @@ def analyse_trendline_nutrition():
                 y=reg["y_pred"],
                 mode="lines",
                 name=f"Régression WLS (R²={reg['r2']:.3f})",
-                line=dict(color="#E94B3C", width=2, dash="dash"),
+                line=dict(color=chart_theme.colors.CHART_COLORS[4], width=2, dash="dash"),
                 showlegend=(row == 1 and col == 1),
             ),
             row=row,
@@ -1683,27 +1677,20 @@ def analyse_trendline_nutrition():
         # Axes
         fig.update_xaxes(
             title_text="Année" if row == 2 else None,
-            showgrid=True,
-            gridcolor="#e0e0e0",
-            gridwidth=1,
             row=row,
             col=col,
         )
         fig.update_yaxes(
             title_text=config["ylabel"],
-            showgrid=True,
-            gridcolor="#e0e0e0",
-            gridwidth=1,
             row=row,
             col=col,
         )
 
-    # Mise en forme
+    # Application du thème "Back to the Kitchen"
+    chart_theme.apply_subplot_theme(fig, num_rows=2, num_cols=2)
+
     fig.update_layout(
         height=800,
-        plot_bgcolor="white",
-        paper_bgcolor="white",
-        font=dict(size=12),
         hovermode="x unified",
     )
 
