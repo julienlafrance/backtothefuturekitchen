@@ -563,7 +563,6 @@ def main():
             ("calendar-days", "Analyses Saisonnières"),
             ("sun", "Effet Jour/Week-end"),
             ("star", "Analyses Ratings"),
-            ("sparkles", "Recommandations"),
         ]
 
         # Options pour st.radio (texte simple)
@@ -772,21 +771,6 @@ def main():
     elif selected_page == "Analyses Ratings":
         # Appel du module d'analyse ratings avec charte graphique
         render_ratings_analysis()
-
-    elif selected_page == "Recommandations":
-        st.markdown(
-            '<h1 style="margin-top: 0; padding-top: 0;">⭐ Système de Recommandations</h1>',
-            unsafe_allow_html=True,
-        )
-        st.info("🚧 Cette analyse sera disponible prochainement.")
-        st.markdown(
-            """
-            Système de recommandations basé sur le ML :
-            - Recommandations personnalisées
-            - Clustering d'utilisateurs
-            - Prédiction de popularité
-            """
-        )
 
     else:
         # Fallback
