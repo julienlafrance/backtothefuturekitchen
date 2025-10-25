@@ -151,13 +151,6 @@ def analyse_ratings_validation_ponderee():
     # (3) Ratings avec taille proportionnelle au poids
     sizes = weights_normalized * 1000
 
-    # Colorscale personnalisée "Back to the Kitchen" - dégradé d'orange
-    custom_colorscale = [
-        [0.0, chart_theme.colors.ORANGE_SECONDARY],  # Orange foncé pour volumes faibles
-        [0.5, chart_theme.colors.ORANGE_PRIMARY],    # Orange vif pour volumes moyens
-        [1.0, chart_theme.colors.CHART_COLORS[1]]    # Jaune doré pour volumes élevés
-    ]
-
     fig.add_trace(
         go.Scatter(
             x=monthly_df['date'],
@@ -166,7 +159,7 @@ def analyse_ratings_validation_ponderee():
             marker=dict(
                 size=sizes * 2,  # Points beaucoup plus gros
                 color=monthly_df['n_interactions'],
-                colorscale=custom_colorscale,
+                colorscale='YlOrRd',  # Colorscale Plotly: Jaune → Orange → Rouge
                 opacity=0.7,
                 line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=0.5),
                 colorbar=dict(
