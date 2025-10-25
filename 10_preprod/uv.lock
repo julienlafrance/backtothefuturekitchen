@@ -1498,7 +1498,7 @@ requires-dist = [
     { name = "ipykernel", specifier = ">=6.30.1" },
     { name = "jupyter", specifier = ">=1.1.1" },
     { name = "loguru", specifier = ">=0.7.0" },
-    { name = "mangetamain-data-utils", directory = "../40_utils/mangetamain_data_utils" },
+    { name = "mangetamain-data-utils", directory = "../../../../../../app/40_utils/mangetamain_data_utils" },
     { name = "matplotlib", specifier = ">=3.10.6" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.6.0" },
     { name = "numpy", specifier = ">=2.3.3" },
@@ -1525,7 +1525,7 @@ provides-extras = ["dev"]
 [[package]]
 name = "mangetamain-data-utils"
 version = "0.1.0"
-source = { directory = "../40_utils/mangetamain_data_utils" }
+source = { directory = "../../../../../../app/40_utils/mangetamain_data_utils" }
 dependencies = [
     { name = "duckdb" },
     { name = "numpy" },
