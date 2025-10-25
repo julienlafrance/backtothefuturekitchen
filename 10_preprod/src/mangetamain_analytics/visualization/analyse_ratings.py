@@ -60,7 +60,6 @@ def weighted_spearman(x, y, w):
 
 def analyse_ratings_validation_ponderee():
     """Analyse 1: Validation méthodologique - Tests pondérés vs non-pondérés."""
-    st.markdown("### 🔬 Validation méthodologique")
     st.markdown(
         """
         Comparaison des méthodes **pondérées** vs **non-pondérées** pour analyser
@@ -276,7 +275,6 @@ def analyse_ratings_validation_ponderee():
 
 def analyse_ratings_tendance_temporelle():
     """Analyse 2: Tendance temporelle des ratings (Méthodes pondérées)."""
-    st.markdown("### 📈 Tendance temporelle")
     st.markdown(
         """
         Analyse de l'évolution des ratings dans le temps avec **régression WLS pondérée**.
@@ -504,7 +502,6 @@ def analyse_ratings_tendance_temporelle():
 
 def analyse_ratings_distribution():
     """Analyse 3: Évolution détaillée et corrélations (bandes de confiance)."""
-    st.markdown("### 📊 Distribution et stabilité")
     st.markdown(
         """
         Analyse détaillée de l'évolution des ratings avec **bandes de confiance**.
@@ -765,7 +762,6 @@ def analyse_ratings_distribution():
 
 def analyse_ratings_seasonality_1():
     """Analyse 4: Statistiques descriptives des données saisonnières."""
-    st.markdown("### 🍂 Statistiques saisonnières")
     st.markdown(
         """
         Analyse de la distribution des interactions et ratings par saison.
@@ -896,7 +892,6 @@ def analyse_ratings_seasonality_1():
 
 def analyse_ratings_seasonality_2():
     """Analyse 5: Variations saisonnières des ratings (Stats et Visualisations)."""
-    st.markdown("### 🌸 Variations saisonnières")
     st.markdown(
         """
         Analyse détaillée des variations saisonnières des ratings avec dashboard complet.
