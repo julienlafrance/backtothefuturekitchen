@@ -17,8 +17,12 @@ htmlcov/
 coverage.xml
 *.cover
 
-# Répertoires de données - TOUT ignorer (répertoire complet)
+# Répertoires de données - TOUT ignorer SAUF code source
 **/data/
+!**/src/**/data/
+**/src/**/data/*.duckdb
+**/src/**/data/*.csv
+**/src/**/data/*.pkl
 
 # Logs 
 */logs/
