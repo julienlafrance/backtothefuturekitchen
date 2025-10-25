@@ -201,7 +201,7 @@ def render_analysis(conn=None):  # pragma: no cover
             # </STATISTIQUES>
             
             # <DONNÉES_BRUTES>
-            with st.expander("📊 Détails des données"):
+            with st.expander("Détails des données"):
                 st.write("**Table de distribution :**")
                 display_df = ratings_data.copy()
                 display_df['percentage'] = display_df['percentage'].round(2)

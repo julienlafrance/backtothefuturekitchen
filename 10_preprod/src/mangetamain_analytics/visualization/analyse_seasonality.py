@@ -716,7 +716,7 @@ def analyse_seasonality_nutrition():
     # TABLEAU DES VALEURS BRUTES
     # ========================================
 
-    with st.expander("📊 Voir les valeurs brutes (non normalisées)"):
+    with st.expander("Voir les valeurs brutes (non normalisées)"):
         # Créer tableau formaté
         display_df = nutrition_by_season_pd[["season"] + nutrient_cols].copy()
         display_df.columns = ["Saison", "Calories", "Lipides (%)", "Sucres (%)", "Sodium (%)", "Protéines (%)", "Graisses sat. (%)"]
