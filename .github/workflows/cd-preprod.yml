@@ -18,8 +18,9 @@ jobs:
 
     steps:
       - name: Notify deployment start
+        env:
+          COMMIT_MSG: ${{ github.event.workflow_run.head_commit.message }}
         run: |
-          COMMIT_MSG="${{ github.event.workflow_run.head_commit.message }}"
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
             -d "{\"content\":\"🚀 **Déploiement Preprod démarré**\n📦 Commit: \`${{ github.event.workflow_run.head_sha }}\`\n💬 Message: ${COMMIT_MSG_FIRST_LINE}\n👤 Par: ${{ github.event.workflow_run.head_commit.author.name }}\"}" \
@@ -72,8 +73,9 @@ jobs:
 
       - name: Notify deployment success
         if: success()
+        env:
+          COMMIT_MSG: ${{ github.event.workflow_run.head_commit.message }}
         run: |
-          COMMIT_MSG="${{ github.event.workflow_run.head_commit.message }}"
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
             -d "{\"content\":\"✅ **Déploiement Preprod réussi!**\n🌐 URL: https://mangetamain.lafrance.io/\n📦 Commit: \`${{ github.event.workflow_run.head_sha }}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
@@ -81,8 +83,9 @@ jobs:
 
       - name: Notify deployment failure
         if: failure()
+        env:
+          COMMIT_MSG: ${{ github.event.workflow_run.head_commit.message }}
         run: |
-          COMMIT_MSG="${{ github.event.workflow_run.head_commit.message }}"
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
             -d "{\"content\":\"❌ **ÉCHEC Déploiement Preprod**\n📦 Commit: \`${{ github.event.workflow_run.head_sha }}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⚠️  **Container dans état cassé - intervention manuelle requise**\n📋 Vérifier les logs: \`docker-compose -f docker-compose-preprod.yml logs\`\n👤 Commit par: ${{ github.event.workflow_run.head_commit.author.name }}\"}" \
