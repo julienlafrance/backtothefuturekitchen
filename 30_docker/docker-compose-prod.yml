@@ -14,7 +14,7 @@ services:
       - ../20_prod/pyproject.toml:/app/pyproject.toml
       # uv.lock sera créé par 'uv sync' dans le container (pas monté)
       - ../20_prod/README.md:/app/README.md
-      - ../20_prod/utils:/app/utils
+      # utils/ est déjà dans streamlit/ (pas de mount séparé)
       - ../40_utils:/app/40_utils:ro  # Package data-utils (requis par visualization/)
       - ../96_keys:/app/../96_keys:ro  # Credentials en READ-ONLY
       # Note: data/ removed - all data loaded from S3 Parquet (via 40_utils)
