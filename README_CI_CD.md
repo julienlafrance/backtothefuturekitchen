@@ -143,41 +143,159 @@ Tests Infrastructure: success ✅
 
 ## 2. CD Pipeline - Preprod (`.github/workflows/cd-preprod.yml`)
 
-Workflow de déploiement automatique vers PREPROD.
+Workflow de déploiement **immédiat** vers PREPROD avec rollback automatique.
+
+### Architecture Innovante : Deploy First, Test in Parallel
+
+**Principe:** Déployer immédiatement sans attendre le CI, puis rollback automatique si les tests échouent.
+
+**Avantages:**
+- ⚡ Déploiement ultra-rapide (~40 secondes au lieu de 3-5 minutes)
+- 🔄 Runner self-hosted libéré immédiatement
+- 🛡️ Sécurité garantie par rollback automatique
+- 🎯 Chaque déploiement correspond exactement au SHA testé
 
 ### Déclencheurs
 ```yaml
 on:
-  workflow_run:
-    workflows: ["CI Pipeline - Quality & Tests"]
-    types:
-      - completed
+  push:
     branches:
       - main
   workflow_dispatch:  # Permet déclenchement manuel
 ```
 
-**Comportement:** Ne se déclenche QUE si le CI a réussi (`if: github.event.workflow_run.conclusion == 'success'`).
+**Comportement:** Se déclenche **immédiatement** sur chaque push vers `main`, en parallèle du CI.
 
-### Job: Deploy Preprod
+### Job Unique: Deploy + Watch CI
 
-**Runner:** `runs-on: self-hosted` (VM dataia, pas besoin de VPN)
+**Runner:** `runs-on: self-hosted` (VM dataia)
 
-**Étapes:**
-1. 📢 **Notification Discord** - Déploiement démarré
-2. 🔄 **Pull latest code** - `git reset --hard origin/main`
-3. 🐳 **Restart container** - `docker-compose restart`
-4. ⏳ **Wait 60s** - Temps pour Streamlit de démarrer
-5. 🔍 **Health check** - 10 tentatives sur https://mangetamain.lafrance.io/
-6. ✅ **Notification Discord** - Succès ou échec
+**Workflow en 2 phases parallèles:**
 
-**Exemple de notification Discord:**
+#### Phase 1: Déploiement Immédiat (~40s)
+1. 💾 **Save rollback point** - Sauvegarde du dernier SHA validé dans `/var/app-state/last-validated-sha.txt`
+2. 📢 **Notification Discord** - Déploiement démarré
+3. 📥 **Fetch commits** - `git fetch origin main`
+4. 🔄 **Deploy exact SHA** - `git reset --hard ${{ github.sha }}` (pas un simple pull !)
+5. 🐳 **Restart container** - `docker-compose -f docker-compose-preprod.yml restart`
+6. 🔍 **Quick health check** - 3 tentatives sur https://mangetamain.lafrance.io/
+7. 👀 **Launch watcher** - Script background qui surveille le CI
+8. ✅ **Notification Discord** - Déploiement terminé, CI en cours
+
+#### Phase 2: Surveillance CI en Background (script nohup)
+
+Le workflow se termine ici (~40s), mais un **script continue en arrière-plan** sur le serveur :
+
+**Script watcher** (`/tmp/watch-ci-SHA.sh`) :
+1. ⏳ **Wait 30s** - Attendre démarrage du CI
+2. 🔍 **Poll CI status** - Vérifier toutes les 10s pendant 5 minutes max
+3. **Si CI réussit** ✅ :
+   - Marquer SHA comme validé dans STATE_FILE
+   - Notification Discord succès
+4. **Si CI échoue** ❌ :
+   - Lire le dernier SHA validé depuis STATE_FILE
+   - `git reset --hard` vers ce SHA
+   - Redémarrer le container
+   - **Rollback automatique complet !**
+   - Notification Discord avec détails
+
+**Logs du watcher:** `/tmp/ci-watcher-SHA.log`
+
+### Pourquoi `git reset --hard SHA` au lieu de `git pull` ?
+
+**Sécurité et déterminisme :**
+```bash
+# ❌ MAUVAIS: git pull (prend le dernier commit de main)
+git pull origin main
+
+# ✅ BON: reset vers le SHA exact qui a déclenché ce workflow
+git fetch origin main
+git reset --hard acfdb42...  # SHA précis
 ```
-✅ **Déploiement Preprod réussi!**
+
+**Problème avec `git pull` :**
+- Si 2 commits pushés rapidement (A puis B)
+- Le workflow de A pourrait déployer B au lieu de A
+- Le code déployé ≠ code testé par CI
+
+**Avec `git reset --hard ${{ github.sha }}` :**
+- Workflow de A déploie **exactement** A
+- Workflow de B déploie **exactement** B
+- Garantie que code déployé = code testé ✅
+
+### STATE_FILE : Mémoire entre workflows
+
+**Fichier:** `/var/app-state/last-validated-sha.txt`
+
+**Rôle:** Track le dernier commit dont le CI a réussi
+
+**Workflow:**
+1. **Avant deploy:** Lire STATE_FILE pour connaître le point de rollback
+2. **Après CI success:** Écrire nouveau SHA dans STATE_FILE
+3. **En cas d'échec:** Rollback vers SHA lu depuis STATE_FILE
+
+**Initialisation (une seule fois) :**
+```bash
+ssh dataia
+sudo mkdir -p /var/app-state
+sudo chown dataia25:dataia25 /var/app-state
+cd /home/dataia25/mangetamain/10_preprod
+git rev-parse HEAD > /var/app-state/last-validated-sha.txt
+```
+
+### Exemple de Timeline
+
+```
+00:00 - Push vers main (commit abc1234)
+00:01 - CI démarre (GitHub runners)
+00:01 - CD démarre (self-hosted runner)
+00:01 - 📥 Fetch + 🔄 Reset vers abc1234
+00:01 - 🐳 Container redémarré
+00:01 - 🔍 Health check OK
+00:01 - 👀 Watcher lancé en background
+00:01 - ✅ Workflow terminé (40s) → runner libéré !
+00:02 - Watcher poll CI... "pending"
+00:03 - Watcher poll CI... "pending"
+00:04 - Watcher poll CI... "success" ✅
+00:04 - STATE_FILE mis à jour avec abc1234
+00:04 - Notification Discord : CI validé !
+```
+
+**Si CI échoue :**
+```
+00:04 - Watcher poll CI... "failure" ❌
+00:04 - 🔄 Rollback vers def5678 (depuis STATE_FILE)
+00:04 - 🐳 Container redémarré avec ancienne version
+00:05 - 🔍 Health check du rollback OK
+00:05 - 🚨 Notification Discord : Rollback effectué
+```
+
+### Exemple de notifications Discord
+
+**Déploiement terminé (CI en cours) :**
+```
+✅ **Déploiement Preprod terminé!**
 🌐 URL: https://mangetamain.lafrance.io/
 📦 Commit: `abc1234`
-💬 Fix bug in authentication
-🕐 2025-10-25 14:30:15
+⏳ CI en cours, rollback auto si échec
+🕐 2025-10-26 00:10:15
+```
+
+**CI validé :**
+```
+✅ **CI Pipeline réussi pour Preprod**
+📦 Commit: `abc1234`
+🌐 https://mangetamain.lafrance.io/
+✨ Déploiement validé et persisté!
+```
+
+**Rollback automatique :**
+```
+🔄 **ROLLBACK Preprod effectué**
+❌ Raison: CI a échoué
+📦 Commit annulé: `abc1234`
+↩️  Restauré vers: `def5678`
+🌐 https://mangetamain.lafrance.io/
 ```
 
 ---
