@@ -7,6 +7,11 @@
    GOOGLE FONTS - Michroma (titres) + Inter (corps)
    ============================================================================ */
 @import url('https://fonts.googleapis.com/css2?family=Michroma&family=Inter:wght@300;400;500;600;700&display=swap');
+/* Import des polices d'icônes Material utilisées par Streamlit */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp');
 
 /* ============================================================================
    CSS VARIABLES - Palette de couleurs centralisée
@@ -121,6 +126,16 @@ h1, h2, h3 {
 p, div, span, label, button, input, select, textarea {
     font-family: 'Inter', sans-serif !important;
     color: #F0F0F0;  /* TEXT - texte clair */
+}
+
+/* Ne pas écraser la police des icônes Streamlit (Material Icons/Symbols) */
+[data-testid="stIconMaterial"] {
+    font-family: 'Material Icons', 'Material Icons Outlined', 'Material Icons Round', 'Material Icons Sharp', 'Material Symbols Outlined', 'Material Symbols Rounded', 'Material Symbols Sharp' !important;
+    font-weight: normal !important;
+    font-style: normal !important;
+    font-feature-settings: 'liga' 1 !important;
+    -webkit-font-smoothing: antialiased !important;
+    line-height: 1 !important;
 }
 
 label {
