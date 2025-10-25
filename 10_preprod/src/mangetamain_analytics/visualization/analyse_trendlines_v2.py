@@ -584,7 +584,7 @@ def analyse_trendline_duree():
     # TABLEAU DES DONNÉES
     # ========================================
 
-    with st.expander("📋 Tableau des données"):
+    with st.expander("Tableau des données"):
         display_df = minutes_by_year.copy()
         display_df["year"] = display_df["year"].astype(int)
         display_df["mean_pred"] = regressions["mean_minutes"]["y_pred"]
@@ -963,7 +963,7 @@ def analyse_trendline_duree_old_intervals():
         st.markdown("**Résumé complet du modèle :**")
         st.text(wls_result.summary())
 
-    with st.expander("📋 Tableau des données avec prédictions"):
+    with st.expander("Tableau des données avec prédictions"):
         df_table = pl.DataFrame({
             "Année": X,
             f"{metric_choice} observée": y,
@@ -1361,7 +1361,7 @@ def analyse_trendline_duree_old():
     # TABLEAU DES DONNÉES
     # ========================================
 
-    with st.expander("📋 Tableau des données"):
+    with st.expander("Tableau des données"):
         display_df = minutes_by_year.copy()
         display_df["year"] = display_df["year"].astype(int)
         display_df["mean_minutes"] = display_df["mean_minutes"].round(2)
