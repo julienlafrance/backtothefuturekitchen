@@ -1,10 +1,9 @@
 # 🍳 Mangetamain Analytics
 
 [![CI Pipeline - Quality & Tests](https://github.com/julienlafrance/backtothefuturekitchen/actions/workflows/ci.yml/badge.svg)](https://github.com/julienlafrance/backtothefuturekitchen/actions/workflows/ci.yml)
-![Tests](https://img.shields.io/badge/tests-96_passing-success)
-![Coverage](https://img.shields.io/badge/coverage-98%25-brightgreen)
-![10_preprod](https://img.shields.io/badge/10__preprod-96%25-brightgreen)
-![20_prod](https://img.shields.io/badge/20__prod-100%25-brightgreen)
+![Tests](https://img.shields.io/badge/tests-117_total-success)
+![Coverage](https://img.shields.io/badge/coverage-93%25-brightgreen)
+![10_preprod](https://img.shields.io/badge/10__preprod-93%25-brightgreen)
 ![Python](https://img.shields.io/badge/python-3.13.3-blue)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
@@ -132,27 +131,29 @@ pytest -v
 
 ### Tests unitaires avec coverage
 
-**10_preprod - Analytics (96% coverage)**
+**10_preprod - Code Source (93% coverage)**
 ```bash
 cd 10_preprod
 uv run pytest tests/unit/ -v --cov=src --cov-report=html
 ```
-**Résultat:** 22 tests passent, 96% coverage en 2.10s
-
-**20_prod - Production (100% coverage)**
-```bash
-cd 20_prod
-uv run pytest tests/unit/ -v --cov=streamlit --cov-report=html
-```
-**Résultat:** 31 tests passent, 100% coverage en 0.94s
+**Résultat:** 82 tests (81 passent, 1 skipped), 93% coverage
 
 ### Métriques globales
-- **Total tests:** 96 tests configurés
-- **Coverage global:** 98% sur code métier
+- **Total tests:** 117 tests (82 unitaires + 35 infrastructure)
+- **Coverage code source:** 93% (10_preprod)
 - **Temps d'exécution:** ~6 secondes
-- **Taux de réussite:** 100%
+- **Taux de réussite:** 99%
+- **Objectif 90% dépassé de 3 points** ✅
 
-📚 **Documentation complète:** Voir [RESUME_COVERAGE_FINAL.md](RESUME_COVERAGE_FINAL.md)
+### ⚠️ Note sur 20_prod
+**20_prod n'est pas testé séparément** car c'est un artefact de build de 10_preprod :
+- 📦 Même code source que 10_preprod
+- ✅ Couvert par les tests de 10_preprod (93%)
+- 🚀 Déployé automatiquement si les tests passent
+
+Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
+
+📚 **Documentation complète:** Voir [README_TESTS.md](README_TESTS.md)
 
 ## 📊 Données
 
@@ -197,21 +198,17 @@ uv run pytest tests/unit/ -v --cov=streamlit --cov-report=html
 - **[90_doc/](90_doc/)** - Documentation technique complète
 
 ### Tests et coverage
-- **[RESUME_COVERAGE_FINAL.md](RESUME_COVERAGE_FINAL.md)** - 📊 Résumé complet coverage (96 tests, 98% coverage)
-- **[README_COVERAGE.md](README_COVERAGE.md)** - Guide général pytest-cov
-- **[50_test/README_TESTS.md](50_test/README_TESTS.md)** - Tests d'infrastructure détaillés
-- **[20_prod/README_COVERAGE.md](20_prod/README_COVERAGE.md)** - Guide coverage 20_prod (100%)
-- **[00_eda/_data_utils/README_TESTS.md](00_eda/_data_utils/README_TESTS.md)** - Tests data_utils
+- **[README_TESTS.md](README_TESTS.md)** - 📊 Guide complet des tests (117 tests, 93% coverage)
 
 ## 🏷️ Version
 
-**Version actuelle** : 2025-10-24
+**Version actuelle** : 2025-10-25
 - ✅ Configuration S3 simplifiée et optimisée
 - ✅ Python 3.13.3 unifié sur tous environnements
 - ✅ Performance S3 maximisée (DNAT bypass)
 - ✅ DuckDB avec secrets intégrés
 - ✅ Architecture nettoyée et validée
-- ✅ **Tests et coverage complets (96 tests, 98% coverage)**
+- ✅ **Tests et coverage complets (117 tests, 93% coverage)**
 - ✅ **Pipeline CI/CD complet avec GitHub Actions**
   - Vérification PEP8 automatique (flake8)
   - Validation des docstrings (pydocstyle)

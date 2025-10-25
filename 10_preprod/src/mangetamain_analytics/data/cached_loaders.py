@@ -18,14 +18,15 @@ def get_recipes_clean():
     return load_recipes_clean()
 
 
-@st.cache_data(ttl=3600, show_spinner="🔄 Chargement des interactions depuis S3...")
-def get_interactions_sample():
-    """Charge les interactions échantillonnées depuis S3 avec cache (1h)."""
-    from mangetamain_data_utils.data_utils_interactions import (
-        load_interactions_sample,
-    )
-
-    return load_interactions_sample()
+# @st.cache_data(ttl=3600, show_spinner="🔄 Chargement des interactions depuis S3...")
+# def get_interactions_sample():
+#     """Charge les interactions échantillonnées depuis S3 avec cache (1h)."""
+#     from mangetamain_data_utils.data_utils_interactions import (
+#         load_interactions_sample,
+#     )
+#
+#     return load_interactions_sample()
+# NOTE: Fonction commentée - module data_utils_interactions non disponible
 
 
 @st.cache_data(ttl=3600, show_spinner="🔄 Chargement des ratings depuis S3...")

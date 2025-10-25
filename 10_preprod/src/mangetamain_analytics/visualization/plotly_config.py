@@ -82,88 +82,91 @@ def apply_theme(fig, title=None, height=600, add_grids=False):
     return fig
 
 
-def get_scatter_config(name, color_key="observed", mode="markers", size=8, opacity=0.6):
-    """Retourne la configuration pour un scatter plot.
+# NOTE: Fonctions ci-dessous commentées - non utilisées dans le code
+# Le projet utilise chart_theme.py à la place
 
-    Args:
-        name: Nom de la trace
-        color_key: Clé de couleur dans COLORS
-        mode: Mode Plotly ('markers', 'lines', 'lines+markers')
-        size: Taille des markers
-        opacity: Opacité
-
-    Returns:
-        Dict de configuration pour go.Scatter
-    """
-    return {
-        "name": name,
-        "mode": mode,
-        "marker": {"color": COLORS[color_key], "size": size, "opacity": opacity},
-        "line": {"color": COLORS[color_key], "width": 2},
-    }
-
-
-def get_regression_line_config(name="Régression", color_key="regression"):
-    """Configuration pour ligne de régression.
-
-    Args:
-        name: Nom de la ligne
-        color_key: Couleur dans COLORS
-
-    Returns:
-        Dict de configuration
-    """
-    return {
-        "name": name,
-        "mode": "lines",
-        "line": {"color": COLORS[color_key], "width": 2, "dash": "solid"},
-    }
-
-
-def get_confidence_band_config(name="Intervalle de confiance", color_key="confidence"):
-    """Configuration pour bande de confiance (fill_between).
-
-    Args:
-        name: Nom de la bande
-        color_key: Couleur dans COLORS
-
-    Returns:
-        Dict de configuration
-    """
-    color = COLORS[color_key]
-    # Convertir hex to rgba
-    r = int(color[1:3], 16)
-    g = int(color[3:5], 16)
-    b = int(color[5:7], 16)
-
-    return {
-        "name": name,
-        "mode": "lines",
-        "line": {"color": color, "width": 2, "dash": "dash"},
-        "fillcolor": f"rgba({r}, {g}, {b}, 0.2)",
-        "fill": "tonexty",
-    }
-
-
-def get_prediction_band_config(name="Intervalle de prédiction", color_key="prediction"):
-    """Configuration pour bande de prédiction.
-
-    Args:
-        name: Nom de la bande
-        color_key: Couleur dans COLORS
-
-    Returns:
-        Dict de configuration
-    """
-    color = COLORS[color_key]
-    r = int(color[1:3], 16)
-    g = int(color[3:5], 16)
-    b = int(color[5:7], 16)
-
-    return {
-        "name": name,
-        "mode": "lines",
-        "line": {"color": color, "width": 2, "dash": "dot"},
-        "fillcolor": f"rgba({r}, {g}, {b}, 0.1)",
-        "fill": "tonexty",
-    }
+# def get_scatter_config(name, color_key="observed", mode="markers", size=8, opacity=0.6):
+#     """Retourne la configuration pour un scatter plot.
+#
+#     Args:
+#         name: Nom de la trace
+#         color_key: Clé de couleur dans COLORS
+#         mode: Mode Plotly ('markers', 'lines', 'lines+markers')
+#         size: Taille des markers
+#         opacity: Opacité
+#
+#     Returns:
+#         Dict de configuration pour go.Scatter
+#     """
+#     return {
+#         "name": name,
+#         "mode": mode,
+#         "marker": {"color": COLORS[color_key], "size": size, "opacity": opacity},
+#         "line": {"color": COLORS[color_key], "width": 2},
+#     }
+#
+#
+# def get_regression_line_config(name="Régression", color_key="regression"):
+#     """Configuration pour ligne de régression.
+#
+#     Args:
+#         name: Nom de la ligne
+#         color_key: Couleur dans COLORS
+#
+#     Returns:
+#         Dict de configuration
+#     """
+#     return {
+#         "name": name,
+#         "mode": "lines",
+#         "line": {"color": COLORS[color_key], "width": 2, "dash": "solid"},
+#     }
+#
+#
+# def get_confidence_band_config(name="Intervalle de confiance", color_key="confidence"):
+#     """Configuration pour bande de confiance (fill_between).
+#
+#     Args:
+#         name: Nom de la bande
+#         color_key: Couleur dans COLORS
+#
+#     Returns:
+#         Dict de configuration
+#     """
+#     color = COLORS[color_key]
+#     # Convertir hex to rgba
+#     r = int(color[1:3], 16)
+#     g = int(color[3:5], 16)
+#     b = int(color[5:7], 16)
+#
+#     return {
+#         "name": name,
+#         "mode": "lines",
+#         "line": {"color": color, "width": 2, "dash": "dash"},
+#         "fillcolor": f"rgba({r}, {g}, {b}, 0.2)",
+#         "fill": "tonexty",
+#     }
+#
+#
+# def get_prediction_band_config(name="Intervalle de prédiction", color_key="prediction"):
+#     """Configuration pour bande de prédiction.
+#
+#     Args:
+#         name: Nom de la bande
+#         color_key: Couleur dans COLORS
+#
+#     Returns:
+#         Dict de configuration
+#     """
+#     color = COLORS[color_key]
+#     r = int(color[1:3], 16)
+#     g = int(color[3:5], 16)
+#     b = int(color[5:7], 16)
+#
+#     return {
+#         "name": name,
+#         "mode": "lines",
+#         "line": {"color": color, "width": 2, "dash": "dot"},
+#         "fillcolor": f"rgba({r}, {g}, {b}, 0.1)",
+#         "fill": "tonexty",
+#     }
