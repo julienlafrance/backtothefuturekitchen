@@ -50,10 +50,10 @@ temp_clean/
 # Clés d'accès S3 - NE JAMAIS COMMIT
 96_keys/
 
-# PROD - Fichiers générés par déploiement (artifact, non tracké)
+# PROD - Artifact complet généré par déploiement (non tracké)
 # PREPROD est la seule source de vérité dans git
-20_prod/streamlit/*
-!20_prod/streamlit/.gitkeep
+20_prod/*
+!20_prod/.gitkeep
 
 # Backups versionnés PROD (conservés sur disque, pas dans git)
 backups/
