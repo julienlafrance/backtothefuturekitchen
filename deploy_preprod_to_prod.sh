@@ -87,13 +87,15 @@ if [ ! -d "$PREPROD_DIR" ]; then
     handle_error "Vérification PREPROD" "Répertoire PREPROD introuvable : $PREPROD_DIR"
 fi
 
-if [ ! -d "$PROD_DIR" ]; then
-    handle_error "Vérification PROD" "Répertoire PROD introuvable : $PROD_DIR"
-fi
-
 if [ ! -f "$PREPROD_DIR/main.py" ]; then
     handle_error "Vérification main.py" "Fichier main.py introuvable dans PREPROD"
 fi
+
+# Créer la structure de base PROD si elle n'existe pas
+log "INFO" "Création de la structure de base PROD si nécessaire..."
+mkdir -p "$BASE_DIR/20_prod/streamlit" || handle_error "Création structure" "Impossible de créer 20_prod/streamlit"
+mkdir -p "$BASE_DIR/20_prod/logs" || handle_error "Création structure" "Impossible de créer 20_prod/logs"
+# Note: data/ not created - all data loaded from S3 Parquet files
 
 log "SUCCESS" "Vérifications préliminaires OK"
 
@@ -197,16 +199,19 @@ fi
 cp "$PREPROD_ROOT/pyproject.toml" "$PROD_ROOT/pyproject.toml" || handle_error "Copie pyproject.toml" "Échec de la copie"
 
 # Adaptations pour PROD :
-# 1. Commenter mangetamain-data-utils car 40_utils n'est pas monté en PROD
-sed -i 's/^\(\s*\)"mangetamain-data-utils.*$/# \1"mangetamain-data-utils (disabled in PROD - 40_utils not mounted)",/' "$PROD_ROOT/pyproject.toml"
-
-# 2. Commenter readme car README.md n'est pas déployé en PROD (artifact)
+# 1. Commenter readme car README.md n'est pas déployé en PROD (artifact)
 sed -i 's/^readme = .*$/# readme = "README.md" (disabled in PROD - artifact)/' "$PROD_ROOT/pyproject.toml"
 
-log "SUCCESS" "pyproject.toml copié et adapté pour PROD (40_utils et readme désactivés)"
+# 2. Commenter [build-system] pour éviter de builder le package en PROD
+# On veut juste installer les dépendances, pas construire un wheel
+sed -i 's/^\[build-system\]$/# [build-system] (disabled in PROD - no package build needed)/' "$PROD_ROOT/pyproject.toml"
+sed -i 's/^requires = \["hatchling"\]$/# requires = ["hatchling"]/' "$PROD_ROOT/pyproject.toml"
+sed -i 's/^build-backend = "hatchling.build"$/# build-backend = "hatchling.build"/' "$PROD_ROOT/pyproject.toml"
+
+log "SUCCESS" "pyproject.toml copié et adapté pour PROD (readme et build-system désactivés)"
 
 # NE PAS copier uv.lock : il doit être régénéré par 'uv sync' en PROD
-# car pyproject.toml a été modifié (mangetamain-data-utils commenté)
+# car pyproject.toml a été modifié (build-system commenté)
 if [ -f "$PROD_ROOT/uv.lock" ]; then
     backup_uvlock="$PROD_ROOT/uv.lock.backup_$(date +%Y%m%d_%H%M%S)"
     mv "$PROD_ROOT/uv.lock" "$backup_uvlock" || log "WARNING" "Impossible de créer backup uv.lock"
@@ -217,13 +222,43 @@ log "INFO" "uv.lock sera régénéré par 'uv sync' au démarrage du container P
 log "SUCCESS" "Dépendances Python synchronisées"
 
 ################################################################################
+# Création du README.md bidon (requis par pyproject.toml build)
+################################################################################
+log "INFO" "Étape 7/9 : Création du README.md pour build Python"
+
+# Supprimer l'ancien README.md s'il existe (fichier ou répertoire)
+if [ -e "$PROD_ROOT/README.md" ]; then
+    log "INFO" "Ancien README.md détecté, suppression..."
+    rm -rf "$PROD_ROOT/README.md" || log "WARNING" "Impossible de supprimer l'ancien README.md"
+fi
+
+# Créer le nouveau README.md
+cat > "$PROD_ROOT/README.md" << 'EOF'
+# PROD - Artifact
+
+Ce répertoire est un **artifact généré** par le script de déploiement.
+
+**Source de vérité** : `10_preprod/`
+
+**Ne pas modifier directement ce répertoire.**
+
+Fichier README.md requis par pyproject.toml pour le build Python.
+EOF
+
+if [ -f "$PROD_ROOT/README.md" ]; then
+    log "SUCCESS" "README.md créé (fichier bidon pour build Python)"
+else
+    handle_error "Création README.md" "Échec de la création du fichier README.md"
+fi
+
+################################################################################
 # Résumé final
 ################################################################################
-log "INFO" "Étape 7/8 : Redémarrage du container requis"
+log "INFO" "Étape 8/9 : Redémarrage du container requis"
 log "INFO" "⚠️  Les nouvelles dépendances Python nécessitent un redémarrage du container PROD"
 log "INFO" "Le container fera 'uv sync' au démarrage pour installer les packages"
 
-log "INFO" "Étape 8/8 : Résumé du déploiement"
+log "INFO" "Étape 9/9 : Résumé du déploiement"
 
 log "SUCCESS" "=========================================="
 log "SUCCESS" "Déploiement terminé avec succès !"
@@ -234,6 +269,7 @@ log "INFO" "  - utils/           : Utilitaires (colors, chart_theme)"
 log "INFO" "  - assets/          : CSS, logo, favicon"
 log "INFO" "  - main.py          : Application principale"
 log "INFO" "  - pyproject.toml   : Dépendances Python (adapté pour PROD)"
+log "INFO" "  - README.md        : Fichier bidon pour build Python"
 log "INFO" ""
 log "INFO" "⚠️  uv.lock sera régénéré par 'uv sync' dans le container PROD"
 log "INFO" ""

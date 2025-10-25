@@ -26,6 +26,7 @@ from utils import chart_theme
 # ANALYSE 1: VOLUME DE RECETTES PAR SAISON
 # ============================================================================
 
+
 def analyse_seasonality_volume():
     """
     Analyse du volume de recettes publiées par saison.
@@ -51,7 +52,7 @@ def analyse_seasonality_volume():
         .join(
             pl.DataFrame({"season": season_order, "order": range(len(season_order))}),
             on="season",
-            how="left"
+            how="left",
         )
         .sort("order")
         .drop("order")
@@ -63,9 +64,9 @@ def analyse_seasonality_volume():
     # Palette de couleurs "Back to the Kitchen" pour les saisons
     # Adaptation des couleurs saisonnières au thème orange/noir/gris
     season_colors_btk = {
-        "Winter": chart_theme.colors.CHART_COLORS[1],   # Jaune doré (#FFD700)
-        "Spring": chart_theme.colors.CHART_COLORS[2],   # Rouge/Orange profond (#E24E1B)
-        "Summer": chart_theme.colors.ORANGE_PRIMARY,    # Orange vif (#FF8C00)
+        "Winter": chart_theme.colors.CHART_COLORS[1],  # Jaune doré (#FFD700)
+        "Spring": chart_theme.colors.CHART_COLORS[2],  # Rouge/Orange profond (#E24E1B)
+        "Summer": chart_theme.colors.ORANGE_PRIMARY,  # Orange vif (#FF8C00)
         "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Rouge/Orange profond (#E24E1B)
     }
 
@@ -74,8 +75,12 @@ def analyse_seasonality_volume():
     mean_recipes = recipes_per_season_pd["n_recipes"].mean()
 
     # Écarts à la moyenne
-    recipes_per_season_pd["deviation"] = recipes_per_season_pd["n_recipes"] - mean_recipes
-    recipes_per_season_pd["deviation_pct"] = (recipes_per_season_pd["deviation"] / mean_recipes * 100)
+    recipes_per_season_pd["deviation"] = (
+        recipes_per_season_pd["n_recipes"] - mean_recipes
+    )
+    recipes_per_season_pd["deviation_pct"] = (
+        recipes_per_season_pd["deviation"] / mean_recipes * 100
+    )
 
     # ========================================
     # MÉTRIQUES EN BANNIÈRE
@@ -84,33 +89,31 @@ def analyse_seasonality_volume():
     col_a, col_b, col_c, col_d = st.columns(4)
 
     with col_a:
-        st.metric(
-            "📊 Total recettes",
-            f"{total_recipes:,}"
-        )
+        st.metric("📊 Total recettes", f"{total_recipes:,}")
 
     with col_b:
-        st.metric(
-            "📈 Moyenne par saison",
-            f"{mean_recipes:,.0f}"
-        )
+        st.metric("📈 Moyenne par saison", f"{mean_recipes:,.0f}")
 
     with col_c:
         # Saison la plus active
-        max_season = recipes_per_season_pd.loc[recipes_per_season_pd["n_recipes"].idxmax()]
+        max_season = recipes_per_season_pd.loc[
+            recipes_per_season_pd["n_recipes"].idxmax()
+        ]
         st.metric(
             f"🌸 {max_season['season']} (max)",
             f"{max_season['n_recipes']:,}",
-            delta=f"+{max_season['deviation_pct']:.1f}%"
+            delta=f"+{max_season['deviation_pct']:.1f}%",
         )
 
     with col_d:
         # Saison la moins active
-        min_season = recipes_per_season_pd.loc[recipes_per_season_pd["n_recipes"].idxmin()]
+        min_season = recipes_per_season_pd.loc[
+            recipes_per_season_pd["n_recipes"].idxmin()
+        ]
         st.metric(
             f"☃️ {min_season['season']} (min)",
             f"{min_season['n_recipes']:,}",
-            delta=f"{min_season['deviation_pct']:.1f}%"
+            delta=f"{min_season['deviation_pct']:.1f}%",
         )
 
     st.markdown("---")
@@ -137,15 +140,16 @@ def analyse_seasonality_volume():
             marker=dict(
                 color=colors_bars,
                 opacity=0.85,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
             ),
             text=[f"{val:,}" for val in recipes_per_season_pd["n_recipes"]],
             textposition="outside",
             textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
             hovertemplate="<b>%{x}</b><br>Recettes: %{y:,}<extra></extra>",
-            showlegend=False
+            showlegend=False,
         ),
-        row=1, col=1
+        row=1,
+        col=1,
     )
 
     # SUBPLOT 2: Pie chart
@@ -158,7 +162,8 @@ def analyse_seasonality_volume():
             textfont=dict(size=12),
             hovertemplate="<b>%{label}</b><br>Recettes: %{value:,}<br>Pourcentage: %{percent}<extra></extra>",
         ),
-        row=1, col=2
+        row=1,
+        col=2,
     )
 
     # Application du thème
@@ -180,7 +185,8 @@ def analyse_seasonality_volume():
     # INTERPRÉTATION
     # ========================================
 
-    st.info(f"""
+    st.info(
+        f"""
     💡 **Interprétation statistique**
 
     Le **test du χ²** montre que la **répartition saisonnière** du nombre de recettes **n'est pas uniforme**,
@@ -188,12 +194,14 @@ def analyse_seasonality_volume():
 
     Le **{max_season['season']}**, nettement au-dessus de la moyenne ({max_season['deviation']:+,.0f}, {max_season['deviation_pct']:+.1f}%),
     indique une **saisonnalité marquée** dans la production, tandis que les autres saisons restent **relativement stables**.
-    """)
+    """
+    )
 
 
 # ============================================================================
 # ANALYSE 2: DURÉE PAR SAISON
 # ============================================================================
+
 
 def analyse_seasonality_duree():
     """
@@ -216,17 +224,19 @@ def analyse_seasonality_duree():
     # Agrégation
     minutes_by_season = (
         df.group_by("season")
-        .agg([
-            pl.mean("minutes").alias("mean_minutes"),
-            pl.median("minutes").alias("median_minutes"),
-            pl.quantile("minutes", 0.25).alias("q25"),
-            pl.quantile("minutes", 0.75).alias("q75"),
-            pl.len().alias("n_recipes")
-        ])
+        .agg(
+            [
+                pl.mean("minutes").alias("mean_minutes"),
+                pl.median("minutes").alias("median_minutes"),
+                pl.quantile("minutes", 0.25).alias("q25"),
+                pl.quantile("minutes", 0.75).alias("q75"),
+                pl.len().alias("n_recipes"),
+            ]
+        )
         .join(
             pl.DataFrame({"season": season_order, "order": range(len(season_order))}),
             on="season",
-            how="left"
+            how="left",
         )
         .sort("order")
         .drop("order")
@@ -242,9 +252,9 @@ def analyse_seasonality_duree():
 
     # Palette de couleurs
     season_colors_btk = {
-        "Winter": chart_theme.colors.CHART_COLORS[1],   # Jaune doré (#FFD700)
-        "Spring": chart_theme.colors.CHART_COLORS[2],   # Rouge/Orange profond (#E24E1B)
-        "Summer": chart_theme.colors.ORANGE_PRIMARY,    # Orange vif (#FF8C00)
+        "Winter": chart_theme.colors.CHART_COLORS[1],  # Jaune doré (#FFD700)
+        "Spring": chart_theme.colors.CHART_COLORS[2],  # Rouge/Orange profond (#E24E1B)
+        "Summer": chart_theme.colors.ORANGE_PRIMARY,  # Orange vif (#FF8C00)
         "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Rouge/Orange profond (#E24E1B)
     }
 
@@ -255,34 +265,30 @@ def analyse_seasonality_duree():
     col_a, col_b, col_c, col_d = st.columns(4)
 
     with col_a:
-        max_season = minutes_by_season_pd.loc[minutes_by_season_pd["mean_minutes"].idxmax()]
+        max_season = minutes_by_season_pd.loc[
+            minutes_by_season_pd["mean_minutes"].idxmax()
+        ]
         st.metric(
-            f"⏱️ {max_season['season']} (max)",
-            f"{max_season['mean_minutes']:.1f} min"
+            f"⏱️ {max_season['season']} (max)", f"{max_season['mean_minutes']:.1f} min"
         )
 
     with col_b:
-        min_season = minutes_by_season_pd.loc[minutes_by_season_pd["mean_minutes"].idxmin()]
+        min_season = minutes_by_season_pd.loc[
+            minutes_by_season_pd["mean_minutes"].idxmin()
+        ]
         st.metric(
-            f"⚡ {min_season['season']} (min)",
-            f"{min_season['mean_minutes']:.1f} min"
+            f"⚡ {min_season['season']} (min)", f"{min_season['mean_minutes']:.1f} min"
         )
 
     with col_c:
         # Écart max-min
-        ecart = max_season['mean_minutes'] - min_season['mean_minutes']
-        st.metric(
-            "📏 Écart max-min",
-            f"{ecart:.1f} min"
-        )
+        ecart = max_season["mean_minutes"] - min_season["mean_minutes"]
+        st.metric("📏 Écart max-min", f"{ecart:.1f} min")
 
     with col_d:
         # Moyenne globale
         mean_global = minutes_by_season_pd["mean_minutes"].mean()
-        st.metric(
-            "📊 Moyenne globale",
-            f"{mean_global:.1f} min"
-        )
+        st.metric("📊 Moyenne globale", f"{mean_global:.1f} min")
 
     st.markdown("---")
 
@@ -293,7 +299,10 @@ def analyse_seasonality_duree():
     fig = make_subplots(
         rows=1,
         cols=2,
-        subplot_titles=("Durée moyenne par saison (avec IQR)", "Distribution des durées (boxplot)"),
+        subplot_titles=(
+            "Durée moyenne par saison (avec IQR)",
+            "Distribution des durées (boxplot)",
+        ),
         horizontal_spacing=0.12,
     )
 
@@ -308,7 +317,7 @@ def analyse_seasonality_duree():
             marker=dict(
                 color=colors_bars,
                 opacity=0.85,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
             ),
             name="Moyenne",
             text=[f"{val:.1f} min" for val in minutes_by_season_pd["mean_minutes"]],
@@ -316,7 +325,8 @@ def analyse_seasonality_duree():
             textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
             hovertemplate="<b>%{x}</b><br>Moyenne: %{y:.1f} min<extra></extra>",
         ),
-        row=1, col=1
+        row=1,
+        col=1,
     )
 
     # Ligne médiane
@@ -330,7 +340,8 @@ def analyse_seasonality_duree():
             name="Médiane",
             hovertemplate="<b>%{x}</b><br>Médiane: %{y:.1f} min<extra></extra>",
         ),
-        row=1, col=1
+        row=1,
+        col=1,
     )
 
     # IQR (lignes verticales Q25-Q75)
@@ -344,7 +355,8 @@ def analyse_seasonality_duree():
                 showlegend=False,
                 hovertemplate=f"<b>{row['season']}</b><br>IQR: {row['IQR']:.1f} min<br>Q25: {row['q25']:.1f}<br>Q75: {row['q75']:.1f}<extra></extra>",
             ),
-            row=1, col=1
+            row=1,
+            col=1,
         )
 
     # SUBPLOT 2: Box plot
@@ -360,7 +372,8 @@ def analyse_seasonality_duree():
                 showlegend=False,
                 hovertemplate=f"<b>{season}</b><br>Valeur: %{{y:.1f}} min<extra></extra>",
             ),
-            row=1, col=2
+            row=1,
+            col=2,
         )
 
     # Application du thème
@@ -375,13 +388,7 @@ def analyse_seasonality_duree():
     fig.update_layout(
         height=600,
         showlegend=True,
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="left",
-            x=0
-        )
+        legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
     )
 
     # Affichage
@@ -391,7 +398,8 @@ def analyse_seasonality_duree():
     # INTERPRÉTATION
     # ========================================
 
-    st.info(f"""
+    st.info(
+        f"""
     💡 **Interprétation statistique**
 
     Le **test de Kruskal-Wallis** confirme des **différences significatives** de durée entre les saisons (p < 0.001).
@@ -401,12 +409,14 @@ def analyse_seasonality_duree():
 
     **Automne/Hiver:** Recettes plus élaborées (plats mijotés, soupes)
     **Été/Printemps:** Recettes plus rapides (salades, grillades, plats frais)
-    """)
+    """
+    )
 
 
 # ============================================================================
 # ANALYSE 3: COMPLEXITÉ PAR SAISON
 # ============================================================================
+
 
 def analyse_seasonality_complexite():
     """
@@ -430,22 +440,24 @@ def analyse_seasonality_complexite():
     # Agrégation
     complexity_by_season = (
         df.group_by("season")
-        .agg([
-            pl.mean("complexity_score").alias("mean_complexity"),
-            pl.median("complexity_score").alias("median_complexity"),
-            pl.std("complexity_score").alias("std_complexity"),
-            pl.mean("n_steps").alias("mean_steps"),
-            pl.median("n_steps").alias("median_steps"),
-            pl.mean("n_ingredients").alias("mean_ingredients"),
-            pl.median("n_ingredients").alias("median_ingredients"),
-            pl.quantile("complexity_score", 0.25).alias("q25_complexity"),
-            pl.quantile("complexity_score", 0.75).alias("q75_complexity"),
-            pl.count("id").alias("count_recipes")
-        ])
+        .agg(
+            [
+                pl.mean("complexity_score").alias("mean_complexity"),
+                pl.median("complexity_score").alias("median_complexity"),
+                pl.std("complexity_score").alias("std_complexity"),
+                pl.mean("n_steps").alias("mean_steps"),
+                pl.median("n_steps").alias("median_steps"),
+                pl.mean("n_ingredients").alias("mean_ingredients"),
+                pl.median("n_ingredients").alias("median_ingredients"),
+                pl.quantile("complexity_score", 0.25).alias("q25_complexity"),
+                pl.quantile("complexity_score", 0.75).alias("q75_complexity"),
+                pl.count("id").alias("count_recipes"),
+            ]
+        )
         .join(
             pl.DataFrame({"season": season_order, "order": range(len(season_order))}),
             on="season",
-            how="left"
+            how="left",
         )
         .sort("order")
         .drop("order")
@@ -456,9 +468,9 @@ def analyse_seasonality_complexite():
 
     # Palette de couleurs
     season_colors_btk = {
-        "Winter": chart_theme.colors.CHART_COLORS[1],   # Jaune doré (#FFD700)
-        "Spring": chart_theme.colors.CHART_COLORS[2],   # Rouge/Orange profond (#E24E1B)
-        "Summer": chart_theme.colors.ORANGE_PRIMARY,    # Orange vif (#FF8C00)
+        "Winter": chart_theme.colors.CHART_COLORS[1],  # Jaune doré (#FFD700)
+        "Spring": chart_theme.colors.CHART_COLORS[2],  # Rouge/Orange profond (#E24E1B)
+        "Summer": chart_theme.colors.ORANGE_PRIMARY,  # Orange vif (#FF8C00)
         "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Rouge/Orange profond (#E24E1B)
     }
 
@@ -469,24 +481,30 @@ def analyse_seasonality_complexite():
     col_a, col_b, col_c = st.columns(3)
 
     with col_a:
-        max_complexity = complexity_by_season_pd.loc[complexity_by_season_pd["mean_complexity"].idxmax()]
+        max_complexity = complexity_by_season_pd.loc[
+            complexity_by_season_pd["mean_complexity"].idxmax()
+        ]
         st.metric(
             f"🔬 {max_complexity['season']} (+ complexe)",
-            f"{max_complexity['mean_complexity']:.2f}"
+            f"{max_complexity['mean_complexity']:.2f}",
         )
 
     with col_b:
-        max_steps = complexity_by_season_pd.loc[complexity_by_season_pd["mean_steps"].idxmax()]
+        max_steps = complexity_by_season_pd.loc[
+            complexity_by_season_pd["mean_steps"].idxmax()
+        ]
         st.metric(
             f"📝 {max_steps['season']} (+ étapes)",
-            f"{max_steps['mean_steps']:.1f} étapes"
+            f"{max_steps['mean_steps']:.1f} étapes",
         )
 
     with col_c:
-        max_ingredients = complexity_by_season_pd.loc[complexity_by_season_pd["mean_ingredients"].idxmax()]
+        max_ingredients = complexity_by_season_pd.loc[
+            complexity_by_season_pd["mean_ingredients"].idxmax()
+        ]
         st.metric(
             f"🥘 {max_ingredients['season']} (+ ingrédients)",
-            f"{max_ingredients['mean_ingredients']:.1f} ingr."
+            f"{max_ingredients['mean_ingredients']:.1f} ingr.",
         )
 
     st.markdown("---")
@@ -501,7 +519,7 @@ def analyse_seasonality_complexite():
         subplot_titles=(
             "Score de complexité",
             "Nombre d'étapes",
-            "Nombre d'ingrédients"
+            "Nombre d'ingrédients",
         ),
         horizontal_spacing=0.10,
     )
@@ -513,15 +531,20 @@ def analyse_seasonality_complexite():
         go.Bar(
             x=complexity_by_season_pd["season"],
             y=complexity_by_season_pd["mean_complexity"],
-            marker=dict(color=colors_bars, opacity=0.85, line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)),
+            marker=dict(
+                color=colors_bars,
+                opacity=0.85,
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+            ),
             name="Moyenne",
             text=[f"{val:.2f}" for val in complexity_by_season_pd["mean_complexity"]],
             textposition="outside",
             textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
             hovertemplate="<b>%{x}</b><br>Complexité: %{y:.2f}<extra></extra>",
-            showlegend=False
+            showlegend=False,
         ),
-        row=1, col=1
+        row=1,
+        col=1,
     )
 
     # PANEL 2: N_steps
@@ -529,15 +552,20 @@ def analyse_seasonality_complexite():
         go.Bar(
             x=complexity_by_season_pd["season"],
             y=complexity_by_season_pd["mean_steps"],
-            marker=dict(color=colors_bars, opacity=0.85, line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)),
+            marker=dict(
+                color=colors_bars,
+                opacity=0.85,
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+            ),
             name="Moyenne",
             text=[f"{val:.1f}" for val in complexity_by_season_pd["mean_steps"]],
             textposition="outside",
             textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
             hovertemplate="<b>%{x}</b><br>Étapes: %{y:.1f}<extra></extra>",
-            showlegend=False
+            showlegend=False,
         ),
-        row=1, col=2
+        row=1,
+        col=2,
     )
 
     # PANEL 3: N_ingredients
@@ -545,15 +573,20 @@ def analyse_seasonality_complexite():
         go.Bar(
             x=complexity_by_season_pd["season"],
             y=complexity_by_season_pd["mean_ingredients"],
-            marker=dict(color=colors_bars, opacity=0.85, line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1)),
+            marker=dict(
+                color=colors_bars,
+                opacity=0.85,
+                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+            ),
             name="Moyenne",
             text=[f"{val:.1f}" for val in complexity_by_season_pd["mean_ingredients"]],
             textposition="outside",
             textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
             hovertemplate="<b>%{x}</b><br>Ingrédients: %{y:.1f}<extra></extra>",
-            showlegend=False
+            showlegend=False,
         ),
-        row=1, col=3
+        row=1,
+        col=3,
     )
 
     # Application du thème
@@ -576,7 +609,8 @@ def analyse_seasonality_complexite():
     # INTERPRÉTATION
     # ========================================
 
-    st.info(f"""
+    st.info(
+        f"""
     💡 **Interprétation statistique**
 
     Les **tests de Kruskal-Wallis** révèlent des **différences significatives** de complexité entre les saisons (p < 0.001).
@@ -587,12 +621,14 @@ def analyse_seasonality_complexite():
     Cette **saisonnalité marquée** reflète les habitudes culinaires :
     - **Hiver/Automne:** Plats mijotés, soupes, ragoûts (plus d'étapes, plus d'ingrédients)
     - **Été/Printemps:** Recettes rapides et fraîches (salades, grillades, plats simples)
-    """)
+    """
+    )
 
 
 # ============================================================================
 # ANALYSE 4: NUTRITION PAR SAISON
 # ============================================================================
+
 
 def analyse_seasonality_nutrition():
     """
@@ -615,19 +651,21 @@ def analyse_seasonality_nutrition():
     # Agrégation
     nutrition_by_season = (
         df.group_by("season")
-        .agg([
-            pl.mean("calories").alias("mean_calories"),
-            pl.mean("total_fat_pct").alias("mean_fat"),
-            pl.mean("sugar_pct").alias("mean_sugar"),
-            pl.mean("sodium_pct").alias("mean_sodium"),
-            pl.mean("protein_pct").alias("mean_protein"),
-            pl.mean("sat_fat_pct").alias("mean_sat_fat"),
-            pl.count("id").alias("count_recipes")
-        ])
+        .agg(
+            [
+                pl.mean("calories").alias("mean_calories"),
+                pl.mean("total_fat_pct").alias("mean_fat"),
+                pl.mean("sugar_pct").alias("mean_sugar"),
+                pl.mean("sodium_pct").alias("mean_sodium"),
+                pl.mean("protein_pct").alias("mean_protein"),
+                pl.mean("sat_fat_pct").alias("mean_sat_fat"),
+                pl.count("id").alias("count_recipes"),
+            ]
+        )
         .join(
             pl.DataFrame({"season": season_order, "order": range(len(season_order))}),
             on="season",
-            how="left"
+            how="left",
         )
         .sort("order")
         .drop("order")
@@ -643,25 +681,25 @@ def analyse_seasonality_nutrition():
     col_a, col_b, col_c = st.columns(3)
 
     with col_a:
-        max_cal = nutrition_by_season_pd.loc[nutrition_by_season_pd["mean_calories"].idxmax()]
+        max_cal = nutrition_by_season_pd.loc[
+            nutrition_by_season_pd["mean_calories"].idxmax()
+        ]
         st.metric(
             f"🔥 {max_cal['season']} (+ calorique)",
-            f"{max_cal['mean_calories']:.0f} kcal"
+            f"{max_cal['mean_calories']:.0f} kcal",
         )
 
     with col_b:
-        min_cal = nutrition_by_season_pd.loc[nutrition_by_season_pd["mean_calories"].idxmin()]
+        min_cal = nutrition_by_season_pd.loc[
+            nutrition_by_season_pd["mean_calories"].idxmin()
+        ]
         st.metric(
-            f"🥗 {min_cal['season']} (+ léger)",
-            f"{min_cal['mean_calories']:.0f} kcal"
+            f"🥗 {min_cal['season']} (+ léger)", f"{min_cal['mean_calories']:.0f} kcal"
         )
 
     with col_c:
-        ecart_cal = max_cal['mean_calories'] - min_cal['mean_calories']
-        st.metric(
-            "📊 Écart calorique",
-            f"{ecart_cal:.0f} kcal"
-        )
+        ecart_cal = max_cal["mean_calories"] - min_cal["mean_calories"]
+        st.metric("📊 Écart calorique", f"{ecart_cal:.0f} kcal")
 
     st.markdown("---")
 
@@ -670,40 +708,61 @@ def analyse_seasonality_nutrition():
     # ========================================
 
     # Extraction matrice nutritionnelle
-    nutrient_cols = ["mean_calories", "mean_fat", "mean_sugar", "mean_sodium", "mean_protein", "mean_sat_fat"]
-    nutrient_labels = ["Calories", "Lipides (%)", "Sucres (%)", "Sodium (%)", "Protéines (%)", "Graisses sat. (%)"]
+    nutrient_cols = [
+        "mean_calories",
+        "mean_fat",
+        "mean_sugar",
+        "mean_sodium",
+        "mean_protein",
+        "mean_sat_fat",
+    ]
+    nutrient_labels = [
+        "Calories",
+        "Lipides (%)",
+        "Sucres (%)",
+        "Sodium (%)",
+        "Protéines (%)",
+        "Graisses sat. (%)",
+    ]
 
     nutrition_values = nutrition_by_season_pd[nutrient_cols].values
 
     # Normalisation z-score (par colonne = par nutriment)
     import numpy as np
-    nutrition_norm = (nutrition_values - nutrition_values.mean(axis=0)) / nutrition_values.std(axis=0)
+
+    nutrition_norm = (
+        nutrition_values - nutrition_values.mean(axis=0)
+    ) / nutrition_values.std(axis=0)
 
     # Transposer pour avoir nutriments en lignes, saisons en colonnes
     nutrition_norm_transposed = nutrition_norm.T
 
     # Création heatmap Plotly
-    fig = go.Figure(data=go.Heatmap(
-        z=nutrition_norm_transposed,
-        x=nutrition_by_season_pd["season"].tolist(),
-        y=nutrient_labels,
-        colorscale='RdYlGn_r',  # Rouge = élevé, Vert = faible
-        text=np.round(nutrition_norm_transposed, 2),
-        texttemplate='%{text}',
-        textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
-        hovertemplate='<b>%{y}</b><br>Saison: %{x}<br>Z-score: %{z:.2f}<extra></extra>',
-        colorbar=dict(
-            title=dict(
-                text="Z-score<br>(écart à la moyenne)",
-                side="right",
-                font=dict(color=chart_theme.colors.TEXT_PRIMARY)
+    fig = go.Figure(
+        data=go.Heatmap(
+            z=nutrition_norm_transposed,
+            x=nutrition_by_season_pd["season"].tolist(),
+            y=nutrient_labels,
+            colorscale="RdYlGn_r",  # Rouge = élevé, Vert = faible
+            text=np.round(nutrition_norm_transposed, 2),
+            texttemplate="%{text}",
+            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            hovertemplate="<b>%{y}</b><br>Saison: %{x}<br>Z-score: %{z:.2f}<extra></extra>",
+            colorbar=dict(
+                title=dict(
+                    text="Z-score<br>(écart à la moyenne)",
+                    side="right",
+                    font=dict(color=chart_theme.colors.TEXT_PRIMARY),
+                ),
+                tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY),
             ),
-            tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY)
         )
-    ))
+    )
 
     # Application du thème
-    chart_theme.apply_chart_theme(fig, title="Profil nutritionnel par saison (valeurs normalisées)")
+    chart_theme.apply_chart_theme(
+        fig, title="Profil nutritionnel par saison (valeurs normalisées)"
+    )
 
     fig.update_xaxes(title_text="Saison")
     fig.update_yaxes(title_text="Nutriments")
@@ -719,7 +778,15 @@ def analyse_seasonality_nutrition():
     with st.expander("Voir les valeurs brutes (non normalisées)"):
         # Créer tableau formaté
         display_df = nutrition_by_season_pd[["season"] + nutrient_cols].copy()
-        display_df.columns = ["Saison", "Calories", "Lipides (%)", "Sucres (%)", "Sodium (%)", "Protéines (%)", "Graisses sat. (%)"]
+        display_df.columns = [
+            "Saison",
+            "Calories",
+            "Lipides (%)",
+            "Sucres (%)",
+            "Sodium (%)",
+            "Protéines (%)",
+            "Graisses sat. (%)",
+        ]
 
         # Formater les valeurs
         for col in display_df.columns[1:]:
@@ -734,7 +801,8 @@ def analyse_seasonality_nutrition():
     # INTERPRÉTATION
     # ========================================
 
-    st.info(f"""
+    st.info(
+        f"""
     💡 **Interprétation statistique**
 
     Les **tests de Kruskal-Wallis** révèlent des **différences nutritionnelles significatives** entre les saisons (p < 0.05).
@@ -748,12 +816,14 @@ def analyse_seasonality_nutrition():
     **Pattern saisonnier:**
     - **Automne/Hiver:** Recettes réconfortantes, riches (soupes crémeuses, ragoûts, pâtisseries)
     - **Printemps/Été:** Recettes fraîches, légères (salades, grillades, fruits)
-    """)
+    """
+    )
 
 
 # ============================================================================
 # ANALYSE 5: INGRÉDIENTS PAR SAISON
 # ============================================================================
+
 
 def analyse_seasonality_ingredients():
     """
@@ -786,28 +856,52 @@ def analyse_seasonality_ingredients():
             .group_by("ingredients")
             .agg(pl.count().alias("count"))
         )
-        ingredients_by_season[season] = dict(zip(ingredient_counts["ingredients"], ingredient_counts["count"]))
+        ingredients_by_season[season] = dict(
+            zip(ingredient_counts["ingredients"], ingredient_counts["count"])
+        )
 
     # Tous les ingrédients uniques
-    all_ingredients = set().union(*[set(ing.keys()) for ing in ingredients_by_season.values()])
+    all_ingredients = set().union(
+        *[set(ing.keys()) for ing in ingredients_by_season.values()]
+    )
 
     # Construction matrice de fréquences (%)
     ingredients_matrix = [
-        {"ingredient": ing, **{s: (ingredients_by_season[s].get(ing, 0) / n_recipes_by_season[s]) * 100 for s in season_order}}
+        {
+            "ingredient": ing,
+            **{
+                s: (ingredients_by_season[s].get(ing, 0) / n_recipes_by_season[s]) * 100
+                for s in season_order
+            },
+        }
         for ing in all_ingredients
     ]
     ingredients_df = pl.DataFrame(ingredients_matrix)
 
     # Calcul métriques de variabilité
     import numpy as np
-    ingredients_df = ingredients_df.with_columns([
-        pl.concat_list([pl.col(s) for s in season_order]).alias("season_values")
-    ]).with_columns([
-        pl.col("season_values").list.std().alias("std_seasonal"),
-        pl.col("season_values").list.mean().alias("mean_freq"),
-        (pl.col("season_values").list.std() / pl.col("season_values").list.mean() * 100).alias("cv"),
-        (pl.max_horizontal([pl.col(s) for s in season_order]) - pl.min_horizontal([pl.col(s) for s in season_order])).alias("range")
-    ]).drop("season_values")
+
+    ingredients_df = (
+        ingredients_df.with_columns(
+            [pl.concat_list([pl.col(s) for s in season_order]).alias("season_values")]
+        )
+        .with_columns(
+            [
+                pl.col("season_values").list.std().alias("std_seasonal"),
+                pl.col("season_values").list.mean().alias("mean_freq"),
+                (
+                    pl.col("season_values").list.std()
+                    / pl.col("season_values").list.mean()
+                    * 100
+                ).alias("cv"),
+                (
+                    pl.max_horizontal([pl.col(s) for s in season_order])
+                    - pl.min_horizontal([pl.col(s) for s in season_order])
+                ).alias("range"),
+            ]
+        )
+        .drop("season_values")
+    )
 
     # Filtrage: fréquence >= 1%, range >= 0.5pp
     FREQ_THRESHOLD, RANGE_THRESHOLD = 1.0, 0.5
@@ -825,22 +919,13 @@ def analyse_seasonality_ingredients():
     col_a, col_b, col_c = st.columns(3)
 
     with col_a:
-        st.metric(
-            "🔍 Ingrédients analysés",
-            f"{len(all_ingredients):,}"
-        )
+        st.metric("🔍 Ingrédients analysés", f"{len(all_ingredients):,}")
 
     with col_b:
-        st.metric(
-            "📊 Variables (filtrés)",
-            f"{len(ingredients_df_filtered):,}"
-        )
+        st.metric("📊 Variables (filtrés)", f"{len(ingredients_df_filtered):,}")
 
     with col_c:
-        st.metric(
-            "🏆 Top affichés",
-            "20"
-        )
+        st.metric("🏆 Top affichés", "20")
 
     st.markdown("---")
 
@@ -853,33 +938,48 @@ def analyse_seasonality_ingredients():
     ingredient_labels = top_variable["ingredient"].to_list()
 
     # Normalisation min-max par ligne
-    heatmap_data_normalized = np.array([
-        (row - row.min()) / (row.max() - row.min()) if row.max() > row.min() else np.zeros_like(row)
-        for row in heatmap_data
-    ])
+    _heatmap_data_normalized = np.array(  # noqa: F841
+        [
+            (
+                (row - row.min()) / (row.max() - row.min())
+                if row.max() > row.min()
+                else np.zeros_like(row)
+            )
+            for row in heatmap_data
+        ]
+    )
 
     # Création heatmap Plotly
-    fig = go.Figure(data=go.Heatmap(
-        z=heatmap_data,
-        x=season_order,
-        y=ingredient_labels,
-        colorscale=[[0, '#D3D3D3'], [0.3, '#FFEB3B'], [0.6, '#9CCC65'], [1, '#2E7D32']],
-        text=np.round(heatmap_data, 1),
-        texttemplate='%{text}%',
-        textfont=dict(size=10),
-        hovertemplate='<b>%{y}</b><br>Saison: %{x}<br>Fréquence: %{z:.1f}%<extra></extra>',
-        colorbar=dict(
-            title=dict(
-                text="Utilisation<br>saisonnière (%)",
-                side="right",
-                font=dict(color=chart_theme.colors.TEXT_PRIMARY)
+    fig = go.Figure(
+        data=go.Heatmap(
+            z=heatmap_data,
+            x=season_order,
+            y=ingredient_labels,
+            colorscale=[
+                [0, "#D3D3D3"],
+                [0.3, "#FFEB3B"],
+                [0.6, "#9CCC65"],
+                [1, "#2E7D32"],
+            ],
+            text=np.round(heatmap_data, 1),
+            texttemplate="%{text}%",
+            textfont=dict(size=10),
+            hovertemplate="<b>%{y}</b><br>Saison: %{x}<br>Fréquence: %{z:.1f}%<extra></extra>",
+            colorbar=dict(
+                title=dict(
+                    text="Utilisation<br>saisonnière (%)",
+                    side="right",
+                    font=dict(color=chart_theme.colors.TEXT_PRIMARY),
+                ),
+                tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY),
             ),
-            tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY)
         )
-    ))
+    )
 
     # Application du thème
-    chart_theme.apply_chart_theme(fig, title="Top 20 ingrédients - Variabilité saisonnière")
+    chart_theme.apply_chart_theme(
+        fig, title="Top 20 ingrédients - Variabilité saisonnière"
+    )
 
     fig.update_xaxes(title_text="Saison")
     fig.update_yaxes(title_text="Ingrédient")
@@ -892,7 +992,8 @@ def analyse_seasonality_ingredients():
     # INTERPRÉTATION
     # ========================================
 
-    st.info("""
+    st.info(
+        """
     💡 **Interprétation statistique**
 
     Les **tests du Chi-2** révèlent une **variabilité saisonnière significative (p < 0.05)** parmi les ingrédients
@@ -906,12 +1007,14 @@ def analyse_seasonality_ingredients():
     - **Automne:** Préparations riches et réconfortantes (baking soda, carottes, pâtisserie)
     - **Hiver:** Plats mijotés et soupes
     - **Printemps:** Renouveau et légumes printaniers
-    """)
+    """
+    )
 
 
 # ============================================================================
 # ANALYSE 6: TAGS PAR SAISON
 # ============================================================================
+
 
 def analyse_seasonality_tags():
     """
@@ -951,21 +1054,41 @@ def analyse_seasonality_tags():
 
     # Construction matrice de fréquences (%)
     tags_matrix = [
-        {"tag": t, **{s: (tags_by_season[s].get(t, 0) / n_recipes_by_season[s]) * 100 for s in season_order}}
+        {
+            "tag": t,
+            **{
+                s: (tags_by_season[s].get(t, 0) / n_recipes_by_season[s]) * 100
+                for s in season_order
+            },
+        }
         for t in all_tags
     ]
     tags_df = pl.DataFrame(tags_matrix)
 
     # Calcul métriques de variabilité
     import numpy as np
-    tags_df = tags_df.with_columns([
-        pl.concat_list([pl.col(s) for s in season_order]).alias("season_values")
-    ]).with_columns([
-        pl.col("season_values").list.std().alias("std_seasonal"),
-        pl.col("season_values").list.mean().alias("mean_freq"),
-        (pl.col("season_values").list.std() / pl.col("season_values").list.mean() * 100).alias("cv"),
-        (pl.max_horizontal([pl.col(s) for s in season_order]) - pl.min_horizontal([pl.col(s) for s in season_order])).alias("range")
-    ]).drop("season_values")
+
+    tags_df = (
+        tags_df.with_columns(
+            [pl.concat_list([pl.col(s) for s in season_order]).alias("season_values")]
+        )
+        .with_columns(
+            [
+                pl.col("season_values").list.std().alias("std_seasonal"),
+                pl.col("season_values").list.mean().alias("mean_freq"),
+                (
+                    pl.col("season_values").list.std()
+                    / pl.col("season_values").list.mean()
+                    * 100
+                ).alias("cv"),
+                (
+                    pl.max_horizontal([pl.col(s) for s in season_order])
+                    - pl.min_horizontal([pl.col(s) for s in season_order])
+                ).alias("range"),
+            ]
+        )
+        .drop("season_values")
+    )
 
     # Filtrage: fréquence >= 1%, range >= 0.5pp
     FREQ_THRESHOLD, RANGE_THRESHOLD = 1.0, 0.5
@@ -983,22 +1106,13 @@ def analyse_seasonality_tags():
     col_a, col_b, col_c = st.columns(3)
 
     with col_a:
-        st.metric(
-            "🏷️ Tags analysés",
-            f"{len(all_tags):,}"
-        )
+        st.metric("🏷️ Tags analysés", f"{len(all_tags):,}")
 
     with col_b:
-        st.metric(
-            "📊 Variables (filtrés)",
-            f"{len(tags_df_filtered):,}"
-        )
+        st.metric("📊 Variables (filtrés)", f"{len(tags_df_filtered):,}")
 
     with col_c:
-        st.metric(
-            "🏆 Top affichés",
-            "20"
-        )
+        st.metric("🏆 Top affichés", "20")
 
     st.markdown("---")
 
@@ -1011,24 +1125,31 @@ def analyse_seasonality_tags():
     tag_labels = top_variable["tag"].to_list()
 
     # Création heatmap Plotly
-    fig = go.Figure(data=go.Heatmap(
-        z=heatmap_data,
-        x=season_order,
-        y=tag_labels,
-        colorscale=[[0, '#D3D3D3'], [0.3, '#FFEB3B'], [0.6, '#9CCC65'], [1, '#2E7D32']],
-        text=np.round(heatmap_data, 1),
-        texttemplate='%{text}%',
-        textfont=dict(size=10),
-        hovertemplate='<b>%{y}</b><br>Saison: %{x}<br>Fréquence: %{z:.1f}%<extra></extra>',
-        colorbar=dict(
-            title=dict(
-                text="Utilisation<br>saisonnière (%)",
-                side="right",
-                font=dict(color=chart_theme.colors.TEXT_PRIMARY)
+    fig = go.Figure(
+        data=go.Heatmap(
+            z=heatmap_data,
+            x=season_order,
+            y=tag_labels,
+            colorscale=[
+                [0, "#D3D3D3"],
+                [0.3, "#FFEB3B"],
+                [0.6, "#9CCC65"],
+                [1, "#2E7D32"],
+            ],
+            text=np.round(heatmap_data, 1),
+            texttemplate="%{text}%",
+            textfont=dict(size=10),
+            hovertemplate="<b>%{y}</b><br>Saison: %{x}<br>Fréquence: %{z:.1f}%<extra></extra>",
+            colorbar=dict(
+                title=dict(
+                    text="Utilisation<br>saisonnière (%)",
+                    side="right",
+                    font=dict(color=chart_theme.colors.TEXT_PRIMARY),
+                ),
+                tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY),
             ),
-            tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY)
         )
-    ))
+    )
 
     # Application du thème
     chart_theme.apply_chart_theme(fig, title="Top 20 tags - Variabilité saisonnière")
@@ -1044,7 +1165,8 @@ def analyse_seasonality_tags():
     # INTERPRÉTATION
     # ========================================
 
-    st.info("""
+    st.info(
+        """
     💡 **Interprétation statistique**
 
     Les analyses de variabilité saisonnière des tags culinaires montrent une **segmentation claire selon les saisons**,
@@ -1059,12 +1181,14 @@ def analyse_seasonality_tags():
 
     Ces différences confirment que les **recettes postées varient clairement selon les saisons**, en cohérence
     avec les événements calendaires et les habitudes culinaires saisonnières.
-    """)
+    """
+    )
 
 
 # ============================================================================
 # FONCTION PRINCIPALE DE RENDU
 # ============================================================================
+
 
 def render_seasonality_analysis():
     """
@@ -1076,9 +1200,13 @@ def render_seasonality_analysis():
     Format: Page continue affichant toutes les analyses d'un coup (comme Tendances).
     """
 
-    st.markdown('<h1 style="margin-top: 0; padding-top: 0;">📅 Analyses Saisonnières (1999-2018)</h1>', unsafe_allow_html=True)
+    st.markdown(
+        '<h1 style="margin-top: 0; padding-top: 0;">📅 Analyses Saisonnières (1999-2018)</h1>',
+        unsafe_allow_html=True,
+    )
 
-    st.markdown("""
+    st.markdown(
+        """
     Cette section présente les analyses de **saisonnalité** des recettes publiées sur Food.com (1999-2018).
 
     Les analyses comparent les caractéristiques des recettes selon les **4 saisons** :
@@ -1086,7 +1214,8 @@ def render_seasonality_analysis():
     - **Spring** (Printemps) : Mars, Avril, Mai
     - **Summer** (Été) : Juin, Juillet, Août
     - **Autumn** (Automne) : Septembre, Octobre, Novembre
-    """)
+    """
+    )
 
     # Affichage de toutes les analyses en continu (comme page Tendances)
 
@@ -1123,7 +1252,7 @@ MODULE_INFO = {
     "icon": "📅",
     "description": "Analyse de la saisonnalité des recettes (Winter/Spring/Summer/Autumn)",
     "num_analyses": 6,
-    "status": "completed"  # 6/6 COMPLET ✅
+    "status": "completed",  # 6/6 COMPLET ✅
 }
 
 

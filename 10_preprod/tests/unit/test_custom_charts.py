@@ -5,14 +5,14 @@ import pytest
 import pandas as pd
 import sys
 from pathlib import Path
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import Mock, MagicMock
 
 # Ajouter le chemin src pour les imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 
 # Mock Streamlit avant l'import
-sys.modules['streamlit'] = MagicMock()
+sys.modules["streamlit"] = MagicMock()
 
 from mangetamain_analytics.visualization import custom_charts
 
@@ -24,11 +24,13 @@ class TestCreateCorrelationHeatmap:
         """Test heatmap avec données valides"""
         # Mock de la connexion DuckDB
         mock_conn = Mock()
-        mock_df = pd.DataFrame({
-            'rating': [1, 2, 3, 4, 5],
-            'user_count': [10, 20, 30, 40, 50],
-            'recipe_count': [5, 15, 25, 35, 45]
-        })
+        mock_df = pd.DataFrame(
+            {
+                "rating": [1, 2, 3, 4, 5],
+                "user_count": [10, 20, 30, 40, 50],
+                "recipe_count": [5, 15, 25, 35, 45],
+            }
+        )
         mock_conn.execute.return_value.fetchdf.return_value = mock_df
 
         # Pas d'exception levée
@@ -41,9 +43,7 @@ class TestCreateCorrelationHeatmap:
     def test_correlation_heatmap_with_no_numeric_cols(self):
         """Test heatmap avec aucune colonne numérique"""
         mock_conn = Mock()
-        mock_df = pd.DataFrame({
-            'name': ['a', 'b', 'c']
-        })
+        mock_df = pd.DataFrame({"name": ["a", "b", "c"]})
         mock_conn.execute.return_value.fetchdf.return_value = mock_df
 
         # Ne doit pas lever d'exception
@@ -56,9 +56,7 @@ class TestCreateDistributionPlot:
     def test_distribution_plot_with_valid_data(self):
         """Test distribution plot avec données valides"""
         mock_conn = Mock()
-        mock_df = pd.DataFrame({
-            'rating': [1, 2, 3, 4, 5, 3, 4, 5]
-        })
+        mock_df = pd.DataFrame({"rating": [1, 2, 3, 4, 5, 3, 4, 5]})
         mock_conn.execute.return_value.fetchdf.return_value = mock_df
 
         # Pas d'exception
@@ -76,10 +74,12 @@ class TestCreateTimeSeriesPlot:
     def test_time_series_plot_with_valid_data(self):
         """Test time series avec données valides"""
         mock_conn = Mock()
-        mock_df = pd.DataFrame({
-            'date': pd.date_range('2024-01-01', periods=5),
-            'value': [10, 20, 30, 40, 50]
-        })
+        mock_df = pd.DataFrame(
+            {
+                "date": pd.date_range("2024-01-01", periods=5),
+                "value": [10, 20, 30, 40, 50],
+            }
+        )
         mock_conn.execute.return_value.fetchdf.return_value = mock_df
 
         # Pas d'exception
@@ -97,10 +97,7 @@ class TestCreateCustomScatterPlot:
     def test_scatter_plot_without_color(self):
         """Test scatter plot sans colonne de couleur"""
         mock_conn = Mock()
-        mock_df = pd.DataFrame({
-            'x': [1, 2, 3, 4, 5],
-            'y': [2, 4, 6, 8, 10]
-        })
+        mock_df = pd.DataFrame({"x": [1, 2, 3, 4, 5], "y": [2, 4, 6, 8, 10]})
         mock_conn.execute.return_value.fetchdf.return_value = mock_df
 
         # Pas d'exception
@@ -109,11 +106,13 @@ class TestCreateCustomScatterPlot:
     def test_scatter_plot_with_color(self):
         """Test scatter plot avec colonne de couleur"""
         mock_conn = Mock()
-        mock_df = pd.DataFrame({
-            'x': [1, 2, 3, 4, 5],
-            'y': [2, 4, 6, 8, 10],
-            'category': ['A', 'B', 'A', 'B', 'A']
-        })
+        mock_df = pd.DataFrame(
+            {
+                "x": [1, 2, 3, 4, 5],
+                "y": [2, 4, 6, 8, 10],
+                "category": ["A", "B", "A", "B", "A"],
+            }
+        )
         mock_conn.execute.return_value.fetchdf.return_value = mock_df
 
         # Pas d'exception

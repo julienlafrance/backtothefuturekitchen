@@ -10,13 +10,14 @@ services:
       - "8501:8501"
     volumes:
       - ../20_prod/streamlit:/app/streamlit
-      - ../20_prod/data:/app/data
       - ../20_prod/logs:/app/logs
       - ../20_prod/pyproject.toml:/app/pyproject.toml
       # uv.lock sera créé par 'uv sync' dans le container (pas monté)
       - ../20_prod/README.md:/app/README.md
       - ../20_prod/utils:/app/utils
+      - ../40_utils:/app/40_utils:ro  # Package data-utils (requis par visualization/)
       - ../96_keys:/app/../96_keys:ro  # Credentials en READ-ONLY
+      # Note: data/ removed - all data loaded from S3 Parquet (via 40_utils)
     working_dir: /app
     extra_hosts:
       - "s3fast.lafrance.io:192.168.80.202"  # Résolution DNS vers Garage S3 direct
