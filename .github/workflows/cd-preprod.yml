@@ -74,7 +74,7 @@ jobs:
           # Créer le script de surveillance
           cat > /tmp/watch-ci-${{ github.sha }}.sh << 'SCRIPT_EOF'
           #!/bin/bash
-          set -e
+          # Ne PAS utiliser set -e pour éviter crash sur erreurs temporaires
 
           COMMIT_SHA="${{ github.sha }}"
           APP_PATH="${{ env.APP_PATH }}"
