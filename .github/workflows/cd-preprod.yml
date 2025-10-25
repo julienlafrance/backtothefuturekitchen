@@ -76,6 +76,10 @@ jobs:
           #!/bin/bash
           # Ne PAS utiliser set -e pour éviter crash sur erreurs temporaires
 
+          # Rediriger immédiatement stdout/stderr vers le fichier log
+          LOG_FILE="/tmp/ci-watcher-${{ github.sha }}.log"
+          exec > "$LOG_FILE" 2>&1
+
           COMMIT_SHA="${{ github.sha }}"
           APP_PATH="${{ env.APP_PATH }}"
           DOCKER_PATH="${{ env.DOCKER_PATH }}"
@@ -151,9 +155,8 @@ jobs:
 
           chmod +x /tmp/watch-ci-${{ github.sha }}.sh
 
-          # Lancer en background avec nohup
-          nohup /tmp/watch-ci-${{ github.sha }}.sh \
-            > /tmp/ci-watcher-${{ github.sha }}.log 2>&1 &
+          # Lancer en background avec nohup (le script redirige lui-même vers le log)
+          nohup /tmp/watch-ci-${{ github.sha }}.sh &
 
           WATCHER_PID=$!
           echo "✅ CI watcher launched in background (PID: $WATCHER_PID)"
