@@ -49,3 +49,4 @@ temp_clean/
 
 # Clés d'accès S3 - NE JAMAIS COMMIT
 96_keys/
+# Force sync
