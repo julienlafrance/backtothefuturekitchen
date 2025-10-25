@@ -13,7 +13,7 @@ services:
       - ../20_prod/data:/app/data
       - ../20_prod/logs:/app/logs
       - ../20_prod/pyproject.toml:/app/pyproject.toml
-      - ../20_prod/uv.lock:/app/uv.lock
+      # uv.lock sera créé par 'uv sync' dans le container (pas monté)
       - ../20_prod/README.md:/app/README.md
       - ../20_prod/utils:/app/utils
       - ../96_keys:/app/../96_keys:ro  # Credentials en READ-ONLY
