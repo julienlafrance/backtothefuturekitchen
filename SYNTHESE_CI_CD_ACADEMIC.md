@@ -769,10 +769,11 @@ def get_ratings_longterm(min_interactions=100, return_metadata=False, verbose=Fa
 **Au-delà des exigences :**
 - ✅ **Architecture séquentielle** CI → CD Preprod (bloque si CI échoue)
 - ✅ **Runner GitHub self-hosted** (VM dataia) pour déploiement sans VPN
-- ✅ **Script de déploiement simplifié** (63 lignes, backup → delete → copy)
+- ✅ **Script de déploiement simplifié** (73 lignes, backup → delete → copy)
 - ✅ **PROD = artifact** (20_prod/ généré, pas dans git)
 - ✅ **Notifications Discord** avec env: pour caractères spéciaux
-- ✅ **Health checks automatiques** avec retry (10 tentatives)
+- ✅ **Health checks déploiement** avec retry (10 tentatives)
+- ✅ **Monitoring automatique 24/7** (health check toutes les heures)
 - ✅ **Streamlit caching** (@st.cache_data, TTL 1h, gain 50-100x)
 - ✅ **Backup automatique versionné** avant déploiement production
 - ✅ **Documentation exhaustive** (5 documents CI/CD dédiés)

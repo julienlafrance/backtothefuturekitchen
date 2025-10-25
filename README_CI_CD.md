@@ -631,6 +631,108 @@ journalctl -u actions.runner.* -f
 
 ---
 
+## Health Check Monitoring
+
+### Surveillance Automatique 24/7
+
+Un workflow automatique surveille la disponibilité des environnements PREPROD et PROD.
+
+**Workflow:** `.github/workflows/health-check.yml`
+
+**Fréquence:** Toutes les heures (cron: `0 * * * *`)
+
+### Ce qui est surveillé
+
+**PREPROD:** https://mangetamain.lafrance.io/
+- ✅ HTTP 200
+- ✅ Contenu Streamlit détecté ("Back to the Kitchen" / "Streamlit")
+
+**PROD:** https://backtothefuturekitchen.lafrance.io/
+- ✅ HTTP 200
+- ✅ Contenu Streamlit détecté
+
+### Notifications Discord
+
+**Aucune notification si tout est OK** (mode silencieux)
+
+**Alerte si problème détecté:**
+
+#### PREPROD DOWN
+```
+🚨 **ALERTE - PREPROD DOWN**
+❌ Site non accessible: https://mangetamain.lafrance.io/
+🕐 2025-10-25 14:30:15
+
+**Actions recommandées:**
+1. Vérifier container: `docker ps | grep mange_preprod`
+2. Voir logs: `docker logs mange_preprod --tail=50`
+3. Redémarrer si nécessaire
+```
+
+#### PROD DOWN
+```
+🚨 **ALERTE CRITIQUE - PRODUCTION DOWN**
+❌ Site non accessible: https://backtothefuturekitchen.lafrance.io/
+🕐 2025-10-25 14:30:15
+
+**INTERVENTION URGENTE REQUISE:**
+1. Vérifier container: `docker ps | grep mange_prod`
+2. Voir logs: `docker logs mange_prod --tail=50`
+3. Redémarrer: `cd ~/mangetamain/30_docker && docker-compose -f docker-compose-prod.yml restart`
+
+@everyone
+```
+
+**Alerte WARNING:** Si le site répond (HTTP 200) mais le contenu est inattendu
+
+### Déclenchement Manuel
+
+Tester le health check manuellement :
+
+```bash
+# Via GitHub CLI
+gh workflow run health-check.yml --repo julienlafrance/backtothefuturekitchen
+
+# Voir les résultats
+gh run list --workflow=health-check.yml --limit 5
+```
+
+**Ou via GitHub UI:**
+1. Actions → Health Check - Monitoring
+2. Run workflow
+
+### Logs et Historique
+
+**Consulter l'historique:**
+```bash
+gh run list --workflow=health-check.yml --limit 10
+```
+
+**Voir les logs d'un run spécifique:**
+```bash
+gh run view RUN_ID --log
+```
+
+**Exemple de sortie (tout OK):**
+```
+✅ PREPROD OK
+✅ PROD OK
+📊 Health Check Summary
+✅ Tous les services sont opérationnels
+```
+
+### Métriques
+
+| Métrique | Valeur |
+|----------|--------|
+| **Fréquence** | Toutes les heures |
+| **Timeout HTTP** | 10 secondes |
+| **Temps d'exécution** | ~7 secondes |
+| **Runner** | Self-hosted (dataia) |
+| **Notifications** | Discord webhook |
+
+---
+
 ## Dépannage
 
 ### Erreur: "flake8 not found"

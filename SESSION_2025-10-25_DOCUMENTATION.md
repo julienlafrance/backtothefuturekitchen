@@ -634,13 +634,227 @@ rm -rf 20_prod/streamlit 20_prod/logs 20_prod/*.toml 20_prod/*.md
 
 ---
 
-**Document vivant** : Ce fichier sera mis à jour au fur et à mesure de la session.
+#### 5. Finalisation CI/CD et Déploiement PROD (17:15 - 18:15)
 
-**Dernière mise à jour** : 2025-10-25 17:45
+**Objectif** : Corriger les workflows, mettre à jour la documentation, déployer en PROD.
 
-**Résumé Session** :
-- 📚 Lecture complète documentation (50+ fichiers MD)
+**Actions Réalisées** :
+
+**5.1 Correction Workflows GitHub Actions**
+
+**Problème 1 : Messages commit avec guillemets**
+```yaml
+# AVANT (cassait le shell)
+COMMIT_MSG="${{ github.event.workflow_run.head_commit.message }}"
+
+# APRÈS (utilise env:)
+env:
+  COMMIT_MSG: ${{ github.event.workflow_run.head_commit.message }}
+```
+✅ Commit `3c6ccd0` - Fix notifications Discord
+
+**Problème 2 : Script déploiement - erreurs permissions __pycache__**
+```bash
+# Fichiers __pycache__/*.pyc créés par Docker, user host ne peut pas supprimer
+# Solution 1: find avec rm -rf (commit 64f81d9)
+find "$PROD_DIR" -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+rm -rf "$PROD_DIR"/{streamlit,logs,.venv,pyproject.toml,README.md,uv.lock}
+
+# Solution 2: Désactiver exit on error (commit dec149e)
+set +e  # Désactive temporairement
+# Suppressions avec erreurs ignorées
+set -e  # Réactive
+```
+
+**Problème 3 : [build-system] cause erreur build package**
+```bash
+# PROD ne build pas de package, juste installe dépendances
+# Erreur: "Unable to determine which files to ship inside the wheel"
+# Structure différente: PROD a streamlit/ vs PREPROD a src/mangetamain_analytics/
+
+# Solution: Commenter [build-system] avec sed (commit 11d57c6)
+sed -i 's/^\[build-system\]$/# [build-system] (disabled in PROD)/' "$PROD_DIR/pyproject.toml"
+sed -i 's/^requires = \["hatchling"\]$/# requires = ["hatchling"]/' "$PROD_DIR/pyproject.toml"
+sed -i 's/^build-backend = "hatchling.build"$/# build-backend = "hatchling.build"/' "$PROD_DIR/pyproject.toml"
+```
+
+**5.2 Mise à Jour Documentation**
+
+**README_CI_CD.md** (commit `4f9709b`) - 762 lignes
+- ✅ Pipeline séquentiel documenté (CI → CD-Preprod si succès)
+- ✅ Script deploy_preprod_to_prod.sh simplifié (73 lignes)
+- ✅ Tests PROD désactivés (artifact, pas source)
+- ✅ Streamlit caching @st.cache_data
+- ✅ Commande déploiement PROD avec gh CLI
+- ✅ Notifications Discord avec env:
+- ✅ Section Runner Self-Hosted
+- ✅ Instructions rollback
+
+**SYNTHESE_CI_CD_ACADEMIC.md** (commit `42e68e4`) - 813 lignes
+- ✅ Tests PROD retirés des tableaux
+- ✅ Architecture diagram corrigé (Job 2-4)
+- ✅ Script déploiement documenté
+- ✅ Section Optimisations Performance (Streamlit caching)
+- ✅ Métriques à jour (temps CI/CD, coverage)
+- ✅ Workflow séquentiel expliqué
+- ✅ Version 3.0
+
+**5.3 Déploiements et Rollback**
+
+**Tentative 1 (16:58)** - ❌ ÉCHEC
+- Erreur: find -delete ne peut pas supprimer dossiers non-vides
+- Fix: Remplacé par rm -rf explicite
+
+**Tentative 2 (17:08)** - ❌ ÉCHEC
+- Container en boucle restart (exit code 127)
+- Erreur: [build-system] essaye de build package
+- Cause: Structure PROD différente (streamlit/ vs src/mangetamain_analytics/)
+- **Rollback effectué** vers backup-20251025_184131 (ancienne version stable)
+- PROD restauré : container `Up (healthy)` ✅
+
+**Tentative 3 (17:08)** - ✅ SUCCESS
+- Script corrigé avec sed pour commenter [build-system]
+- Déploiement réussi en 1m49s
+- Container PROD : `Up About a minute (healthy)`
+- HTTP 200 : Site accessible
+- Vérification : [build-system] bien commenté
+
+**5.4 Health Check Monitoring** (commit `80c5bb3`)
+
+Création workflow `.github/workflows/health-check.yml` (91 lignes)
+
+**Caractéristiques:**
+- ⏰ Exécution automatique: toutes les heures (cron: `0 * * * *`)
+- 🔍 Teste PREPROD + PROD (HTTP 200 + contenu Streamlit)
+- 📬 Notifications Discord si DOWN ou WARNING
+- 🚨 Alerte PROD critique avec @everyone
+- 🏃 Runner self-hosted (pas besoin VPN)
+- ⏱️ Temps d'exécution: ~7 secondes
+
+**Test manuel réussi:**
+```
+✅ PREPROD OK (https://mangetamain.lafrance.io/)
+✅ PROD OK (https://backtothefuturekitchen.lafrance.io/)
+📊 Tous les services sont opérationnels
+```
+
+**Documentation mise à jour:**
+- ✅ README_CI_CD.md : Section "Health Check Monitoring" complète
+- ✅ SYNTHESE_CI_CD_ACADEMIC.md : Mention "Monitoring automatique 24/7"
+
+---
+
+## 📊 Résumé Complet de la Session
+
+### Actions Globales
+
+| # | Action | Status | Commits |
+|---|--------|--------|---------|
+| 1 | Lecture documentation complète (50+ MD) | ✅ | - |
+| 2 | Container PROD démarré | ✅ | - |
+| 3 | Déploiement PREPROD→PROD automatisé | ✅ | Multiple |
+| 4 | Nettoyage code (-2 GB, 100% S3) | ✅ | Multiple |
+| 5 | Correction workflows GitHub Actions | ✅ | 3c6ccd0, dec149e, 11d57c6 |
+| 6 | Mise à jour documentation | ✅ | 4f9709b, 42e68e4 |
+| 7 | Déploiement PROD avec rollback | ✅ | - |
+| 8 | Health check monitoring 24/7 | ✅ | 80c5bb3 |
+
+### Commits de la Session (ordre chronologique)
+
+| Commit | Description | Impact |
+|--------|-------------|--------|
+| `3c6ccd0` | Fix: Corriger gestion messages commit avec guillemets | Workflows CD |
+| `4f9709b` | Docs: Réécrire README_CI_CD.md | Documentation |
+| `0253c7f` | Fix: Corriger nettoyage 20_prod (find → rm -rf) | Script deploy |
+| `64f81d9` | Fix: Supprimer __pycache__ avant nettoyage | Script deploy |
+| `6f1fb8c` | Fix: Ignorer erreurs permissions __pycache__ | Script deploy |
+| `42e68e4` | Docs: MAJ SYNTHESE_CI_CD_ACADEMIC | Documentation |
+| `dec149e` | Fix: Désactiver exit on error pendant nettoyage | Script deploy |
+| `11d57c6` | Fix: Commenter [build-system] dans pyproject.toml | Script deploy |
+| `80c5bb3` | Feat: Health check monitoring toutes les heures | Monitoring |
+
+**Total : 9 commits**
+
+### Fichiers Modifiés
+
+**Workflows GitHub Actions:**
+- `.github/workflows/cd-preprod.yml` - Fix notifications Discord (env:)
+- `.github/workflows/cd-prod.yml` - Fix notifications Discord (env:)
+- `.github/workflows/health-check.yml` - **NOUVEAU** - Monitoring automatique
+
+**Script de Déploiement:**
+- `deploy_preprod_to_prod.sh` - 73 lignes finales
+  - set +e pour ignorer erreurs permissions
+  - find pour supprimer __pycache__/
+  - sed pour commenter [build-system]
+
+**Documentation:**
+- `README_CI_CD.md` - 762 lignes (réécriture complète)
+- `SYNTHESE_CI_CD_ACADEMIC.md` - 813 lignes (mise à jour architecture)
+- `SESSION_2025-10-25_DOCUMENTATION.md` - Ce fichier (section 5 ajoutée)
+
+### Métriques Finales
+
+| Métrique | Valeur |
+|----------|--------|
+| **Durée totale session** | ~8 heures |
+| **Commits effectués** | 9 |
+| **Lignes documentation** | 1575+ (README + SYNTHESE) |
+| **Workflows créés** | 1 (health-check) |
+| **Déploiements PROD testés** | 3 (2 échecs + 1 succès) |
+| **Rollback effectués** | 1 |
+| **Health checks automatiques** | Toutes les heures |
+
+### État Final du Système
+
+**Environnements:**
+| Env | Status | URL | Container |
+|-----|--------|-----|-----------|
+| PREPROD | ✅ Healthy | https://mangetamain.lafrance.io/ | mange_preprod |
+| PROD | ✅ Healthy | https://backtothefuturekitchen.lafrance.io/ | mange_prod |
+
+**CI/CD:**
+- ✅ Pipeline séquentiel fonctionnel (CI → CD-Preprod)
+- ✅ Déploiement PROD manuel avec confirmation
+- ✅ Script deploy_preprod_to_prod.sh finalisé (73 lignes)
+- ✅ Monitoring automatique 24/7 (health check)
+- ✅ Notifications Discord opérationnelles
+- ✅ Rollback documenté et testé
+
+**Documentation:**
+- ✅ README_CI_CD.md synchronisé avec architecture
+- ✅ SYNTHESE_CI_CD_ACADEMIC.md version 3.0
+- ✅ Section Health Check Monitoring complète
+- ✅ Toutes les erreurs résolues documentées
+
+### Leçons Apprises
+
+**Problèmes Résolus:**
+1. 🎯 Guillemets dans messages commit → Utiliser `env:` dans GitHub Actions
+2. 🎯 Permissions __pycache__ Docker → `set +e` temporairement
+3. 🎯 [build-system] en PROD → Commenter avec `sed` car structure différente
+4. 🎯 Importance des backups versionnés → Rollback rapide possible
+5. 🎯 Tests progressifs (PREPROD → PROD) → Évite casse PROD
+
+**Bonnes Pratiques:**
+- ✅ Toujours tester en PREPROD avant PROD
+- ✅ Garder backups versionnés avec timestamp
+- ✅ Documenter au fur et à mesure
+- ✅ Scripts idempotents (set +e pour erreurs non-critiques)
+- ✅ Monitoring automatique pour détection précoce
+
+---
+
+**Document vivant** : Ce fichier documente toute la session du 2025-10-25.
+
+**Dernière mise à jour** : 2025-10-25 18:15
+
+**Résumé Session Complète** :
+- 📚 Lecture complète documentation (50+ fichiers MD, 113+ KB)
 - 🐳 Container PROD démarré et opérationnel
-- 🚀 Déploiement PREPROD→PROD automatisé (script 249 lignes)
+- 🚀 Déploiement PREPROD→PROD automatisé et finalisé (73 lignes)
 - 🧹 Code nettoyé (-2 GB, migration 100% S3)
-- ✅ 4 grandes étapes documentées (639 lignes, 24 KB)
+- 🔧 9 commits de corrections et améliorations
+- 📝 Documentation complète synchronisée (1575+ lignes)
+- 🔍 Monitoring automatique 24/7 opérationnel
+- ✅ **PROD déployé avec succès !**
