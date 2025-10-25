@@ -311,14 +311,18 @@ def analyse_trendline_duree():
     X = minutes_by_year["year"].values
     w = minutes_by_year["n_recipes"].values
 
+    # Couleurs de la charte "Back to the Kitchen"
+    color_mean = chart_theme.colors.CHART_COLORS[0]  # Orange primary
+    color_median = chart_theme.colors.CHART_COLORS[1]  # Jaune doré
+
     metrics_config = {
         "mean_minutes": {
-            "color": "steelblue",
+            "color": color_mean,
             "label": "Moyenne",
             "ylabel": "minutes/an"
         },
         "median_minutes": {
-            "color": "coral",
+            "color": color_median,
             "label": "Médiane",
             "ylabel": "minutes/an"
         }
@@ -411,7 +415,7 @@ def analyse_trendline_duree():
         fill="tonexty",
         mode="lines",
         line=dict(width=0),
-        fillcolor="rgba(70, 130, 180, 0.15)",
+        fillcolor=f"rgba{tuple(list(mcolors.hex2color(color_mean)) + [0.15])}",
         name=label_quantile,
         hovertemplate=f"<b>Année %{{x}}</b><br>{label_quantile}<extra></extra>"
     ))
@@ -422,8 +426,8 @@ def analyse_trendline_duree():
         y=minutes_by_year["mean_minutes"],
         mode="lines",
         name="Moyenne (observée)",
-        line=dict(color="steelblue", width=2),
-        opacity=0.7,
+        line=dict(color=color_mean, width=2),
+        opacity=0.8,
         hovertemplate="<b>Année %{x}</b><br>Moyenne: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
         customdata=minutes_by_year["n_recipes"]
     ))
@@ -436,10 +440,10 @@ def analyse_trendline_duree():
             mode="markers",
             name="Volume (moyenne)",
             marker=dict(
-                color="steelblue",
+                color=color_mean,
                 size=sizes,
                 opacity=0.6,
-                line=dict(color="black", width=0.5)
+                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=0.5)
             ),
             hovertemplate="<b>Année %{x}</b><br>Moyenne: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
             customdata=minutes_by_year["n_recipes"],
@@ -452,7 +456,7 @@ def analyse_trendline_duree():
         y=regressions["mean_minutes"]["y_pred"],
         mode="lines",
         name=f"Régression Moyenne (R²={regressions['mean_minutes']['r2']:.3f})",
-        line=dict(color="darkblue", width=2.5, dash="dash"),
+        line=dict(color=chart_theme.colors.CHART_COLORS[2], width=2.5, dash="dash"),
         opacity=0.8,
         hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>"
     ))
@@ -463,8 +467,8 @@ def analyse_trendline_duree():
         y=minutes_by_year["median_minutes"],
         mode="lines",
         name="Médiane (observée)",
-        line=dict(color="coral", width=2),
-        opacity=0.7,
+        line=dict(color=color_median, width=2),
+        opacity=0.8,
         hovertemplate="<b>Année %{x}</b><br>Médiane: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
         customdata=minutes_by_year["n_recipes"]
     ))
@@ -477,10 +481,10 @@ def analyse_trendline_duree():
             mode="markers",
             name="Volume (médiane)",
             marker=dict(
-                color="coral",
+                color=color_median,
                 size=sizes,
                 opacity=0.6,
-                line=dict(color="black", width=0.5)
+                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=0.5)
             ),
             hovertemplate="<b>Année %{x}</b><br>Médiane: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
             customdata=minutes_by_year["n_recipes"],
@@ -493,13 +497,13 @@ def analyse_trendline_duree():
         y=regressions["median_minutes"]["y_pred"],
         mode="lines",
         name=f"Régression Médiane (R²={regressions['median_minutes']['r2']:.3f})",
-        line=dict(color="darkred", width=2.5, dash="dash"),
+        line=dict(color=chart_theme.colors.CHART_COLORS[3], width=2.5, dash="dash"),
         opacity=0.8,
         hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>"
     ))
 
     # ========================================
-    # MISE EN FORME PROFESSIONNELLE
+    # MISE EN FORME AVEC THÈME "BACK TO THE KITCHEN"
     # ========================================
 
     title_text = (
@@ -508,48 +512,19 @@ def analyse_trendline_duree():
         f"Médiane: {regressions['median_minutes']['slope']:+.4f} min/an</sub>"
     )
 
+    # Application du thème dark
+    chart_theme.apply_chart_theme(fig)
+
     fig.update_layout(
         title=dict(
             text=title_text,
-            font=dict(size=14, color="black", family="Arial, sans-serif"),
+            font=dict(size=16),
             x=0.5,
             xanchor="center"
         ),
-        xaxis=dict(
-            title="Année",
-            title_font=dict(size=12, color="black"),
-            tickfont=dict(size=10, color="black"),
-            showgrid=True,
-            gridcolor="rgba(200,200,200,0.3)",
-            gridwidth=1,
-            zeroline=False
-        ),
-        yaxis=dict(
-            title="Minutes",
-            title_font=dict(size=12, color="black"),
-            tickfont=dict(size=10, color="black"),
-            showgrid=True,
-            gridcolor="rgba(200,200,200,0.3)",
-            gridwidth=1,
-            zeroline=False
-        ),
+        xaxis_title="Année",
+        yaxis_title="Minutes",
         height=650,
-        plot_bgcolor="rgba(245, 245, 245, 0.8)",
-        paper_bgcolor="white",
-        font=dict(size=11, color="black", family="Arial, sans-serif"),
-        legend=dict(
-            orientation="v",
-            yanchor="top",
-            y=0.99,
-            xanchor="right",
-            x=0.99,
-            bgcolor="rgba(255,255,255,0.95)",
-            bordercolor="rgba(0,0,0,0.3)",
-            borderwidth=1.5,
-            font=dict(size=11, color="black"),
-            itemsizing="constant",
-            itemwidth=30
-        ),
         hovermode="closest"
     )
 
