@@ -29,6 +29,7 @@ from visualization.analyse_trendlines_v2 import (
 )
 from visualization.analyse_seasonality import render_seasonality_analysis
 from visualization.analyse_weekend import render_weekend_analysis
+from visualization.analyse_ratings import render_ratings_analysis
 from utils import colors
 
 # Fonction helper pour créer des options de menu avec icônes Lucide
@@ -571,6 +572,7 @@ def main():
             ("bar-chart-2", "Tendances 1999-2018"),
             ("calendar-days", "Analyses Saisonnières"),
             ("sun", "Effet Jour/Week-end"),
+            ("star", "Analyses Ratings"),
             ("sparkles", "Recommandations")
         ]
 
@@ -766,6 +768,10 @@ def main():
     elif selected_page == "Effet Jour/Week-end":
         # Appel du module d'analyse weekend avec charte graphique
         render_weekend_analysis()
+
+    elif selected_page == "Analyses Ratings":
+        # Appel du module d'analyse ratings avec charte graphique
+        render_ratings_analysis()
 
     elif selected_page == "Recommandations":
         st.markdown('<h1 style="margin-top: 0; padding-top: 0;">⭐ Système de Recommandations</h1>', unsafe_allow_html=True)
