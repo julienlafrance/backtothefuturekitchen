@@ -78,6 +78,7 @@ omit = [
     "*/visualization/analyse_trendlines_v2.py",  # Version v2 en développement
     "*/visualization/analyse_seasonality.py",  # Module saisonnalité Streamlit
     "*/visualization/analyse_weekend.py",  # Module weekend Streamlit
+    "*/visualization/analyse_ratings.py",  # Module ratings Streamlit
 ]
 
 [tool.coverage.report]
