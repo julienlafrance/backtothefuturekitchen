@@ -17,12 +17,8 @@ htmlcov/
 coverage.xml
 *.cover
 
-# Gros fichiers de données - ACTIVÉ
-*/data/*.csv
-*/data/*.duckdb
-**/data/*.duckdb
-*.duckdb
-*/data/*.pkl
+# Répertoires de données - TOUT ignorer (répertoire complet)
+**/data/
 
 # Logs 
 */logs/
