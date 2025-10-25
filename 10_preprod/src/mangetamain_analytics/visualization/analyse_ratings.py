@@ -17,6 +17,7 @@ import statsmodels.api as sm
 
 # Import du thème graphique
 from utils import chart_theme
+from utils import colors
 
 # Import des utilitaires de chargement des données ratings
 from mangetamain_data_utils.data_utils_ratings import load_ratings_for_longterm_analysis, load_clean_interactions
@@ -122,7 +123,7 @@ def analyse_ratings_validation_ponderee():
             x=monthly_df['n_interactions'],
             nbinsx=20,
             marker=dict(
-                color=chart_theme.colors.CHART_COLORS[0],
+                color=colors.CHART_COLORS[0],
                 opacity=0.7,
                 line=dict(width=0)  # Pas de contour
             ),
@@ -138,7 +139,7 @@ def analyse_ratings_validation_ponderee():
             x=monthly_df['date'],
             y=weights_normalized,
             mode='lines+markers',
-            line=dict(color=chart_theme.colors.CHART_COLORS[2], width=2),
+            line=dict(color=colors.CHART_COLORS[2], width=2),
             marker=dict(size=4),
             name='Poids normalisés',
             showlegend=True
@@ -160,13 +161,13 @@ def analyse_ratings_validation_ponderee():
                 color=monthly_df['n_interactions'],
                 colorscale='YlOrRd',  # Colorscale Plotly: Jaune → Orange → Rouge
                 opacity=0.7,
-                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=0.5),
+                line=dict(color=colors.TEXT_PRIMARY, width=0.5),
                 colorbar=dict(
                     title=dict(
                         text="Volume",
-                        font=dict(color=chart_theme.colors.TEXT_PRIMARY, size=12)
+                        font=dict(color=colors.TEXT_PRIMARY, size=12)
                     ),
-                    tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY, size=10),
+                    tickfont=dict(color=colors.TEXT_PRIMARY, size=10),
                     x=0.46,  # Repositionné entre les 2 colonnes
                     len=0.35,
                     y=0.23,
@@ -191,13 +192,13 @@ def analyse_ratings_validation_ponderee():
             x=['Non pondérée', 'Pondérée'],
             y=[var_unweighted, var_weighted],
             marker=dict(
-                color=[chart_theme.colors.CHART_COLORS[2], chart_theme.colors.CHART_COLORS[0]],
+                color=[colors.CHART_COLORS[2], colors.CHART_COLORS[0]],
                 opacity=0.8,
                 line=dict(width=0)  # Pas de contour
             ),
             text=[f'{var_unweighted:.4f}', f'{var_weighted:.4f}'],
             textposition='outside',
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=colors.TEXT_PRIMARY),
             showlegend=False
         ),
         row=2,
@@ -344,7 +345,7 @@ def analyse_ratings_tendance_temporelle():
             x=monthly_df['date'],
             y=ratings,
             mode='lines+markers',
-            line=dict(color=chart_theme.colors.CHART_COLORS[3], width=2),
+            line=dict(color=colors.CHART_COLORS[3], width=2),
             marker=dict(size=4),
             name='Rating moyen',
             showlegend=True
@@ -358,7 +359,7 @@ def analyse_ratings_tendance_temporelle():
             x=monthly_df['date'],
             y=trend_line_weighted,
             mode='lines',
-            line=dict(color=chart_theme.colors.CHART_COLORS[2], width=2, dash='dash'),
+            line=dict(color=colors.CHART_COLORS[2], width=2, dash='dash'),
             name=f'Tendance ({wls_trend_result.params[1]:.4f}/mois)',
             showlegend=True
         ),
@@ -375,7 +376,7 @@ def analyse_ratings_tendance_temporelle():
             mode='markers',
             marker=dict(
                 size=sizes * 2,  # Points beaucoup plus gros
-                color=chart_theme.colors.CHART_COLORS[0],
+                color=colors.CHART_COLORS[0],
                 opacity=0.7,
                 line=dict(width=0)  # Pas de contour
             ),
@@ -391,7 +392,7 @@ def analyse_ratings_tendance_temporelle():
             x=monthly_df['date'],
             y=monthly_df['std_rating'],
             mode='lines+markers',
-            line=dict(color=chart_theme.colors.CHART_COLORS[1], width=2),
+            line=dict(color=colors.CHART_COLORS[1], width=2),
             marker=dict(size=4),
             name='Écart-type brut',
             showlegend=True
@@ -405,7 +406,7 @@ def analyse_ratings_tendance_temporelle():
             x=[monthly_df['date'].min(), monthly_df['date'].max()],
             y=[weighted_std, weighted_std],
             mode='lines',
-            line=dict(color=chart_theme.colors.CHART_COLORS[2], width=2, dash='dash'),
+            line=dict(color=colors.CHART_COLORS[2], width=2, dash='dash'),
             name=f'Écart-type pondéré ({weighted_std:.3f})',
             showlegend=True
         ),
@@ -445,7 +446,7 @@ def analyse_ratings_tendance_temporelle():
             x=volumes,
             y=vol_pred,
             mode='lines',
-            line=dict(color=chart_theme.colors.CHART_COLORS[2], width=2, dash='dash'),
+            line=dict(color=colors.CHART_COLORS[2], width=2, dash='dash'),
             name='Régression pondérée',
             showlegend=True
         ),
@@ -572,7 +573,7 @@ def analyse_ratings_distribution():
             x=monthly_df['date'],
             y=ratings,
             mode='lines+markers',
-            line=dict(color=chart_theme.colors.CHART_COLORS[3], width=2),
+            line=dict(color=colors.CHART_COLORS[3], width=2),
             marker=dict(size=4),
             name='Rating moyen mensuel',
             showlegend=True
@@ -587,7 +588,7 @@ def analyse_ratings_distribution():
             x=monthly_df['date'].tolist() + monthly_df['date'].tolist()[::-1],
             y=[upper_bound_weighted] * len(monthly_df) + [lower_bound_weighted] * len(monthly_df),
             fill='toself',
-            fillcolor='rgba(255, 99, 71, 0.2)',
+            fillcolor=colors.get_rgba(colors.ORANGE_SECONDARY, 0.2),
             line=dict(color='rgba(255,255,255,0)'),
             name=f'IC 95% (±{1.96 * std_rating_weighted / np.sqrt(np.sum(weights)):.3f})',
             showlegend=True
@@ -602,7 +603,7 @@ def analyse_ratings_distribution():
             x=monthly_df['date'],
             y=trend_weighted_detailed,
             mode='lines',
-            line=dict(color=chart_theme.colors.CHART_COLORS[2], width=2, dash='dash'),
+            line=dict(color=colors.CHART_COLORS[2], width=2, dash='dash'),
             name=f'Tendance ({wls_trend_result.params[1]*12:.4f}/an)',
             showlegend=True
         ),
@@ -616,7 +617,7 @@ def analyse_ratings_distribution():
             x=[monthly_df['date'].min(), monthly_df['date'].max()],
             y=[mean_rating_weighted, mean_rating_weighted],
             mode='lines',
-            line=dict(color=chart_theme.colors.CHART_COLORS[0], width=2),
+            line=dict(color=colors.CHART_COLORS[0], width=2),
             name=f'Moyenne ({mean_rating_weighted:.3f})',
             showlegend=True
         ),
@@ -630,7 +631,7 @@ def analyse_ratings_distribution():
             x=monthly_df['date'],
             y=ratings,
             mode='lines+markers',
-            line=dict(color=chart_theme.colors.CHART_COLORS[3], width=2),
+            line=dict(color=colors.CHART_COLORS[3], width=2),
             marker=dict(size=6),
             name='Rating moyen mensuel',
             showlegend=False
@@ -645,7 +646,7 @@ def analyse_ratings_distribution():
             x=monthly_df['date'].tolist() + monthly_df['date'].tolist()[::-1],
             y=[upper_bound_weighted] * len(monthly_df) + [lower_bound_weighted] * len(monthly_df),
             fill='toself',
-            fillcolor='rgba(255, 99, 71, 0.3)',
+            fillcolor=colors.get_rgba(colors.ORANGE_SECONDARY, 0.3),
             line=dict(color='rgba(255,255,255,0)'),
             name=f'IC 95% (±{1.96 * std_rating_weighted / np.sqrt(np.sum(weights)):.4f})',
             showlegend=False
@@ -660,7 +661,7 @@ def analyse_ratings_distribution():
             x=monthly_df['date'],
             y=trend_weighted_detailed,
             mode='lines',
-            line=dict(color=chart_theme.colors.CHART_COLORS[2], width=3, dash='dash'),
+            line=dict(color=colors.CHART_COLORS[2], width=3, dash='dash'),
             name=f'Tendance ({wls_trend_result.params[1]*12:.4f}/an)',
             showlegend=False
         ),
@@ -674,7 +675,7 @@ def analyse_ratings_distribution():
             x=[monthly_df['date'].min(), monthly_df['date'].max()],
             y=[mean_rating_weighted, mean_rating_weighted],
             mode='lines',
-            line=dict(color=chart_theme.colors.CHART_COLORS[0], width=2),
+            line=dict(color=colors.CHART_COLORS[0], width=2),
             name=f'Moyenne ({mean_rating_weighted:.3f})',
             showlegend=False
         ),
@@ -714,7 +715,7 @@ def analyse_ratings_distribution():
             x=volumes,
             y=vol_pred_detailed,
             mode='lines',
-            line=dict(color=chart_theme.colors.CHART_COLORS[2], width=3, dash='dash'),
+            line=dict(color=colors.CHART_COLORS[2], width=3, dash='dash'),
             name=f'Régression pondérée (ρ={vol_qual_weighted:.3f})',
             showlegend=True
         ),
@@ -814,10 +815,10 @@ def analyse_ratings_seasonality_1():
     # (1) Volume d'interactions
     # Couleurs saisonnières "Back to the Kitchen"
     colors_season = [
-        chart_theme.colors.ORANGE_PRIMARY,     # Spring: Orange vif
-        chart_theme.colors.CHART_COLORS[1],    # Summer: Jaune doré
-        chart_theme.colors.ORANGE_SECONDARY,   # Autumn: Rouge/Orange profond
-        chart_theme.colors.CHART_COLORS[1]     # Winter: Jaune doré
+        colors.ORANGE_PRIMARY,     # Spring: Orange vif
+        colors.CHART_COLORS[1],    # Summer: Jaune doré
+        colors.ORANGE_SECONDARY,   # Autumn: Rouge/Orange profond
+        colors.CHART_COLORS[1]     # Winter: Jaune doré
     ]
     fig.add_trace(
         go.Bar(
@@ -830,7 +831,7 @@ def analyse_ratings_seasonality_1():
             ),
             text=[f"{int(v/1000)}K" for v in seasonal_stats['count_ratings']],
             textposition='outside',
-            textfont=dict(size=10, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=10, color=colors.TEXT_PRIMARY),
             showlegend=False
         ),
         row=1,
@@ -849,7 +850,7 @@ def analyse_ratings_seasonality_1():
             ),
             text=[f"{v:.4f}" for v in seasonal_stats['mean_rating']],
             textposition='outside',
-            textfont=dict(size=10, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=10, color=colors.TEXT_PRIMARY),
             showlegend=False
         ),
         row=1,
@@ -970,10 +971,10 @@ def analyse_ratings_seasonality_2():
 
     # Couleurs saisonnières "Back to the Kitchen"
     colors_season = [
-        chart_theme.colors.ORANGE_PRIMARY,     # Spring: Orange vif
-        chart_theme.colors.CHART_COLORS[1],    # Summer: Jaune doré
-        chart_theme.colors.ORANGE_SECONDARY,   # Autumn: Rouge/Orange profond
-        chart_theme.colors.CHART_COLORS[1]     # Winter: Jaune doré
+        colors.ORANGE_PRIMARY,     # Spring: Orange vif
+        colors.CHART_COLORS[1],    # Summer: Jaune doré
+        colors.ORANGE_SECONDARY,   # Autumn: Rouge/Orange profond
+        colors.CHART_COLORS[1]     # Winter: Jaune doré
     ]
 
     # 1. Radar chart
@@ -986,9 +987,9 @@ def analyse_ratings_seasonality_2():
             theta=theta,
             mode='lines+markers',
             fill='toself',
-            line=dict(color=chart_theme.colors.CHART_COLORS[2], width=3),
+            line=dict(color=colors.CHART_COLORS[2], width=3),
             marker=dict(size=8),
-            fillcolor='rgba(226, 78, 27, 0.25)',
+            fillcolor=colors.get_rgba(colors.ORANGE_SECONDARY, 0.25),
             showlegend=False
         ),
         row=1,
@@ -1005,7 +1006,7 @@ def analyse_ratings_seasonality_2():
             marker=dict(color=colors_season, opacity=0.8, line=dict(width=0)),
             text=[f"{v:.4f}" for v in seasonal_ratings['mean_rating']],
             textposition='outside',
-            textfont=dict(size=9, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=9, color=colors.TEXT_PRIMARY),
             showlegend=False
         ),
         row=1,
@@ -1021,7 +1022,7 @@ def analyse_ratings_seasonality_2():
             marker=dict(color=colors_season, opacity=0.8, line=dict(width=0)),
             text=[f"{v:.2f}%" for v in seasonal_perfect['pct_5_stars']],
             textposition='outside',
-            textfont=dict(size=9, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=9, color=colors.TEXT_PRIMARY),
             showlegend=False
         ),
         row=1,
@@ -1037,7 +1038,7 @@ def analyse_ratings_seasonality_2():
             marker=dict(color=colors_season, opacity=0.8, line=dict(width=0)),
             text=[f"{v:.2f}%" for v in seasonal_negative['pct_negative']],
             textposition='outside',
-            textfont=dict(size=9, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=9, color=colors.TEXT_PRIMARY),
             showlegend=False
         ),
         row=2,
@@ -1053,7 +1054,7 @@ def analyse_ratings_seasonality_2():
             marker=dict(color=colors_season, opacity=0.8, line=dict(width=0)),
             text=[f"{v:.3f}" for v in seasonal_ratings['std_rating']],
             textposition='outside',
-            textfont=dict(size=9, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=9, color=colors.TEXT_PRIMARY),
             showlegend=False
         ),
         row=2,
@@ -1069,7 +1070,7 @@ def analyse_ratings_seasonality_2():
             marker=dict(color=colors_season, opacity=0.8, line=dict(width=0)),
             text=[f"{int(v/1000)}K" for v in seasonal_ratings['n_interactions']],
             textposition='outside',
-            textfont=dict(size=9, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=9, color=colors.TEXT_PRIMARY),
             showlegend=False
         ),
         row=2,
