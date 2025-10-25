@@ -1109,24 +1109,33 @@ def analyse_ratings_seasonality_2():
 
 def render_ratings_analysis():
     """Point d'entrée principal pour les analyses de ratings."""
-    st.title("📊 Analyses des Ratings")
+    st.markdown('<h1 style="margin-top: 0; padding-top: 0;">⭐ Analyses des Ratings (1999-2018)</h1>', unsafe_allow_html=True)
 
-    # Sélecteur d'analyse
-    analyse_options = {
-        "1. Validation méthodologique (pondération)": analyse_ratings_validation_ponderee,
-        "2. Tendance temporelle": analyse_ratings_tendance_temporelle,
-        "3. Distribution et stabilité": analyse_ratings_distribution,
-        "4. Statistiques saisonnières": analyse_ratings_seasonality_1,
-        "5. Variations saisonnières": analyse_ratings_seasonality_2,
-        # "6. Weekend effect ratings": analyse_ratings_weekend_1,
-    }
+    st.markdown("""
+    Cette section présente les analyses de **l'évolution des ratings/notes** sur Food.com (1999-2018).
 
-    selected_analyse = st.selectbox(
-        "Choisir une analyse:",
-        list(analyse_options.keys()),
-        key="ratings_selector"
-    )
+    Les analyses examinent la **stabilité temporelle**, les **tendances**, et les **variations saisonnières**
+    des notes moyennes attribuées aux recettes par les utilisateurs.
+    """)
 
-    # Afficher l'analyse sélectionnée
-    if selected_analyse:
-        analyse_options[selected_analyse]()
+    # Affichage de toutes les analyses en continu (comme page Saisonnalité)
+
+    st.subheader("🔬 Validation méthodologique")
+    analyse_ratings_validation_ponderee()
+    st.markdown("---")
+
+    st.subheader("📈 Tendance temporelle")
+    analyse_ratings_tendance_temporelle()
+    st.markdown("---")
+
+    st.subheader("📊 Distribution et stabilité")
+    analyse_ratings_distribution()
+    st.markdown("---")
+
+    st.subheader("🍂 Statistiques saisonnières")
+    analyse_ratings_seasonality_1()
+    st.markdown("---")
+
+    st.subheader("🌸 Variations saisonnières")
+    analyse_ratings_seasonality_2()
+    st.markdown("---")
