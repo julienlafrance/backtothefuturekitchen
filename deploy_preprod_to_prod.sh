@@ -31,8 +31,8 @@ fi
 
 # 2. EFFACE (garde .gitkeep)
 echo -e "\n${YELLOW}🗑️  Nettoyage 20_prod/${NC}"
-rm -rf "$PROD_DIR"/{streamlit,logs,.venv,pyproject.toml,README.md,uv.lock}
-echo "✅ Répertoire nettoyé"
+rm -rf "$PROD_DIR"/{streamlit,logs,.venv,pyproject.toml,README.md,uv.lock} 2>/dev/null || true
+echo "✅ Répertoire nettoyé (fichiers __pycache__ Docker ignorés)"
 
 # 3. COPIE (3 éléments)
 echo -e "\n${YELLOW}📋 Copie PREPROD → PROD${NC}"
