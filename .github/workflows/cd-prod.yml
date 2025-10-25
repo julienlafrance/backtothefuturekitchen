@@ -17,8 +17,9 @@ jobs:
 
     steps:
       - name: Notify deployment start
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
-          COMMIT_MSG="${{ github.event.head_commit.message }}"
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
             -d "{\"content\":\"🚨 **Déploiement PRODUCTION démarré**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 Message: ${COMMIT_MSG_FIRST_LINE}\n👤 Par: ${{ github.actor }}\n⚠️  Déploiement manuel confirmé\n\n**Étapes:**\n1️⃣ Backup PROD actuel\n2️⃣ Pull code depuis GitHub\n3️⃣ Exécution deploy_preprod_to_prod.sh\n4️⃣ Redémarrage container (down && up)\n5️⃣ Health checks (100s)\n\n⏱️ Durée estimée: ~3 minutes\"}" \
@@ -129,9 +130,10 @@ jobs:
 
       - name: Notify deployment success
         if: success()
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
           BACKUP_DIR=$(cat /tmp/prod-backup-path.txt 2>/dev/null || echo "inconnu")
-          COMMIT_MSG="${{ github.event.head_commit.message }}"
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
             -d "{\"content\":\"✅ **Déploiement PRODUCTION réussi!**\n\n🌐 **URL:** https://backtothefuturekitchen.lafrance.io/\n📦 **Commit:** \`${GITHUB_SHA:0:7}\`\n💬 **Message:** ${COMMIT_MSG_FIRST_LINE}\n\n**Détails:**\n✅ Backup créé: \`$BACKUP_DIR\`\n✅ Script deploy_preprod_to_prod.sh exécuté\n✅ Container redémarré (down && up)\n✅ Health checks passés\n✅ Données chargées depuis S3 Parquet\n\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n👤 Déployé par: ${{ github.actor }}\"}" \
@@ -139,10 +141,11 @@ jobs:
 
       - name: Notify deployment failure
         if: failure()
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
           BACKUP_DIR=$(cat /tmp/prod-backup-path.txt 2>/dev/null || echo "inconnu")
           NEW_COMMIT=$(cat /tmp/prod-commit.txt 2>/dev/null || echo "${GITHUB_SHA:0:7}")
-          COMMIT_MSG="${{ github.event.head_commit.message }}"
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
             -d "{\"content\":\"🚨 **ÉCHEC - Déploiement PRODUCTION**\n❌ Health check échoué\n📦 Commit tenté: \`$NEW_COMMIT\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⚠️  **PRODUCTION POTENTIELLEMENT CASSÉE**\n\n**Rollback manuel recommandé:**\n\`\`\`bash\nssh dataia\ncd /home/dataia25/mangetamain/20_prod\n\n# Restaurer le backup complet\nrm -rf streamlit pyproject.toml README.md\ncp -r $BACKUP_DIR/streamlit .\ncp $BACKUP_DIR/pyproject.toml .\ncp $BACKUP_DIR/README.md .\n\n# Redémarrer le container\ncd /home/dataia25/mangetamain/30_docker\ndocker-compose -f docker-compose-prod.yml down\ndocker-compose -f docker-compose-prod.yml up -d\n\`\`\`\n\n📂 Backup: \`$BACKUP_DIR\`\n🌐 Vérifier: https://backtothefuturekitchen.lafrance.io/\n👤 Tenté par: ${{ github.actor }}\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
