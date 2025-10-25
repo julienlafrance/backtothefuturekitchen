@@ -15,7 +15,7 @@ jobs:
   # ═══════════════════════════════════════════════════════
   # JOB 1 : Deploy immédiat (sans attendre les tests)
   # ═══════════════════════════════════════════════════════
-  immediate-deploy:
+  a-immediate-deploy:
     name: 🚀 Deploy Preprod (Immediate)
     runs-on: self-hosted
 
@@ -126,7 +126,7 @@ jobs:
   # JOB 2 : Watcher CI + Rollback automatique
   # PAS de "needs" = s'exécute EN PARALLÈLE du deploy
   # ═══════════════════════════════════════════════════════
-  watch-ci-and-rollback:
+  b-watch-ci-and-rollback:
     name: 👀 Watch CI & Auto-Rollback
     runs-on: self-hosted
 
