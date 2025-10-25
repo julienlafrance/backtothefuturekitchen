@@ -1,7 +1,10 @@
 name: CD - Preprod Deployment
 
 on:
-  push:
+  workflow_run:
+    workflows: ["CI Pipeline - Quality & Tests"]
+    types:
+      - completed
     branches:
       - main
   workflow_dispatch:  # Permet déclenchement manuel
@@ -10,6 +13,8 @@ jobs:
   deploy-preprod:
     name: Deploy to Preprod
     runs-on: self-hosted
+    # Ne déployer que si le CI a réussi
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Notify deployment start
@@ -81,4 +86,17 @@ jobs:
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
             -d "{\"content\":\"❌ **ÉCHEC Déploiement Preprod**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⚠️  **Container dans état cassé - intervention manuelle requise**\n📋 Vérifier les logs: \`docker-compose -f docker-compose-preprod.yml logs\`\n👤 Commit par: ${{ github.actor }}\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
+  notify-ci-failure:
+    name: Notify CI Failure
+    runs-on: self-hosted
+    # Ne notifier que si le CI a échoué
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+
+    steps:
+      - name: Notify CI failure blocks deployment
+        run: |
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"⛔ **Déploiement Preprod annulé**\n❌ Le CI Pipeline a échoué - déploiement bloqué\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n🔧 Corriger les erreurs CI avant de déployer\n👤 Commit par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
