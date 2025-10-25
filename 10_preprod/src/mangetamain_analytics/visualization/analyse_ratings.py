@@ -374,10 +374,10 @@ def analyse_ratings_tendance_temporelle():
             y=volumes,
             mode='markers',
             marker=dict(
-                size=sizes / 25,
+                size=sizes * 2,  # Points beaucoup plus gros
                 color=chart_theme.colors.CHART_COLORS[0],
                 opacity=0.7,
-                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1)
+                line=dict(width=0)  # Pas de contour
             ),
             showlegend=False
         ),
