@@ -81,9 +81,9 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 ### Règles
 
-- Ne jamais pousser si les tests échouent
+- Le CI vérifie automatiquement la qualité (flake8, tests, coverage)
 - Ne jamais skip les hooks (pas de `--no-verify`)
-- Vérifier flake8 avant commit: `flake8 src/ tests/`
+- Si le CI échoue, le déploiement Preprod est automatiquement bloqué
 
 ## Documentation
 
