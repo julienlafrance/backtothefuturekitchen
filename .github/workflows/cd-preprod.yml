@@ -153,11 +153,11 @@ jobs:
 
           # Lancer en background avec nohup
           nohup /tmp/watch-ci-${{ github.sha }}.sh \
-            > /var/log/ci-watcher-${{ github.sha }}.log 2>&1 &
+            > /tmp/ci-watcher-${{ github.sha }}.log 2>&1 &
 
           WATCHER_PID=$!
           echo "✅ CI watcher launched in background (PID: $WATCHER_PID)"
-          echo "📝 Logs: /var/log/ci-watcher-${{ github.sha }}.log"
+          echo "📝 Logs: /tmp/ci-watcher-${{ github.sha }}.log"
           echo "$WATCHER_PID" > /tmp/watcher-pid-${{ github.sha }}
 
       - name: ✅ Notify deployment complete
