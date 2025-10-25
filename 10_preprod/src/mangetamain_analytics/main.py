@@ -586,6 +586,19 @@ def main():
         if selected_page != st.session_state.current_page:
             st.session_state.current_page = selected_page
 
+        # Séparateur avant bouton Rafraîchir
+        st.markdown(
+            "<hr style='border: 0.5px solid rgba(240, 240, 240, 0.1); margin: 20px 0;'>",
+            unsafe_allow_html=True,
+        )
+
+        # Bouton Rafraîchir - Vide le cache et recharge les données
+        if st.button("🔄 Rafraîchir", key="btn_refresh", use_container_width=True):
+            st.cache_data.clear()
+            st.cache_resource.clear()
+            st.toast("✅ Cache vidé - Rechargement des données...", icon="🔄")
+            st.rerun()
+
         # Spacer pour pousser les badges en bas (via CSS flexbox)
         st.markdown('<div class="spacer"></div>', unsafe_allow_html=True)
 

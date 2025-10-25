@@ -23,7 +23,7 @@ from scipy.stats import chi2_contingency
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
-from mangetamain_data_utils import load_recipes_clean
+from mangetamain_analytics.data.cached_loaders import get_recipes_clean as load_recipes_clean
 from utils import chart_theme
 
 

@@ -16,7 +16,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 # Import du module data_utils (installé via uv)
-from mangetamain_data_utils.data_utils_recipes import load_recipes_clean
+from mangetamain_analytics.data.cached_loaders import get_recipes_clean as load_recipes_clean
 
 # Import de la charte graphique
 from utils import chart_theme
