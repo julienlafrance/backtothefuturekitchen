@@ -44,7 +44,9 @@ jobs:
       - name: 🚀 Deploy IMMEDIATELY
         run: |
           cd ${{ env.APP_PATH }}
+          echo "📥 Fetching latest commits from origin/main..."
           git fetch origin main
+          echo "🔄 Resetting to ${{ github.sha }}..."
           git reset --hard ${{ github.sha }}
           echo "✅ Code mis à jour vers $(git rev-parse --short HEAD)"
 
