@@ -409,17 +409,16 @@ small, .caption {
     color: #FF8C00 !important;
     font-weight: 600 !important;
     font-family: 'Inter', sans-serif !important;
-    padding: 12px 16px !important;
+    padding: 12px 16px 12px 40px !important;
     cursor: pointer !important;
     min-height: 48px !important;
-    display: flex !important;
-    align-items: center !important;
+    position: relative !important;
 }
 
 /* Texte du summary pour éviter la superposition */
 [data-testid="stExpander"] summary p {
     margin: 0 !important;
-    padding-left: 8px !important;
+    display: inline-block !important;
 }
 
 /* Contenu de l'expander */
@@ -432,10 +431,13 @@ small, .caption {
     padding-top: 12px !important;
 }
 
-/* Icône de l'expander */
+/* Icône de l'expander - positionner à gauche */
 [data-testid="stExpander"] summary svg {
     color: #FF8C00 !important;
-    flex-shrink: 0 !important;
+    position: absolute !important;
+    left: 12px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
 }
 
 /* ============================================================================
