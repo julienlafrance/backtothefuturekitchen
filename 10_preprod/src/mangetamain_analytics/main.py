@@ -81,7 +81,7 @@ def display_environment_badge():
         label = "PREPROD"
     elif "PROD" in env:
         badge_config = colors.ENV_PROD
-        label = "PRODUCTION"
+        label = "PROD"
     else:
         return
 
@@ -652,7 +652,7 @@ def main():
             label = "PREPROD"
         elif "PROD" in env:
             badge_class = "env-badge prod-badge"
-            label = "PRODUCTION"
+            label = "PROD"
         else:
             badge_class = "env-badge preprod-badge"
             label = "UNKNOWN"
