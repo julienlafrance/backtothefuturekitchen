@@ -201,20 +201,14 @@ sed -i 's/^\(\s*\)"mangetamain-data-utils.*$/# \1"mangetamain-data-utils (disabl
 
 log "SUCCESS" "pyproject.toml copié et adapté pour PROD (40_utils désactivé)"
 
-# Copier uv.lock si présent
-if [ -f "$PREPROD_ROOT/uv.lock" ]; then
-    # Backup de l'ancien uv.lock
-    if [ -f "$PROD_ROOT/uv.lock" ]; then
-        backup_uvlock="$PROD_ROOT/uv.lock.backup_$(date +%Y%m%d_%H%M%S)"
-        cp "$PROD_ROOT/uv.lock" "$backup_uvlock" || log "WARNING" "Impossible de créer backup uv.lock"
-        log "INFO" "Backup uv.lock créé : $backup_uvlock"
-    fi
-
-    cp "$PREPROD_ROOT/uv.lock" "$PROD_ROOT/uv.lock" || handle_error "Copie uv.lock" "Échec de la copie"
-    log "SUCCESS" "uv.lock copié"
-else
-    log "WARNING" "uv.lock non trouvé dans PREPROD (optionnel)"
+# NE PAS copier uv.lock : il doit être régénéré par 'uv sync' en PROD
+# car pyproject.toml a été modifié (mangetamain-data-utils commenté)
+if [ -f "$PROD_ROOT/uv.lock" ]; then
+    backup_uvlock="$PROD_ROOT/uv.lock.backup_$(date +%Y%m%d_%H%M%S)"
+    mv "$PROD_ROOT/uv.lock" "$backup_uvlock" || log "WARNING" "Impossible de créer backup uv.lock"
+    log "INFO" "Ancien uv.lock sauvegardé : $backup_uvlock"
 fi
+log "INFO" "uv.lock sera régénéré par 'uv sync' au démarrage du container PROD"
 
 log "SUCCESS" "Dépendances Python synchronisées"
 
@@ -235,8 +229,9 @@ log "INFO" "  - visualization/   : Modules d'analyse"
 log "INFO" "  - utils/           : Utilitaires (colors, chart_theme)"
 log "INFO" "  - assets/          : CSS, logo, favicon"
 log "INFO" "  - main.py          : Application principale"
-log "INFO" "  - pyproject.toml   : Définition des dépendances Python"
-log "INFO" "  - uv.lock          : Versions exactes des packages"
+log "INFO" "  - pyproject.toml   : Dépendances Python (adapté pour PROD)"
+log "INFO" ""
+log "INFO" "⚠️  uv.lock sera régénéré par 'uv sync' dans le container PROD"
 log "INFO" ""
 log "INFO" "Prochaines étapes (gérées par GitHub Actions) :"
 log "INFO" "  1. Redémarrage du container Docker PROD"
