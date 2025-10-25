@@ -443,6 +443,23 @@ small, .caption {
     border: 1px solid #333333 !important;
 }
 
+/* Fallback chevron if Material Icons ligature fails */
+[data-testid="stExpander"] summary::before {
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23F0F0F0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>');
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-right: 8px;
+}
+
+/* Hide raw text if the ligature isn't applied */
+[data-testid="stExpander"] summary [data-testid="stIconMaterial"] {
+    color: transparent !important;
+}
+
 /* États focus/hover/active pour garder le fond sombre */
 [data-testid="stExpander"] summary:hover,
 [data-testid="stExpander"] summary:focus,
