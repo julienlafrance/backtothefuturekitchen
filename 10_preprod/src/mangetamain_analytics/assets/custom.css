@@ -411,6 +411,15 @@ small, .caption {
     font-family: 'Inter', sans-serif !important;
     padding: 12px 16px !important;
     cursor: pointer !important;
+    min-height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Texte du summary pour éviter la superposition */
+[data-testid="stExpander"] summary p {
+    margin: 0 !important;
+    padding-left: 8px !important;
 }
 
 /* Contenu de l'expander */
@@ -418,9 +427,15 @@ small, .caption {
     padding: 16px !important;
 }
 
+/* Contenu du detail quand ouvert */
+[data-testid="stExpander"] details[open] > div {
+    padding-top: 12px !important;
+}
+
 /* Icône de l'expander */
 [data-testid="stExpander"] summary svg {
     color: #FF8C00 !important;
+    flex-shrink: 0 !important;
 }
 
 /* ============================================================================
