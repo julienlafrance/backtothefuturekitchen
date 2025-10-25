@@ -21,7 +21,7 @@ from scipy import stats
 import statsmodels.api as sm
 import streamlit as st
 
-from mangetamain_data_utils.data_utils_recipes import load_recipes_clean
+from mangetamain_analytics.data.cached_loaders import get_recipes_clean as load_recipes_clean
 from .plotly_config import COLORS, apply_theme
 
 warnings.filterwarnings("ignore")
