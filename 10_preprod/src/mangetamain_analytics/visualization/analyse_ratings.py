@@ -813,13 +813,14 @@ def analyse_ratings_seasonality_1():
     )
 
     # (1) Volume d'interactions
-    # Couleurs saisonnières "Back to the Kitchen"
-    colors_season = [
-        colors.ORANGE_PRIMARY,     # Spring: Orange vif
-        colors.CHART_COLORS[1],    # Summer: Jaune doré
-        colors.ORANGE_SECONDARY,   # Autumn: Rouge/Orange profond
-        colors.CHART_COLORS[1]     # Winter: Jaune doré
-    ]
+    # Couleurs saisonnières "Back to the Kitchen" (même palette que analyse_seasonality.py)
+    season_colors_btk = {
+        "Winter": colors.CHART_COLORS[1],      # Jaune doré (#FFD700)
+        "Spring": colors.CHART_COLORS[2],      # Rouge/Orange profond (#E24E1B)
+        "Summer": colors.ORANGE_PRIMARY,       # Orange vif (#FF8C00)
+        "Autumn": colors.ORANGE_SECONDARY,     # Rouge/Orange profond (#E24E1B)
+    }
+    colors_season = [season_colors_btk[s] for s in seasonal_stats['season']]
     fig.add_trace(
         go.Bar(
             x=seasonal_stats['season'],
@@ -969,13 +970,14 @@ def analyse_ratings_seasonality_2():
         vertical_spacing=0.15
     )
 
-    # Couleurs saisonnières "Back to the Kitchen"
-    colors_season = [
-        colors.ORANGE_PRIMARY,     # Spring: Orange vif
-        colors.CHART_COLORS[1],    # Summer: Jaune doré
-        colors.ORANGE_SECONDARY,   # Autumn: Rouge/Orange profond
-        colors.CHART_COLORS[1]     # Winter: Jaune doré
-    ]
+    # Couleurs saisonnières "Back to the Kitchen" (même palette que analyse_seasonality.py)
+    season_colors_btk = {
+        "Winter": colors.CHART_COLORS[1],      # Jaune doré (#FFD700)
+        "Spring": colors.CHART_COLORS[2],      # Rouge/Orange profond (#E24E1B)
+        "Summer": colors.ORANGE_PRIMARY,       # Orange vif (#FF8C00)
+        "Autumn": colors.ORANGE_SECONDARY,     # Rouge/Orange profond (#E24E1B)
+    }
+    colors_season = [season_colors_btk[s] for s in seasonal_ratings['season']]
 
     # 1. Radar chart
     theta = list(seasonal_ratings["season"]) + [seasonal_ratings["season"].iloc[0]]
