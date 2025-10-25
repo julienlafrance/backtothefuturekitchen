@@ -61,7 +61,7 @@ jobs:
 
       - name: Deploy PREPROD to PROD
         run: |
-          cd /home/dataia25/mangetamain/000_dev
+          cd /home/dataia25/mangetamain
           echo "🚀 Exécution du script de déploiement PREPROD → PROD"
           ./deploy_preprod_to_prod.sh
           echo "✅ Fichiers copiés de PREPROD vers PROD"
