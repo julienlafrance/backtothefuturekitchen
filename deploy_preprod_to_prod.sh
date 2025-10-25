@@ -32,11 +32,18 @@ fi
 # 2. EFFACE (garde .gitkeep)
 echo -e "\n${YELLOW}🗑️  Nettoyage 20_prod/${NC}"
 
+# Désactiver exit on error temporairement (fichiers __pycache__ Docker non suppressibles)
+set +e
+
 # Supprimer les __pycache__ créés par Docker (ignorer erreurs permissions)
-find "$PROD_DIR" -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+find "$PROD_DIR" -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null
 
 # Supprimer le reste
-rm -rf "$PROD_DIR"/{streamlit,logs,.venv,pyproject.toml,README.md,uv.lock}
+rm -rf "$PROD_DIR"/{streamlit,logs,.venv,pyproject.toml,README.md,uv.lock} 2>/dev/null
+
+# Réactiver exit on error
+set -e
+
 echo "✅ Répertoire nettoyé"
 
 # 3. COPIE (3 éléments)
