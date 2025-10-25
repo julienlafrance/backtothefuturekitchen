@@ -537,9 +537,33 @@ small, .caption {
 
 /* Tooltips (Download as CSV, etc.) en sombre */
 [data-baseweb="tooltip"],
-[data-baseweb="tooltip"] * {
+[data-baseweb="tooltip"] *,
+[role="tooltip"] {
+    background: #333333 !important;
     background-color: #333333 !important;
     color: #F0F0F0 !important;
+    border: 1px solid #444444 !important;
+}
+
+/* Forcer le thème sombre sur la toolbar et tous ses descendants */
+[data-testid="stElementToolbar"],
+[data-testid="stElementToolbar"] *,
+[data-testid="stElementToolbar"] svg {
+    background: #2a2a2a !important;
+    background-color: #2a2a2a !important;
+    color: var(--text-color) !important;
+    fill: var(--text-color) !important;
+    border-color: #444444 !important;
+}
+
+/* Popovers/Layer (portals) en sombre aussi */
+[data-baseweb="popover"],
+[data-baseweb="layer"] [role="tooltip"],
+[data-baseweb="layer"] [data-baseweb="popover"] {
+    background: #333333 !important;
+    background-color: #333333 !important;
+    color: #F0F0F0 !important;
+    border: 1px solid #444444 !important;
 }
 
 /* Conteneur du dataframe */
