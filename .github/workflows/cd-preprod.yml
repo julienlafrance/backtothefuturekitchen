@@ -81,10 +81,12 @@ jobs:
           DOCKER_PATH="${{ env.DOCKER_PATH }}"
           STATE_FILE="${{ env.STATE_FILE }}"
           DISCORD_WEBHOOK="${{ secrets.DISCORD_WEBHOOK_URL }}"
+          LOG_FILE="/tmp/ci-watcher-${COMMIT_SHA}.log"
 
-          echo "[$(date)] 👀 Starting CI watch for $COMMIT_SHA"
+          echo "[$(date)] 👀 Starting CI watch for $COMMIT_SHA" >> "$LOG_FILE"
 
           # Attendre démarrage CI (30s)
+          echo "[$(date)] ⏳ Waiting 30s for CI to start..." >> "$LOG_FILE"
           sleep 30
 
           # Attendre max 5 minutes (300s = 30 × 10s)
@@ -96,10 +98,10 @@ jobs:
               --jq ".[] | select(.headSha == \"$COMMIT_SHA\") | .conclusion" \
               2>/dev/null | head -1)
 
-            echo "[$(date)] Tentative $i/30 - CI Status: ${CI_STATUS:-pending}"
+            echo "[$(date)] Tentative $i/30 - CI Status: ${CI_STATUS:-pending}" >> "$LOG_FILE"
 
             if [ "$CI_STATUS" = "success" ]; then
-              echo "[$(date)] ✅ CI passed! Marking as validated"
+              echo "[$(date)] ✅ CI passed! Marking as validated" >> "$LOG_FILE"
               echo "$COMMIT_SHA" > $STATE_FILE
               echo "[$(date)] VALIDATED: $COMMIT_SHA" >> /var/log/preprod-deployments.log
 
@@ -110,27 +112,27 @@ jobs:
 
               exit 0
             elif [ "$CI_STATUS" = "failure" ] || [ "$CI_STATUS" = "cancelled" ]; then
-              echo "[$(date)] ❌ CI FAILED! Starting rollback..."
+              echo "[$(date)] ❌ CI FAILED! Starting rollback..." >> "$LOG_FILE"
 
               ROLLBACK_SHA=$(cat $STATE_FILE)
-              echo "[$(date)] 🔄 Rolling back from $COMMIT_SHA to $ROLLBACK_SHA"
+              echo "[$(date)] 🔄 Rolling back from $COMMIT_SHA to $ROLLBACK_SHA" >> "$LOG_FILE"
 
               cd $APP_PATH
               git fetch origin
               git reset --hard $ROLLBACK_SHA
-              echo "[$(date)] ✅ Code restauré vers $(git rev-parse --short HEAD)"
+              echo "[$(date)] ✅ Code restauré vers $(git rev-parse --short HEAD)" >> "$LOG_FILE"
 
               cd $DOCKER_PATH
               docker-compose -f docker-compose-preprod.yml restart
-              echo "[$(date)] ✅ Container redémarré avec version précédente"
+              echo "[$(date)] ✅ Container redémarré avec version précédente" >> "$LOG_FILE"
 
               sleep 60
 
               if curl -f -s --max-time 10 https://mangetamain.lafrance.io/ > /dev/null; then
-                echo "[$(date)] ✅ Rollback réussi"
+                echo "[$(date)] ✅ Rollback réussi" >> "$LOG_FILE"
                 echo "[$(date)] ROLLBACK: $COMMIT_SHA → $ROLLBACK_SHA" >> /var/log/preprod-deployments.log
               else
-                echo "[$(date)] ❌ Rollback échoué!"
+                echo "[$(date)] ❌ Rollback échoué!" >> "$LOG_FILE"
               fi
 
               # Notification Discord
@@ -144,16 +146,15 @@ jobs:
             sleep 10
           done
 
-          echo "[$(date)] ⏱️ Timeout CI (5min)"
+          echo "[$(date)] ⏱️ Timeout CI (5min)" >> "$LOG_FILE"
           echo "[$(date)] TIMEOUT: $COMMIT_SHA" >> /var/log/preprod-deployments.log
           exit 1
           SCRIPT_EOF
 
           chmod +x /tmp/watch-ci-${{ github.sha }}.sh
 
-          # Lancer en background avec stdbuf pour forcer line buffering
-          nohup stdbuf -oL -eL /tmp/watch-ci-${{ github.sha }}.sh \
-            > /tmp/ci-watcher-${{ github.sha }}.log 2>&1 &
+          # Lancer en background (le script écrit directement dans son log)
+          nohup /tmp/watch-ci-${{ github.sha }}.sh > /dev/null 2>&1 &
 
           WATCHER_PID=$!
           echo "✅ CI watcher launched in background (PID: $WATCHER_PID)"
