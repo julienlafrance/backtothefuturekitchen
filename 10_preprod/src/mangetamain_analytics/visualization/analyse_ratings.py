@@ -156,7 +156,7 @@ def analyse_ratings_validation_ponderee():
             y=monthly_df['mean_rating'],
             mode='markers',
             marker=dict(
-                size=sizes / 50,  # Ajustement taille
+                size=sizes / 5,  # Ajustement taille (plus gros qu'avant: /5 au lieu de /50)
                 color=monthly_df['n_interactions'],
                 colorscale='Viridis',
                 opacity=0.7,
