@@ -603,7 +603,8 @@ def analyse_trendline_duree():
                 "q_high": "{:.2f}",
                 "n_recipes": "{:,}"
             }),
-            use_container_width=True
+            use_container_width=True,
+            hide_index=True
         )
 
 
