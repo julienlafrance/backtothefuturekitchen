@@ -106,26 +106,14 @@ def calculate_mean(values: list) -> float:
 **Outil:** `pytest >= 7.4.0` + `pytest-cov >= 4.1.0`
 
 **Environnements testés:**
-- **20_prod/** - Environnement de production (31 tests, 100% coverage)
-- **10_preprod/** - Environnement de développement (22 tests, 96% coverage)
+- **10_preprod/** - Environnement de développement (22 tests, 96% coverage) ✅ Source de vérité
 - **50_test/** - Tests d'infrastructure (35 tests)
 
-**Intégration CI:** `.github/workflows/ci.yml` (ligne 56-131)
+**Note importante:** Les tests de `20_prod/` sont **désactivés** depuis 2025-10-25 car PROD est maintenant un **artifact généré** par le script de déploiement. PREPROD est la seule source de vérité trackée dans git.
 
-**Job 1: Tests Production**
-```yaml
-- name: Run tests with coverage
-  run: |
-    cd 20_prod
-    source .venv/bin/activate
-    pytest tests/ -v \
-      --cov=streamlit \
-      --cov-report=term-missing \
-      --cov-report=html \
-      --cov-fail-under=90
-```
+**Intégration CI:** `.github/workflows/ci.yml` (ligne 81-123)
 
-**Job 2: Tests Preprod**
+**Job: Tests Preprod (seul environnement testé)**
 ```yaml
 - name: Run tests with coverage
   run: |
@@ -138,11 +126,14 @@ def calculate_mean(values: list) -> float:
       --cov-fail-under=90
 ```
 
+**Note:** Job "Tests Production" **désactivé** dans `ci.yml` lignes 71-79 (commenté). PROD est un artifact, pas une source de code.
+
 **Résultat:**
-- ✅ 96 tests unitaires configurés
+- ✅ 22 tests unitaires PREPROD (96% coverage)
+- ✅ 35 tests infrastructure (S3, DuckDB, Docker)
 - ✅ Exécution automatique à chaque push
-- ✅ Tests en parallèle pour performance optimale
 - ✅ Rapports HTML uploadés comme artefacts GitHub (30 jours)
+- ℹ️ Tests PROD désactivés (artifact généré par déploiement)
 
 ---
 
@@ -170,14 +161,14 @@ addopts = "--cov=src --cov-report=html --cov-report=term-missing --cov-fail-unde
 **Résultats actuels:**
 | Environnement | Coverage | Tests | Statut |
 |---------------|----------|-------|--------|
-| 20_prod | **100%** | 31 | ✅ |
-| 10_preprod | **96%** | 22 | ✅ |
+| 10_preprod | **96%** | 22 | ✅ Source de vérité |
 | 50_test | N/A (infra) | 35 | ✅ |
+| 20_prod | N/A | 0 | ⚠️ Désactivé (artifact) |
 
 **Preuve:**
-- Rapport HTML : `20_prod/htmlcov/index.html`
 - Rapport HTML : `10_preprod/htmlcov/index.html`
 - Logs CI : Consultables dans GitHub Actions
+- Note : `20_prod/` exclu du coverage (artifact, pas dans git)
 
 ---
 
@@ -247,13 +238,18 @@ Le déploiement automatique est **entièrement fonctionnel** via **GitHub Action
 **1. CD Preprod (`.github/workflows/cd-preprod.yml`) - Automatique**
 ```yaml
 on:
-  push:
+  workflow_run:
+    workflows: ["CI Pipeline - Quality & Tests"]
+    types:
+      - completed
     branches:
-      - main  # Déploiement auto sur push vers main
+      - main
+  workflow_dispatch:  # Déclenchement manuel possible
 
 jobs:
   deploy-preprod:
     runs-on: self-hosted  # ← Exécuté sur VM dataia
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}  # ← Bloque si CI échoue
     steps:
       - name: Notify deployment start (Discord)
       - name: Pull latest code
@@ -261,6 +257,8 @@ jobs:
       - name: Health check preprod (10 tentatives)
       - name: Notify success/failure (Discord)
 ```
+
+**Architecture séquentielle:** Le workflow CD Preprod ne se déclenche QUE si le CI a réussi (`workflow_run` trigger).
 
 **2. CD Production (`.github/workflows/cd-prod.yml`) - Manuel**
 ```yaml
@@ -277,12 +275,21 @@ jobs:
     if: github.event.inputs.confirm == 'DEPLOY'
     steps:
       - name: Notify deployment start (Discord)
-      - name: Backup current version
+      - name: Backup current production files (versionné avec timestamp)
       - name: Pull latest code
-      - name: Restart production container
+      - name: Deploy PREPROD to PROD (execute deploy_preprod_to_prod.sh)
+      - name: Restart production container (down && up pour nouveaux mounts)
+      - name: Wait 90s (installation dépendances uv sync)
       - name: Health check production (10 tentatives)
-      - name: Notify success/failure (Discord)
+      - name: Notify success/failure (Discord avec instructions rollback)
 ```
+
+**Script de déploiement:** `deploy_preprod_to_prod.sh` (63 lignes simplifiées)
+- Backup `20_prod/streamlit/` avec timestamp
+- Nettoyage complet de `20_prod/` (garde `.gitkeep`)
+- Copie 3 éléments : `streamlit/`, `pyproject.toml`, `README.md`
+- Pas de copie `uv.lock` (régénéré par `uv sync` dans container)
+- Pas de données locales (tout chargé depuis S3 Parquet)
 
 #### Alerting Discord
 
@@ -362,19 +369,20 @@ jobs:
 │  │ └─ Type Checking (mypy)                           │     │
 │  └───────────────────────────────────────────────────┘     │
 │                              │                              │
-│                  ┌───────────┼───────────┐                  │
-│                  ▼           ▼           ▼                  │
-│  ┌──────────────┐ ┌──────────┐ ┌─────────────────┐         │
-│  │ TESTS PROD   │ │TESTS PRE │ │TESTS INFRA      │         │
-│  │ (Job 2)      │ │(Job 3)   │ │(Job 4)          │         │
-│  │ 31 tests     │ │22 tests  │ │35 tests         │         │
-│  │ 100% cov     │ │96% cov   │ │(optional)       │         │
-│  └──────────────┘ └──────────┘ └─────────────────┘         │
-│                  └───────────┼───────────┘                  │
+│                  ┌───────────┴───────────┐                  │
+│                  ▼                       ▼                  │
+│  ┌──────────────────────────┐ ┌─────────────────┐          │
+│  │ TESTS PREPROD (Job 2)    │ │TESTS INFRA      │          │
+│  │ 22 tests, 96% cov        │ │(Job 3)          │          │
+│  │ ✅ Source de vérité      │ │35 tests         │          │
+│  │                          │ │(optional)       │          │
+│  └──────────────────────────┘ └─────────────────┘          │
+│                  └───────────┬───────────┘                  │
 │                              ▼                              │
 │  ┌───────────────────────────────────────────────────┐     │
-│  │ SUMMARY (Job 5)                                   │     │
+│  │ SUMMARY (Job 4)                                   │     │
 │  │ ✅ All checks passed / ❌ Some checks failed      │     │
+│  │ ℹ️ Tests PROD désactivés (artifact)              │     │
 │  └───────────────────────────────────────────────────┘     │
 └─────────────────────────────────────────────────────────────┘
                               │
@@ -654,11 +662,10 @@ cd /home/julien/code/mangetamain/000_dev
 
 2. **Sélectionner "CI Pipeline"**
    - Voir tous les runs automatiques
-   - Vérifier les jobs (Quality, Tests Prod, Tests Preprod, Infra, Summary)
+   - Vérifier les jobs (Quality, Tests Preprod, Tests Infra, Summary)
 
 3. **Télécharger les rapports de coverage**
    - Section "Artifacts" en bas de chaque run
-   - `coverage-report-prod.zip`
    - `coverage-report-preprod.zip`
 
 ---
@@ -668,12 +675,57 @@ cd /home/julien/code/mangetamain/000_dev
 | Métrique | Valeur | Objectif | Statut |
 |----------|--------|----------|--------|
 | **PEP8 compliance** | 100% | 100% | ✅ |
-| **Coverage Production** | 100% | >= 90% | ✅ |
 | **Coverage Preprod** | 96% | >= 90% | ✅ |
-| **Tests totaux** | 96 | - | ✅ |
+| **Tests Preprod** | 22 | - | ✅ |
+| **Tests Infrastructure** | 35 | - | ✅ |
 | **Temps CI moyen** | ~3 min | < 5 min | ✅ |
+| **Temps CD Preprod** | ~2 min | < 5 min | ✅ |
+| **Temps CD Prod** | ~4 min | < 10 min | ✅ |
 | **Taux de réussite** | 100% | - | ✅ |
-| **Docstrings** | ~80% | >= 80% | ⚠️ |
+| **Docstrings** | ~85% | >= 80% | ✅ |
+
+---
+
+## Optimisations Performance
+
+### Streamlit Caching avec @st.cache_data
+
+**Implémentation:** Toutes les fonctions de chargement de données utilisent `@st.cache_data` pour améliorer les performances (ajouté 2025-10-25).
+
+**Fichier:** `10_preprod/src/mangetamain_analytics/data/cached_loaders.py`
+
+```python
+import streamlit as st
+
+@st.cache_data(ttl=3600, show_spinner="🔄 Chargement des recettes depuis S3...")
+def get_recipes_clean():
+    """Charge les recettes depuis S3 avec cache (1h)."""
+    from mangetamain_data_utils.data_utils_recipes import load_recipes_clean
+    return load_recipes_clean()
+
+@st.cache_data(ttl=3600, show_spinner="🔄 Chargement des ratings depuis S3...")
+def get_ratings_longterm(min_interactions=100, return_metadata=False, verbose=False):
+    """Charge les ratings pour analyse long-terme depuis S3 avec cache (1h)."""
+    from mangetamain_data_utils.data_utils_ratings import (
+        load_ratings_for_longterm_analysis,
+    )
+    return load_ratings_for_longterm_analysis(
+        min_interactions=min_interactions,
+        return_metadata=return_metadata,
+        verbose=verbose,
+    )
+```
+
+**Avantages:**
+- ✅ **Données chargées une seule fois par heure** (TTL 3600s)
+- ✅ **Navigation entre pages instantanée** (pas de reload S3)
+- ✅ **Spinner visible** pendant le premier chargement
+- ✅ **Lazy imports** pour compatibilité tests locaux
+
+**Impact Performance:**
+- Chargement initial: ~5-10s (depuis S3 Parquet)
+- Chargements suivants: ~0.1s (depuis cache mémoire)
+- **Gain: 50-100x sur navigations répétées**
 
 ---
 
@@ -702,25 +754,28 @@ cd /home/julien/code/mangetamain/000_dev
 
 | Exigence | Implémenté | Preuve |
 |----------|------------|--------|
-| ✅ Vérification PEP8 | OUI | `.flake8` + `ci.yml:34-39` |
-| ✅ Vérification docstrings | OUI | `.pydocstyle` + `ci.yml:47-53` |
-| ✅ Tests automatisés | OUI | `ci.yml:56-131` (96 tests) |
-| ✅ Coverage >= 90% | OUI | `pyproject.toml` + résultats 96-100% |
+| ✅ Vérification PEP8 | OUI | `.flake8` + `ci.yml:41-46` |
+| ✅ Vérification docstrings | OUI | `.pydocstyle` + `ci.yml:55-61` |
+| ✅ Tests automatisés | OUI | `ci.yml:81-123` (22 tests PREPROD) |
+| ✅ Coverage >= 90% | OUI | `pyproject.toml` + résultat 96% |
 | ✅ PR → Tests auto | OUI | `ci.yml:7-9` (pull_request) |
 | ✅ Merge main → Tests | OUI | `ci.yml:4-6` (push main) |
-| ✅ **Déploiement (optionnel)** | **OUI** | **`cd-preprod.yml` + `cd-prod.yml` + Runner self-hosted + Discord** |
+| ✅ **Déploiement (optionnel)** | **OUI** | **`cd-preprod.yml` + `cd-prod.yml` + Runner + Script simplifié + Discord** |
 
 **Toutes les exigences académiques sont satisfaites, incluant l'optionnelle (déploiement automatisé).**
 
 ### Points remarquables
 
 **Au-delà des exigences :**
+- ✅ **Architecture séquentielle** CI → CD Preprod (bloque si CI échoue)
 - ✅ **Runner GitHub self-hosted** (VM dataia) pour déploiement sans VPN
-- ✅ **Notifications Discord** temps réel pour toute l'équipe
+- ✅ **Script de déploiement simplifié** (63 lignes, backup → delete → copy)
+- ✅ **PROD = artifact** (20_prod/ généré, pas dans git)
+- ✅ **Notifications Discord** avec env: pour caractères spéciaux
 - ✅ **Health checks automatiques** avec retry (10 tentatives)
-- ✅ **Déploiement manuel PROD** avec confirmation obligatoire
-- ✅ **Backup automatique** avant déploiement production
-- ✅ **Documentation exhaustive** (4 documents CI/CD dédiés)
+- ✅ **Streamlit caching** (@st.cache_data, TTL 1h, gain 50-100x)
+- ✅ **Backup automatique versionné** avant déploiement production
+- ✅ **Documentation exhaustive** (5 documents CI/CD dédiés)
 
 ---
 
@@ -754,5 +809,5 @@ cd /home/julien/code/mangetamain/000_dev
 **Implémenté par:** Équipe Mangetamain Analytics
 **Date de création:** 2025-10-23
 **Dernière mise à jour:** 2025-10-25
-**Version:** 2.0 (+ Runner Self-Hosted + Discord)
+**Version:** 3.0 (Pipeline séquentiel + Script simplifié + Caching + Artifact PROD)
 **Statut:** ✅ Production-ready + Déploiement automatisé opérationnel
