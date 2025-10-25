@@ -5,8 +5,12 @@ match = .*\.py
 match-dir = ^(?!(\.git|__pycache__|\.venv|venv|env|build|dist|htmlcov|96_keys)).*
 
 # Ignorer certaines erreurs pour être plus flexible
-add-ignore = D100,D104,D107
+add-ignore = D100,D104,D107,D202,D205,D212,D415
 
 # D100: Module docstring manquant
 # D104: Package docstring manquant
 # D107: __init__ docstring manquant
+# D202: No blank lines allowed after function docstring
+# D205: 1 blank line required between summary line and description
+# D212: Multi-line docstring summary should start at the first line
+# D415: First line should end with a period, question mark, or exclamation point
