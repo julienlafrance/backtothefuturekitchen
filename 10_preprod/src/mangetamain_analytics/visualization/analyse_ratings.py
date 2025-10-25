@@ -18,52 +18,8 @@ import statsmodels.api as sm
 # Import du thème graphique
 from utils import chart_theme
 
-# Import des utilitaires de chargement des données ratings (comme dans analyse_seasonality.py)
-from mangetamain_data_utils.data_utils_ratings import load_clean_interactions
-
-
-def load_ratings_for_longterm_analysis(min_interactions: int = 100, return_metadata: bool = True):
-    """
-    Charge les statistiques mensuelles de ratings avec filtrage de robustesse statistique.
-
-    Recréée localement à partir de load_clean_interactions() pour éviter dépendance
-    à data_utils_ratings.load_ratings_for_longterm_analysis().
-
-    Args:
-        min_interactions: Seuil minimum d'interactions par mois (défaut: 100)
-        return_metadata: Si True, retourne aussi les métadonnées de filtrage
-
-    Returns:
-        tuple: (pd.DataFrame des stats mensuelles, dict des métadonnées)
-    """
-    # Chargement données de base depuis S3
-    df_clean = load_clean_interactions()
-
-    # Agrégation mensuelle complète
-    monthly_raw = df_clean.group_by(["year", "month"]).agg([
-        pl.col("rating").mean().alias("mean_rating"),
-        pl.col("rating").median().alias("median_rating"),
-        pl.col("rating").std().alias("std_rating"),
-        pl.len().alias("n_interactions")
-    ]).sort(["year", "month"]).to_pandas()
-
-    # Ajout date pour continuité temporelle
-    monthly_raw['date'] = pd.to_datetime(monthly_raw[['year', 'month']].assign(day=1))
-
-    # Filtrage de robustesse statistique
-    monthly_filtered = monthly_raw[monthly_raw['n_interactions'] >= min_interactions].copy()
-
-    # Métadonnées
-    metadata = {
-        'seuil_applique': min_interactions,
-        'mois_total': len(monthly_raw),
-        'mois_conserves': len(monthly_filtered),
-        'mois_exclus': len(monthly_raw) - len(monthly_filtered)
-    }
-
-    if return_metadata:
-        return monthly_filtered, metadata
-    return monthly_filtered
+# Import des utilitaires de chargement des données ratings
+from mangetamain_data_utils.data_utils_ratings import load_ratings_for_longterm_analysis, load_clean_interactions
 
 
 def weighted_spearman(x, y, w):
