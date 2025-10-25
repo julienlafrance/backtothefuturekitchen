@@ -417,16 +417,19 @@ small, .caption {
     color: #FF8C00 !important;
     font-weight: 600 !important;
     font-family: 'Inter', sans-serif !important;
-    padding: 12px 16px 12px 40px !important;
+    padding: 12px 16px !important; /* uniform padding, no extra left offset */
     cursor: pointer !important;
     min-height: 48px !important;
-    position: relative !important;
+    display: flex !important;            /* lay out icon + text without overlap */
+    align-items: center !important;
+    gap: 8px !important;
 }
 
-/* Texte du summary pour éviter la superposition */
+/* Texte du summary: take full width, avoid overlap/wrapping glitches */
 [data-testid="stExpander"] summary p {
     margin: 0 !important;
-    display: inline-block !important;
+    display: block !important;
+    flex: 1 1 auto !important;
 }
 
 /* Contenu de l'expander */
@@ -439,13 +442,12 @@ small, .caption {
     padding-top: 12px !important;
 }
 
-/* Icône de l'expander - positionner à gauche */
+/* Icône de l'expander - placer normalement pour éviter la superposition */
 [data-testid="stExpander"] summary svg {
     color: #FF8C00 !important;
-    position: absolute !important;
-    left: 12px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
+    position: static !important;
+    transform: none !important;
+    flex: 0 0 auto !important;
 }
 
 /* ============================================================================
