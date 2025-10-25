@@ -528,7 +528,7 @@ def main():
 
     # Initialize session state for current page if not exists
     if "current_page" not in st.session_state:
-        st.session_state.current_page = "Analyses Saisonnières"
+        st.session_state.current_page = "Tendances 1999-2018"
 
     # Sidebar with navigation
     with st.sidebar:

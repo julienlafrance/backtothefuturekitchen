@@ -873,3 +873,32 @@ a:hover {
         padding: 15px;
     }
 }
+
+/* Streamlit DataFrame toolbar buttons (new DOM names) */
+[data-testid="stElementToolbarButtonContainer"] {
+    background: #2a2a2a !important;
+    border: 1px solid #444444 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,.45) !important;
+    border-radius: 8px !important;
+}
+
+[data-testid="stElementToolbarButton"],
+[data-testid="stElementToolbarButton"] > *,
+[data-testid="stElementToolbarButton"] * {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+[data-testid="stElementToolbarButton"]:hover {
+    background: #3a3a3a !important;
+    border-radius: 4px !important;
+}
+
+[data-testid="stElementToolbarButton"] svg,
+[data-testid="stElementToolbarButton"] svg * {
+    color: var(--text-color) !important;
+    fill: var(--text-color) !important;
+    stroke: var(--text-color) !important;
+}
