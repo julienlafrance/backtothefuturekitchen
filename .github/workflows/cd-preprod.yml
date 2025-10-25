@@ -103,7 +103,6 @@ jobs:
             if [ "$CI_STATUS" = "success" ]; then
               echo "[$(date)] ✅ CI passed! Marking as validated" >> "$LOG_FILE"
               echo "$COMMIT_SHA" > $STATE_FILE
-              echo "[$(date)] VALIDATED: $COMMIT_SHA" >> /var/log/preprod-deployments.log
 
               # Notification Discord
               curl -H "Content-Type: application/json" \
@@ -130,7 +129,6 @@ jobs:
 
               if curl -f -s --max-time 10 https://mangetamain.lafrance.io/ > /dev/null; then
                 echo "[$(date)] ✅ Rollback réussi" >> "$LOG_FILE"
-                echo "[$(date)] ROLLBACK: $COMMIT_SHA → $ROLLBACK_SHA" >> /var/log/preprod-deployments.log
               else
                 echo "[$(date)] ❌ Rollback échoué!" >> "$LOG_FILE"
               fi
@@ -147,7 +145,6 @@ jobs:
           done
 
           echo "[$(date)] ⏱️ Timeout CI (5min)" >> "$LOG_FILE"
-          echo "[$(date)] TIMEOUT: $COMMIT_SHA" >> /var/log/preprod-deployments.log
           exit 1
           SCRIPT_EOF
 
@@ -156,10 +153,7 @@ jobs:
           # Lancer en background (le script écrit directement dans son log)
           nohup /tmp/watch-ci-${{ github.sha }}.sh > /dev/null 2>&1 &
 
-          WATCHER_PID=$!
-          echo "✅ CI watcher launched in background (PID: $WATCHER_PID)"
-          echo "📝 Logs: /tmp/ci-watcher-${{ github.sha }}.log"
-          echo "$WATCHER_PID" > /tmp/watcher-pid-${{ github.sha }}
+          echo "✅ CI watcher launched in background"
 
       - name: ✅ Notify deployment complete
         if: success()
