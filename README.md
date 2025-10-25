@@ -1,7 +1,7 @@
 # 🍳 Mangetamain Analytics
 
 [![CI Pipeline - Quality & Tests](https://github.com/julienlafrance/backtothefuturekitchen/actions/workflows/ci.yml/badge.svg)](https://github.com/julienlafrance/backtothefuturekitchen/actions/workflows/ci.yml)
-![Tests](https://img.shields.io/badge/tests-117_total-success)
+![Tests](https://img.shields.io/badge/tests-118_total-success)
 ![Coverage](https://img.shields.io/badge/coverage-93%25-brightgreen)
 ![10_preprod](https://img.shields.io/badge/10__preprod-93%25-brightgreen)
 ![Python](https://img.shields.io/badge/python-3.13.3-blue)
@@ -49,6 +49,15 @@ s3 = boto3.client('s3', endpoint_url='http://s3fast.lafrance.io',
 ```bash
 aws s3 ls s3://mangetamain/ --endpoint-url http://s3fast.lafrance.io --region garage-fast
 ```
+
+### Configuration Locale (pour développement)
+
+Pour que les chemins Docker fonctionnent aussi en local, créer un lien symbolique :
+```bash
+sudo ln -s /home/julien/code/mangetamain/000_dev /app
+```
+
+Cela permet à `pyproject.toml` d'utiliser le chemin `/app/40_utils` en Docker ET en local.
 
 ## 🏗️ Architecture du Projet
 
@@ -136,10 +145,10 @@ pytest -v
 cd 10_preprod
 uv run pytest tests/unit/ -v --cov=src --cov-report=html
 ```
-**Résultat:** 82 tests (81 passent, 1 skipped), 93% coverage
+**Résultat:** 83 tests (79 passent, 4 skipped), 93% coverage
 
 ### Métriques globales
-- **Total tests:** 117 tests (82 unitaires + 35 infrastructure)
+- **Total tests:** 118 tests (83 unitaires + 35 infrastructure)
 - **Coverage code source:** 93% (10_preprod)
 - **Temps d'exécution:** ~6 secondes
 - **Taux de réussite:** 99%
@@ -198,7 +207,7 @@ Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
 - **[90_doc/](90_doc/)** - Documentation technique complète
 
 ### Tests et coverage
-- **[README_TESTS.md](README_TESTS.md)** - 📊 Guide complet des tests (117 tests, 93% coverage)
+- **[README_TESTS.md](README_TESTS.md)** - 📊 Guide complet des tests (118 tests, 93% coverage)
 
 ## 🏷️ Version
 
@@ -208,7 +217,7 @@ Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
 - ✅ Performance S3 maximisée (DNAT bypass)
 - ✅ DuckDB avec secrets intégrés
 - ✅ Architecture nettoyée et validée
-- ✅ **Tests et coverage complets (117 tests, 93% coverage)**
+- ✅ **Tests et coverage complets (118 tests, 93% coverage)**
 - ✅ **Pipeline CI/CD complet avec GitHub Actions**
   - Vérification PEP8 automatique (flake8)
   - Validation des docstrings (pydocstyle)

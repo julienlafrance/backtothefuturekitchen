@@ -8,7 +8,7 @@ Documentation complète des tests unitaires et du coverage pour le projet Manget
 
 | Module | Coverage | Tests | Statut |
 |--------|----------|-------|--------|
-| **10_preprod** (code source) | **93%** ✅ | 82 tests | Production ready |
+| **10_preprod** (code source) | **93%** ✅ | 83 tests | Production ready |
 | **20_prod** (artefact) | ❌ Non testé | - | Voir note ci-dessous |
 | **50_test** (infrastructure) | N/A | 35 tests | Validation S3/DuckDB/SQL |
 
@@ -37,7 +37,7 @@ uv run pytest tests/unit/ -v --cov=src --cov-report=html
 xdg-open htmlcov/index.html
 ```
 
-**Résultat:** 81 tests passent, 93% coverage, 1 skipped
+**Résultat:** 79 tests passent, 93% coverage, 4 skipped
 
 ### 50_test - Validation Infrastructure
 
@@ -83,7 +83,7 @@ tests/unit/
 ├── test_analyse_ratings_simple.py   (14 tests) ✅
 ├── test_custom_charts.py            (8 tests)  ✅
 ├── test_analyse_trendlines.py       (8 tests)  ✅
-└── test_cached_loaders.py           (4 tests)  ✅ (1 skipped)
+└── test_cached_loaders.py           (4 tests)  ⚠️  (4 skipped - mock st.cache_data)
 ```
 
 ### Configuration pyproject.toml
@@ -384,9 +384,9 @@ assert result  # Trop vague
 Coverage minimum **90%** avec pytest-cov sur le code métier
 
 ### Résultats
-- ✅ **10_preprod:** 93% coverage (82 tests)
+- ✅ **10_preprod:** 93% coverage (83 tests)
 - ✅ **50_test:** 35 tests infrastructure (S3, DuckDB, SQL)
-- ✅ **Total:** 117 tests
+- ✅ **Total:** 118 tests
 
 ### Impact
 - Code source testé à **93%** (objectif 90% dépassé de 3 points)
