@@ -21,7 +21,7 @@ jobs:
           COMMIT_MSG="${{ github.event.head_commit.message }}"
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"🚨 **Déploiement PRODUCTION démarré**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 Message: ${COMMIT_MSG_FIRST_LINE}\n👤 Par: ${{ github.actor }}\n⚠️  Déploiement manuel confirmé\"}" \
+            -d "{\"content\":\"🚨 **Déploiement PRODUCTION démarré**\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 Message: ${COMMIT_MSG_FIRST_LINE}\n👤 Par: ${{ github.actor }}\n⚠️  Déploiement manuel confirmé\n\n**Étapes:**\n1️⃣ Backup PROD actuel\n2️⃣ Pull code depuis GitHub\n3️⃣ Exécution deploy_preprod_to_prod.sh\n4️⃣ Redémarrage container (down && up)\n5️⃣ Health checks (100s)\n\n⏱️ Durée estimée: ~3 minutes\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: Backup current production files
@@ -31,7 +31,11 @@ jobs:
           echo "📝 Création backup PROD versionné dans: $BACKUP_DIR"
 
           mkdir -p "$BACKUP_DIR"
-          cp -r 20_prod/streamlit/* "$BACKUP_DIR/"
+
+          # Backup complet: streamlit, pyproject.toml, README.md
+          cp -r 20_prod/streamlit "$BACKUP_DIR/"
+          [ -f 20_prod/pyproject.toml ] && cp 20_prod/pyproject.toml "$BACKUP_DIR/"
+          [ -f 20_prod/README.md ] && cp 20_prod/README.md "$BACKUP_DIR/"
 
           # Sauvegarder le chemin du backup pour rollback
           echo "$BACKUP_DIR" > /tmp/prod-backup-path.txt
@@ -39,7 +43,8 @@ jobs:
           # Vérifier le backup
           BACKUP_SIZE=$(du -sh "$BACKUP_DIR" | cut -f1)
           echo "✅ Backup PROD créé: $BACKUP_SIZE"
-          ls -lh "$BACKUP_DIR/" | head -10
+          echo "📁 Contenu du backup:"
+          ls -lh "$BACKUP_DIR/"
 
           # Lister tous les backups existants
           echo "📂 Backups PROD disponibles:"
@@ -64,38 +69,62 @@ jobs:
       - name: Restart production container
         run: |
           cd /home/dataia25/mangetamain/30_docker
-          docker-compose -f docker-compose-prod.yml restart
-          echo "✅ Container production redémarré"
+          echo "🔄 Arrêt du container PROD..."
+          docker-compose -f docker-compose-prod.yml down
+
+          echo "🚀 Démarrage du container PROD avec nouveaux mounts..."
+          docker-compose -f docker-compose-prod.yml up -d
+
+          echo "✅ Container production redémarré (down && up pour nouveaux mounts)"
 
       - name: Wait for container to start
         run: |
-          echo "⏳ Attente démarrage Streamlit production (60s)..."
-          sleep 60
+          echo "⏳ Attente démarrage Streamlit production..."
+          echo "   - Installation dépendances (uv sync): ~90s"
+          echo "   - Démarrage Streamlit: ~10s"
+          sleep 90
+          echo "✅ Délai d'attente terminé"
 
       - name: Health check production
         run: |
           echo "🔍 Test santé production sur https://backtothefuturekitchen.lafrance.io/"
+          echo ""
+
+          # Test Docker container health
+          echo "🐳 Vérification statut container Docker..."
+          if docker ps --format '{{.Names}}\t{{.Status}}' | grep -q "mange_prod.*healthy"; then
+            echo "✅ Container Docker: healthy"
+          else
+            echo "⚠️  Container Docker pas encore healthy, attente..."
+          fi
+          echo ""
 
           # Retry 10 fois avec 10s d'intervalle
           for i in {1..10}; do
-            echo "Tentative $i/10..."
+            echo "🌐 Test HTTP $i/10..."
 
             if curl -f -s --max-time 10 https://backtothefuturekitchen.lafrance.io/ > /dev/null; then
-              echo "✅ Production est accessible!"
+              echo "   ✅ Site accessible (HTTP 200)"
 
               if curl -s https://backtothefuturekitchen.lafrance.io/ | grep -q "Back to the Kitchen\|Streamlit\|streamlit"; then
-                echo "✅ Production répond correctement"
+                echo "   ✅ Contenu Streamlit détecté"
+                echo ""
+                echo "🎉 Production déployée avec succès!"
                 exit 0
               else
-                echo "⚠️  Production répond mais contenu inattendu"
+                echo "   ⚠️  Réponse HTTP mais contenu inattendu"
               fi
             else
-              echo "❌ Production non accessible, attente 10s..."
-              sleep 10
+              echo "   ❌ Site non accessible"
+              if [ $i -lt 10 ]; then
+                echo "   ⏳ Attente 10s avant nouvelle tentative..."
+                sleep 10
+              fi
             fi
           done
 
-          echo "❌ Production health check échoué après 10 tentatives"
+          echo ""
+          echo "❌ Production health check échoué après 10 tentatives (100s)"
           exit 1
 
       - name: Notify deployment success
@@ -105,7 +134,7 @@ jobs:
           COMMIT_MSG="${{ github.event.head_commit.message }}"
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"✅ **Déploiement PRODUCTION réussi!**\n🌐 URL: https://backtothefuturekitchen.lafrance.io/\n📦 Commit: \`${GITHUB_SHA:0:7}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n📂 Backup: \`$BACKUP_DIR\`\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n👤 Déployé par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"✅ **Déploiement PRODUCTION réussi!**\n\n🌐 **URL:** https://backtothefuturekitchen.lafrance.io/\n📦 **Commit:** \`${GITHUB_SHA:0:7}\`\n💬 **Message:** ${COMMIT_MSG_FIRST_LINE}\n\n**Détails:**\n✅ Backup créé: \`$BACKUP_DIR\`\n✅ Script deploy_preprod_to_prod.sh exécuté\n✅ Container redémarré (down && up)\n✅ Health checks passés\n✅ Données chargées depuis S3 Parquet\n\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\n👤 Déployé par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: Notify deployment failure
@@ -116,7 +145,7 @@ jobs:
           COMMIT_MSG="${{ github.event.head_commit.message }}"
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"🚨 **ÉCHEC - Déploiement PRODUCTION**\n❌ Health check échoué\n📦 Commit tenté: \`$NEW_COMMIT\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⚠️  **PRODUCTION POTENTIELLEMENT CASSÉE**\n\n**Options:**\n1️⃣ Corriger l'erreur directement en PROD\n2️⃣ Rollback manuel vers backup:\n\`\`\`bash\nssh dataia\ncd /home/dataia25/mangetamain/20_prod/streamlit\nrm -rf *\ncp -r $BACKUP_DIR/* .\ncd /home/dataia25/mangetamain/30_docker\ndocker-compose -f docker-compose-prod.yml restart\n\`\`\`\n\n📂 Backup disponible: \`$BACKUP_DIR\`\n🌐 Vérifier: https://backtothefuturekitchen.lafrance.io/\n👤 Tenté par: ${{ github.actor }}\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
+            -d "{\"content\":\"🚨 **ÉCHEC - Déploiement PRODUCTION**\n❌ Health check échoué\n📦 Commit tenté: \`$NEW_COMMIT\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⚠️  **PRODUCTION POTENTIELLEMENT CASSÉE**\n\n**Rollback manuel recommandé:**\n\`\`\`bash\nssh dataia\ncd /home/dataia25/mangetamain/20_prod\n\n# Restaurer le backup complet\nrm -rf streamlit pyproject.toml README.md\ncp -r $BACKUP_DIR/streamlit .\ncp $BACKUP_DIR/pyproject.toml .\ncp $BACKUP_DIR/README.md .\n\n# Redémarrer le container\ncd /home/dataia25/mangetamain/30_docker\ndocker-compose -f docker-compose-prod.yml down\ndocker-compose -f docker-compose-prod.yml up -d\n\`\`\`\n\n📂 Backup: \`$BACKUP_DIR\`\n🌐 Vérifier: https://backtothefuturekitchen.lafrance.io/\n👤 Tenté par: ${{ github.actor }}\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
   cancelled:

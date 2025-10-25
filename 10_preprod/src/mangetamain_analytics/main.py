@@ -1,18 +1,16 @@
 """Streamlit application for Mangetamain Analytics - Updated Version.
 
-This module provides the main interface for analyzing Food.com dataset
-using DuckDB as the backend database with all imported tables.
+This module provides the main interface for analyzing Food.com dataset.
+Data is loaded from S3 Parquet files via mangetamain_data_utils package.
 """
 
 import streamlit as st
 import pandas as pd
-import duckdb
 from pathlib import Path
 from loguru import logger
 import sys
 import os
 import plotly.express as px
-from streamlit_extras.stylable_container import stylable_container
 from visualization.custom_charts import (
     create_correlation_heatmap,
     create_distribution_plot,
@@ -36,6 +34,7 @@ from utils import colors
 SCRIPT_DIR = Path(__file__).parent
 ASSETS_DIR = SCRIPT_DIR / "assets"
 
+
 # Fonction helper pour créer des options de menu avec icônes Lucide
 def create_nav_option_with_icon(icon_name, text):
     """Crée une option de navigation avec icône Lucide inline."""
@@ -45,7 +44,7 @@ def create_nav_option_with_icon(icon_name, text):
         "sun": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>',
         "sparkles": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>',
         "bar-chart-2": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>',
-        "refresh-cw": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>'
+        "refresh-cw": '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>',
     }
 
     icon_svg = lucide_icons.get(icon_name, "")
@@ -125,42 +124,30 @@ if not any(
 st.set_page_config(
     page_title="Mangetamain Analytics",
     page_icon=str(ASSETS_DIR / "favicon.png"),
-    layout="wide"
+    layout="wide",
 )
 
 
-def get_db_connection():
-    """Establish connection to the DuckDB database."""
-    db_path = "data/mangetamain.duckdb"
-
-    if Path(db_path).exists():
-        try:
-            conn = duckdb.connect(db_path)
-
-            file_size = Path(db_path).stat().st_size / (1024 * 1024)
-            tables = conn.execute("SHOW TABLES").fetchall()
-
-            logger.info(f"✅ DuckDB connection established - File: {db_path}")
-            logger.info(f"📊 Database size: {file_size:.1f} MB")
-            logger.info(f"🗂️ Tables found: {len(tables)} - {[t[0] for t in tables]}")
-
-            return conn
-
-        except Exception as e:
-            logger.error(f"❌ Failed to connect to DuckDB: {e}")
-            return None
-    else:
-        logger.error(f"❌ DuckDB file not found: {db_path}")
-        return None
+########################################################################################################
+# OBSOLETE FUNCTIONS REMOVED - All data now loaded from S3 Parquet via mangetamain_data_utils
+########################################################################################################
+# - get_db_connection() → data/mangetamain.duckdb no longer used
+# - display_database_info(conn) → Removed
+# - create_tables_overview(conn) → Removed
+# - create_rating_analysis(conn) → Removed
+# - create_temporal_analysis(conn) → Removed
+# - create_user_analysis(conn) → Removed
+# - display_raw_data_explorer(conn) → Removed
+# - create_custom_visualizations(conn) → Removed
+#
+# All analyses now use:
+#   - load_recipes_clean() from mangetamain_data_utils.data_utils_recipes
+#   - load_ratings_for_longterm_analysis() from mangetamain_data_utils.data_utils_ratings
+#   - Data source: S3 Parquet files (s3://mangetamain/*.parquet)
+########################################################################################################
 
 
-def display_database_info(conn):
-    """Display comprehensive database information in sidebar."""
-    # This function is now empty - database info removed from sidebar
-    pass
-
-
-def create_tables_overview(conn):
+def _OBSOLETE_create_tables_overview(conn):
     """Create interactive overview of all tables."""
     st.subheader("📊 Vue d'ensemble des tables")
 
@@ -531,13 +518,6 @@ def main():
     """Main Streamlit application - Enhanced version."""
     logger.info("🚀 Enhanced Streamlit application starting")
 
-    # Database connection
-    conn = get_db_connection()
-    if not conn:
-        st.error("❌ Impossible de se connecter à la base DuckDB")
-        st.info("💡 Assurez-vous que le fichier `data/mangetamain.duckdb` existe")
-        return
-
     # Load custom CSS from external file
     css_path = ASSETS_DIR / "custom.css"
     if css_path.exists():
@@ -547,7 +527,7 @@ def main():
         logger.warning(f"CSS file not found: {css_path}")
 
     # Initialize session state for current page if not exists
-    if 'current_page' not in st.session_state:
+    if "current_page" not in st.session_state:
         st.session_state.current_page = "Analyses Saisonnières"
 
     # Sidebar with navigation
@@ -561,18 +541,20 @@ def main():
             st.markdown("### 🍳 Back to the Kitchen")
 
         # Séparateur subtil
-        st.markdown("<hr style='border: 0.5px solid rgba(240, 240, 240, 0.1); margin: 20px 0;'>", unsafe_allow_html=True)
+        st.markdown(
+            "<hr style='border: 0.5px solid rgba(240, 240, 240, 0.1); margin: 20px 0;'>",
+            unsafe_allow_html=True,
+        )
 
         # Titre de section ANALYSES avec classe CSS
         st.markdown(
-            f'<h3 class="sidebar-category-title">ANALYSES</h3>',
-            unsafe_allow_html=True
+            '<h3 class="sidebar-category-title">ANALYSES</h3>', unsafe_allow_html=True
         )
 
         # Texte introductif
         st.markdown(
-            f'<p class="sidebar-subtitle">CHOISIR UNE ANALYSE:</p>',
-            unsafe_allow_html=True
+            '<p class="sidebar-subtitle">CHOISIR UNE ANALYSE:</p>',
+            unsafe_allow_html=True,
         )
 
         # Menu items with Lucide icons
@@ -581,7 +563,7 @@ def main():
             ("calendar-days", "Analyses Saisonnières"),
             ("sun", "Effet Jour/Week-end"),
             ("star", "Analyses Ratings"),
-            ("sparkles", "Recommandations")
+            ("sparkles", "Recommandations"),
         ]
 
         # Options pour st.radio (texte simple)
@@ -591,10 +573,14 @@ def main():
         selected_page = st.radio(
             "Navigation",
             menu_labels,
-            index=menu_labels.index(st.session_state.current_page) if st.session_state.current_page in menu_labels else 0,
+            index=(
+                menu_labels.index(st.session_state.current_page)
+                if st.session_state.current_page in menu_labels
+                else 0
+            ),
             label_visibility="collapsed",
             key="main_nav",
-            horizontal=False
+            horizontal=False,
         )
 
         # Mettre à jour session state
@@ -602,7 +588,10 @@ def main():
             st.session_state.current_page = selected_page
 
         # Séparateur avant bouton Rafraîchir
-        st.markdown("<hr style='border: 0.5px solid rgba(240, 240, 240, 0.1); margin: 20px 0;'>", unsafe_allow_html=True)
+        st.markdown(
+            "<hr style='border: 0.5px solid rgba(240, 240, 240, 0.1); margin: 20px 0;'>",
+            unsafe_allow_html=True,
+        )
 
         # Bouton Rafraîchir stylisé
         if st.button("🔄 Rafraîchir", key="btn_refresh", use_container_width=True):
@@ -631,14 +620,14 @@ def main():
             if credentials_path:
                 config.read(str(credentials_path))
                 s3 = boto3.client(
-                    's3',
-                    endpoint_url='http://s3fast.lafrance.io',
-                    aws_access_key_id=config['s3fast']['aws_access_key_id'],
-                    aws_secret_access_key=config['s3fast']['aws_secret_access_key'],
-                    region_name='garage-fast'
+                    "s3",
+                    endpoint_url="http://s3fast.lafrance.io",
+                    aws_access_key_id=config["s3fast"]["aws_access_key_id"],
+                    aws_secret_access_key=config["s3fast"]["aws_secret_access_key"],
+                    region_name="garage-fast",
                 )
-                response = s3.list_objects_v2(Bucket='mangetamain', MaxKeys=1)
-                s3_ready = 'Contents' in response
+                response = s3.list_objects_v2(Bucket="mangetamain", MaxKeys=1)
+                s3_ready = "Contents" in response
         except Exception:
             s3_ready = False
 
@@ -652,7 +641,7 @@ def main():
                 <span>S3 {"Ready" if s3_ready else "Error"}</span>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
         # BADGE ENVIRONNEMENT - Style pill avec classe CSS
@@ -676,12 +665,15 @@ def main():
                 <span>{label}</span>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
     # Main content - Display selected analysis
     if selected_page == "Tendances 1999-2018":
-        st.markdown('<h1 style="margin-top: 0; padding-top: 0;">📈 Analyses des tendances temporelles (1999-2018)</h1>', unsafe_allow_html=True)
+        st.markdown(
+            '<h1 style="margin-top: 0; padding-top: 0;">📈 Analyses des tendances temporelles (1999-2018)</h1>',
+            unsafe_allow_html=True,
+        )
         st.markdown(
             """
             Cette section présente les **analyses de tendances à long terme** des recettes Food.com
@@ -702,7 +694,7 @@ def main():
                     <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">20 années</div>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
 
         with col2:
@@ -714,7 +706,7 @@ def main():
                     <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Total analysées</div>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
 
         with col3:
@@ -726,7 +718,7 @@ def main():
                     <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Dimensions étudiées</div>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
 
         with col4:
@@ -738,7 +730,7 @@ def main():
                     <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Weighted Least Squares</div>
                 </div>
                 """,
-                unsafe_allow_html=True
+                unsafe_allow_html=True,
             )
 
         st.markdown("---")
@@ -782,7 +774,10 @@ def main():
         render_ratings_analysis()
 
     elif selected_page == "Recommandations":
-        st.markdown('<h1 style="margin-top: 0; padding-top: 0;">⭐ Système de Recommandations</h1>', unsafe_allow_html=True)
+        st.markdown(
+            '<h1 style="margin-top: 0; padding-top: 0;">⭐ Système de Recommandations</h1>',
+            unsafe_allow_html=True,
+        )
         st.info("🚧 Cette analyse sera disponible prochainement.")
         st.markdown(
             """
@@ -795,11 +790,15 @@ def main():
 
     else:
         # Fallback
-        st.markdown(f'<h1 style="margin-top: 0; padding-top: 0;">{selected_page}</h1>', unsafe_allow_html=True)
+        st.markdown(
+            f'<h1 style="margin-top: 0; padding-top: 0;">{selected_page}</h1>',
+            unsafe_allow_html=True,
+        )
         st.info("🚧 Cette analyse sera disponible prochainement.")
 
     # Footer - Cartouche gris visible (pas fixe)
     from datetime import datetime
+
     today = datetime.now().strftime("%Y-%m-%d")
 
     st.markdown("<br><br>", unsafe_allow_html=True)  # Espace avant footer
@@ -815,7 +814,7 @@ def main():
                 <span style="color: {colors.TEXT_PRIMARY}; font-weight: 600;">{today}</span>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
     with footer_col2:
@@ -826,7 +825,7 @@ def main():
                 <span style="color: {colors.TEXT_PRIMARY}; font-weight: 600;">1.0.0</span>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
     with footer_col3:
@@ -838,7 +837,7 @@ def main():
                 </a>
             </div>
             """,
-            unsafe_allow_html=True
+            unsafe_allow_html=True,
         )
 
     logger.info("✅ Application fully loaded")

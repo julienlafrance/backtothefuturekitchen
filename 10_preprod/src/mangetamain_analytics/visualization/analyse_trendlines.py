@@ -12,7 +12,6 @@ Utilise WLS (Weighted Least Squares) pour les régressions.
 """
 
 import warnings
-from pathlib import Path
 
 import polars as pl
 import numpy as np

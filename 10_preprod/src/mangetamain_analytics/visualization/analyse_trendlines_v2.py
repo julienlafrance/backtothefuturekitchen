@@ -7,14 +7,11 @@ Conversion propre Matplotlib → Plotly Express selon guide pratique.
 import warnings
 import numpy as np
 import polars as pl
-import pandas as pd
-import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 from scipy import stats
 import statsmodels.api as sm
 import streamlit as st
-import matplotlib.cm as cm
 import matplotlib.colors as mcolors
 
 from mangetamain_data_utils.data_utils_recipes import load_recipes_clean
@@ -26,6 +23,7 @@ warnings.filterwarnings("ignore")
 # ============================================================================
 # FONCTIONS DE CHARGEMENT AVEC CACHE
 # ============================================================================
+
 
 @st.cache_data
 def load_and_prepare_data():
@@ -45,6 +43,7 @@ def load_and_prepare_data():
 # ============================================================================
 # ANALYSE 1: VOLUME DE RECETTES
 # ============================================================================
+
 
 def analyse_trendline_volume():
     """
@@ -125,12 +124,11 @@ def analyse_trendline_volume():
         go.Bar(
             x=recipes_per_year["year"].astype(str),
             y=recipes_per_year["n_recipes"],
-            marker=dict(
-                color=bar_color,
-                opacity=0.85,
-                line=dict(width=0)
-            ),
-            text=[f"{val:,}" if show_values else "" for val in recipes_per_year["n_recipes"]],
+            marker=dict(color=bar_color, opacity=0.85, line=dict(width=0)),
+            text=[
+                f"{val:,}" if show_values else ""
+                for val in recipes_per_year["n_recipes"]
+            ],
             textposition="outside",
             textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
             showlegend=False,
@@ -150,7 +148,7 @@ def analyse_trendline_volume():
                 color=chart_theme.get_scatter_color(),
                 size=8,
                 opacity=0.7,
-                line=dict(width=1, color=chart_theme.colors.TEXT_PRIMARY)
+                line=dict(width=1, color=chart_theme.colors.TEXT_PRIMARY),
             ),
             name="Observations",
             hovertemplate="Théorique: %{x:.2f}<br>Observé: %{y:,.0f}<extra></extra>",
@@ -166,9 +164,7 @@ def analyse_trendline_volume():
             y=[slope * osm.min() + intercept, slope * osm.max() + intercept],
             mode="lines",
             line=dict(
-                color=chart_theme.get_reference_line_color(),
-                width=2,
-                dash="dash"
+                color=chart_theme.get_reference_line_color(), width=2, dash="dash"
             ),
             name="Ligne théorique",
             hoverinfo="skip",
@@ -233,6 +229,7 @@ def analyse_trendline_volume():
 # ANALYSE 2: DURÉE DE PRÉPARATION
 # ============================================================================
 
+
 def analyse_trendline_duree():
     """
     Analyse WLS de l'évolution de la durée - Version style professionnel.
@@ -257,19 +254,26 @@ def analyse_trendline_duree():
             min_value=int(all_years[0]),
             max_value=int(all_years[-1]),
             value=(int(all_years[0]), int(all_years[-1])),
-            key="slider_duree_years_v2"
+            key="slider_duree_years_v2",
         )
 
     with col2:
         # Option bulles
-        show_bubbles = st.checkbox("⭕ Afficher les bulles proportionnelles", value=True)
+        show_bubbles = st.checkbox(
+            "⭕ Afficher les bulles proportionnelles", value=True
+        )
 
     with col3:
         # Quantiles personnalisables
         quantile_choice = st.selectbox(
             "📊 Intervalle de dispersion",
-            ["Q25-Q75 (IQR classique)", "Q10-Q90 (Large)", "Q5-Q95 (Très large)", "Q33-Q66 (Étroit)"],
-            index=0
+            [
+                "Q25-Q75 (IQR classique)",
+                "Q10-Q90 (Large)",
+                "Q5-Q95 (Très large)",
+                "Q33-Q66 (Étroit)",
+            ],
+            index=0,
         )
 
         # Extraction des valeurs de quantiles
@@ -287,19 +291,20 @@ def analyse_trendline_duree():
     # ========================================
 
     df_filtered = df.filter(
-        (pl.col("year") >= year_range[0]) &
-        (pl.col("year") <= year_range[1])
+        (pl.col("year") >= year_range[0]) & (pl.col("year") <= year_range[1])
     )
 
     minutes_by_year = (
         df_filtered.group_by("year")
-        .agg([
-            pl.mean("minutes").alias("mean_minutes"),
-            pl.median("minutes").alias("median_minutes"),
-            pl.quantile("minutes", q_low).alias("q_low"),
-            pl.quantile("minutes", q_high).alias("q_high"),
-            pl.len().alias("n_recipes")
-        ])
+        .agg(
+            [
+                pl.mean("minutes").alias("mean_minutes"),
+                pl.median("minutes").alias("median_minutes"),
+                pl.quantile("minutes", q_low).alias("q_low"),
+                pl.quantile("minutes", q_high).alias("q_high"),
+                pl.len().alias("n_recipes"),
+            ]
+        )
         .sort("year")
         .to_pandas()
     )
@@ -319,13 +324,13 @@ def analyse_trendline_duree():
         "mean_minutes": {
             "color": color_mean,
             "label": "Moyenne",
-            "ylabel": "minutes/an"
+            "ylabel": "minutes/an",
         },
         "median_minutes": {
             "color": color_median,
             "label": "Médiane",
-            "ylabel": "minutes/an"
-        }
+            "ylabel": "minutes/an",
+        },
     }
 
     regressions = {}
@@ -335,13 +340,15 @@ def analyse_trendline_duree():
         wls_model = sm.WLS(y, X_const, weights=w)
         wls_result = wls_model.fit()
         y_pred = wls_result.predict(X_const)
-        r2_w = 1 - np.average((y - y_pred)**2, weights=w) / np.average((y - np.average(y, weights=w))**2, weights=w)
+        r2_w = 1 - np.average((y - y_pred) ** 2, weights=w) / np.average(
+            (y - np.average(y, weights=w)) ** 2, weights=w
+        )
         regressions[metric_col] = {
             "y_pred": y_pred,
             "slope": wls_result.params[1],
             "intercept": wls_result.params[0],
             "r2": r2_w,
-            "p_value": wls_result.pvalues[1]
+            "p_value": wls_result.pvalues[1],
         }
 
     # Taille des bulles (identique à l'original)
@@ -355,37 +362,32 @@ def analyse_trendline_duree():
 
     with col_a:
         st.metric(
-            "⏱️ Moyenne actuelle",
-            f"{minutes_by_year['mean_minutes'].iloc[-1]:.1f} min"
+            "⏱️ Moyenne actuelle", f"{minutes_by_year['mean_minutes'].iloc[-1]:.1f} min"
         )
 
     with col_b:
         st.metric(
             "📊 Médiane actuelle",
-            f"{minutes_by_year['median_minutes'].iloc[-1]:.1f} min"
+            f"{minutes_by_year['median_minutes'].iloc[-1]:.1f} min",
         )
 
     with col_c:
         trend_mean = regressions["mean_minutes"]["slope"]
-        st.metric(
-            "📉 Pente Moyenne",
-            f"{trend_mean:+.4f} min/an"
-        )
+        st.metric("📉 Pente Moyenne", f"{trend_mean:+.4f} min/an")
 
     with col_d:
         trend_median = regressions["median_minutes"]["slope"]
-        st.metric(
-            "📉 Pente Médiane",
-            f"{trend_median:+.4f} min/an"
-        )
+        st.metric("📉 Pente Médiane", f"{trend_median:+.4f} min/an")
 
     with col_e:
         # Dispersion actuelle (écart interquantile)
-        dispersion_actuelle = minutes_by_year["q_high"].iloc[-1] - minutes_by_year["q_low"].iloc[-1]
+        dispersion_actuelle = (
+            minutes_by_year["q_high"].iloc[-1] - minutes_by_year["q_low"].iloc[-1]
+        )
         st.metric(
             "📏 Dispersion actuelle",
             f"{dispersion_actuelle:.1f} min",
-            help=f"Écart entre Q{int(q_high*100)} et Q{int(q_low*100)}"
+            help=f"Écart entre Q{int(q_high*100)} et Q{int(q_low*100)}",
         )
 
     st.markdown("---")
@@ -399,108 +401,124 @@ def analyse_trendline_duree():
     # 1. ZONE IQR (Q_LOW-Q_HIGH) - EN FOND
     label_quantile = f"Intervalle Q{int(q_low*100)}-Q{int(q_high*100)}"
 
-    fig.add_trace(go.Scatter(
-        x=minutes_by_year["year"],
-        y=minutes_by_year["q_high"],
-        fill=None,
-        mode="lines",
-        line=dict(width=0),
-        showlegend=False,
-        hoverinfo="skip"
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=minutes_by_year["year"],
+            y=minutes_by_year["q_high"],
+            fill=None,
+            mode="lines",
+            line=dict(width=0),
+            showlegend=False,
+            hoverinfo="skip",
+        )
+    )
 
-    fig.add_trace(go.Scatter(
-        x=minutes_by_year["year"],
-        y=minutes_by_year["q_low"],
-        fill="tonexty",
-        mode="lines",
-        line=dict(width=0),
-        fillcolor=f"rgba{tuple(list(mcolors.hex2color(color_mean)) + [0.15])}",
-        name=label_quantile,
-        hovertemplate=f"<b>Année %{{x}}</b><br>{label_quantile}<extra></extra>"
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=minutes_by_year["year"],
+            y=minutes_by_year["q_low"],
+            fill="tonexty",
+            mode="lines",
+            line=dict(width=0),
+            fillcolor=f"rgba{tuple(list(mcolors.hex2color(color_mean)) + [0.15])}",
+            name=label_quantile,
+            hovertemplate=f"<b>Année %{{x}}</b><br>{label_quantile}<extra></extra>",
+        )
+    )
 
     # 2. MOYENNE - Courbe observée
-    fig.add_trace(go.Scatter(
-        x=minutes_by_year["year"],
-        y=minutes_by_year["mean_minutes"],
-        mode="lines",
-        name="Moyenne (observée)",
-        line=dict(color=color_mean, width=2),
-        opacity=0.8,
-        hovertemplate="<b>Année %{x}</b><br>Moyenne: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
-        customdata=minutes_by_year["n_recipes"]
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=minutes_by_year["year"],
+            y=minutes_by_year["mean_minutes"],
+            mode="lines",
+            name="Moyenne (observée)",
+            line=dict(color=color_mean, width=2),
+            opacity=0.8,
+            hovertemplate="<b>Année %{x}</b><br>Moyenne: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
+            customdata=minutes_by_year["n_recipes"],
+        )
+    )
 
     # 3. MOYENNE - Bulles proportionnelles
     if show_bubbles:
-        fig.add_trace(go.Scatter(
-            x=minutes_by_year["year"],
-            y=minutes_by_year["mean_minutes"],
-            mode="markers",
-            name="Volume (moyenne)",
-            marker=dict(
-                color=color_mean,
-                size=sizes,
-                opacity=0.6,
-                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=0.5)
-            ),
-            hovertemplate="<b>Année %{x}</b><br>Moyenne: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
-            customdata=minutes_by_year["n_recipes"],
-            showlegend=False
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=minutes_by_year["year"],
+                y=minutes_by_year["mean_minutes"],
+                mode="markers",
+                name="Volume (moyenne)",
+                marker=dict(
+                    color=color_mean,
+                    size=sizes,
+                    opacity=0.6,
+                    line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=0.5),
+                ),
+                hovertemplate="<b>Année %{x}</b><br>Moyenne: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
+                customdata=minutes_by_year["n_recipes"],
+                showlegend=False,
+            )
+        )
 
     # 4. MOYENNE - Régression WLS
-    fig.add_trace(go.Scatter(
-        x=minutes_by_year["year"],
-        y=regressions["mean_minutes"]["y_pred"],
-        mode="lines",
-        name=f"Régression Moyenne (R²={regressions['mean_minutes']['r2']:.3f})",
-        line=dict(color=chart_theme.colors.CHART_COLORS[2], width=2.5, dash="dash"),
-        opacity=0.8,
-        hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>"
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=minutes_by_year["year"],
+            y=regressions["mean_minutes"]["y_pred"],
+            mode="lines",
+            name=f"Régression Moyenne (R²={regressions['mean_minutes']['r2']:.3f})",
+            line=dict(color=chart_theme.colors.CHART_COLORS[2], width=2.5, dash="dash"),
+            opacity=0.8,
+            hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>",
+        )
+    )
 
     # 5. MÉDIANE - Courbe observée
-    fig.add_trace(go.Scatter(
-        x=minutes_by_year["year"],
-        y=minutes_by_year["median_minutes"],
-        mode="lines",
-        name="Médiane (observée)",
-        line=dict(color=color_median, width=2),
-        opacity=0.8,
-        hovertemplate="<b>Année %{x}</b><br>Médiane: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
-        customdata=minutes_by_year["n_recipes"]
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=minutes_by_year["year"],
+            y=minutes_by_year["median_minutes"],
+            mode="lines",
+            name="Médiane (observée)",
+            line=dict(color=color_median, width=2),
+            opacity=0.8,
+            hovertemplate="<b>Année %{x}</b><br>Médiane: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
+            customdata=minutes_by_year["n_recipes"],
+        )
+    )
 
     # 6. MÉDIANE - Bulles proportionnelles
     if show_bubbles:
-        fig.add_trace(go.Scatter(
-            x=minutes_by_year["year"],
-            y=minutes_by_year["median_minutes"],
-            mode="markers",
-            name="Volume (médiane)",
-            marker=dict(
-                color=color_median,
-                size=sizes,
-                opacity=0.6,
-                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=0.5)
-            ),
-            hovertemplate="<b>Année %{x}</b><br>Médiane: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
-            customdata=minutes_by_year["n_recipes"],
-            showlegend=False
-        ))
+        fig.add_trace(
+            go.Scatter(
+                x=minutes_by_year["year"],
+                y=minutes_by_year["median_minutes"],
+                mode="markers",
+                name="Volume (médiane)",
+                marker=dict(
+                    color=color_median,
+                    size=sizes,
+                    opacity=0.6,
+                    line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=0.5),
+                ),
+                hovertemplate="<b>Année %{x}</b><br>Médiane: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
+                customdata=minutes_by_year["n_recipes"],
+                showlegend=False,
+            )
+        )
 
     # 7. MÉDIANE - Régression WLS
-    fig.add_trace(go.Scatter(
-        x=minutes_by_year["year"],
-        y=regressions["median_minutes"]["y_pred"],
-        mode="lines",
-        name=f"Régression Médiane (R²={regressions['median_minutes']['r2']:.3f})",
-        line=dict(color=chart_theme.colors.CHART_COLORS[3], width=2.5, dash="dash"),
-        opacity=0.8,
-        hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>"
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=minutes_by_year["year"],
+            y=regressions["median_minutes"]["y_pred"],
+            mode="lines",
+            name=f"Régression Médiane (R²={regressions['median_minutes']['r2']:.3f})",
+            line=dict(color=chart_theme.colors.CHART_COLORS[3], width=2.5, dash="dash"),
+            opacity=0.8,
+            hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>",
+        )
+    )
 
     # ========================================
     # MISE EN FORME AVEC THÈME "BACK TO THE KITCHEN"
@@ -516,16 +534,11 @@ def analyse_trendline_duree():
     chart_theme.apply_chart_theme(fig)
 
     fig.update_layout(
-        title=dict(
-            text=title_text,
-            font=dict(size=16),
-            x=0.5,
-            xanchor="center"
-        ),
+        title=dict(text=title_text, font=dict(size=16), x=0.5, xanchor="center"),
         xaxis_title="Année",
         yaxis_title="Minutes",
         height=650,
-        hovermode="closest"
+        hovermode="closest",
     )
 
     # Affichage
@@ -535,7 +548,8 @@ def analyse_trendline_duree():
     # EXPLICATION DE LA ZONE BLEUE
     # ========================================
 
-    st.info(f"""
+    st.info(
+        f"""
     💡 **Zone bleue ({label_quantile})** : Représente la dispersion des durées de recettes.
 
     - **Zone large** → Grande variété de durées (recettes courtes ET longues)
@@ -543,7 +557,8 @@ def analyse_trendline_duree():
     - **Changement de largeur** → Évolution de la diversité des recettes au fil du temps
 
     📊 Dispersion actuelle : **{dispersion_actuelle:.1f} minutes** d'écart entre Q{int(q_low*100)} et Q{int(q_high*100)}
-    """)
+    """
+    )
 
     # ========================================
     # INTERPRÉTATION (IDENTIQUE À L'ORIGINAL)
@@ -551,13 +566,15 @@ def analyse_trendline_duree():
 
     st.markdown("### 📊 Interprétation")
 
-    st.write(f"""
+    st.write(
+        f"""
     L'analyse de la durée moyenne de préparation montre une **tendance globale à la baisse**
     depuis la création du site. En moyenne, le temps de préparation diminue d'environ
     **{regressions['mean_minutes']['slope']:.2f} min/an**, tandis que la médiane recule de
     **{regressions['median_minutes']['slope']:.2f} min/an**, ce qui traduit une légère
     **simplification des recettes** au fil du temps.
-    """)
+    """
+    )
 
     # ========================================
     # STATISTIQUES DÉTAILLÉES
@@ -591,20 +608,30 @@ def analyse_trendline_duree():
         display_df["median_pred"] = regressions["median_minutes"]["y_pred"]
 
         st.dataframe(
-            display_df[[
-                "year", "mean_minutes", "mean_pred", "median_minutes", "median_pred",
-                "q_low", "q_high", "n_recipes"
-            ]].style.format({
-                "mean_minutes": "{:.2f}",
-                "mean_pred": "{:.2f}",
-                "median_minutes": "{:.2f}",
-                "median_pred": "{:.2f}",
-                "q_low": "{:.2f}",
-                "q_high": "{:.2f}",
-                "n_recipes": "{:,}"
-            }),
+            display_df[
+                [
+                    "year",
+                    "mean_minutes",
+                    "mean_pred",
+                    "median_minutes",
+                    "median_pred",
+                    "q_low",
+                    "q_high",
+                    "n_recipes",
+                ]
+            ].style.format(
+                {
+                    "mean_minutes": "{:.2f}",
+                    "mean_pred": "{:.2f}",
+                    "median_minutes": "{:.2f}",
+                    "median_pred": "{:.2f}",
+                    "q_low": "{:.2f}",
+                    "q_high": "{:.2f}",
+                    "n_recipes": "{:,}",
+                }
+            ),
             use_container_width=True,
-            hide_index=True
+            hide_index=True,
         )
 
 
@@ -631,16 +658,16 @@ def analyse_trendline_duree_old_intervals():
             min_value=int(all_years[0]),
             max_value=int(all_years[-1]),
             value=(int(all_years[0]), int(all_years[-1])),
-            key="slider_duree_years"
+            key="slider_duree_years",
         )
 
     with col2:
         # Choix métrique
         metric_choice = st.selectbox(
             "📊 Métrique à analyser",
-            options=['Moyenne', 'Médiane'],
+            options=["Moyenne", "Médiane"],
             index=0,
-            key="select_duree_metric"
+            key="select_duree_metric",
         )
 
     with col3:
@@ -651,7 +678,7 @@ def analyse_trendline_duree_old_intervals():
             max_value=99,
             value=95,
             step=1,
-            key="slider_confidence"
+            key="slider_confidence",
         )
 
     # ========================================
@@ -663,24 +690,28 @@ def analyse_trendline_duree_old_intervals():
     )
 
     # Agrégation par année
-    if metric_choice == 'Moyenne':
+    if metric_choice == "Moyenne":
         metric_col = "prep_time_mean"
         df_yearly = (
             df_filtered.group_by("year")
-            .agg([
-                pl.col("minutes").mean().alias("prep_time_mean"),
-                pl.len().alias("n_recipes")
-            ])
+            .agg(
+                [
+                    pl.col("minutes").mean().alias("prep_time_mean"),
+                    pl.len().alias("n_recipes"),
+                ]
+            )
             .sort("year")
         )
     else:
         metric_col = "prep_time_median"
         df_yearly = (
             df_filtered.group_by("year")
-            .agg([
-                pl.col("minutes").median().alias("prep_time_median"),
-                pl.len().alias("n_recipes")
-            ])
+            .agg(
+                [
+                    pl.col("minutes").median().alias("prep_time_median"),
+                    pl.len().alias("n_recipes"),
+                ]
+            )
             .sort("year")
         )
 
@@ -720,12 +751,12 @@ def analyse_trendline_duree_old_intervals():
 
     # Variance de prédiction
     X_mean = np.average(X, weights=w)
-    sxx = np.sum(w * (X - X_mean)**2)
+    sxx = np.sum(w * (X - X_mean) ** 2)
 
     pred_std = []
     for i, x_val in enumerate(X):
         # Effet de levier
-        h_ii = w[i] * (1 + (x_val - X_mean)**2 / sxx)
+        h_ii = w[i] * (1 + (x_val - X_mean) ** 2 / sxx)
         # Variance de prédiction = MSE * (1 + h_ii)
         pred_var = mse * (1 + h_ii)
         pred_std.append(np.sqrt(pred_var))
@@ -733,7 +764,7 @@ def analyse_trendline_duree_old_intervals():
     pred_std = np.array(pred_std)
 
     # Valeur critique t de Student
-    t_val = stats.t.ppf(1 - alpha/2, df=len(X)-2)
+    t_val = stats.t.ppf(1 - alpha / 2, df=len(X) - 2)
 
     # Bornes des intervalles de prédiction
     pred_lower = y_pred - t_val * pred_std
@@ -746,133 +777,149 @@ def analyse_trendline_duree_old_intervals():
     fig = go.Figure()
 
     # 1. Intervalle de prédiction (FOND orange clair)
-    fig.add_trace(go.Scatter(
-        x=X,
-        y=pred_lower,
-        mode='lines',
-        line=dict(width=0),
-        showlegend=False,
-        hoverinfo='skip'
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=X,
+            y=pred_lower,
+            mode="lines",
+            line=dict(width=0),
+            showlegend=False,
+            hoverinfo="skip",
+        )
+    )
 
-    fig.add_trace(go.Scatter(
-        x=X,
-        y=pred_upper,
-        mode='lines',
-        fill='tonexty',
-        fillcolor='rgba(255, 165, 0, 0.1)',
-        line=dict(width=0),
-        name=f'Intervalle de prédiction {confidence_level}% (individuel)',
-        hoverinfo='skip'
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=X,
+            y=pred_upper,
+            mode="lines",
+            fill="tonexty",
+            fillcolor="rgba(255, 165, 0, 0.1)",
+            line=dict(width=0),
+            name=f"Intervalle de prédiction {confidence_level}% (individuel)",
+            hoverinfo="skip",
+        )
+    )
 
     # 2. Lignes pointillées orange (bornes prédiction)
-    fig.add_trace(go.Scatter(
-        x=X,
-        y=pred_lower,
-        mode='lines',
-        line=dict(color='orange', width=2, dash='dot'),
-        name='Borne inf. prédiction',
-        hovertemplate='<b>%{x}</b><br>Borne inf: %{y:.1f} min<extra></extra>'
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=X,
+            y=pred_lower,
+            mode="lines",
+            line=dict(color="orange", width=2, dash="dot"),
+            name="Borne inf. prédiction",
+            hovertemplate="<b>%{x}</b><br>Borne inf: %{y:.1f} min<extra></extra>",
+        )
+    )
 
-    fig.add_trace(go.Scatter(
-        x=X,
-        y=pred_upper,
-        mode='lines',
-        line=dict(color='orange', width=2, dash='dot'),
-        name='Borne sup. prédiction',
-        hovertemplate='<b>%{x}</b><br>Borne sup: %{y:.1f} min<extra></extra>'
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=X,
+            y=pred_upper,
+            mode="lines",
+            line=dict(color="orange", width=2, dash="dot"),
+            name="Borne sup. prédiction",
+            hovertemplate="<b>%{x}</b><br>Borne sup: %{y:.1f} min<extra></extra>",
+        )
+    )
 
     # 3. Intervalle de confiance (FOND vert clair)
-    fig.add_trace(go.Scatter(
-        x=X,
-        y=conf_lower,
-        mode='lines',
-        line=dict(width=0),
-        showlegend=False,
-        hoverinfo='skip'
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=X,
+            y=conf_lower,
+            mode="lines",
+            line=dict(width=0),
+            showlegend=False,
+            hoverinfo="skip",
+        )
+    )
 
-    fig.add_trace(go.Scatter(
-        x=X,
-        y=conf_upper,
-        mode='lines',
-        fill='tonexty',
-        fillcolor='rgba(0, 128, 0, 0.15)',
-        line=dict(width=0),
-        name=f'Intervalle de confiance {confidence_level}% (moyenne)',
-        hoverinfo='skip'
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=X,
+            y=conf_upper,
+            mode="lines",
+            fill="tonexty",
+            fillcolor="rgba(0, 128, 0, 0.15)",
+            line=dict(width=0),
+            name=f"Intervalle de confiance {confidence_level}% (moyenne)",
+            hoverinfo="skip",
+        )
+    )
 
     # 4. Lignes tiretées vertes (bornes confiance)
-    fig.add_trace(go.Scatter(
-        x=X,
-        y=conf_lower,
-        mode='lines',
-        line=dict(color='green', width=2, dash='dash'),
-        name='Borne inf. confiance',
-        hovertemplate='<b>%{x}</b><br>Borne inf: %{y:.1f} min<extra></extra>'
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=X,
+            y=conf_lower,
+            mode="lines",
+            line=dict(color="green", width=2, dash="dash"),
+            name="Borne inf. confiance",
+            hovertemplate="<b>%{x}</b><br>Borne inf: %{y:.1f} min<extra></extra>",
+        )
+    )
 
-    fig.add_trace(go.Scatter(
-        x=X,
-        y=conf_upper,
-        mode='lines',
-        line=dict(color='green', width=2, dash='dash'),
-        name='Borne sup. confiance',
-        hovertemplate='<b>%{x}</b><br>Borne sup: %{y:.1f} min<extra></extra>'
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=X,
+            y=conf_upper,
+            mode="lines",
+            line=dict(color="green", width=2, dash="dash"),
+            name="Borne sup. confiance",
+            hovertemplate="<b>%{x}</b><br>Borne sup: %{y:.1f} min<extra></extra>",
+        )
+    )
 
     # 5. Droite de régression (ROUGE)
-    fig.add_trace(go.Scatter(
-        x=X,
-        y=y_pred,
-        mode='lines',
-        line=dict(color='red', width=3),
-        name='Régression WLS',
-        hovertemplate='<b>%{x}</b><br>Prédiction: %{y:.1f} min<extra></extra>'
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=X,
+            y=y_pred,
+            mode="lines",
+            line=dict(color="red", width=3),
+            name="Régression WLS",
+            hovertemplate="<b>%{x}</b><br>Prédiction: %{y:.1f} min<extra></extra>",
+        )
+    )
 
     # 6. Points observés (BLEU FONCÉ)
-    fig.add_trace(go.Scatter(
-        x=X,
-        y=y,
-        mode='markers',
-        marker=dict(
-            color='darkblue',
-            size=10,
-            line=dict(color='white', width=1)
-        ),
-        name='Données observées',
-        hovertemplate='<b>%{x}</b><br>Valeur: %{y:.1f} min<extra></extra>'
-    ))
+    fig.add_trace(
+        go.Scatter(
+            x=X,
+            y=y,
+            mode="markers",
+            marker=dict(color="darkblue", size=10, line=dict(color="white", width=1)),
+            name="Données observées",
+            hovertemplate="<b>%{x}</b><br>Valeur: %{y:.1f} min<extra></extra>",
+        )
+    )
 
     # Mise en forme
     fig.update_layout(
         title={
-            'text': f"Évolution de la durée de préparation ({metric_choice.lower()})<br><sub>Avec intervalles de confiance et de prédiction à {confidence_level}%</sub>",
-            'x': 0.5,
-            'xanchor': 'center',
-            'font': dict(size=16, color='black')
+            "text": f"Évolution de la durée de préparation ({metric_choice.lower()})<br><sub>Avec intervalles de confiance et de prédiction à {confidence_level}%</sub>",
+            "x": 0.5,
+            "xanchor": "center",
+            "font": dict(size=16, color="black"),
         },
         xaxis=dict(
-            title='Année',
+            title="Année",
             showgrid=True,
-            gridcolor='rgba(128,128,128,0.2)',
-            title_font=dict(size=12, color='black'),
-            tickfont=dict(size=10, color='black')
+            gridcolor="rgba(128,128,128,0.2)",
+            title_font=dict(size=12, color="black"),
+            tickfont=dict(size=10, color="black"),
         ),
         yaxis=dict(
-            title=f'Durée ({metric_choice.lower()}, minutes)',
+            title=f"Durée ({metric_choice.lower()}, minutes)",
             showgrid=True,
-            gridcolor='rgba(128,128,128,0.2)',
-            title_font=dict(size=12, color='black'),
-            tickfont=dict(size=10, color='black')
+            gridcolor="rgba(128,128,128,0.2)",
+            title_font=dict(size=12, color="black"),
+            tickfont=dict(size=10, color="black"),
         ),
-        hovermode='x unified',
-        plot_bgcolor='white',
+        hovermode="x unified",
+        plot_bgcolor="white",
         height=600,
         legend=dict(
             orientation="v",
@@ -882,8 +929,8 @@ def analyse_trendline_duree_old_intervals():
             x=0.99,
             bgcolor="rgba(255,255,255,0.8)",
             bordercolor="black",
-            borderwidth=1
-        )
+            borderwidth=1,
+        ),
     )
 
     st.plotly_chart(fig, use_container_width=True)
@@ -896,43 +943,29 @@ def analyse_trendline_duree_old_intervals():
 
     with col_a:
         current_value = y[-1]
-        st.metric(
-            f"📊 {metric_choice} actuelle",
-            f"{current_value:.1f} min"
-        )
+        st.metric(f"📊 {metric_choice} actuelle", f"{current_value:.1f} min")
 
     with col_b:
         slope = wls_result.params[1]
         trend = "📈 Hausse" if slope > 0 else "📉 Baisse"
-        st.metric(
-            "Tendance",
-            trend,
-            f"{slope:.2f} min/an"
-        )
+        st.metric("Tendance", trend, f"{slope:.2f} min/an")
 
     with col_c:
         r_squared = wls_result.rsquared
-        st.metric(
-            "R² pondéré",
-            f"{r_squared:.3f}",
-            "Qualité du modèle"
-        )
+        st.metric("R² pondéré", f"{r_squared:.3f}", "Qualité du modèle")
 
     with col_d:
         p_value = wls_result.pvalues[1]
         significance = "✅ Significatif" if p_value < 0.05 else "⚠️ Non significatif"
-        st.metric(
-            "p-value",
-            f"{p_value:.4f}",
-            significance
-        )
+        st.metric("p-value", f"{p_value:.4f}", significance)
 
     # ========================================
     # EXPLICATIONS
     # ========================================
 
     with st.expander("📖 Comprendre les intervalles"):
-        st.markdown("""
+        st.markdown(
+            """
         **Intervalle de confiance (vert)** 🟢
         - Incertitude sur la **position moyenne** de la droite de régression
         - "Où se trouve la vraie moyenne de la population ?"
@@ -947,12 +980,15 @@ def analyse_trendline_duree_old_intervals():
         - Il inclut 2 sources d'incertitude :
           1. L'incertitude sur la moyenne (comme l'IC)
           2. La variabilité naturelle entre recettes individuelles
-        """)
+        """
+        )
 
     with st.expander("📊 Statistiques détaillées de la régression"):
         st.markdown("**Équation du modèle WLS :**")
         intercept = wls_result.params[0]
-        st.latex(rf"\text{{Durée}} = {intercept:.2f} + {slope:.2f} \times \text{{Année}}")
+        st.latex(
+            rf"\text{{Durée}} = {intercept:.2f} + {slope:.2f} \times \text{{Année}}"
+        )
 
         st.markdown("**Coefficients :**")
         st.write(f"- Ordonnée à l'origine : {intercept:.2f} minutes")
@@ -964,28 +1000,32 @@ def analyse_trendline_duree_old_intervals():
         st.text(wls_result.summary())
 
     with st.expander("Tableau des données avec prédictions"):
-        df_table = pl.DataFrame({
-            "Année": X,
-            f"{metric_choice} observée": y,
-            "Prédiction WLS": y_pred,
-            "Résidu": residuals,
-            f"IC inf ({confidence_level}%)": conf_lower,
-            f"IC sup ({confidence_level}%)": conf_upper,
-            f"IP inf ({confidence_level}%)": pred_lower,
-            f"IP sup ({confidence_level}%)": pred_upper,
-        })
+        df_table = pl.DataFrame(
+            {
+                "Année": X,
+                f"{metric_choice} observée": y,
+                "Prédiction WLS": y_pred,
+                "Résidu": residuals,
+                f"IC inf ({confidence_level}%)": conf_lower,
+                f"IC sup ({confidence_level}%)": conf_upper,
+                f"IP inf ({confidence_level}%)": pred_lower,
+                f"IP sup ({confidence_level}%)": pred_upper,
+            }
+        )
 
         st.dataframe(
-            df_table.to_pandas().style.format({
-                f"{metric_choice} observée": "{:.1f}",
-                "Prédiction WLS": "{:.1f}",
-                "Résidu": "{:.2f}",
-                f"IC inf ({confidence_level}%)": "{:.1f}",
-                f"IC sup ({confidence_level}%)": "{:.1f}",
-                f"IP inf ({confidence_level}%)": "{:.1f}",
-                f"IP sup ({confidence_level}%)": "{:.1f}",
-            }),
-            use_container_width=True
+            df_table.to_pandas().style.format(
+                {
+                    f"{metric_choice} observée": "{:.1f}",
+                    "Prédiction WLS": "{:.1f}",
+                    "Résidu": "{:.2f}",
+                    f"IC inf ({confidence_level}%)": "{:.1f}",
+                    f"IC sup ({confidence_level}%)": "{:.1f}",
+                    f"IP inf ({confidence_level}%)": "{:.1f}",
+                    f"IP sup ({confidence_level}%)": "{:.1f}",
+                }
+            ),
+            use_container_width=True,
         )
 
 
@@ -1017,7 +1057,9 @@ def analyse_trendline_duree_old():
     with col2:
         # Choix couleur moyenne
         color_mean = st.selectbox(
-            "🎨 Couleur Moyenne", ["steelblue", "royalblue", "mediumblue", "dodgerblue"], index=0
+            "🎨 Couleur Moyenne",
+            ["steelblue", "royalblue", "mediumblue", "dodgerblue"],
+            index=0,
         )
 
     with col3:
@@ -1089,10 +1131,15 @@ def analyse_trendline_duree_old():
     col_a, col_b, col_c, col_d = st.columns(4)
 
     with col_a:
-        st.metric("⏱️ Moyenne actuelle", f"{minutes_by_year['mean_minutes'].iloc[-1]:.1f} min")
+        st.metric(
+            "⏱️ Moyenne actuelle", f"{minutes_by_year['mean_minutes'].iloc[-1]:.1f} min"
+        )
 
     with col_b:
-        st.metric("📊 Médiane actuelle", f"{minutes_by_year['median_minutes'].iloc[-1]:.1f} min")
+        st.metric(
+            "📊 Médiane actuelle",
+            f"{minutes_by_year['median_minutes'].iloc[-1]:.1f} min",
+        )
 
     with col_c:
         trend_mean = regressions["mean_minutes"]["slope"]
@@ -1170,7 +1217,10 @@ def analyse_trendline_duree_old():
                 mode="markers",
                 name="Moyenne (bulles)",
                 marker=dict(
-                    color=color_mean, size=sizes, opacity=0.6, line=dict(color="black", width=0.5)
+                    color=color_mean,
+                    size=sizes,
+                    opacity=0.6,
+                    line=dict(color="black", width=0.5),
                 ),
                 showlegend=False,
                 hoverinfo="skip",
@@ -1245,7 +1295,8 @@ def analyse_trendline_duree_old():
 
     fig.update_layout(
         title=dict(
-            text=title_html, font=dict(size=14, color="black", family="Arial, sans-serif")
+            text=title_html,
+            font=dict(size=14, color="black", family="Arial, sans-serif"),
         ),
         xaxis=dict(
             title="Année",
@@ -1304,11 +1355,15 @@ def analyse_trendline_duree_old():
                 st.warning("⚠️ Tendance non significative")
 
             # Calcul du changement total
-            total_change_mean = regressions["mean_minutes"]["slope"] * len(minutes_by_year)
+            total_change_mean = regressions["mean_minutes"]["slope"] * len(
+                minutes_by_year
+            )
             pct_change_mean = (
                 total_change_mean / minutes_by_year["mean_minutes"].iloc[0]
             ) * 100
-            st.info(f"📉 Changement total: {total_change_mean:+.1f} min ({pct_change_mean:+.1f}%)")
+            st.info(
+                f"📉 Changement total: {total_change_mean:+.1f} min ({pct_change_mean:+.1f}%)"
+            )
 
         with col2:
             st.markdown("### 📊 Médiane")
@@ -1325,7 +1380,9 @@ def analyse_trendline_duree_old():
                 st.warning("⚠️ Tendance non significative")
 
             # Calcul du changement total
-            total_change_median = regressions["median_minutes"]["slope"] * len(minutes_by_year)
+            total_change_median = regressions["median_minutes"]["slope"] * len(
+                minutes_by_year
+            )
             pct_change_median = (
                 total_change_median / minutes_by_year["median_minutes"].iloc[0]
             ) * 100
@@ -1386,6 +1443,7 @@ def analyse_trendline_duree_old():
 # ============================================================================
 # ANALYSE 3: COMPLEXITÉ
 # ============================================================================
+
 
 def analyse_trendline_complexite():
     """Analyse de l'évolution de la complexité des recettes."""
@@ -1452,7 +1510,11 @@ def analyse_trendline_complexite():
         }
 
     # Tailles de bulles
-    sizes = complexity_by_year["count_recipes"] / complexity_by_year["count_recipes"].max() * 20
+    sizes = (
+        complexity_by_year["count_recipes"]
+        / complexity_by_year["count_recipes"].max()
+        * 20
+    )
 
     # Création du graphique avec subplots
     fig = make_subplots(
@@ -1522,7 +1584,9 @@ def analyse_trendline_complexite():
                 y=reg["y_pred"],
                 mode="lines",
                 name=f"Régression WLS (R²={reg['r2']:.3f})",
-                line=dict(color=chart_theme.colors.CHART_COLORS[3], width=2, dash="dash"),
+                line=dict(
+                    color=chart_theme.colors.CHART_COLORS[3], width=2, dash="dash"
+                ),
                 showlegend=(idx == 1),
             ),
             row=1,
@@ -1566,6 +1630,7 @@ def analyse_trendline_complexite():
 # ANALYSE 4: NUTRITION
 # ============================================================================
 
+
 def analyse_trendline_nutrition():
     """Analyse de l'évolution des valeurs nutritionnelles."""
     df = load_and_prepare_data()
@@ -1601,7 +1666,11 @@ def analyse_trendline_nutrition():
             "title": "Glucides (%)",
             "ylabel": "Carbs %",
         },
-        "mean_fat": {"color": chart_theme.colors.CHART_COLORS[2], "title": "Lipides (%)", "ylabel": "Fat %"},
+        "mean_fat": {
+            "color": chart_theme.colors.CHART_COLORS[2],
+            "title": "Lipides (%)",
+            "ylabel": "Fat %",
+        },
         "mean_protein": {
             "color": chart_theme.colors.CHART_COLORS[3],
             "title": "Protéines (%)",
@@ -1628,7 +1697,11 @@ def analyse_trendline_nutrition():
         }
 
     # Tailles de bulles
-    sizes = nutrition_by_year["count_recipes"] / nutrition_by_year["count_recipes"].max() * 20
+    sizes = (
+        nutrition_by_year["count_recipes"]
+        / nutrition_by_year["count_recipes"].max()
+        * 20
+    )
 
     # Création du graphique avec subplots
     fig = make_subplots(
@@ -1667,7 +1740,9 @@ def analyse_trendline_nutrition():
                 y=reg["y_pred"],
                 mode="lines",
                 name=f"Régression WLS (R²={reg['r2']:.3f})",
-                line=dict(color=chart_theme.colors.CHART_COLORS[4], width=2, dash="dash"),
+                line=dict(
+                    color=chart_theme.colors.CHART_COLORS[4], width=2, dash="dash"
+                ),
                 showlegend=(row == 1 and col == 1),
             ),
             row=row,
@@ -1712,6 +1787,7 @@ def analyse_trendline_nutrition():
 # ANALYSE 5: INGRÉDIENTS
 # ============================================================================
 
+
 def analyse_trendline_ingredients(top_n=10):
     """Analyse de l'évolution des ingrédients."""
     df = load_and_prepare_data()
@@ -1727,7 +1803,12 @@ def analyse_trendline_ingredients(top_n=10):
         df.select(["id", "year", "ingredients"])
         .explode("ingredients")
         .with_columns(
-            [pl.col("ingredients").str.to_lowercase().str.strip_chars().alias("ingredient_norm")]
+            [
+                pl.col("ingredients")
+                .str.to_lowercase()
+                .str.strip_chars()
+                .alias("ingredient_norm")
+            ]
         )
     )
 
@@ -1767,12 +1848,14 @@ def analyse_trendline_ingredients(top_n=10):
         ["ingredient_norm", "freq"]
     ].rename(columns={"freq": "last"})
 
-    variation = first_year_vals.merge(last_year_vals, on="ingredient_norm", how="outer").fillna(
-        0
-    )
+    variation = first_year_vals.merge(
+        last_year_vals, on="ingredient_norm", how="outer"
+    ).fillna(0)
     variation["delta"] = variation["last"] - variation["first"]
     variation = variation.merge(
-        freq_global[["ingredient_norm", "total_count"]], on="ingredient_norm", how="left"
+        freq_global[["ingredient_norm", "total_count"]],
+        on="ingredient_norm",
+        how="left",
     )
     variation = variation[variation["total_count"] >= MIN_TOTAL_OCC]
 
@@ -1829,7 +1912,9 @@ def analyse_trendline_ingredients(top_n=10):
             y=unique_per_year["n_unique"],
             mode="lines+markers",
             line=dict(color=chart_theme.colors.CHART_COLORS[1], width=2),
-            marker=dict(size=sizes_div, color=chart_theme.colors.CHART_COLORS[1], opacity=0.6),
+            marker=dict(
+                size=sizes_div, color=chart_theme.colors.CHART_COLORS[1], opacity=0.6
+            ),
             showlegend=False,
         ),
         row=1,
@@ -1872,7 +1957,9 @@ def analyse_trendline_ingredients(top_n=10):
     ]
     for idx, (_, row_data) in enumerate(biggest_increase.head(N_VARIATIONS).iterrows()):
         ing = row_data["ingredient_norm"]
-        data_ing = freq_year_ing[freq_year_ing["ingredient_norm"] == ing].sort_values("year")
+        data_ing = freq_year_ing[freq_year_ing["ingredient_norm"] == ing].sort_values(
+            "year"
+        )
         color = orange_gradient[idx % len(orange_gradient)]
         fig.add_trace(
             go.Scatter(
@@ -1899,7 +1986,9 @@ def analyse_trendline_ingredients(top_n=10):
     ]
     for idx, (_, row_data) in enumerate(biggest_decrease.head(N_VARIATIONS).iterrows()):
         ing = row_data["ingredient_norm"]
-        data_ing = freq_year_ing[freq_year_ing["ingredient_norm"] == ing].sort_values("year")
+        data_ing = freq_year_ing[freq_year_ing["ingredient_norm"] == ing].sort_values(
+            "year"
+        )
         color = red_gradient[idx % len(red_gradient)]
         fig.add_trace(
             go.Scatter(
@@ -1965,6 +2054,7 @@ def analyse_trendline_ingredients(top_n=10):
 # ANALYSE 6: TAGS
 # ============================================================================
 
+
 def analyse_trendline_tags(top_n=10):
     """Analyse de l'évolution des tags."""
     df = load_and_prepare_data()
@@ -1979,7 +2069,9 @@ def analyse_trendline_tags(top_n=10):
     df_tags = (
         df.select(["id", "year", "tags"])
         .explode("tags")
-        .with_columns([pl.col("tags").str.to_lowercase().str.strip_chars().alias("tag_norm")])
+        .with_columns(
+            [pl.col("tags").str.to_lowercase().str.strip_chars().alias("tag_norm")]
+        )
     )
 
     # Fréquence globale
@@ -2078,7 +2170,11 @@ def analyse_trendline_tags(top_n=10):
             y=unique_per_year_tags["n_unique"],
             mode="lines+markers",
             line=dict(color=chart_theme.colors.CHART_COLORS[1], width=2),
-            marker=dict(size=sizes_div_tags, color=chart_theme.colors.CHART_COLORS[1], opacity=0.6),
+            marker=dict(
+                size=sizes_div_tags,
+                color=chart_theme.colors.CHART_COLORS[1],
+                opacity=0.6,
+            ),
             showlegend=False,
         ),
         row=1,
@@ -2119,7 +2215,9 @@ def analyse_trendline_tags(top_n=10):
         chart_theme.colors.CHART_COLORS[1],  # Yellow
         chart_theme.colors.CHART_COLORS[0],  # Orange (repeat for more variations)
     ]
-    for idx, (_, row_data) in enumerate(biggest_increase_tags.head(N_VARIATIONS).iterrows()):
+    for idx, (_, row_data) in enumerate(
+        biggest_increase_tags.head(N_VARIATIONS).iterrows()
+    ):
         tag = row_data["tag_norm"]
         data_tag = freq_year_tag[freq_year_tag["tag_norm"] == tag].sort_values("year")
         color = orange_gradient_tags[idx % len(orange_gradient_tags)]
@@ -2146,7 +2244,9 @@ def analyse_trendline_tags(top_n=10):
         chart_theme.colors.CHART_COLORS[2],  # Red-orange (repeat)
         chart_theme.colors.CHART_COLORS[0],  # Orange (repeat)
     ]
-    for idx, (_, row_data) in enumerate(biggest_decrease_tags.head(N_VARIATIONS).iterrows()):
+    for idx, (_, row_data) in enumerate(
+        biggest_decrease_tags.head(N_VARIATIONS).iterrows()
+    ):
         tag = row_data["tag_norm"]
         data_tag = freq_year_tag[freq_year_tag["tag_norm"] == tag].sort_values("year")
         color = red_gradient_tags[idx % len(red_gradient_tags)]
@@ -2172,7 +2272,9 @@ def analyse_trendline_tags(top_n=10):
     fig.update_xaxes(title_text="Année", row=1, col=2)
     fig.update_yaxes(title_text="Nombre de tags uniques", row=1, col=2)
 
-    label_delta_tags = "Variation (normalisée)" if NORMALIZE else "Variation (occurrences)"
+    label_delta_tags = (
+        "Variation (normalisée)" if NORMALIZE else "Variation (occurrences)"
+    )
     fig.update_xaxes(title_text=label_delta_tags, row=2, col=1)
     fig.update_yaxes(row=2, col=1)
 
