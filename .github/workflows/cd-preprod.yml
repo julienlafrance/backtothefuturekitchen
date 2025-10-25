@@ -6,51 +6,80 @@ on:
       - main
   workflow_dispatch:  # Permet déclenchement manuel
 
+env:
+  APP_PATH: /home/dataia25/mangetamain/10_preprod
+  DOCKER_PATH: /home/dataia25/mangetamain/30_docker
+  STATE_FILE: /var/app-state/last-validated-sha.txt
+
 jobs:
+  # ═══════════════════════════════════════════════════════
+  # JOB 1 : Deploy immédiat (sans attendre les tests)
+  # ═══════════════════════════════════════════════════════
   immediate-deploy:
-    name: Deploy to Preprod (Immediate)
+    name: 🚀 Deploy Preprod (Immediate)
     runs-on: self-hosted
 
-    outputs:
-      previous_sha: ${{ steps.save-state.outputs.previous_sha }}
-      new_sha: ${{ steps.save-state.outputs.new_sha }}
-
     steps:
-      - name: Save current state for potential rollback
-        id: save-state
-        run: |
-          cd /home/dataia25/mangetamain/10_preprod
-          PREVIOUS_SHA=$(git rev-parse HEAD)
-          echo "previous_sha=$PREVIOUS_SHA" >> $GITHUB_OUTPUT
-          echo "new_sha=${{ github.sha }}" >> $GITHUB_OUTPUT
-          echo "📸 État sauvegardé: $PREVIOUS_SHA (pour rollback si besoin)"
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Important pour avoir l'historique git
 
-      - name: Notify deployment start
+      - name: 💾 Save rollback point (SHA actuel AVANT deploy)
+        id: save-rollback
+        run: |
+          cd ${{ env.APP_PATH }}
+
+          # Si le fichier STATE existe, c'est le dernier SHA validé
+          if [ -f ${{ env.STATE_FILE }} ]; then
+            ROLLBACK_SHA=$(cat ${{ env.STATE_FILE }})
+            echo "✅ Rollback point trouvé: $ROLLBACK_SHA"
+          else
+            # Premier deploy, utiliser le SHA actuel
+            ROLLBACK_SHA=$(git rev-parse HEAD)
+            echo "📝 Premier deploy, rollback point: $ROLLBACK_SHA"
+            echo "$ROLLBACK_SHA" > ${{ env.STATE_FILE }}
+          fi
+
+          echo "rollback_sha=$ROLLBACK_SHA" >> $GITHUB_OUTPUT
+
+      - name: 📊 Display deployment info
+        run: |
+          cd ${{ env.APP_PATH }}
+          ROLLBACK_SHA=$(cat ${{ env.STATE_FILE }})
+
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📦 Commits to deploy:"
+          git log --oneline $ROLLBACK_SHA..${{ github.sha }} || echo "Nouveau commit: ${{ github.sha }}"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+      - name: 📬 Notify deployment start
         run: |
           COMMIT_MSG_FIRST_LINE=$(git log -1 --pretty=%B ${{ github.sha }} | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"🚀 **Déploiement Preprod IMMÉDIAT démarré**\n📦 Commit: \`${{ github.sha }}\`\n💬 Message: ${COMMIT_MSG_FIRST_LINE}\n👤 Par: ${{ github.actor }}\n⚡ Deploy d'abord, tests en parallèle\"}" \
+            -d "{\"content\":\"🚀 **Déploiement Preprod IMMÉDIAT démarré**\n📦 Commit: \`${{ github.sha }}\`\n💬 Message: ${COMMIT_MSG_FIRST_LINE}\n👤 Par: ${{ github.actor }}\n⚡ Deploy d'abord, tests CI en parallèle\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
-      - name: Pull latest code
+      - name: 🚀 Deploy new code
         run: |
-          cd /home/dataia25/mangetamain/10_preprod
-          git fetch origin
-          git reset --hard origin/main
+          cd ${{ env.APP_PATH }}
+          git fetch origin main
+          git reset --hard ${{ github.sha }}
+
           echo "✅ Code mis à jour vers $(git rev-parse --short HEAD)"
 
-      - name: Restart preprod container
+      - name: 🔄 Restart preprod container
         run: |
-          cd /home/dataia25/mangetamain/30_docker
+          cd ${{ env.DOCKER_PATH }}
           docker-compose -f docker-compose-preprod.yml restart
           echo "✅ Container preprod redémarré"
 
-      - name: Wait for container to start
+      - name: ⏳ Wait for container to start
         run: |
           echo "⏳ Attente démarrage Streamlit (60s)..."
           sleep 60
 
-      - name: Health check preprod
+      - name: 🔍 Health check preprod
         run: |
           echo "🔍 Test santé preprod sur https://mangetamain.lafrance.io/"
 
@@ -77,108 +106,164 @@ jobs:
           echo "❌ Preprod health check échoué après 10 tentatives"
           exit 1
 
-      - name: Notify deployment success
+      - name: ✅ Notify deployment success
         if: success()
         run: |
           COMMIT_MSG_FIRST_LINE=$(git log -1 --pretty=%B ${{ github.sha }} | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"✅ **Déploiement Preprod réussi!**\n🌐 URL: https://mangetamain.lafrance.io/\n📦 Commit: \`${{ github.sha }}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⏳ Tests CI en cours...\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
+            -d "{\"content\":\"✅ **Déploiement Preprod réussi!**\n🌐 URL: https://mangetamain.lafrance.io/\n📦 Commit: \`${{ github.sha }}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⏳ Tests CI en cours en parallèle...\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
-      - name: Notify deployment failure
+      - name: ❌ Notify deployment failure
         if: failure()
         run: |
           COMMIT_MSG_FIRST_LINE=$(git log -1 --pretty=%B ${{ github.sha }} | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"❌ **ÉCHEC Déploiement Preprod**\n📦 Commit: \`${{ github.sha }}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⚠️  **Container dans état cassé - rollback manuel requis**\n📋 Vérifier les logs: \`docker-compose -f docker-compose-preprod.yml logs\`\n👤 Commit par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"❌ **ÉCHEC Déploiement Preprod**\n📦 Commit: \`${{ github.sha }}\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⚠️  **Health check échoué - intervention requise**\n📋 Vérifier les logs: \`docker-compose -f docker-compose-preprod.yml logs\`\n👤 Commit par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
+  # ═══════════════════════════════════════════════════════
+  # JOB 2 : Watcher CI + Rollback automatique
+  # PAS de "needs" = s'exécute EN PARALLÈLE du deploy
+  # ═══════════════════════════════════════════════════════
   watch-ci-and-rollback:
-    name: Watch CI & Rollback if Failed
+    name: 👀 Watch CI & Auto-Rollback
     runs-on: self-hosted
-    needs: immediate-deploy
-    if: always()  # Toujours exécuter pour surveiller le CI
 
     steps:
-      - name: Wait for CI completion
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⏳ Wait for CI pipeline to complete
         id: wait-ci
+        timeout-minutes: 5  # CI ne devrait pas prendre plus de 5min
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           echo "⏳ Attente de la fin du CI Pipeline pour commit ${{ github.sha }}..."
 
-          # Attendre que le CI démarre
+          # Attendre que le CI démarre (30s)
           echo "Attente démarrage CI (30s)..."
           sleep 30
 
-          # Attendre que le CI se termine (max 3 minutes)
-          for i in {1..18}; do
+          # Workflow CI à surveiller
+          WORKFLOW_NAME="CI Pipeline - Quality & Tests"
+
+          # Attendre max 4min30 (270s = 27 × 10s)
+          for i in {1..27}; do
             # Récupérer tous les workflows CI récents et filtrer par SHA
             CI_STATUS=$(gh run list \
-              --workflow="CI Pipeline - Quality & Tests" \
+              --workflow="$WORKFLOW_NAME" \
               --limit 10 \
               --json conclusion,headSha,status \
               --jq ".[] | select(.headSha == \"${{ github.sha }}\") | .conclusion" \
               2>/dev/null | head -1)
 
-            echo "Tentative $i/18 - CI Status pour ${{ github.sha }}: ${CI_STATUS:-pending}"
+            echo "Tentative $i/27 - CI Status pour ${{ github.sha }}: ${CI_STATUS:-pending}"
 
             if [ "$CI_STATUS" = "success" ]; then
               echo "✅ CI a réussi!"
-              echo "ci_result=success" >> $GITHUB_OUTPUT
+              echo "ci_conclusion=success" >> $GITHUB_OUTPUT
               exit 0
             elif [ "$CI_STATUS" = "failure" ]; then
               echo "❌ CI a échoué!"
-              echo "ci_result=failure" >> $GITHUB_OUTPUT
-              exit 0
+              echo "ci_conclusion=failure" >> $GITHUB_OUTPUT
+              exit 1
+            elif [ "$CI_STATUS" = "cancelled" ]; then
+              echo "🚫 CI annulé!"
+              echo "ci_conclusion=cancelled" >> $GITHUB_OUTPUT
+              exit 1
             else
               echo "CI en cours ou pas encore démarré..."
               sleep 10
             fi
           done
 
-          echo "⏱️  Timeout CI (3min) - considéré comme échec"
-          echo "ci_result=timeout" >> $GITHUB_OUTPUT
-        env:
-          GH_TOKEN: ${{ github.token }}
+          echo "⏱️  Timeout CI (5min) - considéré comme échec"
+          echo "ci_conclusion=timeout" >> $GITHUB_OUTPUT
+          exit 1
 
-      - name: Rollback if CI failed
-        if: steps.wait-ci.outputs.ci_result == 'failure' || steps.wait-ci.outputs.ci_result == 'timeout'
+      - name: ✅ Mark deployment as validated
+        if: success()
         run: |
-          echo "🔄 ROLLBACK en cours vers ${{ needs.immediate-deploy.outputs.previous_sha }}..."
+          # Le CI a réussi, on peut marquer ce SHA comme validé
+          echo "${{ github.sha }}" > ${{ env.STATE_FILE }}
+          echo "✅ Deployment validated - new rollback point: ${{ github.sha }}"
+          echo "[$(date)] VALIDATED: ${{ github.sha }}" >> /var/log/preprod-deployments.log
 
-          cd /home/dataia25/mangetamain/10_preprod
+      - name: 🔄 ROLLBACK - CI Failed!
+        if: failure()
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "❌ CI FAILED - Starting automatic rollback"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+          # Lire le SHA de rollback sauvegardé
+          ROLLBACK_SHA=$(cat ${{ env.STATE_FILE }})
+
+          echo "🔄 Rolling back to: $ROLLBACK_SHA"
+          echo "📍 Failed SHA was: ${{ github.sha }}"
+
+          cd ${{ env.APP_PATH }}
           git fetch origin
-          git reset --hard ${{ needs.immediate-deploy.outputs.previous_sha }}
+          git reset --hard $ROLLBACK_SHA
           echo "✅ Code restauré vers $(git rev-parse --short HEAD)"
 
-          cd /home/dataia25/mangetamain/30_docker
+          # Redéployer l'ancienne version
+          cd ${{ env.DOCKER_PATH }}
           docker-compose -f docker-compose-preprod.yml restart
           echo "✅ Container preprod redémarré avec version précédente"
 
+          # Attendre que le container redémarre
           sleep 60
 
           # Vérifier que le rollback fonctionne
           if curl -f -s --max-time 10 https://mangetamain.lafrance.io/ > /dev/null; then
             echo "✅ Rollback réussi - preprod opérationnelle"
+            echo "[$(date)] ROLLBACK: ${{ github.sha }} → $ROLLBACK_SHA" >> /var/log/preprod-deployments.log
           else
             echo "❌ Rollback échoué - intervention manuelle requise!"
             exit 1
           fi
 
-      - name: Notify CI success
-        if: steps.wait-ci.outputs.ci_result == 'success'
+      - name: ✅ Notify CI success
+        if: success()
         run: |
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"✅ **CI Pipeline réussi pour Preprod**\n📦 Commit: \`${{ github.sha }}\`\n🌐 https://mangetamain.lafrance.io/\n✨ Déploiement validé!\"}" \
+            -d "{\"content\":\"✅ **CI Pipeline réussi pour Preprod**\n📦 Commit: \`${{ github.sha }}\`\n🌐 https://mangetamain.lafrance.io/\n✨ Déploiement validé et persisté!\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
-      - name: Notify rollback
-        if: steps.wait-ci.outputs.ci_result == 'failure' || steps.wait-ci.outputs.ci_result == 'timeout'
+      - name: 🚨 Notify rollback
+        if: failure()
         run: |
+          ROLLBACK_SHA=$(cat ${{ env.STATE_FILE }})
+          CI_CONCLUSION="${{ steps.wait-ci.outputs.ci_conclusion }}"
+
           REASON="CI a échoué"
-          if [ "${{ steps.wait-ci.outputs.ci_result }}" = "timeout" ]; then
-            REASON="CI timeout (>10min)"
+          if [ "$CI_CONCLUSION" = "timeout" ]; then
+            REASON="CI timeout (>5min)"
+          elif [ "$CI_CONCLUSION" = "cancelled" ]; then
+            REASON="CI annulé"
           fi
 
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"🔄 **ROLLBACK Preprod effectué**\n❌ Raison: ${REASON}\n📦 Commit annulé: \`${{ github.sha }}\`\n↩️  Restauré vers: \`${{ needs.immediate-deploy.outputs.previous_sha }}\`\n🌐 https://mangetamain.lafrance.io/\n⚠️  Corriger les erreurs avant de re-pusher\n👤 Commit par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"🔄 **ROLLBACK Preprod effectué**\n❌ Raison: ${REASON}\n📦 Commit annulé: \`${{ github.sha }}\`\n↩️  Restauré vers: \`$ROLLBACK_SHA\`\n🌐 https://mangetamain.lafrance.io/\n⚠️  Corriger les erreurs avant de re-pusher\n👤 Commit par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
+
+# ═══════════════════════════════════════════════════════
+# Notes importantes :
+# ═══════════════════════════════════════════════════════
+#
+# 1. Les 2 jobs s'exécutent EN PARALLÈLE (pas de needs)
+# 2. Le rollback point est sauvegardé AVANT le deploy
+# 3. Fonctionne avec 1 ou plusieurs commits
+# 4. Si CI échoue, rollback automatique au dernier SHA validé
+# 5. Le fichier STATE_FILE persiste entre les workflows
+#
+# Prérequis sur le serveur self-hosted :
+# - Créer le dossier : sudo mkdir -p /var/app-state
+# - Permissions : sudo chown dataia25:dataia25 /var/app-state
+# - Créer log : sudo touch /var/log/preprod-deployments.log
+# - Permissions log : sudo chown dataia25:dataia25 /var/log/preprod-deployments.log
