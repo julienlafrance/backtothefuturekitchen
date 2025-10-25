@@ -155,8 +155,8 @@ jobs:
 
           chmod +x /tmp/watch-ci-${{ github.sha }}.sh
 
-          # Lancer en background avec nohup (le script redirige lui-même vers le log)
-          nohup /tmp/watch-ci-${{ github.sha }}.sh &
+          # Lancer en background avec stdbuf pour forcer line buffering
+          nohup stdbuf -oL /tmp/watch-ci-${{ github.sha }}.sh &
 
           WATCHER_PID=$!
           echo "✅ CI watcher launched in background (PID: $WATCHER_PID)"
