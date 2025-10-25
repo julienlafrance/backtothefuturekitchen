@@ -14,7 +14,7 @@ import statsmodels.api as sm
 import streamlit as st
 import matplotlib.colors as mcolors
 
-from mangetamain_analytics.data.cached_loaders import get_recipes_clean as load_recipes_clean
+from data.cached_loaders import get_recipes_clean as load_recipes_clean
 from utils import chart_theme
 
 warnings.filterwarnings("ignore")

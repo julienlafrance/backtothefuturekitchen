@@ -19,7 +19,7 @@ from utils import chart_theme
 from utils import colors
 
 # Import des utilitaires de chargement avec cache
-from mangetamain_analytics.data.cached_loaders import get_ratings_longterm as load_ratings_for_longterm_analysis
+from data.cached_loaders import get_ratings_longterm as load_ratings_for_longterm_analysis
 
 # Import direct sans cache (utilisé rarement)
 from mangetamain_data_utils.data_utils_ratings import load_clean_interactions
