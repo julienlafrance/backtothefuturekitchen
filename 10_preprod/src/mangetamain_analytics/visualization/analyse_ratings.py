@@ -151,11 +151,11 @@ def analyse_ratings_validation_ponderee():
     # (3) Ratings avec taille proportionnelle au poids
     sizes = weights_normalized * 1000
 
-    # Colorscale personnalisée "Back to the Kitchen" (orange/jaune)
+    # Colorscale personnalisée "Back to the Kitchen" - dégradé d'orange
     custom_colorscale = [
-        [0.0, chart_theme.colors.CHART_COLORS[0]],   # Bleu foncé pour volumes faibles
-        [0.5, chart_theme.colors.CHART_COLORS[1]],   # Jaune doré pour volumes moyens
-        [1.0, chart_theme.colors.ORANGE_PRIMARY]     # Orange vif pour volumes élevés
+        [0.0, chart_theme.colors.ORANGE_SECONDARY],  # Orange foncé pour volumes faibles
+        [0.5, chart_theme.colors.ORANGE_PRIMARY],    # Orange vif pour volumes moyens
+        [1.0, chart_theme.colors.CHART_COLORS[1]]    # Jaune doré pour volumes élevés
     ]
 
     fig.add_trace(
@@ -164,7 +164,7 @@ def analyse_ratings_validation_ponderee():
             y=monthly_df['mean_rating'],
             mode='markers',
             marker=dict(
-                size=sizes / 5,  # Ajustement taille (plus gros qu'avant: /5 au lieu de /50)
+                size=sizes * 2,  # Points beaucoup plus gros
                 color=monthly_df['n_interactions'],
                 colorscale=custom_colorscale,
                 opacity=0.7,
