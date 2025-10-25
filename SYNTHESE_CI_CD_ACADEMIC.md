@@ -1,8 +1,9 @@
 # Synthèse CI/CD - Réponse aux Exigences Académiques
 
 **Projet:** Mangetamain Analytics
-**Date:** 2025-10-23
+**Date:** 2025-10-25 (Mise à jour)
 **Équipe:** Mangetamain Analytics Team
+**Version:** 2.0 - Ajout Runner Self-Hosted + Déploiement Automatisé
 
 ---
 
@@ -223,49 +224,135 @@ on:
 
 ---
 
-### 6. Phase de Déploiement (OPTIONNEL) ⚠️
+### 6. Phase de Déploiement (OPTIONNEL) ✅
 
-**Statut:** Non implémentée (optionnelle)
+**Statut:** ✅ **Implémentée et opérationnelle**
 
-La phase de déploiement automatique n'est pas incluse dans ce projet car elle nécessiterait :
-- Infrastructure de déploiement (serveur distant, Docker registry, etc.)
-- Credentials d'accès (secrets GitHub)
-- Configuration spécifique à l'environnement de production
+Le déploiement automatique est **entièrement fonctionnel** via **GitHub Actions Runner self-hosted** avec notifications Discord en temps réel.
 
-**Comment l'implémenter si nécessaire:**
+#### Infrastructure de Déploiement
 
-Le déploiement pourrait être ajouté via un workflow `.github/workflows/deploy.yml` avec :
-- Build d'image Docker
-- Push vers Docker Hub ou registry privé
-- Déploiement SSH vers serveur de production
-- Redémarrage des services
+**Runner GitHub Self-Hosted:**
+- **Localisation:** VM dataia (réseau VPN)
+- **User:** dataia25
+- **Service:** systemd (démarrage automatique)
+- **Accès:** Direct au système de fichiers et Docker
+
+**Environnements déployés:**
+- **PREPROD:** https://mangetamain.lafrance.io/ (port 8500)
+- **PRODUCTION:** https://backtothefuturekitchen.lafrance.io/ (port 8501)
+
+#### Workflows de Déploiement
+
+**1. CD Preprod (`.github/workflows/cd-preprod.yml`) - Automatique**
+```yaml
+on:
+  push:
+    branches:
+      - main  # Déploiement auto sur push vers main
+
+jobs:
+  deploy-preprod:
+    runs-on: self-hosted  # ← Exécuté sur VM dataia
+    steps:
+      - name: Notify deployment start (Discord)
+      - name: Pull latest code
+      - name: Restart preprod container
+      - name: Health check preprod (10 tentatives)
+      - name: Notify success/failure (Discord)
+```
+
+**2. CD Production (`.github/workflows/cd-prod.yml`) - Manuel**
+```yaml
+on:
+  workflow_dispatch:  # Déclenchement manuel uniquement
+    inputs:
+      confirm:
+        description: 'Taper "DEPLOY" pour confirmer'
+        required: true
+
+jobs:
+  deploy-prod:
+    runs-on: self-hosted
+    if: github.event.inputs.confirm == 'DEPLOY'
+    steps:
+      - name: Notify deployment start (Discord)
+      - name: Backup current version
+      - name: Pull latest code
+      - name: Restart production container
+      - name: Health check production (10 tentatives)
+      - name: Notify success/failure (Discord)
+```
+
+#### Alerting Discord
+
+**Webhook configuré:** `DISCORD_WEBHOOK_URL` (secret GitHub)
+
+**Types de notifications:**
+1. 🚀 **Déploiement démarré** (avec commit SHA + auteur)
+2. ✅ **Déploiement réussi** (avec URL + timestamp)
+3. ❌ **Déploiement échoué** (avec commande rollback)
+4. ⚠️ **Déploiement annulé** (confirmation incorrecte)
+
+**Exemple de notification Discord:**
+```
+✅ **Déploiement Preprod réussi!**
+🌐 URL: https://mangetamain.lafrance.io/
+📦 Commit: `abc1234`
+💬 Fix bug in authentication
+🕐 2025-10-25 14:30:15
+```
+
+#### Avantage Principal : Plus Besoin de VPN !
+
+**Avant (manuel):**
+1. Connexion VPN
+2. SSH vers dataia
+3. cd /home/dataia25/mangetamain/10_preprod
+4. git pull
+5. docker-compose restart
+6. Vérification manuelle
+7. Déconnexion VPN
+
+**Après (automatisé):**
+1. `git push` → Déploiement automatique complet
+
+**Gain:** 7 étapes manuelles → 1 simple push (⏱️ 5-10 min → 30 sec)
+
+#### Sécurité
+
+- ✅ Runner isolé sur réseau VPN (pas d'accès public)
+- ✅ User dédié non-root (dataia25)
+- ✅ Secrets GitHub chiffrés
+- ✅ Health checks automatiques (10 tentatives, retry 10s)
+- ✅ Backup avant déploiement prod
+- ✅ Rollback manuel documenté en cas d'échec
 
 **Résultat:**
-- ⚠️ Déploiement non implémenté (optionnel selon les exigences)
-- ✅ Pipeline CI complet et fonctionnel (répond aux exigences académiques)
+- ✅ **Déploiement entièrement automatisé**
+- ✅ **Notifications temps réel (Discord)**
+- ✅ **Preprod:** Auto-deploy sur push main
+- ✅ **Production:** Déploiement manuel avec confirmation
+- ✅ **Documentation complète:** [RUNNER_DISCORD_GUIDE.md](RUNNER_DISCORD_GUIDE.md)
 
 ---
 
-## Architecture du Pipeline CI
+## Architecture Complète CI/CD
 
-### Vue d'ensemble
+### Vue d'ensemble avec Runner Self-Hosted
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     DEVELOPER WORKFLOW                      │
-└─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│  1. Créer une branche feature                               │
-│  2. Développer et tester localement                         │
-│  3. Créer une Pull Request vers main                        │
+│  - Créer feature branch                                     │
+│  - Développer + tester localement                           │
+│  - Push → Pull Request vers main                            │
 └─────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────┐
 │              GITHUB ACTIONS - CI PIPELINE                   │
-│          (Déclenché sur PR et merge vers main)              │
+│          (Runners GitHub-hosted - Cloud)                    │
 │                                                             │
 │  ┌───────────────────────────────────────────────────┐     │
 │  │ QUALITY CHECKS (Job 1)                            │     │
@@ -302,6 +389,50 @@ Le déploiement pourrait être ajouté via un workflow `.github/workflows/deploy
              │   NON   │            │   OUI   │
              │  FIX    │            │ MERGE ✅ │
              └─────────┘            └─────────┘
+                                          │
+                                          ▼
+        ┌─────────────────────────────────────────────────────┐
+        │      GITHUB ACTIONS - CD PIPELINE                   │
+        │      (Runner Self-Hosted - VM dataia)               │
+        │                                                     │
+        │  ┌──────────────────────────────────────────┐      │
+        │  │ CD PREPROD (Automatique)                 │      │
+        │  │ runs-on: self-hosted                     │      │
+        │  │                                          │      │
+        │  │ 1. 📢 Notification Discord (start)       │      │
+        │  │ 2. 🔄 git pull (VM dataia)               │      │
+        │  │ 3. 🐳 docker-compose restart             │      │
+        │  │ 4. ⏳ Wait 60s                           │      │
+        │  │ 5. 🔍 Health check (10 retry)            │      │
+        │  │ 6. ✅ Notification Discord (success)      │      │
+        │  │                                          │      │
+        │  │ → https://mangetamain.lafrance.io/       │      │
+        │  └──────────────────────────────────────────┘      │
+        │                                                     │
+        │  ┌──────────────────────────────────────────┐      │
+        │  │ CD PRODUCTION (Manuel)                   │      │
+        │  │ workflow_dispatch (confirm: "DEPLOY")    │      │
+        │  │ runs-on: self-hosted                     │      │
+        │  │                                          │      │
+        │  │ 1. 📢 Notification Discord (start)       │      │
+        │  │ 2. 💾 Backup current commit              │      │
+        │  │ 3. 🔄 git pull (VM dataia)               │      │
+        │  │ 4. 🐳 docker-compose restart             │      │
+        │  │ 5. ⏳ Wait 60s                           │      │
+        │  │ 6. 🔍 Health check (10 retry)            │      │
+        │  │ 7. ✅/❌ Notification Discord (result)    │      │
+        │  │                                          │      │
+        │  │ → https://backtothefuturekitchen.       │      │
+        │  │    lafrance.io/                          │      │
+        │  └──────────────────────────────────────────┘      │
+        └─────────────────────────────────────────────────────┘
+                                          │
+                                          ▼
+                              ┌───────────────────────┐
+                              │  🔔 DISCORD CHANNEL   │
+                              │  Notifications temps  │
+                              │  réel (toute l'équipe)│
+                              └───────────────────────┘
 ```
 
 ---
@@ -313,6 +444,8 @@ Le déploiement pourrait être ajouté via un workflow `.github/workflows/deploy
 .github/
 └── workflows/
     ├── ci.yml              # Pipeline CI principal ✅
+    ├── cd-preprod.yml      # Déploiement automatique PREPROD ✅
+    ├── cd-prod.yml         # Déploiement manuel PRODUCTION ✅
     └── README.md           # Documentation workflows ✅
 ```
 
@@ -330,9 +463,11 @@ Le déploiement pourrait être ajouté via un workflow `.github/workflows/deploy
 
 ### Documentation
 ```
-README_CI_CD.md             # Guide complet CI/CD (4500+ lignes) ✅
-SYNTHESE_CI_CD_ACADEMIC.md  # Ce document ✅
-run_ci_checks.sh            # Script de test local ✅
+README_CI_CD.md                  # Guide complet CI/CD ✅
+SYNTHESE_CI_CD_ACADEMIC.md       # Ce document ✅
+RUNNER_DISCORD_GUIDE.md          # Guide Runner + Discord ✅
+INVENTAIRE_DOCUMENTATION_CI_CD.md # Inventaire docs CI/CD ✅
+run_ci_checks.sh                 # Script de test local ✅
 ```
 
 ### Mise à jour README principal
@@ -433,13 +568,42 @@ addopts = "--cov-fail-under=90"  # Pipeline échoue si < 90%
   run: pydocstyle streamlit/ --config=../.pydocstyle
 ```
 
-### 5. Déploiement optionnel
+### 5. Déploiement automatisé (optionnel)
 
-**Preuve:** Fichier .github/workflows/deploy.yml (183 lignes)
-- Build Docker automatique
-- Tests d'image
-- Push registry (commenté)
-- Déploiement SSH (commenté)
+**Preuve 1:** Workflow CD Preprod `.github/workflows/cd-preprod.yml`
+```yaml
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-preprod:
+    runs-on: self-hosted  # Runner sur VM dataia
+```
+
+**Preuve 2:** Workflow CD Production `.github/workflows/cd-prod.yml`
+```yaml
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Taper "DEPLOY" pour confirmer'
+
+jobs:
+  deploy-prod:
+    runs-on: self-hosted
+    if: github.event.inputs.confirm == 'DEPLOY'
+```
+
+**Preuve 3:** Applications déployées accessibles publiquement
+- PREPROD: https://mangetamain.lafrance.io/
+- PRODUCTION: https://backtothefuturekitchen.lafrance.io/
+
+**Preuve 4:** Notifications Discord
+- Webhook configuré (secret `DISCORD_WEBHOOK_URL`)
+- 4 types de notifications (start, success, failure, cancel)
+- Historique visible sur canal Discord de l'équipe
 
 ---
 
@@ -544,24 +708,37 @@ cd /home/julien/code/mangetamain/000_dev
 | ✅ Coverage >= 90% | OUI | `pyproject.toml` + résultats 96-100% |
 | ✅ PR → Tests auto | OUI | `ci.yml:7-9` (pull_request) |
 | ✅ Merge main → Tests | OUI | `ci.yml:4-6` (push main) |
-| ⚠️ Déploiement (optionnel) | NON | Non implémenté (non requis) |
+| ✅ **Déploiement (optionnel)** | **OUI** | **`cd-preprod.yml` + `cd-prod.yml` + Runner self-hosted + Discord** |
 
-**Toutes les exigences académiques sont satisfaites avec une implémentation production-ready.**
+**Toutes les exigences académiques sont satisfaites, incluant l'optionnelle (déploiement automatisé).**
+
+### Points remarquables
+
+**Au-delà des exigences :**
+- ✅ **Runner GitHub self-hosted** (VM dataia) pour déploiement sans VPN
+- ✅ **Notifications Discord** temps réel pour toute l'équipe
+- ✅ **Health checks automatiques** avec retry (10 tentatives)
+- ✅ **Déploiement manuel PROD** avec confirmation obligatoire
+- ✅ **Backup automatique** avant déploiement production
+- ✅ **Documentation exhaustive** (4 documents CI/CD dédiés)
 
 ---
 
 ## Ressources
 
 ### Documentation créée
-- **Guide complet:** [README_CI_CD.md](README_CI_CD.md) (4500+ lignes)
+- **Guide complet:** [README_CI_CD.md](README_CI_CD.md)
 - **Synthèse académique:** [SYNTHESE_CI_CD_ACADEMIC.md](SYNTHESE_CI_CD_ACADEMIC.md) (ce document)
+- **Runner + Discord:** [RUNNER_DISCORD_GUIDE.md](RUNNER_DISCORD_GUIDE.md) ⭐ NOUVEAU
+- **Inventaire docs:** [INVENTAIRE_DOCUMENTATION_CI_CD.md](INVENTAIRE_DOCUMENTATION_CI_CD.md)
 - **Workflows:** [.github/workflows/README.md](.github/workflows/README.md)
 
 ### Fichiers de configuration
 - **PEP8:** [.flake8](.flake8)
 - **Docstrings:** [.pydocstyle](.pydocstyle)
 - **CI Workflow:** [.github/workflows/ci.yml](.github/workflows/ci.yml)
-- **CD Workflow:** [.github/workflows/deploy.yml](.github/workflows/deploy.yml)
+- **CD Preprod:** [.github/workflows/cd-preprod.yml](.github/workflows/cd-preprod.yml) ⭐
+- **CD Production:** [.github/workflows/cd-prod.yml](.github/workflows/cd-prod.yml) ⭐
 
 ### Scripts
 - **Test local:** [run_ci_checks.sh](run_ci_checks.sh)
@@ -575,6 +752,7 @@ cd /home/julien/code/mangetamain/000_dev
 ---
 
 **Implémenté par:** Équipe Mangetamain Analytics
-**Date:** 2025-10-23
-**Version:** 1.0
-**Statut:** ✅ Production-ready
+**Date de création:** 2025-10-23
+**Dernière mise à jour:** 2025-10-25
+**Version:** 2.0 (+ Runner Self-Hosted + Discord)
+**Statut:** ✅ Production-ready + Déploiement automatisé opérationnel

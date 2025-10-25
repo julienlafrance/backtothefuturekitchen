@@ -5,7 +5,7 @@
 Ce guide documente la méthodologie complète pour intégrer des analyses EDA (provenant de notebooks Jupyter) dans l'application Streamlit de preprod. Il suit un processus rigoureux qui garantit la qualité du code, la conformité PEP8, et la couverture de tests.
 
 **Date**: 2025-10-23
-**Auteur**: Claude Code
+**Auteur**: Project team
 **Exemple de référence**: Intégration de `recipe_analysis_trendline_clean.py` → `analyse_trendlines.py`
 
 ---

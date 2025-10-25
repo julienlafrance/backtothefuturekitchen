@@ -46,15 +46,15 @@ def apply_chart_theme(fig, title=None):
             showgrid=True,
             gridcolor='#444444',
             gridwidth=1,
-            tickfont=dict(color=colors.TEXT_PRIMARY, size=11),
-            title=dict(font=dict(color=colors.TEXT_SECONDARY, size=12))
+            tickfont=dict(color=colors.TEXT_PRIMARY, size=12),
+            title=dict(font=dict(color=colors.TEXT_SECONDARY, size=13))
         ),
         yaxis=dict(
             showgrid=True,
             gridcolor='#444444',
             gridwidth=1,
-            tickfont=dict(color=colors.TEXT_PRIMARY, size=11),
-            title=dict(font=dict(color=colors.TEXT_SECONDARY, size=12))
+            tickfont=dict(color=colors.TEXT_PRIMARY, size=12),
+            title=dict(font=dict(color=colors.TEXT_SECONDARY, size=13))
         ),
 
         # Légende

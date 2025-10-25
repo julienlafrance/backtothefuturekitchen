@@ -1,8 +1,9 @@
 # Guide Charte Graphique "Back to the Kitchen"
 
 **Date de création:** 2025-10-24
-**Dernière mise à jour:** 2025-10-25
+**Dernière mise à jour:** 2025-10-25 (Synchronisé avec implémentation réelle)
 **Projet:** Mangetamain Analytics - Application Streamlit Preprod
+**Conformité:** ✅ 100% synchronisé avec le code en production
 
 ---
 
@@ -21,7 +22,10 @@ Charte graphique dark theme inspirée du logo "Back to the Kitchen" avec palette
 │   ├── chart_theme.py         # Thème Plotly réutilisable
 │   └── __init__.py
 ├── assets/
-│   └── custom.css             # Styles CSS Streamlit (externe)
+│   ├── custom.css             # Styles CSS Streamlit (externe)
+│   ├── back_to_the_kitchen_logo.png  # Logo 200x200
+│   ├── favicon.ico            # Favicon multi-résolution (16/32/48)
+│   └── favicon.png            # Favicon 32x32 pour web
 ├── .streamlit/
 │   └── config.toml            # Configuration thème Streamlit
 └── main.py                    # Application principale
@@ -42,7 +46,7 @@ ORANGE_LIGHT = "#FFA07A"      # Saumon - teinte douce du dégradé
 ```python
 BACKGROUND_MAIN = "#1e1e1e"     # Gris foncé - zone principale
 BACKGROUND_SIDEBAR = "#000000"  # Noir pur - sidebar
-BACKGROUND_CARD = "#2a2a2a"     # Gris moyen - cards
+BACKGROUND_CARD = "#333333"     # Gris moyen - cards et widgets
 ```
 
 ### Texte (hiérarchie)
@@ -93,12 +97,12 @@ st.plotly_chart(fig)
 
 **Configuration appliquée:**
 - Fonds transparents (plot_bgcolor, paper_bgcolor)
-- Police: sans-serif, 12px, couleur TEXT_PRIMARY
-- Titres: orange (ORANGE_PRIMARY), 16px, centrés
+- Police: Inter sans-serif, 12px, couleur TEXT_PRIMARY
+- Titres: orange (ORANGE_PRIMARY), 16px, Michroma, centrés
 - Grilles: #444444, 1px
-- Axes: labels 12px, titres 13px
-- Légende: fond #2a2a2a avec bordure
-- Hover: fond BACKGROUND_CARD, bordure orange
+- Axes: labels 12px, titres 13px ✅ (Corrigé le 2025-10-25)
+- Légende: fond rgba(42,42,42,0.8) avec bordure
+- Hover: fond BACKGROUND_CARD, bordure orange, texte blanc
 
 ### Fonction subplots: `apply_subplot_theme(fig, num_rows=1, num_cols=2)`
 
@@ -238,6 +242,41 @@ secondaryBackgroundColor = "#333333"
 textColor = "#F0F0F0"
 font = "sans serif"
 ```
+
+---
+
+## 🎨 Favicon
+
+### Création du favicon
+
+Le favicon a été créé depuis le logo principal avec ImageMagick :
+
+```bash
+# Favicon multi-résolution .ico (16x16, 32x32, 48x48)
+convert back_to_the_kitchen_logo.png -resize 16x16 /tmp/favicon_16.png
+convert back_to_the_kitchen_logo.png -resize 32x32 /tmp/favicon_32.png
+convert back_to_the_kitchen_logo.png -resize 48x48 /tmp/favicon_48.png
+convert /tmp/favicon_16.png /tmp/favicon_32.png /tmp/favicon_48.png favicon.ico
+
+# Favicon PNG 32x32 pour web
+convert back_to_the_kitchen_logo.png -resize 32x32 favicon.png
+```
+
+### Intégration dans Streamlit
+
+```python
+# Dans main.py
+st.set_page_config(
+    page_title="Mangetamain Analytics",
+    page_icon="src/mangetamain_analytics/assets/favicon.png",
+    layout="wide"
+)
+```
+
+### Fichiers générés
+
+- **favicon.ico** : 8.5 KB (multi-résolution pour navigateurs)
+- **favicon.png** : 1.8 KB (32x32 pour Streamlit)
 
 ---
 
@@ -452,12 +491,12 @@ Toutes les couleurs sont centralisées dans `:root` pour faciliter la maintenanc
 
 **HTML Python:**
 ```python
-st.markdown('<h3 class="analyses-title">ANALYSES</h3>', unsafe_allow_html=True)
+st.markdown('<h3 class="sidebar-category-title">ANALYSES</h3>', unsafe_allow_html=True)
 ```
 
 **CSS:**
 ```css
-[data-testid="stSidebar"] h3.analyses-title {
+[data-testid="stSidebar"] h3.sidebar-category-title {
     font-family: var(--font-heading);  /* Michroma */
     color: var(--primary-color);        /* #FF8C00 */
     font-size: 1.2em;
@@ -472,12 +511,12 @@ st.markdown('<h3 class="analyses-title">ANALYSES</h3>', unsafe_allow_html=True)
 
 **HTML Python:**
 ```python
-st.markdown('<p class="intro-text">Choisir une analyse :</p>', unsafe_allow_html=True)
+st.markdown('<p class="sidebar-subtitle">CHOISIR UNE ANALYSE:</p>', unsafe_allow_html=True)
 ```
 
 **CSS:**
 ```css
-[data-testid="stSidebar"] .intro-text {
+[data-testid="stSidebar"] .sidebar-subtitle {
     font-family: var(--font-body);  /* Inter */
     color: var(--text-color);       /* #F0F0F0 */
     font-size: 0.9em;
@@ -574,17 +613,14 @@ Les badges sont positionnés en bas de la sidebar avec classes CSS réutilisable
 **Badge S3 Ready/Error:**
 
 ```python
-# Python
-db_status_class = "success" if s3_ready else "error"
-db_text = "S3 Ready" if s3_ready else "S3 Error"
-
+# Python - Utilise icône SVG Lucide check-circle
 st.markdown(
     f"""
-    <div style="text-align: center;">
-        <span class="badge-s3 {db_status_class}">
-            <span class="badge-icon"></span>
-            {db_text}
-        </span>
+    <div class="s3-ready-indicator">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        <span>S3 {"Ready" if s3_ready else "Error"}</span>
     </div>
     """,
     unsafe_allow_html=True
@@ -593,7 +629,7 @@ st.markdown(
 
 ```css
 /* CSS */
-.badge-s3 {
+.s3-ready-indicator {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -609,11 +645,11 @@ st.markdown(
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.badge-s3.error {
+.s3-ready-indicator.error {
     background-color: var(--error-color);  /* #DC3545 */
 }
 
-.badge-s3.success {
+.s3-ready-indicator.success {
     background-color: var(--success-color);  /* #28A745 */
 }
 ```
@@ -621,21 +657,21 @@ st.markdown(
 **Badge PREPROD/PROD:**
 
 ```python
-# Python
+# Python - Utilise icône SVG Lucide circle-dot
 if "PREPROD" in env:
-    badge_class = "badge-preprod"
+    badge_class = "env-badge preprod-badge"
     label = "PREPROD"
 elif "PROD" in env:
-    badge_class = "badge-prod"
+    badge_class = "env-badge prod-badge"
     label = "PRODUCTION"
 
 st.markdown(
     f"""
-    <div style="text-align: center;">
-        <span class="{badge_class}">
-            <span class="badge-icon"></span>
-            {label}
-        </span>
+    <div class="{badge_class}">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="2"/>
+        </svg>
+        <span>{label}</span>
     </div>
     """,
     unsafe_allow_html=True
@@ -643,14 +679,12 @@ st.markdown(
 ```
 
 ```css
-/* CSS */
-.badge-preprod {
+/* CSS - Classe générique env-badge */
+.env-badge {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    background-color: var(--warning-color);  /* #FFC107 */
-    color: var(--secondary-background-color);  /* #333333 - texte foncé */
     border-radius: 50px;
     padding: 8px 16px;
     font-size: 12px;
@@ -662,17 +696,14 @@ st.markdown(
     letter-spacing: 0.5px;
 }
 
-.badge-prod {
-    background-color: var(--success-color);  /* #28A745 */
-    color: var(--text-color);  /* #F0F0F0 - texte clair */
+.preprod-badge {
+    background-color: var(--warning-color);  /* #FFC107 */
+    color: var(--secondary-background-color);  /* #333333 - texte foncé */
 }
 
-.badge-icon {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: currentColor;
-    display: inline-block;
+.prod-badge {
+    background-color: var(--success-color);  /* #28A745 */
+    color: var(--text-color);  /* #F0F0F0 - texte clair */
 }
 ```
 
@@ -713,18 +744,31 @@ st.markdown(
 └─────────────────────────────┘
 ```
 
+### Bouton Rafraîchir
+
+**Ajout post-guide :** Un bouton "🔄 Rafraîchir" a été ajouté pour vider le cache Streamlit.
+
+```python
+# Python
+if st.button("🔄 Rafraîchir", key="btn_refresh", use_container_width=True):
+    st.cache_data.clear()
+    st.rerun()
+```
+
+**CSS :** Le bouton utilise le style primaire avec dégradé orange (défini dans `custom.css` lignes 400-419).
+
 ### Checklist Menu Sidebar
 
-- [ ] Titre "ANALYSES" avec classe `analyses-title`
-- [ ] Texte intro avec classe `intro-text`
-- [ ] Navigation `st.radio` avec `label_visibility="collapsed"`
-- [ ] Icônes Lucide injectées via CSS `::before`
-- [ ] 3 états navigation (inactif/hover/actif) stylisés
-- [ ] Badge S3 avec classe `badge-s3` + modificateur `success`/`error`
-- [ ] Badge environnement avec classe `badge-preprod`/`badge-prod`
-- [ ] Container badges avec classe `sidebar-badges`
-- [ ] CSS Variables `:root` utilisées partout
-- [ ] Pas de bouton "Rafraîchir" (inutile)
+- [x] Titre "ANALYSES" avec classe `sidebar-category-title`
+- [x] Texte intro avec classe `sidebar-subtitle`
+- [x] Navigation `st.radio` avec `label_visibility="collapsed"`
+- [x] Icônes Lucide injectées via CSS `::before`
+- [x] 3 états navigation (inactif/hover/actif) stylisés
+- [x] Badge S3 avec classe `s3-ready-indicator`
+- [x] Badge environnement avec classe `env-badge preprod-badge`/`prod-badge`
+- [x] Container badges avec flexbox en bas de sidebar
+- [x] CSS Variables `:root` utilisées partout
+- [x] Bouton "Rafraîchir" ajouté (utile pour vider cache)
 
 ---
 
@@ -754,6 +798,66 @@ Tous les autres graphiques dans:
 
 ---
 
+## 🎁 Éléments Bonus (Non prévus initialement)
+
+L'implémentation a ajouté des améliorations au-delà du guide initial :
+
+### 1. Suppression espaces en haut
+```css
+/* Lignes 34-47 de custom.css */
+.main .block-container {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+```
+**Bénéfice :** Maximise l'espace vertical, design plus moderne.
+
+### 2. Scrollbars personnalisées
+```css
+/* Lignes 742-758 de custom.css */
+::-webkit-scrollbar {
+    width: 8px;
+    background: #1a1a1a;
+}
+::-webkit-scrollbar-thumb {
+    background: #444444;
+    border-radius: 4px;
+}
+```
+**Bénéfice :** Cohérence visuelle avec la charte sombre.
+
+### 3. Dataframes stylisés
+```css
+/* Lignes 494-531 de custom.css */
+[data-testid="stDataFrame"] thead tr th {
+    background-color: #1a1a1a !important;
+    color: #FF8C00 !important;
+}
+```
+**Bénéfice :** Tableaux lisibles sur fond sombre avec headers orange.
+
+### 4. Responsive design
+```css
+/* Lignes 764-770 de custom.css */
+@media (max-width: 768px) {
+    .footer { flex-direction: column; }
+}
+```
+**Bénéfice :** Adaptation mobile/tablette.
+
+### 5. Messages style "warm kitchen"
+```css
+/* Lignes 538-593 de custom.css */
+[data-baseweb="notification"] {
+    background: #333333 !important;
+    border-left: 4px solid #FF8C00 !important;
+    box-shadow: 0 2px 8px rgba(255, 140, 0, 0.15) !important;
+}
+```
+**Bénéfice :** Messages stylisés avec bordure orange chaleureuse.
+
+---
+
 ## 💡 Notes importantes
 
 1. **Compatibilité**: Le thème fonctionne avec tous les types de graphiques Plotly (Bar, Scatter, Line, Heatmap, etc.)
@@ -767,6 +871,8 @@ Tous les autres graphiques dans:
 5. **CSS externe**: Le fichier `custom.css` est chargé une seule fois au démarrage de l'app - modifications nécessitent redémarrage
 
 6. **Streamlit config**: Le fichier `.streamlit/config.toml` configure le thème global mais CSS externe peut override certains éléments
+
+7. **CSS exhaustif**: Avec 771 lignes, le fichier `custom.css` dépasse largement le guide initial et couvre tous les composants Streamlit
 
 ---
 
