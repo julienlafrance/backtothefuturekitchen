@@ -566,6 +566,39 @@ small, .caption {
     border: 1px solid #444444 !important;
 }
 
+/* Cartouche de groupe de la toolbar (autour des 3/4 boutons) */
+div[data-testid="stElementToolbar"],
+div[role="group"][aria-label="Element toolbar"] {
+    background: #2a2a2a !important;
+    background-color: #2a2a2a !important;
+    border: 1px solid #444444 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* Boutons de la toolbar */
+button[kind="elementToolbar"],
+button[data-testid^="stBaseButton-elementToolbar"] {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: var(--text-color) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+button[kind="elementToolbar"]:hover,
+button[kind="elementToolbar"]:focus,
+button[data-testid^="stBaseButton-elementToolbar"]:hover,
+button[data-testid^="stBaseButton-elementToolbar"]:focus {
+    background: #3a3a3a !important;
+    background-color: #3a3a3a !important;
+}
+
+button[kind="elementToolbar"] svg,
+button[data-testid^="stBaseButton-elementToolbar"] svg {
+    color: var(--text-color) !important;
+    fill: var(--text-color) !important;
+}
+
 /* Conteneur du dataframe */
 [data-testid="stDataFrame"] > div {
     background-color: #2a2a2a !important;
