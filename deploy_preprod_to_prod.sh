@@ -31,7 +31,7 @@ fi
 
 # 2. EFFACE (garde .gitkeep)
 echo -e "\n${YELLOW}🗑️  Nettoyage 20_prod/${NC}"
-find "$PROD_DIR" -mindepth 1 ! -name '.gitkeep' -delete
+rm -rf "$PROD_DIR"/{streamlit,logs,.venv,pyproject.toml,README.md,uv.lock}
 echo "✅ Répertoire nettoyé"
 
 # 3. COPIE (3 éléments)
