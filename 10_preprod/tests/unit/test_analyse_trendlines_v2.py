@@ -49,12 +49,18 @@ def setup_st_mocks(mock_st):
     mock_st.plotly_chart = Mock()
     mock_st.info = Mock()
     mock_st.columns = Mock(side_effect=lambda n: [MagicMock() for _ in range(n)])
-    mock_st.slider = Mock(side_effect=lambda *args, **kwargs:
-                          kwargs.get('value', (1999, 2018) if isinstance(kwargs.get('value', ()), tuple) else 95))
+    mock_st.slider = Mock(
+        side_effect=lambda *args, **kwargs: kwargs.get(
+            "value", (1999, 2018) if isinstance(kwargs.get("value", ()), tuple) else 95
+        )
+    )
     mock_st.radio = Mock(return_value="Linéaire")
     # Return steelblue for color selections, Moyenne for metrics
-    mock_st.selectbox = Mock(side_effect=lambda label, options, **kwargs:
-                             options[kwargs.get('index', 0)] if options else "Moyenne")
+    mock_st.selectbox = Mock(
+        side_effect=lambda label, options, **kwargs: (
+            options[kwargs.get("index", 0)] if options else "Moyenne"
+        )
+    )
     mock_st.multiselect = Mock(return_value=[])
     mock_st.checkbox = Mock(return_value=False)
     mock_st.metric = Mock()

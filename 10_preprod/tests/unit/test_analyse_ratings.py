@@ -105,9 +105,7 @@ def test_analyse_ratings_tendance_temporelle(
 
 @patch("visualization.analyse_ratings.st")
 @patch("visualization.analyse_ratings.load_ratings_for_longterm_analysis")
-def test_analyse_ratings_distribution(
-    mock_load_ratings, mock_st, mock_monthly_stats
-):
+def test_analyse_ratings_distribution(mock_load_ratings, mock_st, mock_monthly_stats):
     """Test de la fonction analyse_ratings_distribution."""
     # Return tuple (df, metadata) as expected by the function
     mock_load_ratings.return_value = (mock_monthly_stats, {"count": 100})
