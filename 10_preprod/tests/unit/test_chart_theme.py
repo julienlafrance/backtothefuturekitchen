@@ -6,7 +6,6 @@ Teste les fonctions d'application de thème aux graphiques Plotly.
 import sys
 from pathlib import Path
 import pytest
-from unittest.mock import Mock
 import plotly.graph_objects as go
 
 # Ajout du chemin vers le module

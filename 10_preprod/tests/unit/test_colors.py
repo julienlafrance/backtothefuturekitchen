@@ -5,7 +5,6 @@ Teste les constantes et fonctions de gestion des couleurs.
 
 import sys
 from pathlib import Path
-import pytest
 
 # Ajout du chemin vers le module
 sys.path.insert(0, str(Path(__file__).parents[2] / "src" / "mangetamain_analytics"))
