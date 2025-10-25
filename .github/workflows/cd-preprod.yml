@@ -103,23 +103,23 @@ jobs:
       - name: Wait for CI completion
         id: wait-ci
         run: |
-          echo "⏳ Attente de la fin du CI Pipeline..."
+          echo "⏳ Attente de la fin du CI Pipeline pour commit ${{ github.sha }}..."
 
-          # Attendre max 5 minutes que le CI démarre
-          echo "Attente démarrage CI..."
+          # Attendre que le CI démarre
+          echo "Attente démarrage CI (30s)..."
           sleep 30
 
-          # Attendre que le CI se termine (max 10 minutes)
-          for i in {1..60}; do
-            # Récupérer le statut du dernier workflow CI pour ce commit
+          # Attendre que le CI se termine (max 3 minutes)
+          for i in {1..18}; do
+            # Récupérer tous les workflows CI récents et filtrer par SHA
             CI_STATUS=$(gh run list \
               --workflow="CI Pipeline - Quality & Tests" \
-              --commit "${{ github.sha }}" \
-              --json conclusion \
-              --jq '.[0].conclusion' \
-              2>/dev/null || echo "pending")
+              --limit 10 \
+              --json conclusion,headSha,status \
+              --jq ".[] | select(.headSha == \"${{ github.sha }}\") | .conclusion" \
+              2>/dev/null | head -1)
 
-            echo "Tentative $i/60 - CI Status: $CI_STATUS"
+            echo "Tentative $i/18 - CI Status pour ${{ github.sha }}: ${CI_STATUS:-pending}"
 
             if [ "$CI_STATUS" = "success" ]; then
               echo "✅ CI a réussi!"
@@ -129,16 +129,13 @@ jobs:
               echo "❌ CI a échoué!"
               echo "ci_result=failure" >> $GITHUB_OUTPUT
               exit 0
-            elif [ "$CI_STATUS" = "null" ] || [ "$CI_STATUS" = "pending" ] || [ "$CI_STATUS" = "" ]; then
-              echo "CI en cours..."
-              sleep 10
             else
-              echo "⚠️  CI status inattendu: $CI_STATUS"
+              echo "CI en cours ou pas encore démarré..."
               sleep 10
             fi
           done
 
-          echo "⏱️  Timeout CI (10min) - considéré comme échec"
+          echo "⏱️  Timeout CI (3min) - considéré comme échec"
           echo "ci_result=timeout" >> $GITHUB_OUTPUT
         env:
           GH_TOKEN: ${{ github.token }}
