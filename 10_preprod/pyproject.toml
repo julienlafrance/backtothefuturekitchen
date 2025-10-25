@@ -26,8 +26,8 @@ dependencies = [
     "scikit-learn>=1.7.2",
     "scipy>=1.16.2",
     "statsmodels>=0.14.0",
-    # Package data-utils local (40_utils) - chemin absolu pour tests locaux
-    "mangetamain-data-utils @ file:///home/julien/code/mangetamain/000_dev/40_utils/mangetamain_data_utils",
+    # Package data-utils local (40_utils) - chemin Docker
+    "mangetamain-data-utils @ file:///app/40_utils/mangetamain_data_utils",
 ]
 
 [project.optional-dependencies]
