@@ -157,7 +157,7 @@ log "SUCCESS" "Assets copiés ($nb_files fichiers)"
 ################################################################################
 # Copie du fichier principal main.py
 ################################################################################
-log "INFO" "Étape 5/6 : Copie du fichier main.py"
+log "INFO" "Étape 5/8 : Copie du fichier main.py"
 
 # Backup de l'ancien main.py
 if [ -f "$PROD_DIR/main.py" ]; then
@@ -174,18 +174,65 @@ file_size=$(stat -f%z "$PROD_DIR/main.py" 2>/dev/null || stat -c%s "$PROD_DIR/ma
 log "SUCCESS" "main.py copié ($file_size bytes)"
 
 ################################################################################
+# Copie des dépendances Python (pyproject.toml et uv.lock)
+################################################################################
+log "INFO" "Étape 6/8 : Synchronisation des dépendances Python"
+
+PREPROD_ROOT="$BASE_DIR/10_preprod"
+PROD_ROOT="$BASE_DIR/20_prod"
+
+# Vérifier que pyproject.toml existe en PREPROD
+if [ ! -f "$PREPROD_ROOT/pyproject.toml" ]; then
+    handle_error "Copie pyproject.toml" "Fichier pyproject.toml introuvable dans PREPROD"
+fi
+
+# Backup de l'ancien pyproject.toml
+if [ -f "$PROD_ROOT/pyproject.toml" ]; then
+    backup_pyproject="$PROD_ROOT/pyproject.toml.backup_$(date +%Y%m%d_%H%M%S)"
+    cp "$PROD_ROOT/pyproject.toml" "$backup_pyproject" || log "WARNING" "Impossible de créer backup pyproject.toml"
+    log "INFO" "Backup pyproject.toml créé : $backup_pyproject"
+fi
+
+# Copier pyproject.toml
+cp "$PREPROD_ROOT/pyproject.toml" "$PROD_ROOT/pyproject.toml" || handle_error "Copie pyproject.toml" "Échec de la copie"
+log "SUCCESS" "pyproject.toml copié"
+
+# Copier uv.lock si présent
+if [ -f "$PREPROD_ROOT/uv.lock" ]; then
+    # Backup de l'ancien uv.lock
+    if [ -f "$PROD_ROOT/uv.lock" ]; then
+        backup_uvlock="$PROD_ROOT/uv.lock.backup_$(date +%Y%m%d_%H%M%S)"
+        cp "$PROD_ROOT/uv.lock" "$backup_uvlock" || log "WARNING" "Impossible de créer backup uv.lock"
+        log "INFO" "Backup uv.lock créé : $backup_uvlock"
+    fi
+
+    cp "$PREPROD_ROOT/uv.lock" "$PROD_ROOT/uv.lock" || handle_error "Copie uv.lock" "Échec de la copie"
+    log "SUCCESS" "uv.lock copié"
+else
+    log "WARNING" "uv.lock non trouvé dans PREPROD (optionnel)"
+fi
+
+log "SUCCESS" "Dépendances Python synchronisées"
+
+################################################################################
 # Résumé final
 ################################################################################
-log "INFO" "Étape 6/6 : Résumé du déploiement"
+log "INFO" "Étape 7/8 : Redémarrage du container requis"
+log "INFO" "⚠️  Les nouvelles dépendances Python nécessitent un redémarrage du container PROD"
+log "INFO" "Le container fera 'uv sync' au démarrage pour installer les packages"
+
+log "INFO" "Étape 8/8 : Résumé du déploiement"
 
 log "SUCCESS" "=========================================="
 log "SUCCESS" "Déploiement terminé avec succès !"
 log "SUCCESS" "=========================================="
 log "INFO" "Fichiers copiés de PREPROD → PROD :"
-log "INFO" "  - visualization/ : Modules d'analyse"
-log "INFO" "  - utils/        : Utilitaires (colors, chart_theme)"
-log "INFO" "  - assets/       : CSS, logo, favicon"
-log "INFO" "  - main.py       : Application principale"
+log "INFO" "  - visualization/   : Modules d'analyse"
+log "INFO" "  - utils/           : Utilitaires (colors, chart_theme)"
+log "INFO" "  - assets/          : CSS, logo, favicon"
+log "INFO" "  - main.py          : Application principale"
+log "INFO" "  - pyproject.toml   : Définition des dépendances Python"
+log "INFO" "  - uv.lock          : Versions exactes des packages"
 log "INFO" ""
 log "INFO" "Prochaines étapes (gérées par GitHub Actions) :"
 log "INFO" "  1. Redémarrage du container Docker PROD"
