@@ -2,8 +2,8 @@
 ## Évaluation Projet Mangetamain Analytics
 
 **Date d'analyse:** 2025-10-26
-**Deadline projet:** 1er décembre 2025 à 23h59
-**Temps restant:** ~5 semaines
+**Deadline projet:** 🚨 **31 OCTOBRE 2025 à 23h59** 🚨
+**Temps restant:** ⚠️ **5 JOURS SEULEMENT** ⚠️
 
 ---
 
@@ -356,77 +356,133 @@ git push origin --tags
 
 ---
 
-## 📊 Récapitulatif des Priorités
+## 📊 Récapitulatif des Priorités (MODE URGENCE)
 
-### 🔴 URGENT (Bloquant livraison)
+### 🔴 FAIRE ABSOLUMENT (Bloquant livraison)
 
-| Tâche | Criticité | Temps estimé | Statut |
-|-------|-----------|--------------|--------|
-| **Documentation Sphinx** | 🔴 CRITIQUE | 3-4h | ❌ À FAIRE |
-| **Fichiers de logs** | 🔴 CRITIQUE | 1h | ❌ À FAIRE |
+| Tâche | Criticité | Temps | Jour | Statut |
+|-------|-----------|-------|------|--------|
+| **Documentation Sphinx** | 🔴 BLOQUANT | 6h | Dim 27 | ❌ À FAIRE |
+| **Fichiers de logs** | 🔴 CRITIQUE | 1h | Lun 28 | ❌ À FAIRE |
 
-### 🟠 IMPORTANT (Exigences académiques)
+### 🟠 FAIRE SI POSSIBLE (Important mais négociable)
 
-| Tâche | Criticité | Temps estimé | Statut |
-|-------|-----------|--------------|--------|
-| **POO (classes)** | 🟠 IMPORTANT | 2-3 jours | ❌ À FAIRE |
-| **Type Hinting complet** | 🟠 IMPORTANT | 1-2 jours | ⚠️ PARTIEL |
-| **Commentaires code** | 🟠 MOYEN | 2-3h | ⚠️ PARTIEL |
+| Tâche | Criticité | Temps | Jour | Statut |
+|-------|-----------|-------|------|--------|
+| **Type Hints (80%)** | 🟠 IMPORTANT | 3h | Lun 28 | ⚠️ PARTIEL |
+| **POO minimal (2-3 classes)** | 🟠 IMPORTANT | 3h | Lun 28 | ❌ À FAIRE |
+| **Commentaires code** | 🟠 MOYEN | 2h | Mar 29 | ⚠️ PARTIEL |
 
-### 🟢 BONUS (Optionnel)
+### 🟢 BONUS (Si temps restant)
 
-| Tâche | Criticité | Temps estimé | Statut |
-|-------|-----------|--------------|--------|
-| **Tags Git** | 🟢 BONUS | 15min | ❌ À FAIRE |
-| **Optimisation perfs** | 🟢 BONUS | - | N/A |
+| Tâche | Criticité | Temps | Jour | Statut |
+|-------|-----------|-------|------|--------|
+| **Tags Git** | 🟢 BONUS | 15min | Mer 30 | ❌ À FAIRE |
+
+### ❌ ABANDONNER (Pas le temps)
+
+- ~~Refactoring POO complet~~ → Trop long (2-3 jours)
+- ~~Type hints 100% + mypy~~ → Faire 80% suffit
+- ~~Optimisation perfs~~ → Pas demandé
 
 ---
 
-## 📅 Planning Recommandé (5 semaines restantes)
+## ⚡ Planning URGENT (5 jours restants)
 
-### Semaine 1 (26 oct - 1er nov): 🔴 CRITIQUES
-- [ ] **Jour 1-2:** Documentation Sphinx complète
-  - Initialiser Sphinx
-  - Créer structure docs/
-  - Générer documentation HTML
-  - Mettre à jour README
-- [ ] **Jour 3:** Fichiers de logs
-  - Configuration double handler (debug/errors)
-  - Créer dossier logs/
-  - Tester génération logs
+### 🚨 STRATÉGIE DE SURVIE - TRIAGE IMPITOYABLE
 
-### Semaine 2 (2-8 nov): 🟠 POO
-- [ ] **Jour 1-2:** Refactoring POO - Classes d'analyseurs
-  - Créer classe de base `RecipeAnalyzer`
-  - Hériter dans `TrendlineAnalyzer`, `SeasonalityAnalyzer`, etc.
-- [ ] **Jour 3:** Refactoring POO - DataLoader et Config
-  - Classe `S3DataLoader`
-  - Classe `AppConfig`
-- [ ] **Jour 4:** Tests pour les nouvelles classes
-  - Adapter tests existants
-  - Vérifier coverage reste ≥ 90%
+Avec seulement 5 jours, **IMPOSSIBLE** de tout faire. Il faut **PRIORISER** ce qui rapporte le plus de points.
 
-### Semaine 3 (9-15 nov): 🟠 Type Hints
-- [ ] **Jour 1-2:** Ajouter type hints partout
-  - Annotations sur toutes les fonctions
-  - Imports typing (List, Dict, Optional, etc.)
-- [ ] **Jour 3:** Configuration mypy
-  - Créer mypy.ini
-  - Ajouter dans CI pipeline
-  - Corriger erreurs mypy
+### ✅ Dimanche 27 octobre (AUJOURD'HUI) - 6h
+**Focus:** Documentation Sphinx (CRITIQUE)
 
-### Semaine 4 (16-22 nov): ✨ Finitions
-- [ ] Améliorer commentaires code
-- [ ] Ajouter tags Git
-- [ ] Relecture complète README
-- [ ] Vérification coverage final
-- [ ] Test déploiements PREPROD et PROD
+- [ ] **10h-12h:** Initialiser Sphinx + Structure de base
+  ```bash
+  cd 10_preprod
+  mkdir -p docs
+  sphinx-quickstart docs --no-sep --project="Mangetamain Analytics" --author="Team" -v 1.0
+  ```
+- [ ] **14h-16h:** Configuration autodoc + napoleon
+  - Modifier `docs/conf.py`
+  - Activer extensions: `'sphinx.ext.autodoc'`, `'sphinx.ext.napoleon'`
+  - Configurer theme RTD
+- [ ] **16h-18h:** Créer pages documentation
+  - `index.rst`, `installation.rst`, `api.rst`
+  - Documenter classes principales
+- [ ] **18h-20h:** Build + vérification
+  ```bash
+  cd docs && make html
+  ```
 
-### Semaine 5 (23-30 nov): 🧪 Tests finaux
-- [ ] Tests end-to-end
-- [ ] Vérification toutes exigences PDF
-- [ ] Préparation livraison finale
-- [ ] Buffer pour imprévus
+### Lundi 28 octobre - 8h
+**Focus:** Logs + Type Hints (IMPORTANT)
+
+- [ ] **9h-10h:** Configuration logs (debug.log + errors.log)
+  - Modifier main.py avec 2 handlers Loguru
+  - Créer `logs/.gitkeep`
+  - Tester génération fichiers
+
+- [ ] **10h-13h:** Type hints sur fonctions principales (80% du code)
+  - utils/colors.py
+  - utils/chart_theme.py
+  - visualization/*.py (fonctions publiques seulement)
+  - Ne PAS perdre de temps sur le code interne
+
+- [ ] **14h-17h:** POO MINIMALISTE (juste pour montrer)
+  - Créer 2-3 classes simples (DataLoader, Config)
+  - NE PAS refactorer tout le code !
+  - Juste montrer qu'on sait faire
+
+### Mardi 29 octobre - 6h
+**Focus:** Finitions qualité
+
+- [ ] **9h-11h:** Commentaires code
+  - Ajouter docstrings manquantes
+  - Commenter logique complexe
+
+- [ ] **11h-13h:** Tests + vérifications
+  - Vérifier coverage ≥ 90%
+  - Tester CI/CD passe
+  - Corriger erreurs flake8
+
+- [ ] **14h-16h:** README + documentation projet
+  - Mettre à jour README avec Sphinx
+  - Vérifier tous les liens fonctionnent
+
+### Mercredi 30 octobre - 8h
+**Focus:** Tests finaux + polish
+
+- [ ] **9h-12h:** Tests end-to-end complets
+  - Tester webapp PREPROD
+  - Tester webapp PROD
+  - Vérifier tous les graphiques s'affichent
+
+- [ ] **14h-17h:** Checklist finale exigences PDF
+  - Cocher TOUTES les cases
+  - Générer logs d'exemple
+  - Screenshots webapp
+
+- [ ] **17h-18h:** Tag Git final
+  ```bash
+  git tag -a v1.0.0 -m "Version finale - Livraison projet"
+  git push origin v1.0.0
+  ```
+
+### Jeudi 31 octobre - DEADLINE 23h59
+**Focus:** Livraison
+
+- [ ] **9h-12h:** Vérifications ultimes
+  - Relecture complète README
+  - Test tous les liens
+  - Vérification déploiements
+
+- [ ] **14h-18h:** Buffer pour imprévus / corrections
+
+- [ ] **20h-22h:** Préparation email final
+  - Tester tous les liens une dernière fois
+  - Rédiger email de livraison
+
+- [ ] **22h30:** 🚀 **ENVOI EMAIL à prillard.martin@gmail.com**
 
 ---
 
@@ -494,6 +550,42 @@ git push origin --tags
 
 ---
 
-**Projet déjà très solide techniquement ! Les points manquants sont principalement académiques/formels.**
+## 🎯 Stratégie de Notation (Maximiser les points en 5 jours)
 
-**Bon courage pour les 5 dernières semaines ! 🚀**
+### Ce qui rapporte BEAUCOUP de points (DÉJÀ FAIT ✅)
+- ✅ Tests 93% coverage (20/20)
+- ✅ CI/CD complet (18/20)
+- ✅ Webapp déployée + UX (18/20)
+- ✅ PEP8 + Docstrings (17/20)
+= **73/80 points déjà acquis !**
+
+### Ce qui peut faire perdre des points (À CORRIGER 🔴)
+- ❌ Documentation Sphinx manquante → **-5 à -10 points** 🔴
+- ❌ Logs incomplets → **-3 à -5 points** 🔴
+- ⚠️ POO insuffisant → **-2 à -4 points** 🟠
+- ⚠️ Type hints partiels → **-1 à -3 points** 🟠
+
+### Verdict
+**Avec Sphinx + Logs:** 17-18/20 ✅
+**Sans Sphinx + Logs:** 14-15/20 ⚠️
+
+## 💪 Message de motivation
+
+**VOUS AVEZ DÉJÀ UN EXCELLENT PROJET !**
+
+- 93% coverage (objectif dépassé)
+- CI/CD complet avec auto-deploy
+- Webapp pro avec charte graphique
+- Code propre PEP8
+
+**Il ne manque QUE la doc Sphinx et les logs !**
+
+**C'EST FAISABLE EN 5 JOURS !** 🚀
+
+Concentrez-vous sur :
+1. **Dimanche:** Sphinx (6h) → +8 points
+2. **Lundi:** Logs (1h) + Type hints (3h) + POO minimal (3h) → +5 points
+3. **Mardi-Mercredi:** Polish + tests
+4. **Jeudi:** Livraison
+
+**Vous allez y arriver ! 💪**
