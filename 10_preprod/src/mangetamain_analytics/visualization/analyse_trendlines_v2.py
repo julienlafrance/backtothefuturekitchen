@@ -602,7 +602,6 @@ def analyse_trendline_duree():
     # ========================================
 
 
-
 def analyse_trendline_duree_old_intervals():
     """
     Analyse professionnelle de l'évolution de la durée de préparation.
@@ -966,7 +965,6 @@ def analyse_trendline_duree_old_intervals():
 
         st.markdown("**Résumé complet du modèle :**")
         st.text(wls_result.summary())
-
 
 
 def analyse_trendline_duree_old():
@@ -1357,7 +1355,6 @@ def analyse_trendline_duree_old():
     # ========================================
     # TABLEAU DES DONNÉES
     # ========================================
-
 
 
 # ============================================================================
