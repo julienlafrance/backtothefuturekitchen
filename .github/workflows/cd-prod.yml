@@ -51,15 +51,6 @@ jobs:
           echo "📂 Backups PROD disponibles:"
           ls -lht /home/dataia25/mangetamain/backups/prod/ | head -5
 
-      - name: Pull latest code
-        run: |
-          cd /home/dataia25/mangetamain
-          git fetch origin
-          git reset --hard origin/main
-          NEW_COMMIT=$(git rev-parse --short HEAD)
-          echo "✅ Code repository mis à jour vers $NEW_COMMIT"
-          echo "$NEW_COMMIT" > /tmp/prod-commit.txt
-
       - name: Deploy PREPROD to PROD
         run: |
           cd /home/dataia25/mangetamain
@@ -145,10 +136,9 @@ jobs:
           COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
           BACKUP_DIR=$(cat /tmp/prod-backup-path.txt 2>/dev/null || echo "inconnu")
-          NEW_COMMIT=$(cat /tmp/prod-commit.txt 2>/dev/null || echo "${GITHUB_SHA:0:7}")
           COMMIT_MSG_FIRST_LINE=$(echo "$COMMIT_MSG" | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"🚨 **ÉCHEC - Déploiement PRODUCTION**\n❌ Health check échoué\n📦 Commit tenté: \`$NEW_COMMIT\`\n💬 ${COMMIT_MSG_FIRST_LINE}\n⚠️  **PRODUCTION POTENTIELLEMENT CASSÉE**\n\n**Rollback manuel recommandé:**\n\`\`\`bash\nssh dataia\ncd /home/dataia25/mangetamain/20_prod\n\n# Restaurer le backup complet\nrm -rf streamlit pyproject.toml README.md\ncp -r $BACKUP_DIR/streamlit .\ncp $BACKUP_DIR/pyproject.toml .\ncp $BACKUP_DIR/README.md .\n\n# Redémarrer le container\ncd /home/dataia25/mangetamain/30_docker\ndocker-compose -f docker-compose-prod.yml down\ndocker-compose -f docker-compose-prod.yml up -d\n\`\`\`\n\n📂 Backup: \`$BACKUP_DIR\`\n🌐 Vérifier: https://backtothefuturekitchen.lafrance.io/\n👤 Tenté par: ${{ github.actor }}\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
+            -d "{\"content\":\"🚨 **ÉCHEC - Déploiement PRODUCTION**\n❌ Health check échoué\n📦 Source: PREPROD → PROD\n💬 ${COMMIT_MSG_FIRST_LINE}\n⚠️  **PRODUCTION POTENTIELLEMENT CASSÉE**\n\n**Rollback manuel recommandé:**\n\`\`\`bash\nssh dataia\ncd /home/dataia25/mangetamain/20_prod\n\n# Restaurer le backup complet\nrm -rf streamlit pyproject.toml README.md\ncp -r $BACKUP_DIR/streamlit .\ncp $BACKUP_DIR/pyproject.toml .\ncp $BACKUP_DIR/README.md .\n\n# Redémarrer le container\ncd /home/dataia25/mangetamain/30_docker\ndocker-compose -f docker-compose-prod.yml down\ndocker-compose -f docker-compose-prod.yml up -d\n\`\`\`\n\n📂 Backup: \`$BACKUP_DIR\`\n🌐 Vérifier: https://backtothefuturekitchen.lafrance.io/\n👤 Tenté par: ${{ github.actor }}\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
   cancelled:
