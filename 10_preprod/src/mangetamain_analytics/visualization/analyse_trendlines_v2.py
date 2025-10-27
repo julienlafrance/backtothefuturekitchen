@@ -224,18 +224,18 @@ def analyse_trendline_volume():
         else:
             st.error("❌ Distribution non normale")
 
-        # Interprétation
-        st.info(
-            """
-            💡 **Interprétation statistique**
+    # Interprétation
+    st.info(
+        """
+        💡 **Interprétation statistique**
 
-            Nous observons une **forte augmentation du nombre de recettes postées jusqu'en 2007**,
-            année du **pic d'activité**, suivie d'une **chute marquée** les années suivantes.
-            Les **tests de normalité** et les **Q-Q plots** montrent que la distribution du
-            **nombre de recettes par an** **n'est pas parfaitement normale**, avec des **écarts visibles**
-            par rapport à la **loi normale théorique**.
-            """
-        )
+        Nous observons une **forte augmentation du nombre de recettes postées jusqu'en 2007**,
+        année du **pic d'activité**, suivie d'une **chute marquée** les années suivantes.
+        Les **tests de normalité** et les **Q-Q plots** montrent que la distribution du
+        **nombre de recettes par an** **n'est pas parfaitement normale**, avec des **écarts visibles**
+        par rapport à la **loi normale théorique**.
+        """
+    )
 
 
 # ============================================================================
