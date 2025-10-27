@@ -71,11 +71,11 @@ Fichier                           Coverage   Tests    Lignes Manquantes
 ``visualization/ratings.py``      90%        5        29 lignes
 ``visualization/custom_charts``   90%        4        4 lignes
 ``visualization/weekend.py``      85%        6        41 lignes
-``data/cached_loaders.py``        78%        3        2 lignes*
-``visualization/plotly_config``   77%        0        3 lignes*
+``data/cached_loaders.py``        78%        3        2 lignes\*
+``visualization/plotly_config``   77%        0        3 lignes\*
 ================================= ========== ======== ====================
 
-*Fonctions non utilisées commentées pour améliorer coverage
+\*Fonctions non utilisées commentées pour améliorer coverage
 
 Fichiers de Tests Créés
 ^^^^^^^^^^^^^^^^^^^^^^^^
