@@ -234,12 +234,178 @@ Configuration
 Logging
 -------
 
-À compléter
+Architecture Loguru
+^^^^^^^^^^^^^^^^^^^
+
+Le système de logging utilise **Loguru 0.7.3** avec séparation automatique des environnements.
+
+**Fonctionnalités clés :**
+
+* Détection automatique environnement (prod/preprod/local)
+* 2 fichiers séparés : debug.log et errors.log
+* Rotation automatique (10 MB debug, 5 MB errors)
+* Compression automatique (.zip)
+* Thread-safe pour Streamlit (``enqueue=True``)
+* Backtrace complet pour erreurs
+
+Configuration
+^^^^^^^^^^^^^
+
+.. code-block:: python
+
+   from loguru import logger
+   import sys
+   from pathlib import Path
+
+   def setup_logging():
+       """Configure Loguru avec fichiers spécifiques à l'environnement."""
+
+       env = get_environment()  # 'prod', 'preprod', ou 'local'
+       log_dir = Path("logs")
+       log_dir.mkdir(exist_ok=True)
+
+       logger.remove()  # Supprimer handler par défaut
+
+       # 1. Handler DEBUG + INFO
+       logger.add(
+           f"logs/{env}_debug.log",
+           level="DEBUG",
+           rotation="10 MB",
+           retention="7 days",
+           compression="zip",
+           filter=lambda record: record["level"].name in ["DEBUG", "INFO", "SUCCESS"],
+           enqueue=True,
+       )
+
+       # 2. Handler ERROR + CRITICAL
+       logger.add(
+           f"logs/{env}_errors.log",
+           level="ERROR",
+           rotation="5 MB",
+           retention="30 days",
+           compression="zip",
+           backtrace=True,
+           diagnose=True,
+           enqueue=True,
+       )
+
+       # 3. Handler console (local uniquement)
+       if env == "local":
+           logger.add(sys.stderr, level="INFO", colorize=True)
+
+       logger.info(f"Logging initialized for environment: {env}")
+
+Détection Environnement
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+La détection se fait automatiquement par :
+
+1. **Variable d'environnement** ``APP_ENV`` (prioritaire)
+2. **Path automatique** : détection via ``10_preprod/`` ou ``20_prod/`` dans le path
+3. **Fallback** : ``local`` si aucun des deux
+
+.. code-block:: python
+
+   def get_environment() -> str:
+       """Detect current environment."""
+       env = os.getenv("APP_ENV", None)
+       if env:
+           return env.lower()
+
+       current_path = str(Path.cwd())
+       if "20_prod" in current_path:
+           return "prod"
+       elif "10_preprod" in current_path:
+           return "preprod"
+       return "local"
+
+Structure des Logs
+^^^^^^^^^^^^^^^^^^
+
+::
+
+    10_preprod/logs/
+    ├── preprod_debug.log       # DEBUG, INFO, SUCCESS
+    ├── preprod_errors.log      # ERROR, CRITICAL
+    └── .gitkeep
+
+    20_prod/logs/
+    ├── prod_debug.log          # DEBUG, INFO, SUCCESS
+    ├── prod_errors.log         # ERROR, CRITICAL
+    └── .gitkeep
+
+**Rotation :**
+
+* Debug logs : 10 MB max, rétention 7 jours
+* Error logs : 5 MB max, rétention 30 jours
+* Compression automatique en .zip
+
+Utilisation
 ^^^^^^^^^^^
 
-Le système de logging avec Loguru (fichiers séparés debug/error pour PREPROD/PROD) sera documenté dans une session future.
+.. code-block:: python
 
-Voir ``SOLUTION_LOGGING.md`` pour le plan d'implémentation.
+   from loguru import logger
+
+   def load_data():
+       """Load data from S3."""
+       try:
+           logger.info("Starting data load from S3")
+           data = some_loading_function()
+           logger.success(f"Loaded {len(data)} records")
+           return data
+       except Exception as e:
+           logger.error(f"Failed to load data: {e}")
+           raise
+
+   def process_input(value):
+       """Process user input."""
+       logger.debug(f"User input received: {value}")
+
+       if not validate(value):
+           logger.warning(f"Invalid input: {value}")
+           return None
+
+       result = compute(value)
+       logger.info(f"Computation result: {result}")
+       return result
+
+Configuration Docker
+^^^^^^^^^^^^^^^^^^^^
+
+Les fichiers Docker Compose définissent explicitement l'environnement :
+
+**docker-compose-preprod.yml :**
+
+.. code-block:: yaml
+
+   services:
+     mangetamain_preprod:
+       environment:
+         - APP_ENV=preprod
+       volumes:
+         - ../10_preprod/logs:/app/logs
+
+**docker-compose-prod.yml :**
+
+.. code-block:: yaml
+
+   services:
+     mangetamain_prod:
+       environment:
+         - APP_ENV=prod
+       volumes:
+         - ../20_prod/logs:/app/logs
+
+Avantages
+^^^^^^^^^
+
+* ✅ **Séparation Prod/Preprod** : Logs distincts automatiquement
+* ✅ **Thread-safe** : Compatible Streamlit multithread
+* ✅ **Rotation automatique** : Pas de logs géants
+* ✅ **Compression** : Économie d'espace disque
+* ✅ **Détection auto** : Fonctionne sans configuration manuelle
+* ✅ **Backtrace complet** : Debugging simplifié pour erreurs
 
 Performance
 -----------
