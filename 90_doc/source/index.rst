@@ -29,6 +29,26 @@ Dataset Food.com
 * 230K+ recettes avec tags, nutrition, ingrédients
 * 1.1M+ ratings utilisateurs
 
+Démarrage Rapide
+----------------
+
+**Installation locale**:
+
+.. code-block:: bash
+
+   git clone https://github.com/julienlafrance/backtothefuturekitchen.git
+   cd backtothefuturekitchen/000_dev/10_preprod
+   uv sync
+   uv run streamlit run src/mangetamain_analytics/main.py
+
+**Voir**: :doc:`installation` pour guide complet
+
+**Documentation S3**: :doc:`s3` pour configuration stockage
+
+**Tests**: 93% coverage, 118 tests → :doc:`tests`
+
+**CI/CD**: Pipeline automatisé → :doc:`cicd`
+
 Sommaire
 --------
 
@@ -52,6 +72,7 @@ Sommaire
    api/utils
    api/visualization
    api/data
+   api/infrastructure
 
 Indices et Tables
 =================
