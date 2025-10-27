@@ -319,5 +319,3 @@ Pipeline CI                    ✅        PEP8 + tests + cov
 Exécution auto                 ✅        Push + PR + merge
 CD (bonus)                     ✅        PREPROD + PROD
 ============================== ========= ===================
-
-**Score estimé : 19-20/20** (toutes exigences respectées + bonus)
