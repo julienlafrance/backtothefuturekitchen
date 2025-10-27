@@ -88,8 +88,38 @@ La documentation API est auto-générée. Après modification des docstrings Pyt
 make html
 ```
 
+## Statistiques
+
+* **2740 lignes RST** (13 fichiers)
+* **8 guides utilisateur** : installation, usage, s3, architecture, cicd, tests, conformite
+* **5 références API** : utils, visualization, data, infrastructure
+* **5 warnings Sphinx** (autodoc, acceptables)
+* **Build time** : ~10 secondes
+* **Date dernière maj** : 2025-10-27
+
+## Pages Créées
+
+**Guides**:
+- `index.rst` - Page d'accueil avec démarrage rapide
+- `installation.rst` - Installation locale et Docker
+- `usage.rst` - Utilisation application Streamlit
+- `s3.rst` - Configuration stockage S3 Garage (537L)
+- `architecture.rst` - Stack technique et structure
+- `cicd.rst` - Pipeline CI/CD complet (589L)
+- `tests.rst` - Tests et coverage 93% (479L)
+- `conformite.rst` - Conformité académique
+
+**API**:
+- `api/index.rst` - Index référence API
+- `api/utils.rst` - Couleurs et thème graphique
+- `api/visualization.rst` - 8 modules analyse
+- `api/data.rst` - Loaders données avec cache
+- `api/infrastructure.rst` - Logging, DB, utils EDA (197L)
+
 ## Notes
 
 * Les fichiers `build/` et `.venv/` sont gitignorés
 * La documentation suit la charte graphique du projet
 * Format des docstrings : Google Style
+* Coverage documentation : 100% modules principaux 10_preprod/src
+* Warnings autodoc visualization : attendus (modules Streamlit)
