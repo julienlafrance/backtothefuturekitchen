@@ -278,12 +278,16 @@ def analyse_ratings_validation_ponderee():
 
     # Interprétation
     st.info(
-        "🔬 **Interprétation**: L'analyse méthodologique révèle une **hétérogénéité extrême des volumes d'interactions** mensuels "
-        f"(Coefficient de variation = **{cv_volumes:.2f}**), ce qui rend les tests statistiques standards **non fiables**. "
-        f"Les tests non-pondérés s'avèrent **fortement biaisés** (biais de pente de **+{bias_slope:.1f}%**), car ils donnent une importance "
-        "disproportionnée aux périodes de **très forte activité** (comme 2008-2009), écrasant l'influence des autres périodes. "
-        "L'utilisation de **méthodes pondérées** (comme la régression WLS et le Spearman pondéré) est donc **indispensable** pour corriger "
-        "ce biais et obtenir une **interprétation juste et robuste** des tendances réelles du comportement utilisateur."
+        f"""
+    💡 **Interprétation statistique**
+
+    L'analyse méthodologique révèle une **hétérogénéité extrême des volumes d'interactions** mensuels 
+    (Coefficient de variation = **{cv_volumes:.2f}**), ce qui rend les tests statistiques standards **non fiables**. 
+    Les tests non-pondérés s'avèrent **fortement biaisés** (biais de pente de **+{bias_slope:.1f}%**), car ils donnent une importance 
+    disproportionnée aux périodes de **très forte activité** (comme 2008-2009), écrasant l'influence des autres périodes. 
+    L'utilisation de **méthodes pondérées** (comme la régression WLS et le Spearman pondéré) est donc **indispensable** pour corriger 
+    ce biais et obtenir une **interprétation juste et robuste** des tendances réelles du comportement utilisateur.
+    """
     )
 
 
@@ -502,14 +506,18 @@ def analyse_ratings_tendance_temporelle():
 
     # Interprétation
     st.info(
-        "📈 **Interprétation**: L'analyse temporelle pondérée révèle une **stabilité remarquable des notes moyennes** sur le long terme, "
-        "contredisant l'intuition d'une éventuelle dégradation ou amélioration. "
-        f"La tendance observée est **statistiquement non significative** (pente annuelle = **{wls_trend_result.params[1] * 12:.4f} points/an**, "
-        f"p-value = **{wls_trend_result.pvalues[1]:.2f}**). Le R² pondéré de **{r2_weighted:.3f}** confirme que le temps n'explique quasiment "
-        "**aucune variance** dans les notes. On observe également une **faible corrélation négative** entre le **volume** d'interactions et "
-        f"la **qualité** perçue (ρ = **{vol_qual_weighted:.3f}**), suggérant que les mois de **plus forte activité** sont associés à des "
-        "**notes moyennes très légèrement plus basses**. Cette stabilité globale confirme que le **comportement de notation des utilisateurs** "
-        "est **extrêmement constant** depuis 2005."
+        f"""
+    💡 **Interprétation statistique**
+
+    L'analyse temporelle pondérée révèle une **stabilité remarquable des notes moyennes** sur le long terme, 
+    contredisant l'intuition d'une éventuelle dégradation ou amélioration. 
+    La tendance observée est **statistiquement non significative** (pente annuelle = **{wls_trend_result.params[1] * 12:.4f} points/an**, 
+    p-value = **{wls_trend_result.pvalues[1]:.2f}**). Le R² pondéré de **{r2_weighted:.3f}** confirme que le temps n'explique quasiment 
+    **aucune variance** dans les notes. On observe également une **faible corrélation négative** entre le **volume** d'interactions et 
+    la **qualité** perçue (ρ = **{vol_qual_weighted:.3f}**), suggérant que les mois de **plus forte activité** sont associés à des 
+    **notes moyennes très légèrement plus basses**. Cette stabilité globale confirme que le **comportement de notation des utilisateurs** 
+    est **extrêmement constant** depuis 2005.
+    """
     )
 
 
@@ -770,12 +778,16 @@ def analyse_ratings_distribution():
 
     # Interprétation
     st.info(
-        "📊 **Interprétation**: L'analyse détaillée confirme la **très forte stabilité** des ratings, avec une **moyenne pondérée** se situant à "
-        f"**{mean_rating_weighted:.3f}**. Les **bandes de confiance à 95%** calculées sur la moyenne pondérée sont **extrêmement resserrées** "
-        f"(IC 95% = **±{1.96 * std_rating_weighted / np.sqrt(np.sum(weights)):.4f}**), ce qui démontre une **variance globale très faible** et une "
-        "**grande prévisibilité** du comportement de notation. Visuellement, bien que les notes mensuelles individuelles fluctuent légèrement, "
-        "elles restent **constamment groupées** autour de cette moyenne stable, renforçant la conclusion d'une **absence totale de tendance significative** "
-        "à long terme."
+        f"""
+    💡 **Interprétation statistique**
+
+    L'analyse détaillée confirme la **très forte stabilité** des ratings, avec une **moyenne pondérée** se situant à 
+    **{mean_rating_weighted:.3f}**. Les **bandes de confiance à 95%** calculées sur la moyenne pondérée sont **extrêmement resserrées** 
+    (IC 95% = **±{1.96 * std_rating_weighted / np.sqrt(np.sum(weights)):.4f}**), ce qui démontre une **variance globale très faible** et une 
+    **grande prévisibilité** du comportement de notation. Visuellement, bien que les notes mensuelles individuelles fluctuent légèrement, 
+    elles restent **constamment groupées** autour de cette moyenne stable, renforçant la conclusion d'une **absence totale de tendance significative** 
+    à long terme.
+    """
     )
 
 
@@ -926,10 +938,14 @@ def analyse_ratings_seasonality_1():
 
     # Interprétation
     st.info(
-        "🍂 **Interprétation**: Les statistiques descriptives confirment la **validité de l'analyse saisonnière**. "
-        "Le volume d'interactions est **remarquablement bien équilibré** entre les quatre saisons, chacune représentant environ **25%** du total. "
-        f"Le **Coefficient de Variation ({cv_volumes:.3f})** et le **ratio max/min ({ratio_max_min:.2f}:1)** des volumes sont **extrêmement faibles**, "
-        "indiquant qu'aucune saison ne pèse indûment sur l'analyse. Les comparaisons entre saisons seront donc **fiables et robustes**."
+        f"""
+    💡 **Interprétation statistique**
+
+    Les statistiques descriptives confirment la **validité de l'analyse saisonnière**. 
+    Le volume d'interactions est **remarquablement bien équilibré** entre les quatre saisons, chacune représentant environ **25%** du total. 
+    Le **Coefficient de Variation ({cv_volumes:.3f})** et le **ratio max/min ({ratio_max_min:.2f}:1)** des volumes sont **extrêmement faibles**, 
+    indiquant qu'aucune saison ne pèse indûment sur l'analyse. Les comparaisons entre saisons seront donc **fiables et robustes**.
+    """
     )
 
 
@@ -1174,12 +1190,16 @@ def analyse_ratings_seasonality_2():
 
     # Interprétation
     st.info(
-        f"🌸 **Interprétation**: Les tests statistiques (ANOVA F={f_stat:.3f} et Kruskal-Wallis H={h_stat:.3f}) révèlent des "
-        "**différences statistiquement significatives** entre les saisons (p < 0.0001), **confirmant l'existence d'une variation saisonnière**. "
-        f"Cependant, l'**ampleur de cette différence est infime** : l'écart entre la meilleure saison (**{best_season['season']}**, {best_season['mean_rating']:.3f}) "
-        f"et la moins bonne (**{worst_season['season']}**, {worst_season['mean_rating']:.3f}) n'est que de **{best_season['mean_rating'] - worst_season['mean_rating']:.3f} points** "
-        "sur une échelle de 5. L'analyse visuelle confirme la **stabilité globale**, mais révèle un **schéma saisonnier cohérent**. "
-        "Malgré une **significativité statistique irréfutable**, l'**impact pratique de cette saisonnalité est nul**."
+        f"""
+    💡 **Interprétation statistique**
+
+    Les tests statistiques (ANOVA F={f_stat:.3f} et Kruskal-Wallis H={h_stat:.3f}) révèlent des 
+    **différences statistiquement significatives** entre les saisons (p < 0.0001), **confirmant l'existence d'une variation saisonnière**. 
+    Cependant, l'**ampleur de cette différence est infime** : l'écart entre la meilleure saison (**{best_season['season']}**, {best_season['mean_rating']:.3f}) 
+    et la moins bonne (**{worst_season['season']}**, {worst_season['mean_rating']:.3f}) n'est que de **{best_season['mean_rating'] - worst_season['mean_rating']:.3f} points** 
+    sur une échelle de 5. L'analyse visuelle confirme la **stabilité globale**, mais révèle un **schéma saisonnier cohérent**. 
+    Malgré une **significativité statistique irréfutable**, l'**impact pratique de cette saisonnalité est nul**.
+    """
     )
 
 

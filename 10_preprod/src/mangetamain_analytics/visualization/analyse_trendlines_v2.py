@@ -1534,12 +1534,16 @@ def analyse_trendline_complexite():
 
     # Interprétation
     st.info(
-        "🔧 **Interprétation**: La **régression linéaire pondérée** met en évidence une **tendance significative à la hausse** "
-        f"du **score moyen de complexité** (pente = **{regressions['mean_complexity']['slope']:+.4f}**, "
-        f"R² = **{regressions['mean_complexity']['r2']:.2f}**, p = **{regressions['mean_complexity']['p_value']:.2e}**). "
-        "Cette évolution indique une **augmentation progressive de la complexité des recettes** au fil du temps, "
-        "suggérant des **préparations de plus en plus élaborées**. La tendance est **cohérente** avec l'augmentation "
-        "du **nombre d'étapes** et du **nombre d'ingrédients**, confirmant une **complexification globale** des recettes publiées."
+        f"""
+    💡 **Interprétation statistique**
+
+    La **régression linéaire pondérée** met en évidence une **tendance significative à la hausse** 
+    du **score moyen de complexité** (pente = **{regressions['mean_complexity']['slope']:+.4f}**, 
+    R² = **{regressions['mean_complexity']['r2']:.2f}**, p = **{regressions['mean_complexity']['p_value']:.2e}**). 
+    Cette évolution indique une **augmentation progressive de la complexité des recettes** au fil du temps, 
+    suggérant des **préparations de plus en plus élaborées**. La tendance est **cohérente** avec l'augmentation 
+    du **nombre d'étapes** et du **nombre d'ingrédients**, confirmant une **complexification globale** des recettes publiées.
+    """
     )
 
 
@@ -1690,13 +1694,17 @@ def analyse_trendline_nutrition():
 
     # Interprétation
     st.info(
-        "🥗 **Interprétation**: Les **régressions linéaires pondérées** montrent une **tendance significative à la baisse** "
-        "des valeurs **nutritionnelles moyennes** au fil du temps. Les **calories**, **glucides**, **lipides** et **protéines** "
-        "présentent toutes des **pentes négatives**, avec des **R² pondérés entre 0.39 et 0.56**, indiquant une "
-        "**bonne part de variance expliquée** et une **diminution mesurable** des apports nutritionnels moyens par recette. "
-        "Cette évolution traduit une **orientation progressive vers des recettes plus légères**, moins riches en **calories** "
-        "et en **macronutriments**, reflétant probablement une **adaptation aux tendances alimentaires modernes** "
-        "(recherche de plats plus équilibrés et moins énergétiques)."
+        """
+    💡 **Interprétation statistique**
+
+    Les **régressions linéaires pondérées** montrent une **tendance significative à la baisse** 
+    des valeurs **nutritionnelles moyennes** au fil du temps. Les **calories**, **glucides**, **lipides** et **protéines** 
+    présentent toutes des **pentes négatives**, avec des **R² pondérés entre 0.39 et 0.56**, indiquant une 
+    **bonne part de variance expliquée** et une **diminution mesurable** des apports nutritionnels moyens par recette. 
+    Cette évolution traduit une **orientation progressive vers des recettes plus légères**, moins riches en **calories** 
+    et en **macronutriments**, reflétant probablement une **adaptation aux tendances alimentaires modernes** 
+    (recherche de plats plus équilibrés et moins énergétiques).
+    """
     )
 
 
@@ -1956,14 +1964,18 @@ def analyse_trendline_ingredients(top_n=10):
 
     # Interprétation
     st.info(
-        "🥘 **Interprétation**: L'analyse révèle une **transformation profonde** de l'usage des ingrédients au fil du temps. "
-        "**Tendances montantes**: Des ingrédients comme *kosher salt*, *garlic cloves*, *olive oil* et *unsalted butter* "
-        "connaissent une forte progression, reflétant peut-être un virage vers une cuisine plus communautaire ou méditerranéenne. "
-        "**Tendances descendantes**: Les ingrédients traditionnels comme *sugar*, *butter*, *eggs* et *vanilla* sont en net recul, "
-        "suggérant une diminution des recettes de pâtisserie classique et une recherche de recettes moins sucrées. "
-        "**Chute de la diversité**: Le nombre d'ingrédients uniques chute drastiquement, passant du maximum en début de période "
-        "à un minimum en fin de période. Cette baisse significative s'explique par la diminution du volume de recettes postées "
-        "après 2007, entraînant une concentration sur des ingrédients plus courants et une perte d'innovation culinaire."
+        """
+    💡 **Interprétation statistique**
+
+    L'analyse révèle une **transformation profonde** de l'usage des ingrédients au fil du temps. 
+    **Tendances montantes**: Des ingrédients comme *kosher salt*, *garlic cloves*, *olive oil* et *unsalted butter* 
+    connaissent une forte progression, reflétant peut-être un virage vers une cuisine plus communautaire ou méditerranéenne. 
+    **Tendances descendantes**: Les ingrédients traditionnels comme *sugar*, *butter*, *eggs* et *vanilla* sont en net recul, 
+    suggérant une diminution des recettes de pâtisserie classique et une recherche de recettes moins sucrées. 
+    **Chute de la diversité**: Le nombre d'ingrédients uniques chute drastiquement, passant du maximum en début de période 
+    à un minimum en fin de période. Cette baisse significative s'explique par la diminution du volume de recettes postées 
+    après 2007, entraînant une concentration sur des ingrédients plus courants et une perte d'innovation culinaire.
+    """
     )
 
 
@@ -2218,10 +2230,14 @@ def analyse_trendline_tags(top_n=10):
 
     # Interprétation
     st.info(
-        "🏷️ **Interprétation**: L'analyse des tags révèle les **évolutions thématiques** des recettes au fil du temps. "
-        "Comme pour les ingrédients, on observe une **chute de la diversité** des tags, passant d'un maximum en début "
-        "de période à un minimum en fin de période, reflétant la diminution du volume de recettes postées après 2007. "
-        "Les **tendances montantes et descendantes** des tags permettent d'identifier les **thématiques culinaires** "
-        "qui gagnent ou perdent en popularité, offrant un aperçu des **préférences alimentaires** et des **modes culinaires** "
-        "qui caractérisent chaque période."
+        """
+    💡 **Interprétation statistique**
+
+    L'analyse des tags révèle les **évolutions thématiques** des recettes au fil du temps. 
+    Comme pour les ingrédients, on observe une **chute de la diversité** des tags, passant d'un maximum en début 
+    de période à un minimum en fin de période, reflétant la diminution du volume de recettes postées après 2007. 
+    Les **tendances montantes et descendantes** des tags permettent d'identifier les **thématiques culinaires** 
+    qui gagnent ou perdent en popularité, offrant un aperçu des **préférences alimentaires** et des **modes culinaires** 
+    qui caractérisent chaque période.
+    """
     )

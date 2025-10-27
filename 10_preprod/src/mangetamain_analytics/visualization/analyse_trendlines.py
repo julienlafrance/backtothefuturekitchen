@@ -156,10 +156,14 @@ def analyse_trendline_volume():
 
     # Interprétation
     st.info(
-        "📊 **Interprétation**: Nous observons une **forte augmentation du nombre de recettes postées jusqu'en 2007**, "
-        "année du **pic d'activité**, suivie d'une **chute marquée** les années suivantes. "
-        "Les **tests de normalité** et les **Q-Q plots** montrent que la distribution du **nombre de recettes par an** "
-        "**n'est pas parfaitement normale**, avec des **écarts visibles** par rapport à la **loi normale théorique**."
+        """
+    💡 **Interprétation statistique**
+
+    Nous observons une **forte augmentation du nombre de recettes postées jusqu'en 2007**, 
+    année du **pic d'activité**, suivie d'une **chute marquée** les années suivantes. 
+    Les **tests de normalité** et les **Q-Q plots** montrent que la distribution du **nombre de recettes par an** 
+    **n'est pas parfaitement normale**, avec des **écarts visibles** par rapport à la **loi normale théorique**.
+    """
     )
 
 
@@ -306,11 +310,15 @@ def analyse_trendline_duree():
 
     # Interprétation
     st.info(
-        "⏱️ **Interprétation**: L'analyse de la durée moyenne de préparation montre une **tendance globale à la baisse** "
-        f"depuis la création du site. En moyenne, le temps de préparation diminue d'environ "
-        f"**{regressions['mean_minutes']['slope']:.2f} min/an**, tandis que la médiane recule de "
-        f"**{regressions['median_minutes']['slope']:.2f} min/an**, ce qui traduit une "
-        "**légère simplification des recettes** au fil du temps."
+        f"""
+    💡 **Interprétation statistique**
+
+    L'analyse de la durée moyenne de préparation montre une **tendance globale à la baisse** 
+    depuis la création du site. En moyenne, le temps de préparation diminue d'environ 
+    **{regressions['mean_minutes']['slope']:.2f} min/an**, tandis que la médiane recule de 
+    **{regressions['median_minutes']['slope']:.2f} min/an**, ce qui traduit une 
+    **légère simplification des recettes** au fil du temps.
+    """
     )
 
 
@@ -449,11 +457,15 @@ def analyse_trendline_complexite():
     p_complexity = regressions["mean_complexity"]["p_value"]
 
     st.info(
-        f"🔧 **Interprétation**: La **régression linéaire pondérée** (pente = **{slope_complexity:+.2f}**, "
-        f"R² = **{r2_complexity:.2f}**, p = **{p_complexity:.2e}**) met en évidence une **tendance significative à la hausse** "
-        "du **score moyen de complexité** au fil du temps. Cette évolution indique une **augmentation progressive de la complexité "
-        f"des recettes**, d'environ **{slope_complexity:+.2f} point par an**, suggérant des **préparations de plus en plus élaborées** "
-        "au cours des années."
+        f"""
+    💡 **Interprétation statistique**
+
+    La **régression linéaire pondérée** (pente = **{slope_complexity:+.2f}**, 
+    R² = **{r2_complexity:.2f}**, p = **{p_complexity:.2e}**) met en évidence une **tendance significative à la hausse** 
+    du **score moyen de complexité** au fil du temps. Cette évolution indique une **augmentation progressive de la complexité 
+    des recettes**, d'environ **{slope_complexity:+.2f} point par an**, suggérant des **préparations de plus en plus élaborées** 
+    au cours des années.
+    """
     )
 
 
@@ -591,13 +603,17 @@ def analyse_trendline_nutrition():
 
     # Interprétation
     st.info(
-        "🥗 **Interprétation**: Les **régressions linéaires pondérées** montrent une **tendance significative à la baisse** "
-        "des valeurs **nutritionnelles moyennes** au fil du temps. Les **calories**, **glucides**, **lipides** et **protéines** "
-        "présentent toutes des **pentes négatives**, avec des **R² pondérés entre 0.39 et 0.56**, indiquant une **bonne part "
-        "de variance expliquée** et une **diminution mesurable** des apports nutritionnels moyens par recette. Cette évolution "
-        "traduit une **orientation progressive vers des recettes plus légères**, moins riches en **calories** et en **macronutriments**, "
-        "reflétant probablement une **adaptation aux tendances alimentaires modernes** (recherche de plats plus équilibrés et moins "
-        "énergétiques)."
+        """
+    💡 **Interprétation statistique**
+
+    Les **régressions linéaires pondérées** montrent une **tendance significative à la baisse** 
+    des valeurs **nutritionnelles moyennes** au fil du temps. Les **calories**, **glucides**, **lipides** et **protéines** 
+    présentent toutes des **pentes négatives**, avec des **R² pondérés entre 0.39 et 0.56**, indiquant une **bonne part 
+    de variance expliquée** et une **diminution mesurable** des apports nutritionnels moyens par recette. Cette évolution 
+    traduit une **orientation progressive vers des recettes plus légères**, moins riches en **calories** et en **macronutriments**, 
+    reflétant probablement une **adaptation aux tendances alimentaires modernes** (recherche de plats plus équilibrés et moins 
+    énergétiques).
+    """
     )
 
 
@@ -829,13 +845,17 @@ def analyse_trendline_ingredients(top_n=10):
 
     # Interprétation
     st.info(
-        "🥘 **Interprétation**: L'analyse révèle une **transformation profonde** de l'usage des ingrédients au fil du temps. "
-        "**Tendances montantes**: Des ingrédients comme *kosher salt*, *garlic cloves*, *olive oil* et *unsalted butter* "
-        "connaissent une forte progression, reflétant peut-être un virage vers une cuisine plus communautaire ou méditerranéenne. "
-        "**Tendances descendantes**: Les ingrédients traditionnels comme *sugar*, *butter*, *eggs* et *vanilla* sont en net recul, "
-        "suggérant une diminution des recettes de pâtisserie classique et une recherche de recettes moins sucrées. "
-        "**Chute de la diversité**: Le nombre d'ingrédients uniques chute drastiquement après 2007, s'expliquant par la diminution "
-        "du volume de recettes postées et une concentration sur des ingrédients plus courants."
+        """
+    💡 **Interprétation statistique**
+
+    L'analyse révèle une **transformation profonde** de l'usage des ingrédients au fil du temps. 
+    **Tendances montantes**: Des ingrédients comme *kosher salt*, *garlic cloves*, *olive oil* et *unsalted butter* 
+    connaissent une forte progression, reflétant peut-être un virage vers une cuisine plus communautaire ou méditerranéenne. 
+    **Tendances descendantes**: Les ingrédients traditionnels comme *sugar*, *butter*, *eggs* et *vanilla* sont en net recul, 
+    suggérant une diminution des recettes de pâtisserie classique et une recherche de recettes moins sucrées. 
+    **Chute de la diversité**: Le nombre d'ingrédients uniques chute drastiquement après 2007, s'expliquant par la diminution 
+    du volume de recettes postées et une concentration sur des ingrédients plus courants.
+    """
     )
 
 
@@ -1058,12 +1078,16 @@ def analyse_trendline_tags(top_n=10):
 
     # Interprétation
     st.info(
-        "🏷️ **Interprétation**: L'analyse des tags révèle une **évolution des pratiques de catégorisation** des recettes au fil du temps. "
-        "**Tendances montantes**: Les catégories en hausse concernent surtout les repas rapides (*60-minutes-or-less*, *for-1-or-2*), "
-        "les plats principaux (*main-dish*), ainsi que des moments spécifiques comme le petit-déjeuner ou les en-cas. "
-        "**Tendances descendantes**: Les baisses marquées touchent des catégories techniques ou structurantes (*dietary*, *equipment*, "
-        "*oven*, *occasion*, *number-of-servings*), ainsi que des étiquettes génériques (*north-american*, *cuisine*, *american*), "
-        "suggérant une simplification de la catégorisation au profit de tags plus concrets et orientés usage. "
-        "**Évolution de la diversité**: Le nombre de tags uniques suit une trajectoire similaire à celle des ingrédients, avec une "
-        "diminution significative après 2007, traduisant une convergence vers un vocabulaire de catégorisation plus homogène."
+        """
+    💡 **Interprétation statistique**
+
+    L'analyse des tags révèle une **évolution des pratiques de catégorisation** des recettes au fil du temps. 
+    **Tendances montantes**: Les catégories en hausse concernent surtout les repas rapides (*60-minutes-or-less*, *for-1-or-2*), 
+    les plats principaux (*main-dish*), ainsi que des moments spécifiques comme le petit-déjeuner ou les en-cas. 
+    **Tendances descendantes**: Les baisses marquées touchent des catégories techniques ou structurantes (*dietary*, *equipment*, 
+    *oven*, *occasion*, *number-of-servings*), ainsi que des étiquettes génériques (*north-american*, *cuisine*, *american*), 
+    suggérant une simplification de la catégorisation au profit de tags plus concrets et orientés usage. 
+    **Évolution de la diversité**: Le nombre de tags uniques suit une trajectoire similaire à celle des ingrédients, avec une 
+    diminution significative après 2007, traduisant une convergence vers un vocabulaire de catégorisation plus homogène.
+    """
     )
