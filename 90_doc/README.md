@@ -90,22 +90,25 @@ make html
 
 ## Statistiques
 
-* **3665 lignes RST** (13 fichiers) - +925 lignes vs version initiale
-* **8 guides utilisateur** : installation, usage, s3, architecture, cicd, tests, conformite
+* **5073 lignes RST** (15 fichiers) - +2333 lignes vs version initiale (+85%)
+* **10 guides utilisateur** : quickstart, installation, usage, faq, s3, architecture, cicd, tests, conformite
 * **5 références API** : utils, visualization, data, infrastructure
-* **7 warnings Sphinx** (autodoc, acceptables)
-* **Build time** : ~12 secondes
-* **Date dernière maj** : 2025-10-27
+* **Nouveaux guides** : Quick Start (426L), FAQ (458L)
+* **7-9 warnings Sphinx** (autodoc, acceptables)
+* **Build time** : ~15 secondes
+* **Date dernière maj** : 2025-10-27 (itérations 21-34)
 
 ## Pages Créées
 
-**Guides** (2618 lignes total):
-- `index.rst` - Page d'accueil avec démarrage rapide (83L)
-- `installation.rst` - Installation locale et Docker + troubleshooting (317L ↑201L)
-- `usage.rst` - Utilisation application Streamlit + insights (203L ↑82L)
-- `s3.rst` - Configuration stockage S3 Garage (492L)
+**Guides** (4140 lignes total):
+- `index.rst` - Page d'accueil avec démarrage rapide (84L)
+- `quickstart.rst` - **NOUVEAU** Guide démarrage rapide + cheat sheet (426L)
+- `installation.rst` - Installation + Docker + troubleshooting (426L ↑310L)
+- `usage.rst` - Utilisation application + insights analyses (203L ↑82L)
+- `faq.rst` - **NOUVEAU** FAQ 22 questions courantes (458L)
+- `s3.rst` - Configuration S3 + benchmarks performance (658L ↑165L)
 - `architecture.rst` - Stack technique + logging complet (438L ↑165L)
-- `cicd.rst` - Pipeline CI/CD complet (431L)
+- `cicd.rst` - Pipeline CI/CD + workflows concrets (694L ↑262L)
 - `tests.rst` - Tests et coverage 93% (416L)
 - `conformite.rst` - Conformité académique + logging (321L ↑18L)
 
@@ -116,7 +119,7 @@ make html
 - `api/data.rst` - Loaders données + schémas + troubleshooting (230L ↑171L)
 - `api/infrastructure.rst` - Logging, DB, utils EDA (197L)
 
-**Total enrichi**: +941 lignes depuis version initiale (itérations 21-27)
+**Total enrichi**: +2333 lignes depuis version initiale (+85%) (itérations 21-34)
 
 ## Notes
 
