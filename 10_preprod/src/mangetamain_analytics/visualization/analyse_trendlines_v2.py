@@ -234,7 +234,8 @@ def analyse_trendline_volume():
             Les **tests de normalité** et les **Q-Q plots** montrent que la distribution du
             **nombre de recettes par an** **n'est pas parfaitement normale**, avec des **écarts visibles**
             par rapport à la **loi normale théorique**.
-            """)
+            """
+        )
 
 
 # ============================================================================
@@ -623,7 +624,8 @@ def analyse_trendline_duree():
 
         En moyenne, le **temps de préparation diminue d'environ −0.46 min par an**, tandis que la **médiane recule de −0.26 min par an**,
         ce qui traduit une **légère simplification des recettes** au fil du temps.
-        """)
+        """
+    )
 
 
 def analyse_trendline_duree_old_intervals():
