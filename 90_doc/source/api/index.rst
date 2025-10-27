@@ -14,6 +14,7 @@ Modules Disponibles
    utils
    visualization
    data
+   infrastructure
 
 Organisation
 ------------
@@ -21,6 +22,7 @@ Organisation
 * **utils** : Fonctions utilitaires (couleurs, thème graphique)
 * **visualization** : Modules d'analyse et génération de graphiques
 * **data** : Chargement et mise en cache des données
+* **infrastructure** : Logging, base de données, utilitaires EDA
 
 Tous les modules suivent les conventions :
 
