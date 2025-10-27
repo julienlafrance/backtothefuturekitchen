@@ -253,14 +253,14 @@ def analyse_weekend_volume():
         f"""
     💡 **Interprétation statistique**
 
-    Le **test Chi-2 pondéré** révèle une **différence statistiquement très significative** 
-    (p < 0.001) entre les volumes Weekday et Weekend. **Les recettes sont massivement publiées en semaine** : 
-    en moyenne **{weekday_rpd:,.0f} recettes/jour en Weekday** contre seulement **{weekend_rpd:,.0f} recettes/jour en Weekend**, 
+    Le **test Chi-2 pondéré** révèle une **différence statistiquement très significative**
+    (p < 0.001) entre les volumes Weekday et Weekend. **Les recettes sont massivement publiées en semaine** :
+    en moyenne **{weekday_rpd:,.0f} recettes/jour en Weekday** contre seulement **{weekend_rpd:,.0f} recettes/jour en Weekend**,
     soit **{diff_pct:+.0f}% le week-end**.
 
-    Le **test d'uniformité des 7 jours** confirme une **forte variabilité inter-jours**. 
-    Le **lundi est le jour le plus actif** (+45% au-dessus de la moyenne), suivi du **mardi** (+29%) et du **mercredi** (+13%). 
-    À l'inverse, le **samedi est le jour le moins actif** (-49%), suivi du **dimanche** (-36%). 
+    Le **test d'uniformité des 7 jours** confirme une **forte variabilité inter-jours**.
+    Le **lundi est le jour le plus actif** (+45% au-dessus de la moyenne), suivi du **mardi** (+29%) et du **mercredi** (+13%).
+    À l'inverse, le **samedi est le jour le moins actif** (-49%), suivi du **dimanche** (-36%).
     Les utilisateurs publient principalement **en début de semaine**.
     """
     )
@@ -467,9 +467,9 @@ def analyse_weekend_duree():
         f"""
     💡 **Interprétation statistique**
 
-    Le **test t de Student** ne révèle **aucune différence significative** 
-    entre les durées Weekday et Weekend. Les **moyennes sont quasi identiques** 
-    ({wd_row['mean_minutes']:.1f} vs {we_row['mean_minutes']:.1f} min, différence {diff_pct:+.2f}%). 
+    Le **test t de Student** ne révèle **aucune différence significative**
+    entre les durées Weekday et Weekend. Les **moyennes sont quasi identiques**
+    ({wd_row['mean_minutes']:.1f} vs {we_row['mean_minutes']:.1f} min, différence {diff_pct:+.2f}%).
     La durée des recettes publiées reste **constante indépendamment de la période**, sans effet week-end observable.
     """
     )
@@ -685,11 +685,11 @@ def analyse_weekend_complexite():
         f"""
     💡 **Interprétation statistique**
 
-    Le **test t de Student** ne révèle **aucune différence significative** 
-    de complexité entre Weekday et Weekend. Les **scores de complexité sont quasi identiques** 
-    ({wd_row['mean_complexity']:.2f} vs {we_row['mean_complexity']:.2f}, différence {diff_pct:+.2f}%), 
-    ainsi que le **nombre d'étapes** ({wd_row['mean_steps']:.1f} vs {we_row['mean_steps']:.1f}) 
-    et d'**ingrédients** ({wd_row['mean_ingredients']:.1f} vs {we_row['mean_ingredients']:.1f}). 
+    Le **test t de Student** ne révèle **aucune différence significative**
+    de complexité entre Weekday et Weekend. Les **scores de complexité sont quasi identiques**
+    ({wd_row['mean_complexity']:.2f} vs {we_row['mean_complexity']:.2f}, différence {diff_pct:+.2f}%),
+    ainsi que le **nombre d'étapes** ({wd_row['mean_steps']:.1f} vs {we_row['mean_steps']:.1f})
+    et d'**ingrédients** ({wd_row['mean_ingredients']:.1f} vs {we_row['mean_ingredients']:.1f}).
     La complexité des recettes publiées reste **constante indépendamment de la période**, sans effet week-end observable.
     """
     )
@@ -873,8 +873,8 @@ def analyse_weekend_nutrition():
         f"""
     💡 **Interprétation statistique**
 
-    Les **tests t de Student** révèlent des **profils nutritionnels globalement similaires** 
-    entre Weekday et Weekend. 
+    Les **tests t de Student** révèlent des **profils nutritionnels globalement similaires**
+    entre Weekday et Weekend.
     {'Une seule différence significative émerge: les **protéines** (p < 0.01), avec des recettes publiées légèrement plus protéinées en semaine (environ -3% le week-end).' if signif_count > 0 else 'Aucune différence significative détectée.'}
     """
     )
@@ -1043,14 +1043,14 @@ def analyse_weekend_ingredients():
             f"""
     💡 **Interprétation statistique**
 
-    Sur les ~{total_ingredients:,} ingrédients analysés, un **filtrage strict** a été appliqué 
+    Sur les ~{total_ingredients:,} ingrédients analysés, un **filtrage strict** a été appliqué
     pour ne conserver que les ingrédients avec:
     - Fréquence ≥ {FREQ_THRESHOLD}% (ingrédients courants)
     - Différence absolue ≥ {ABS_DIFF_THRESHOLD} points de pourcentage
     - Significativité statistique (p < 0.05)
 
-    Les tests **Chi-2** identifient {filtered_ingredients} ingrédients avec variations significatives selon le moment posté 
-    (weekday vs weekend). **Week-end**: légère hausse pour `ground cinnamon`, `canola oil`. 
+    Les tests **Chi-2** identifient {filtered_ingredients} ingrédients avec variations significatives selon le moment posté
+    (weekday vs weekend). **Week-end**: légère hausse pour `ground cinnamon`, `canola oil`.
     **Semaine**: légère hausse pour `mozzarella cheese`, `boneless skinless chicken breasts`, `honey`.
 
     **Les écarts restent faibles (<0.4pp) et l'interprétation est sujette à débat.**
@@ -1215,17 +1215,17 @@ def analyse_weekend_tags():
             f"""
     💡 **Interprétation statistique**
 
-    Sur les ~{total_tags:,} tags analysés, un **filtrage strict** a été appliqué 
+    Sur les ~{total_tags:,} tags analysés, un **filtrage strict** a été appliqué
     pour ne conserver que les tags avec:
     - Fréquence ≥ {FREQ_THRESHOLD}% (tags significatifs)
     - Différence absolue ≥ {ABS_DIFF_THRESHOLD} points de pourcentage
     - Significativité statistique (p < 0.05)
 
-    Ce filtrage a permis d'identifier **les tags dont l'usage révèle des thématiques vraiment différentes** 
+    Ce filtrage a permis d'identifier **les tags dont l'usage révèle des thématiques vraiment différentes**
     entre périodes.
 
-    Les **tests Chi-2** révèlent des différences significatives sur {filtered_tags} tags. 
-    **Week-end (+)**: `vegetarian`, `christmas`, `from-scratch`, `breakfast`, `eggs`. 
+    Les **tests Chi-2** révèlent des différences significatives sur {filtered_tags} tags.
+    **Week-end (+)**: `vegetarian`, `christmas`, `from-scratch`, `breakfast`, `eggs`.
     **Semaine (−)**: `one-dish-meal`, `beginner-cook`, `mexican`.
 
     **Les écarts restent faibles (<0.5pp) et l'interprétation est sujette à débat.**
