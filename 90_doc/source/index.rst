@@ -38,6 +38,7 @@ Sommaire
 
    installation
    usage
+   s3
    architecture
    cicd
    tests
