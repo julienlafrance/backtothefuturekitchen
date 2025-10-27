@@ -3,8 +3,6 @@ Conformité Académique
 
 Ce projet répond aux exigences du cours de développement Python.
 
-**Score estimé** : 19-20/20
-
 **Voir aussi** : :doc:`tests` (coverage 93%), :doc:`cicd` (pipeline automatisé), :doc:`architecture` (stack technique)
 
 Gestion de Projet
