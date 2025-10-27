@@ -1,6 +1,10 @@
 FAQ - Questions Fréquentes
 ==========================
 
+22 questions courantes organisées en 7 catégories.
+
+**Démarrage rapide** : voir :doc:`quickstart` | **Définitions** : voir :doc:`glossaire`
+
 Installation et Configuration
 ------------------------------
 

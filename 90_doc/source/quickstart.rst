@@ -1,6 +1,10 @@
 Guide Démarrage Rapide
 =======================
 
+Guide d'installation et commandes essentielles pour démarrer en 2 minutes.
+
+**Guide complet** : :doc:`installation` | **FAQ** : :doc:`faq` | **Glossaire** : :doc:`glossaire`
+
 Installation en 2 Minutes
 --------------------------
 
