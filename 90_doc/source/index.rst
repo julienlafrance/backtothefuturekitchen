@@ -56,8 +56,10 @@ Sommaire
    :maxdepth: 2
    :caption: Guide Utilisateur
 
+   quickstart
    installation
    usage
+   faq
    s3
    architecture
    cicd

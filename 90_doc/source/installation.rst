@@ -72,6 +72,115 @@ Installation avec Docker
    # OU Environnement PRODUCTION (port 8501)
    docker-compose -f docker-compose-prod.yml up -d
 
+Accès aux Environnements
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* **Local PREPROD** : http://localhost:8500
+* **Local PRODUCTION** : http://localhost:8501
+* **Réseau PREPROD** : http://192.168.80.210:8500
+* **Public PREPROD** : https://mangetamain.lafrance.io/
+* **Public PRODUCTION** : https://backtothefuturekitchen.lafrance.io/
+
+Volumes Docker
+^^^^^^^^^^^^^^
+
+Les volumes Docker mappent le code local vers le conteneur :
+
+=================== =================== ====== ================================
+Local               Container           Mode   Description
+=================== =================== ====== ================================
+``10_preprod/src/`` ``/app/src/``       RO     Code source (hot reload)
+``10_preprod/data/`` ``/app/data/``     RW     Base DuckDB
+``pyproject.toml``  ``/app/pyproject.``  RO     Configuration uv
+=================== =================== ====== ================================
+
+**Avantages** :
+
+* Code source en lecture seule (évite modifications accidentelles)
+* Modifications visibles immédiatement (hot reload Streamlit)
+* Données DuckDB persistantes
+
+Gestion Docker
+^^^^^^^^^^^^^^
+
+**Voir les logs :**
+
+.. code-block:: bash
+
+   docker-compose logs -f mangetamain_preprod
+
+**Redémarrer après nouvelle dépendance :**
+
+.. code-block:: bash
+
+   # 1. Ajouter dépendance localement
+   cd 10_preprod
+   uv add nouvelle-dependance
+
+   # 2. Redémarrer conteneur
+   cd ../30_docker
+   docker-compose restart
+
+**Arrêter les services :**
+
+.. code-block:: bash
+
+   docker-compose down
+
+**Reconstruire complètement :**
+
+.. code-block:: bash
+
+   docker-compose up -d --force-recreate --build
+
+Debug Docker
+^^^^^^^^^^^^
+
+**Entrer dans le conteneur :**
+
+.. code-block:: bash
+
+   docker-compose exec mangetamain_preprod bash
+   # Puis dans le conteneur:
+   uv run python -c "import streamlit; print(streamlit.__version__)"
+
+**Vérifier santé du conteneur :**
+
+.. code-block:: bash
+
+   docker-compose ps
+   # Doit afficher: healthy
+
+**Logs en temps réel :**
+
+.. code-block:: bash
+
+   docker-compose logs -f --tail=100
+
+Workflow Développement Docker
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1. **Modifier code** : Éditer fichiers dans ``10_preprod/src/``
+2. **Voir changements** : Streamlit recharge automatiquement
+3. **Ajouter dépendance** : ``uv add package`` puis ``docker-compose restart``
+4. **Debug** : ``docker-compose logs -f`` ou entrer dans conteneur
+
+Nettoyage
+^^^^^^^^^
+
+**Arrêter et supprimer conteneur :**
+
+.. code-block:: bash
+
+   docker-compose down
+
+**Nettoyage complet (images, volumes, réseaux) :**
+
+.. code-block:: bash
+
+   docker system prune -a
+   # Attention: Supprime TOUTES les images Docker inutilisées
+
 Tests
 -----
 
