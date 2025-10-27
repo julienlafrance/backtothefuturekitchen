@@ -49,6 +49,15 @@ Démarrage Rapide
 
 **CI/CD**: Pipeline automatisé → :doc:`cicd`
 
+Navigation Documentation
+------------------------
+
+**Premiers pas** : :doc:`quickstart` → :doc:`installation` → :doc:`usage`
+
+**Référence** : :doc:`faq` | :doc:`glossaire` | :doc:`api/index`
+
+**Infrastructure** : :doc:`s3` | :doc:`architecture` | :doc:`cicd` | :doc:`tests`
+
 Sommaire
 --------
 
@@ -60,6 +69,7 @@ Sommaire
    installation
    usage
    faq
+   glossaire
    s3
    architecture
    cicd
@@ -79,6 +89,7 @@ Sommaire
 Indices et Tables
 =================
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+* :ref:`genindex` - Index général
+* :ref:`modindex` - Index modules Python
+* :ref:`search` - Recherche documentation
+* :doc:`glossaire` - Définitions et acronymes
