@@ -58,6 +58,7 @@ Sommaire
 
    installation
    usage
+   faq
    s3
    architecture
    cicd
