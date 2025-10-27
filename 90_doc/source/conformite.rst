@@ -102,9 +102,28 @@ Try/except personnalisés avec messages clairs :
 Logging
 ^^^^^^^
 
-À compléter : Système Loguru avec fichiers séparés debug/error pour PREPROD/PROD.
+Système Loguru 0.7.3 complet avec séparation PREPROD/PROD :
 
-Voir ``90_doc/md/SOLUTION_LOGGING.md`` pour le plan d'implémentation.
+* **Architecture** : 2 fichiers (debug.log, errors.log) par environnement
+* **Détection auto** : Variable ``APP_ENV`` ou path automatique
+* **Rotation** : 10 MB (debug), 5 MB (errors) avec compression
+* **Thread-safe** : ``enqueue=True`` pour Streamlit multithread
+* **Backtrace** : Diagnostic complet des erreurs
+
+.. code-block:: python
+
+   from loguru import logger
+
+   def load_data():
+       try:
+           logger.info("Starting data load")
+           data = load_from_s3()
+           logger.success(f"Loaded {len(data)} records")
+       except Exception as e:
+           logger.error(f"Load failed: {e}")
+           raise
+
+**Voir** : :doc:`architecture` section Logging pour configuration complète.
 
 Sécurité
 ^^^^^^^^
@@ -287,7 +306,7 @@ POO                            ✅        Classes utilitaires
 Type Hinting                   ✅        Complet
 PEP8                           ✅        100% compliance
 Exceptions                     ✅        Try/except partout
-Logger                         ⚠️        À compléter
+Logger                         ✅        Loguru complet
 Sécurité                       ✅        Secrets protégés
 Tests unitaires                ✅        118 tests
 Coverage >= 90%                ✅        93% atteint
@@ -299,4 +318,4 @@ Exécution auto                 ✅        Push + PR + merge
 CD (bonus)                     ✅        PREPROD + PROD
 ============================== ========= ===================
 
-**Score estimé : 18/20** (avec documentation Sphinx et logging complet)
+**Score estimé : 19-20/20** (toutes exigences respectées + bonus)
