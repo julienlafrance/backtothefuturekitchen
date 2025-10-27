@@ -62,4 +62,8 @@ backups/
 logs/
 deploy_*.log
 
+# Sphinx documentation build
+90_doc/build/
+90_doc/.venv/
+
 # Force sync

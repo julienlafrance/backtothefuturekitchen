@@ -1,0 +1,249 @@
+Architecture Technique
+======================
+
+Stack Technique
+---------------
+
+Backend
+^^^^^^^
+
+* **DuckDB 1.4.0** : Base de données OLAP columnar
+* **S3 Storage** : Garage S3 (endpoint s3fast.lafrance.io)
+* **Python 3.13.3** : Langage principal
+
+Frontend
+^^^^^^^^
+
+* **Streamlit 1.50.0** : Framework web interactif
+* **Plotly 5.24.1** : Visualisations interactives
+
+Data Science
+^^^^^^^^^^^^
+
+* **Pandas 2.2.3** : Manipulation de données
+* **Polars 1.19.0** : Traitement haute performance
+* **NumPy 2.2.6** : Calculs numériques
+
+Outils de Développement
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+* **uv 0.8.22** : Gestionnaire de paquets moderne
+* **pytest 8.5.0** : Tests unitaires
+* **pytest-cov 6.0.0** : Coverage des tests
+* **flake8** : Vérification PEP8
+* **black** : Formatage automatique du code
+* **pydocstyle** : Validation des docstrings
+
+Structure du Projet
+--------------------
+
+Organisation des Répertoires
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    mangetamain/
+    └── 000_dev/
+        ├── 00_eda/                    # Notebooks Jupyter d'exploration
+        ├── 10_preprod/                # Application PREPROD (source de vérité)
+        │   ├── src/
+        │   │   └── mangetamain_analytics/
+        │   │       ├── main.py
+        │   │       ├── utils/
+        │   │       ├── visualization/
+        │   │       ├── data/
+        │   │       └── assets/
+        │   ├── tests/
+        │   └── pyproject.toml
+        ├── 20_prod/                   # Application PRODUCTION (artifact)
+        ├── 30_docker/                 # Docker Compose
+        ├── 50_test/                   # Tests infrastructure
+        ├── 90_doc/                    # Documentation (ce répertoire)
+        └── .github/workflows/         # CI/CD
+
+Modules Applicatifs
+^^^^^^^^^^^^^^^^^^^
+
+**Module utils**
+
+* ``colors.py`` : Palette de couleurs de la charte graphique
+* ``chart_theme.py`` : Thème Plotly unifié
+
+**Module visualization**
+
+* ``analyse_trendlines_v2.py`` : Analyse des tendances temporelles
+* ``analyse_seasonality.py`` : Analyse des patterns saisonniers
+* ``analyse_weekend.py`` : Analyse de l'effet jour/weekend
+* ``analyse_ratings.py`` : Analyse des notes utilisateurs
+* ``custom_charts.py`` : Graphiques réutilisables
+
+**Module data**
+
+* ``cached_loaders.py`` : Chargement des données avec cache Streamlit
+
+CI/CD Pipeline
+--------------
+
+Architecture Séquentielle
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Le pipeline CI/CD est organisé en 3 phases :
+
+1. **CI - Quality & Tests** (automatique sur push)
+
+   * Vérification PEP8 (flake8)
+   * Validation docstrings (pydocstyle)
+   * Tests unitaires (pytest)
+   * Coverage >= 90%
+
+2. **CD Preprod** (automatique après CI réussi)
+
+   * Déploiement sur https://mangetamain.lafrance.io/
+   * Redémarrage container Docker
+   * Health checks automatiques
+
+3. **CD Production** (manuel avec confirmation)
+
+   * Backup automatique
+   * Déploiement sur https://backtothefuturekitchen.lafrance.io/
+   * Health checks avec retry
+
+Workflows GitHub Actions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* ``.github/workflows/ci.yml`` : Pipeline CI complet
+* ``.github/workflows/cd-preprod.yml`` : Déploiement PREPROD
+* ``.github/workflows/cd-prod.yml`` : Déploiement PRODUCTION
+
+Runner Self-Hosted
+^^^^^^^^^^^^^^^^^^
+
+* Localisation : VM dataia (réseau VPN)
+* Avantage : Déploiement sans connexion VPN manuelle
+* Notifications : Discord webhooks en temps réel
+
+Environnements
+--------------
+
+PREPROD
+^^^^^^^
+
+* **URL** : https://mangetamain.lafrance.io/
+* **Port** : 8500
+* **Usage** : Développement et tests
+* **Déploiement** : Automatique sur push vers main
+
+PRODUCTION
+^^^^^^^^^^
+
+* **URL** : https://backtothefuturekitchen.lafrance.io/
+* **Port** : 8501
+* **Usage** : Application stable
+* **Déploiement** : Manuel avec confirmation
+
+Différences
+^^^^^^^^^^^
+
+* Bases de données distinctes
+* Logs séparés
+* Variables d'environnement différenciées
+* Badges visuels auto-détectés
+
+Base de Données
+---------------
+
+DuckDB
+^^^^^^
+
+Fichier : ``mangetamain.duckdb`` (581 MB)
+
+**Tables principales :**
+
+* ``recipes`` : 178,265 recettes
+* ``interactions`` : 1.1M+ interactions utilisateurs
+* ``users`` : 25,076 utilisateurs
+* Tables dérivées pour analyses
+
+**Avantages DuckDB :**
+
+* OLAP columnar (10-100x plus rapide que SQLite)
+* Zero-copy sur fichiers Parquet
+* SQL standard complet
+* Intégration native Pandas/Polars
+
+Stockage S3
+^^^^^^^^^^^
+
+* **Endpoint** : s3fast.lafrance.io
+* **Bucket** : mangetamain
+* **Credentials** : Fichier 96_keys/credentials
+* **Performance** : 500-917 MB/s
+
+Chargement des Données
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Les données sont chargées automatiquement depuis S3 au démarrage via le module ``data.cached_loaders`` avec cache Streamlit (TTL 1h).
+
+Tests et Qualité
+----------------
+
+Métriques
+^^^^^^^^^
+
+* **Coverage** : 93% (objectif 90%)
+* **Tests unitaires** : 118 tests
+* **PEP8 compliance** : 100%
+* **Docstrings** : Google style
+
+Types de Tests
+^^^^^^^^^^^^^^
+
+* **Tests unitaires** : 10_preprod/tests/unit/ (83 tests)
+* **Tests infrastructure** : 50_test/ (35 tests S3/DuckDB/SQL)
+
+Configuration
+^^^^^^^^^^^^^
+
+* ``.flake8`` : Configuration PEP8
+* ``.pydocstyle`` : Configuration docstrings
+* ``pyproject.toml`` : Configuration pytest et coverage
+
+Logging
+-------
+
+À compléter
+^^^^^^^^^^^
+
+Le système de logging avec Loguru (fichiers séparés debug/error pour PREPROD/PROD) sera documenté dans une session future.
+
+Voir ``SOLUTION_LOGGING.md`` pour le plan d'implémentation.
+
+Performance
+-----------
+
+Optimisations
+^^^^^^^^^^^^^
+
+* **Cache Streamlit** : ``@st.cache_data`` (TTL 1h)
+* **DuckDB columnar** : Requêtes analytiques optimisées
+* **Polars** : Traitement de données haute performance
+* **S3 DNAT bypass** : 500-917 MB/s
+
+Temps de Chargement
+^^^^^^^^^^^^^^^^^^^
+
+* Premier chargement : 5-10 secondes (depuis S3)
+* Chargements suivants : <0.1 seconde (cache mémoire)
+* Gain : 50-100x sur navigations répétées
+
+Sécurité
+--------
+
+Bonnes Pratiques
+^^^^^^^^^^^^^^^^
+
+* Credentials S3 non commités (96_keys/ dans .gitignore)
+* Secrets GitHub chiffrés
+* Runner isolé sur VPN
+* Validation des inputs utilisateurs
+* Gestion des exceptions personnalisée
