@@ -1,7 +1,9 @@
 Module visualization
 ====================
 
-Le module ``visualization`` contient les analyses et génération de graphiques.
+Modules d'analyse et génération de graphiques interactifs Plotly.
+
+**Guide utilisateur** : voir :doc:`../usage` pour description détaillée des 4 analyses.
 
 visualization.analyse_trendlines_v2
 -----------------------------------

@@ -1,9 +1,11 @@
 Référence API
 =============
 
-Cette section documente l'API Python de Mangetamain Analytics.
+Documentation API Python générée automatiquement depuis les docstrings (format Google).
 
-La documentation est générée automatiquement depuis les docstrings du code source (format Google).
+**Exemples pratiques** : chaque module contient des exemples code complets.
+
+**Guides utilisateur** : voir :doc:`../usage` pour contexte et workflows.
 
 Modules Disponibles
 -------------------
