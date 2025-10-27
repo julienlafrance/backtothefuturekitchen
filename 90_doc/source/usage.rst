@@ -1,6 +1,12 @@
 Utilisation
 ===========
 
+Guide d'utilisation de l'application Mangetamain Analytics.
+
+**API complète** : voir :doc:`api/index` pour référence détaillée.
+
+**Exemples code** : voir :doc:`api/utils` (couleurs, thème) et :doc:`api/data` (chargement données).
+
 Architecture de l'Application
 ------------------------------
 
@@ -140,64 +146,11 @@ Chaque analyse propose des widgets :
 * Filtres (catégories, tags, plages nutritionnelles)
 * Sélecteurs de métriques
 
-Personnalisation des Graphiques
---------------------------------
-
-Utiliser le Module chart_theme
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: python
-
-   from utils import chart_theme
-   import plotly.graph_objects as go
-
-   fig = go.Figure()
-   # Ajouter traces
-   chart_theme.apply_chart_theme(fig, title="Mon graphique")
-
-Couleurs de la Charte
-^^^^^^^^^^^^^^^^^^^^^^
-
-.. code-block:: python
-
-   from utils import colors
-
-   primary = colors.ORANGE_PRIMARY      # #FF8C00
-   secondary = colors.ORANGE_SECONDARY  # #E24E1B
-   background = colors.BACKGROUND_MAIN  # #1E1E1E
-   text = colors.TEXT_PRIMARY           # #F0F0F0
-
-   # Palette complète pour graphiques
-   chart_colors = colors.CHART_COLORS  # 8 couleurs
-
-Cache des Données
------------------
-
-L'application utilise ``@st.cache_data`` pour optimiser les performances :
-
-* TTL : 1 heure (3600 secondes)
-* Chargement unique depuis S3
-* Navigation instantanée entre pages
-
-.. code-block:: python
-
-   from data.cached_loaders import get_recipes_clean, get_ratings_longterm
-
-   # Chargé une seule fois par heure
-   recipes = get_recipes_clean()
-   ratings = get_ratings_longterm()
-
-Rafraîchir les Données
-^^^^^^^^^^^^^^^^^^^^^^^
-
-Pour forcer le rechargement des données :
-
-1. Accéder au menu Streamlit (coin supérieur droit)
-2. Sélectionner "Clear cache"
-3. Recharger la page
-
-URLs des Environnements
+Personnalisation et API
 -----------------------
 
-* **PREPROD** : https://mangetamain.lafrance.io/
-* **PRODUCTION** : https://backtothefuturekitchen.lafrance.io/
+**Charte graphique et couleurs** : voir :doc:`api/utils` pour exemples complets (``chart_theme``, ``colors``).
+
+**Chargement et cache données** : voir :doc:`api/data` pour détails cache Streamlit (TTL 3600s) et fonctions ``get_recipes_clean()``, ``get_ratings_longterm()``.
+
+**URLs des environnements** : voir :doc:`glossaire` pour PREPROD/PRODUCTION.
