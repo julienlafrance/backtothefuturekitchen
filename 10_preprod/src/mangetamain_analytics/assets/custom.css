@@ -66,6 +66,17 @@ section.main > div {
     height: 100vh;
 }
 
+/* Empêcher la fermeture de la sidebar - Cache le bouton collapse */
+[data-testid="collapsedControl"] {
+    display: none !important;
+}
+
+/* S'assurer que la sidebar reste toujours visible */
+section[data-testid="stSidebar"][aria-expanded="false"] {
+    display: block !important;
+    margin-left: 0 !important;
+}
+
 /* Container pour le contenu qui scroll */
 [data-testid="stSidebar"] .block-container {
     flex: 1;
