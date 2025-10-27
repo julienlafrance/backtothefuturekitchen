@@ -39,6 +39,7 @@ Sommaire
    installation
    usage
    architecture
+   cicd
    tests
    conformite
 
