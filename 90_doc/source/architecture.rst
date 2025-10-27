@@ -1,6 +1,10 @@
 Architecture Technique
 ======================
 
+Vue d'ensemble de l'architecture technique du projet.
+
+**Termes et acronymes**: voir :doc:`glossaire`
+
 Stack Technique
 ---------------
 

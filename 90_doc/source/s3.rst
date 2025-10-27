@@ -3,6 +3,11 @@ Stockage S3 Garage
 
 Configuration et utilisation du stockage S3 Garage haute performance.
 
+**S3 Garage** est une implémentation self-hosted du protocole Amazon S3 (:doc:`glossaire`).
+Ce guide couvre la configuration, l'optimisation performance et le dépannage.
+
+**Pour débuter rapidement**, voir :doc:`quickstart`.
+
 Vue d'ensemble
 --------------
 

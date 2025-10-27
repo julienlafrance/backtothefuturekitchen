@@ -3,6 +3,10 @@ Pipeline CI/CD
 
 Le pipeline CI/CD automatise la validation qualité, les tests et le déploiement de l'application.
 
+**CI/CD** : Continuous Integration / Continuous Deployment (:doc:`glossaire`).
+
+**Workflows pratiques** : voir fin de page pour exemples concrets.
+
 Architecture
 ------------
 

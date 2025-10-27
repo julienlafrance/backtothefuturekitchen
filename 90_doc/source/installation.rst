@@ -1,12 +1,16 @@
 Installation
 ============
 
+**Guide rapide** : voir :doc:`quickstart` (installation en 2 minutes).
+
+**Termes techniques** : voir :doc:`glossaire` pour uv, S3, Docker, etc.
+
 Prérequis
 ---------
 
 * Python 3.13.3
 * uv (gestionnaire de paquets)
-* Accès S3 (Garage Storage)
+* Accès S3 (Garage Storage) - voir :doc:`s3`
 
 Installation Locale
 -------------------

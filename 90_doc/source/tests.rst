@@ -3,6 +3,10 @@ Tests et Coverage
 
 Documentation complète des tests unitaires et du coverage du projet.
 
+**Coverage** : pourcentage de code testé (:doc:`glossaire`).
+
+**Exécution rapide** : voir :doc:`quickstart` pour commandes.
+
 État Actuel
 -----------
 
