@@ -422,10 +422,272 @@ Fiabilité
 * **Rollbacks automatiques**: 100% succès
 * **Faux positifs health check**: <1%
 
+Exemples Workflows Concrets
+----------------------------
+
+Développement Feature
+^^^^^^^^^^^^^^^^^^^^^
+
+**Scénario**: Ajouter nouvelle analyse saisonnière
+
+.. code-block:: bash
+
+   # 1. Créer branche
+   git checkout -b feature/analyse-mensuelle
+
+   # 2. Développer
+   # Modifier src/visualization/analyse_mensuelle.py
+   # Ajouter tests dans tests/unit/test_analyse_mensuelle.py
+
+   # 3. Vérifier localement
+   uv run flake8 src/ tests/
+   uv run pytest tests/unit/ --cov=src --cov-fail-under=90
+
+   # 4. Commit et push
+   git add .
+   git commit -m "Ajouter analyse mensuelle avec tests"
+   git push origin feature/analyse-mensuelle
+
+   # 5. Créer PR
+   gh pr create --title "Analyse mensuelle" --body "Nouvelle analyse par mois"
+
+   # → CI se lance automatiquement sur la branche
+   # → Si tests passent → Merge vers main possible
+   # → Après merge → CD PREPROD se lance automatiquement
+
+**Timeline**:
+
+::
+
+    Push branche → CI (2min) → PR review → Merge → CD PREPROD (40s) → App live
+                    ↓
+                Tests OK/KO
+                    ↓
+                Bloque merge si KO
+
+Hotfix Production
+^^^^^^^^^^^^^^^^^
+
+**Scénario**: Bug critique en production nécessite fix immédiat
+
+.. code-block:: bash
+
+   # 1. Identifier commit problématique
+   gh run list --limit 10
+   # Trouver dernier deploy PROD réussi
+
+   # 2. Créer branche hotfix
+   git checkout -b hotfix/fix-rating-bug
+
+   # 3. Fix rapide + test
+   # Modifier src/visualization/analyse_ratings.py
+   # Ajouter test regression
+
+   # 4. Push et merge rapide
+   git add . && git commit -m "Fix ratings bug critique"
+   git push origin hotfix/fix-rating-bug
+   gh pr create --title "[HOTFIX] Fix ratings" --body "Fix bug ratings 5 étoiles"
+
+   # 5. Après merge → Attendre CD PREPROD (auto)
+
+   # 6. Vérifier PREPROD OK puis deploy PROD manuel
+   gh workflow run cd-prod.yml
+   # Taper "DEPLOY" dans confirmation
+
+**Durée totale**: ~5-10 minutes (CI + CD PREPROD + vérif + CD PROD)
+
+Rollback Après Erreur
+^^^^^^^^^^^^^^^^^^^^^
+
+**Scénario**: Déploiement PROD casse l'app, besoin rollback immédiat
+
+**Option 1 - Rollback via Git** :
+
+.. code-block:: bash
+
+   # Sur VM dataia
+   ssh dataia
+   cd ~/mangetamain/000_dev/20_prod
+
+   # Identifier commit stable
+   git log --oneline -10
+   # Ex: abc1234 Version stable avant bug
+
+   # Rollback
+   git reset --hard abc1234
+
+   # Redémarrer
+   cd ../30_docker
+   docker-compose -f docker-compose-prod.yml restart
+
+**Durée**: ~1 minute
+
+**Option 2 - Rollback via Re-deploy** :
+
+.. code-block:: bash
+
+   # Localement, revenir au commit stable
+   git revert HEAD  # Ou git reset --hard <sha-stable>
+   git push origin main
+
+   # CI/CD PREPROD se lance
+   # Vérifier PREPROD OK
+
+   # Deploy PROD
+   gh workflow run cd-prod.yml  # Taper DEPLOY
+
+**Durée**: ~5 minutes (plus sûr, passe par CI/CD)
+
+Monitoring Déploiement
+^^^^^^^^^^^^^^^^^^^^^^
+
+**Surveiller en temps réel** :
+
+.. code-block:: bash
+
+   # Option 1: gh CLI
+   gh run watch
+
+   # Option 2: SSH + logs Docker
+   ssh dataia "docker-compose -f 30_docker/docker-compose-preprod.yml logs -f --tail=50"
+
+   # Option 3: Discord webhook
+   # Notifications automatiques dans channel #deployments
+
+**Vérifier health** :
+
+.. code-block:: bash
+
+   # PREPROD
+   curl -s https://mangetamain.lafrance.io/_stcore/health | jq
+
+   # PROD
+   curl -s https://backtothefuturekitchen.lafrance.io/_stcore/health | jq
+
+**Réponse attendue** :
+
+.. code-block:: json
+
+   {
+     "status": "ok",
+     "uptime": 12345.67
+   }
+
+Best Practices
+--------------
+
+Commits
+^^^^^^^
+
+**Format messages** :
+
+.. code-block:: text
+
+   <type>: <description courte>
+
+   <description détaillée optionnelle>
+
+   Types: feat, fix, docs, test, refactor, perf, ci
+
+**Exemples** :
+
+.. code-block:: bash
+
+   # Feature
+   git commit -m "feat: ajouter filtre saison dans analyse tendances"
+
+   # Bugfix
+   git commit -m "fix: corriger calcul moyenne ratings"
+
+   # Tests
+   git commit -m "test: ajouter tests analyse weekend (coverage +5%)"
+
+   # Documentation
+   git commit -m "docs: enrichir API visualization avec exemples"
+
+Pull Requests
+^^^^^^^^^^^^^
+
+**Template PR** :
+
+.. code-block:: markdown
+
+   ## Description
+   Brève description du changement
+
+   ## Changements
+   - [ ] Ajout feature X
+   - [ ] Tests coverage ≥ 90%
+   - [ ] Documentation mise à jour
+
+   ## Tests
+   ```bash
+   pytest tests/unit/test_nouvelle_feature.py -v
+   ```
+
+   ## Screenshots (si UI)
+   ![Before](url) ![After](url)
+
+**Review checklist** :
+
+* Code suit PEP8 (flake8 passe)
+* Tests ajoutés (coverage ≥ 90%)
+* Documentation à jour
+* Pas de credentials committés
+* Branch à jour avec main
+
+CI/CD
+^^^^^
+
+**Éviter échecs CI** :
+
+.. code-block:: bash
+
+   # Avant chaque push, lancer localement
+   uv run flake8 src/ tests/
+   uv run black --check src/ tests/
+   uv run pytest tests/unit/ --cov=src --cov-fail-under=90
+
+   # Script pre-push hook (.git/hooks/pre-push)
+   #!/bin/bash
+   echo "Running pre-push checks..."
+   uv run flake8 src/ tests/ || exit 1
+   uv run pytest tests/unit/ --cov=src --cov-fail-under=90 || exit 1
+   echo "✓ All checks passed"
+
+**Optimiser CI** :
+
+* Utiliser cache uv pour dépendances
+* Paralléliser tests indépendants
+* Skip CI si [skip ci] dans message commit (docs uniquement)
+
+Déploiement
+^^^^^^^^^^^
+
+**Checklist avant deploy PROD** :
+
+1. ✅ PREPROD fonctionne correctement
+2. ✅ Tests manuels effectués sur PREPROD
+3. ✅ Pas d'erreurs dans logs PREPROD
+4. ✅ Performance acceptable (load time < 10s)
+5. ✅ Backup automatique effectué (vérifié)
+
+**Timing optimal** :
+
+* **Éviter** : Vendredi soir, juste avant weekend
+* **Préférer** : Mardi-Jeudi matin (temps pour monitorer)
+
+**Communication** :
+
+* Annoncer maintenance si downtime > 1 minute
+* Notifications Discord automatiques
+
 Voir Aussi
 ----------
 
 * :doc:`tests` - Tests unitaires et coverage
 * :doc:`conformite` - Conformité académique
 * :doc:`architecture` - Architecture technique complète
+* :doc:`quickstart` - Commandes essentielles Git/CI/CD
+* :doc:`faq` - FAQ CI/CD et troubleshooting
 * README_CI_CD.md (racine) - Documentation détaillée complète (982 lignes)
