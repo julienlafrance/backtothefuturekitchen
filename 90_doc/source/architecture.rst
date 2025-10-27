@@ -4,25 +4,48 @@ Architecture Technique
 Stack Technique
 ---------------
 
-Backend
-^^^^^^^
+| Catégorie | Technologies |
+|-----------|--------------|
+| **Backend** | DuckDB 1.4.0 (base OLAP columnar) |
+| **Frontend** | Streamlit 1.50.0 + Plotly 5.24.1 |
+| **Data Science** | Pandas 2.2.3, NumPy 2.2.6, Polars 1.19.0 |
+| **Logging** | Loguru 0.7.3 (rotation automatique) |
+| **Package Manager** | uv 0.8.22 (ultrafast pip replacement) |
+| **Tests** | pytest 8.5.0, pytest-cov 6.0.0 |
+| **CI/CD** | GitHub Actions + self-hosted runner |
+| **Déploiement** | Docker Compose, VM dataia (VPN) |
+| **Monitoring** | Discord webhooks (notifications temps réel) |
 
-* **DuckDB 1.4.0** : Base de données OLAP columnar
-* **S3 Storage** : Garage S3 (endpoint s3fast.lafrance.io)
-* **Python 3.13.3** : Langage principal
+Détails des Technologies Clés
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Frontend
-^^^^^^^^
+**DuckDB**
 
-* **Streamlit 1.50.0** : Framework web interactif
-* **Plotly 5.24.1** : Visualisations interactives
+Base de données OLAP columnar performante :
 
-Data Science
-^^^^^^^^^^^^
+* 10-100x plus rapide que SQLite pour analyses
+* Zero-copy sur fichiers Parquet
+* SQL standard complet
+* Intégration native Pandas/Polars
+* Fichier unique 581 MB (7 tables)
 
-* **Pandas 2.2.3** : Manipulation de données
-* **Polars 1.19.0** : Traitement haute performance
-* **NumPy 2.2.6** : Calculs numériques
+**Streamlit**
+
+Framework web Python interactif :
+
+* Widgets réactifs (sliders, selectbox, etc.)
+* Cache intégré (@st.cache_data)
+* Rechargement automatique du code
+* Déploiement simple (Docker)
+
+**Plotly**
+
+Bibliothèque de visualisations interactives :
+
+* Graphiques interactifs (zoom, pan, hover)
+* Subplots synchronisés
+* Thème personnalisable
+* Export PNG/SVG
 
 Outils de Développement
 ^^^^^^^^^^^^^^^^^^^^^^^^

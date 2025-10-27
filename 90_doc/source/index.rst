@@ -39,6 +39,7 @@ Sommaire
    installation
    usage
    architecture
+   conformite
 
 .. toctree::
    :maxdepth: 3
