@@ -226,16 +226,15 @@ def analyse_trendline_volume():
 
         # Interprétation
         st.info(
-        """
-        💡 **Interprétation statistique**
+            """
+            💡 **Interprétation statistique**
 
-        Nous observons une **forte augmentation du nombre de recettes postées jusqu’en 2007**, 
-        année du **pic d’activité**, suivie d’une **chute marquée** les années suivantes.  
-        Les **tests de normalité** et les **Q-Q plots** montrent que la distribution du 
-        **nombre de recettes par an** **n’est pas parfaitement normale**, avec des **écarts visibles** 
-        par rapport à la **loi normale théorique**.
-        """)
-
+            Nous observons une **forte augmentation du nombre de recettes postées jusqu'en 2007**,
+            année du **pic d'activité**, suivie d'une **chute marquée** les années suivantes.
+            Les **tests de normalité** et les **Q-Q plots** montrent que la distribution du
+            **nombre de recettes par an** **n'est pas parfaitement normale**, avec des **écarts visibles**
+            par rapport à la **loi normale théorique**.
+            """)
 
 
 # ============================================================================
@@ -616,15 +615,15 @@ def analyse_trendline_duree():
 
     # Interprétation
     st.info(
-    """
-    💡 **Interprétation statistique**
+        """
+        💡 **Interprétation statistique**
 
-    **L’analyse de la durée moyenne de préparation** montre une **tendance globale à la baisse** 
-    depuis la création du site.  
+        **L'analyse de la durée moyenne de préparation** montre une **tendance globale à la baisse**
+        depuis la création du site.
 
-    En moyenne, le **temps de préparation diminue d’environ −0.46 min par an**, tandis que la **médiane recule de −0.26 min par an**, 
-    ce qui traduit une **légère simplification des recettes** au fil du temps.
-    """)
+        En moyenne, le **temps de préparation diminue d'environ −0.46 min par an**, tandis que la **médiane recule de −0.26 min par an**,
+        ce qui traduit une **légère simplification des recettes** au fil du temps.
+        """)
 
 
 def analyse_trendline_duree_old_intervals():
