@@ -1,7 +1,9 @@
 Modules Infrastructure
 ======================
 
-Ce module documente les composants infrastructure du projet Mangetamain Analytics.
+Documentation des composants infrastructure : logging (Loguru), base de données (DuckDB), utilitaires EDA.
+
+**Voir aussi** : :doc:`../architecture` (stack technique), :doc:`../tests` (tests infrastructure)
 
 Configuration et Logging
 -------------------------

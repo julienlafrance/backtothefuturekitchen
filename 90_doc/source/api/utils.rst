@@ -1,7 +1,9 @@
 Module utils
 ============
 
-Le module ``utils`` contient les fonctions utilitaires pour la charte graphique.
+Fonctions utilitaires pour la charte graphique "Back to the Kitchen" : couleurs et thème Plotly.
+
+**Usage pratique** : voir exemples code ci-dessous pour intégration dans vos graphiques.
 
 utils.colors
 ------------

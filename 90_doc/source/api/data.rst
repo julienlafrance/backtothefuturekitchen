@@ -1,7 +1,9 @@
 Module data
 ===========
 
-Le module ``data`` gère le chargement et la mise en cache des données.
+Chargement et cache des données depuis S3 Parquet avec Streamlit @st.cache_data (TTL 3600s).
+
+**Données** : 178K recettes + 1.1M ratings (~450 MB Parquet) → voir :doc:`../glossaire` pour détails.
 
 data.cached_loaders
 -------------------
