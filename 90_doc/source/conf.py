@@ -59,7 +59,14 @@ autodoc_mock_imports = [
     'duckdb',
     'boto3',
     'loguru',
+    'scipy',
+    'statsmodels',
+    'matplotlib',
 ]
+
+# Note: autodoc warnings for visualization modules are expected
+# These modules use Streamlit and relative imports that cannot be resolved
+# in the Sphinx documentation environment. This is acceptable.
 
 # Templates path
 templates_path = ['_templates']
