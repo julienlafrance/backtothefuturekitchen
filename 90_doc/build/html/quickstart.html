@@ -1,0 +1,1110 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guide Démarrage Rapide &mdash; Documentation Mangetamain Analytics 1.0.0</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=05dadb3a"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/translations.js?v=e6b791cb"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="prev" title="Documentation Mangetamain Analytics" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Mangetamain Analytics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Guide Utilisateur</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Guide Démarrage Rapide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installation-en-2-minutes">Installation en 2 Minutes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#commandes-essentielles">Commandes Essentielles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#developpement-local">Développement Local</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker">Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#git-et-deploiement">Git et Déploiement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#cheat-sheet">Cheat Sheet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#structure-projet">Structure Projet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#imports-courants">Imports Courants</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creer-un-graphique">Créer un Graphique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#charger-donnees">Charger Données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#filtrer-avec-polars">Filtrer avec Polars</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#couleurs-charte">Couleurs Charte</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#urls-et-ports">URLs et Ports</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting-rapide">Troubleshooting Rapide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#uv-command-not-found">« uv: command not found »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#no-s3-credentials">« No S3 credentials »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#coverage-below-90">« Coverage below 90% »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#port-already-in-use">« Port already in use »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-container-unhealthy">« Docker container unhealthy »</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#flux-de-travail-typique">Flux de Travail Typique</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Développement Local</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#deploiement">Déploiement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#metriques-cles">Métriques Clés</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#projet">Projet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance">Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ci-cd">CI/CD</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ressources">Ressources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#prerequis">Prérequis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-locale">Installation Locale</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#cloner-le-repository">1. Cloner le Repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#creer-l-environnement-virtuel">2. Créer l’Environnement Virtuel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#configuration-s3">3. Configuration S3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#lancer-l-application">4. Lancer l’Application</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installation-avec-docker">Installation avec Docker</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#id1">1. Cloner le Repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#lancer-avec-docker-compose">2. Lancer avec Docker Compose</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#acces-aux-environnements">Accès aux Environnements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#volumes-docker">Volumes Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#gestion-docker">Gestion Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#debug-docker">Debug Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#workflow-developpement-docker">Workflow Développement Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#nettoyage">Nettoyage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#tests">Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#lancer-les-tests-unitaires">Lancer les Tests Unitaires</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#verifier-la-qualite-du-code">Vérifier la Qualité du Code</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#dependances-principales">Dépendances Principales</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#verification-de-l-installation">Vérification de l’Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#verifier-uv">Vérifier uv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#verifier-python">Vérifier Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#verifier-l-environnement">Vérifier l’Environnement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#verifier-s3">Vérifier S3</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#erreur-uv-command-not-found">Erreur : « uv: command not found »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#erreur-python-3-13-not-found">Erreur : « Python 3.13 not found »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#erreur-no-credentials-found">Erreur : « No credentials found »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#erreur-connection-timeout-s3">Erreur : « Connection timeout » S3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#erreur-tests-pytest-echouent">Erreur : Tests pytest échouent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#port-8501-deja-utilise">Port 8501 déjà utilisé</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#application-charge-lentement">Application charge lentement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html#performance-s3-100-mb-s">Performance S3 &lt; 100 MB/s</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Utilisation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#architecture-de-l-application">Architecture de l’Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#modules-d-analyse-disponibles">Modules d’Analyse Disponibles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#analyse-des-tendances">1. Analyse des Tendances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#analyse-saisonniere">2. Analyse Saisonnière</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#analyse-weekend">3. Analyse Weekend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#analyse-des-ratings">4. Analyse des Ratings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#navigation-dans-l-application">Navigation dans l’Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#sidebar">Sidebar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#widgets-interactifs">Widgets Interactifs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#personnalisation-et-api">Personnalisation et API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ - Questions Fréquentes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#installation-et-configuration">Installation et Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-installer-python-3-13">Comment installer Python 3.13 ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#pourquoi-uv-et-pas-pip">Pourquoi uv et pas pip ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-configurer-s3">Comment configurer S3 ?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#donnees-et-performance">Données et Performance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#combien-de-donnees-sont-chargees">Combien de données sont chargées ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-ameliorer-la-performance-s3">Comment améliorer la performance S3 ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#pourquoi-polars-et-pas-pandas">Pourquoi Polars et pas Pandas ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#le-cache-streamlit-expire-quand">Le cache Streamlit expire quand ?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#developpement">Développement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-ajouter-une-nouvelle-analyse">Comment ajouter une nouvelle analyse ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-personnaliser-les-couleurs">Comment personnaliser les couleurs ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-debugger-un-graphique-plotly">Comment debugger un graphique Plotly ?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#tests-et-ci-cd">Tests et CI/CD</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-lancer-les-tests">Comment lancer les tests ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-augmenter-le-coverage">Comment augmenter le coverage ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#le-ci-echoue-comment-debugger">Le CI échoue, comment débugger ?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#docker">Docker</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#le-conteneur-docker-ne-demarre-pas">Le conteneur Docker ne démarre pas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-voir-les-modifications-en-temps-reel">Comment voir les modifications en temps réel ?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#deploiement">Déploiement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-deployer-en-preprod">Comment déployer en PREPROD ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-deployer-en-production">Comment déployer en PRODUCTION ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-rollback-en-cas-d-erreur">Comment rollback en cas d’erreur ?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#erreurs-courantes">Erreurs Courantes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#importerror-no-module-named-streamlit">« ImportError: No module named “streamlit” »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#duckdb-database-is-locked">« DuckDB database is locked »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#s3-connection-timeout">« S3 connection timeout »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#coverage-below-90">« Coverage below 90% »</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossaire.html">Glossaire</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#termes-techniques">Termes Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#termes-projet">Termes Projet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#termes-analytics">Termes Analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#termes-infrastructure">Termes Infrastructure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#acronymes">Acronymes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#commandes-courantes">Commandes Courantes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#valeurs-cles">Valeurs Clés</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="glossaire.html#objectifs-qualite">Objectifs Qualité</a></li>
+<li class="toctree-l3"><a class="reference internal" href="glossaire.html#metriques-performance">Métriques Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="glossaire.html#donnees-projet">Données Projet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="glossaire.html#configurations">Configurations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="s3.html">Stockage S3 Garage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#configuration-dns-locale">Configuration DNS Locale</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#installation-iptables-persistent">Installation iptables-persistent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#regle-iptables-dnat">Règle iptables DNAT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#sauvegarde-permanente">Sauvegarde Permanente</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#verification-installation">Vérification Installation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#configuration-credentials">Configuration Credentials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#structure-96-keys">Structure 96_keys/</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#fichier-credentials">Fichier credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#fichier-aws-config">Fichier aws_config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#base-duckdb-avec-secret">Base DuckDB avec Secret</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#utilisation-aws-cli">Utilisation AWS CLI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#liste-fichiers">Liste Fichiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#download">Download</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#upload">Upload</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#utilisation-python-boto3">Utilisation Python boto3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#chargement-credentials">Chargement Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#liste-objets">Liste Objets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#download-fichier">Download Fichier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#upload-fichier">Upload Fichier</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#utilisation-duckdb">Utilisation DuckDB</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#requetes-sql-sur-s3">Requêtes SQL sur S3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#parquet-sur-s3">Parquet sur S3</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#utilisation-polars">Utilisation Polars</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#lecture-directe-s3">Lecture Directe S3</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#tests-performance">Tests Performance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#benchmark-download">Benchmark Download</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#verification-dnat-actif">Vérification DNAT Actif</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#structure-bucket">Structure Bucket</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#organisation-fichiers">Organisation Fichiers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#tailles-fichiers">Tailles Fichiers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#tests-infrastructure">Tests Infrastructure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#tests-automatiques-50-test">Tests Automatiques (50_test/)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#lancer-tests-s3">Lancer Tests S3</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#depannage">Dépannage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#erreur-cannot-connect-to-s3">Erreur: Cannot connect to S3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#erreur-slow-download-speed">Erreur: Slow Download Speed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#erreur-duckdb-secret-not-found">Erreur: DuckDB Secret Not Found</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#bonnes-pratiques">Bonnes Pratiques</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#securite-credentials">Sécurité Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#performance">Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#cache-streamlit">Cache Streamlit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#benchmarks-performance">Benchmarks Performance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#comparaison-configurations">Comparaison Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#test-de-performance">Test de Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#optimisation-lecture-parquet">Optimisation Lecture Parquet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#monitoring-performance">Monitoring Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#depannage-performance">Dépannage Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html#limites-et-quotas">Limites et Quotas</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="s3.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">Architecture Technique</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#stack-technique">Stack Technique</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#details-des-technologies-cles">Détails des Technologies Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#outils-de-developpement">Outils de Développement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#structure-du-projet">Structure du Projet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#organisation-des-repertoires">Organisation des Répertoires</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#modules-applicatifs">Modules Applicatifs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#ci-cd-pipeline">CI/CD Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#architecture-sequentielle">Architecture Séquentielle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#workflows-github-actions">Workflows GitHub Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#runner-self-hosted">Runner Self-Hosted</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#environnements">Environnements</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#preprod">PREPROD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#production">PRODUCTION</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#differences">Différences</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#base-de-donnees">Base de Données</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#duckdb">DuckDB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#stockage-s3">Stockage S3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#chargement-des-donnees">Chargement des Données</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#tests-et-qualite">Tests et Qualité</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#metriques">Métriques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#types-de-tests">Types de Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#configuration">Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#logging">Logging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#architecture-loguru">Architecture Loguru</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#id1">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#detection-environnement">Détection Environnement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#structure-des-logs">Structure des Logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#utilisation">Utilisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#configuration-docker">Configuration Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#avantages">Avantages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#performance">Performance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#optimisations">Optimisations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#temps-de-chargement">Temps de Chargement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#securite">Sécurité</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#bonnes-pratiques">Bonnes Pratiques</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cicd.html">Pipeline CI/CD</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#architecture">Architecture</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#pipeline-sequentiel-3-phases">Pipeline Séquentiel 3 Phases</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#workflows-github-actions">Workflows GitHub Actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#ci-pipeline">1. CI Pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#cd-preprod">2. CD Preprod</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#cd-production">3. CD Production</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#health-check-monitoring">4. Health Check Monitoring</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#commandes-pratiques">Commandes Pratiques</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#verification-locale-avant-push">Vérification Locale Avant Push</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#declenchement-manuel-workflows">Déclenchement Manuel Workflows</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#consulter-status-ci-cd">Consulter Status CI/CD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#consulter-logs-watcher-preprod">Consulter Logs Watcher PREPROD</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#runner-self-hosted">Runner Self-Hosted</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#verifier-etat-runner">Vérifier État Runner</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#notifications-discord">Notifications Discord</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#webhooks-configures">Webhooks Configurés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#format-message-preprod">Format Message Preprod</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#format-message-prod">Format Message Prod</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#depannage">Dépannage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#erreur-flake8-not-found">Erreur: flake8 not found</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#erreur-coverage-90">Erreur: Coverage &lt; 90%</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#erreur-docstring-manquante">Erreur: Docstring manquante</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#ci-echoue-mais-local-fonctionne">CI échoue mais local fonctionne</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#cd-preprod-bloque">CD Preprod bloqué</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#rollback-manuel-production">Rollback Manuel Production</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#configuration-requise">Configuration Requise</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#secrets-github">Secrets GitHub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#variables-environnement">Variables Environnement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#runner-labels">Runner Labels</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#metriques">Métriques</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#performance-pipeline">Performance Pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#fiabilite">Fiabilité</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#exemples-workflows-concrets">Exemples Workflows Concrets</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#developpement-feature">Développement Feature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#hotfix-production">Hotfix Production</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#rollback-apres-erreur">Rollback Après Erreur</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#monitoring-deploiement">Monitoring Déploiement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#best-practices">Best Practices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#commits">Commits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#pull-requests">Pull Requests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#deploiement">Déploiement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tests.html">Tests et Coverage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#etat-actuel">État Actuel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#resume-executif">Résumé Exécutif</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#metriques-par-environnement">Métriques par Environnement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#commandes-rapides">Commandes Rapides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests-unitaires-10-preprod">Tests Unitaires (10_preprod)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests-infrastructure-50-test">Tests Infrastructure (50_test)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#coverage-detaille">Coverage Détaillé</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#modules-testes-10-preprod">Modules Testés (10_preprod)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#fichiers-de-tests-crees">Fichiers de Tests Créés</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#pyproject-toml">pyproject.toml</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#id1">Tests Infrastructure (50_test)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#types-de-tests">Types de Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#strategie-de-test">Stratégie de Test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#ce-qu-on-teste">Ce Qu’on Teste</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#ce-qu-on-exclut">Ce Qu’on Exclut</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#patterns-de-test">Patterns de Test</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#mock-streamlit">Mock Streamlit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#fixtures-de-donnees">Fixtures de Données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#tests-de-graphiques-plotly">Tests de Graphiques Plotly</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#resolution-de-problemes">Résolution de Problèmes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#erreur-not-enough-values-to-unpack">Erreur: not enough values to unpack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#erreur-keyerror">Erreur: KeyError</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#erreur-invalid-value-for-color">Erreur: Invalid value for color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#erreur-expected-to-be-called-once">Erreur: Expected to be called once</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#commandes-pytest-utiles">Commandes Pytest Utiles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#liste-des-tests">Liste des Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#test-specifique">Test Spécifique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#coverage-avec-details">Coverage avec Détails</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#coverage-pour-un-fichier">Coverage pour Un Fichier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#stop-au-premier-echec">Stop au Premier Échec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#mode-verbeux">Mode Verbeux</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#bonnes-pratiques">Bonnes Pratiques</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#structure-des-tests">Structure des Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#nommage">Nommage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#assertions-claires">Assertions Claires</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#progression-historique">Progression Historique</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#fichiers-ajoutes-2025-10-25">Fichiers Ajoutés (2025-10-25)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="conformite.html">Conformité Académique</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="conformite.html#gestion-de-projet">Gestion de Projet</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#structure-coherente">Structure Cohérente</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#environnement-python">Environnement Python</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#git-et-github">Git et GitHub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#documentation">Documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#streamlit">Streamlit</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="conformite.html#programmation">Programmation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#programmation-orientee-objet">Programmation Orientée Objet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#type-hinting">Type Hinting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#respect-pep8">Respect PEP8</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#gestion-des-exceptions">Gestion des Exceptions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#logging">Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#securite">Sécurité</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="conformite.html#tests-et-qualite">Tests et Qualité</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#tests-unitaires">Tests Unitaires</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#coverage">Coverage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#metriques-par-module">Métriques par Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#commentaires">Commentaires</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#docstrings">Docstrings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#documentation-sphinx">Documentation Sphinx</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="conformite.html#ci-cd">CI/CD</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#pipeline-ci">Pipeline CI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#execution-automatique">Exécution Automatique</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#cd-preprod">CD PREPROD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#cd-production">CD PRODUCTION</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#alerting">Alerting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="conformite.html#points-bonus">Points Bonus</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#base-de-donnees">Base de Données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#runner-self-hosted">Runner Self-Hosted</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#architecture-preprod-prod">Architecture PREPROD/PROD</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="conformite.html#resume-conformite">Résumé Conformité</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Référence API</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">Référence API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#modules-disponibles">Modules Disponibles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/utils.html#utils-colors">utils.colors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/data.html#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/infrastructure.html">Modules Infrastructure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#configuration-et-logging">Configuration et Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#gestion-base-de-donnees">Gestion Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#utilitaires-exploration-donnees">Utilitaires Exploration Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#voir-also">Voir Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/index.html#organisation">Organisation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Module utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/utils.html#utils-colors">utils.colors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.colors.get_rgba"><code class="docutils literal notranslate"><span class="pre">get_rgba()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.colors.get_plotly_theme"><code class="docutils literal notranslate"><span class="pre">get_plotly_theme()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#constantes-principales">Constantes Principales</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#exemples-d-utilisation">Exemples d’Utilisation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/utils.html#utils-chart-theme">utils.chart_theme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.chart_theme.apply_chart_theme"><code class="docutils literal notranslate"><span class="pre">apply_chart_theme()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.chart_theme.get_bar_color"><code class="docutils literal notranslate"><span class="pre">get_bar_color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.chart_theme.get_line_colors"><code class="docutils literal notranslate"><span class="pre">get_line_colors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.chart_theme.get_scatter_color"><code class="docutils literal notranslate"><span class="pre">get_scatter_color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.chart_theme.get_reference_line_color"><code class="docutils literal notranslate"><span class="pre">get_reference_line_color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.chart_theme.apply_subplot_theme"><code class="docutils literal notranslate"><span class="pre">apply_subplot_theme()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#fonctions-principales">Fonctions Principales</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#id1">Exemples d’Utilisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils.html#theme-applique-automatiquement">Thème Appliqué Automatiquement</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/visualization.html">Module visualization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#metriques-analysees">Métriques Analysées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#insights-cles">Insights Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#visualisations-generees">Visualisations Générées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#exemple-d-utilisation">Exemple d’Utilisation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id1">Métriques Analysées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id2">Insights Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id3">Visualisations Générées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id4">Exemple d’Utilisation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id5">Métriques Analysées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id6">Insights Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id7">Visualisations Générées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id8">Exemple d’Utilisation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id9">Métriques Analysées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id10">Insights Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id11">Visualisations Générées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id12">Exemple d’Utilisation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.setup_s3_connection"><code class="docutils literal notranslate"><span class="pre">setup_s3_connection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.get_ratings_data"><code class="docutils literal notranslate"><span class="pre">get_ratings_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.process_data"><code class="docutils literal notranslate"><span class="pre">process_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.create_plots_streamlit"><code class="docutils literal notranslate"><span class="pre">create_plots_streamlit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.create_plots_matplotlib"><code class="docutils literal notranslate"><span class="pre">create_plots_matplotlib()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.print_stats"><code class="docutils literal notranslate"><span class="pre">print_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.print_interpretation"><code class="docutils literal notranslate"><span class="pre">print_interpretation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.render_analysis"><code class="docutils literal notranslate"><span class="pre">render_analysis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-custom-charts">visualization.custom_charts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.custom_charts.create_correlation_heatmap"><code class="docutils literal notranslate"><span class="pre">create_correlation_heatmap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.custom_charts.create_distribution_plot"><code class="docutils literal notranslate"><span class="pre">create_distribution_plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.custom_charts.create_time_series_plot"><code class="docutils literal notranslate"><span class="pre">create_time_series_plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.custom_charts.create_custom_scatter_plot"><code class="docutils literal notranslate"><span class="pre">create_custom_scatter_plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-plotly-config">visualization.plotly_config</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.plotly_config.apply_theme"><code class="docutils literal notranslate"><span class="pre">apply_theme()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/data.html">Module data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/data.html#data-cached-loaders">data.cached_loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#mangetamain_analytics.data.cached_loaders.get_recipes_clean"><code class="docutils literal notranslate"><span class="pre">get_recipes_clean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#mangetamain_analytics.data.cached_loaders.get_ratings_longterm"><code class="docutils literal notranslate"><span class="pre">get_ratings_longterm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#fonctions-principales">Fonctions Principales</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#schema-des-donnees">Schéma des Données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#options-avancees">Options Avancées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#mecanisme-de-cache">Mécanisme de Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#exemples-d-utilisation">Exemples d’Utilisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#performance">Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#optimisation-memoire">Optimisation Mémoire</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/data.html#source-des-donnees">Source des Données</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/infrastructure.html">Modules Infrastructure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/infrastructure.html#configuration-et-logging">Configuration et Logging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/infrastructure.html#utils-logger">utils_logger</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#classe-loggerconfig">Classe LoggerConfig</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/infrastructure.html#gestion-base-de-donnees">Gestion Base de Données</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/infrastructure.html#models-database">models_database</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#classe-databasemanager">Classe DatabaseManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#classe-querytemplates">Classe QueryTemplates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/infrastructure.html#utilitaires-exploration-donnees">Utilitaires Exploration Données</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/infrastructure.html#eda-data-utils">00_eda/_data_utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/infrastructure.html#tests-infrastructure">Tests Infrastructure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/infrastructure.html#test">50_test</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/infrastructure.html#voir-also">Voir Also</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Mangetamain Analytics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Guide Démarrage Rapide</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/quickstart.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="guide-demarrage-rapide">
+<h1>Guide Démarrage Rapide<a class="headerlink" href="#guide-demarrage-rapide" title="Lien vers cette rubrique"></a></h1>
+<p>Guide d’installation et commandes essentielles pour démarrer en 2 minutes.</p>
+<p><strong>Guide complet</strong> : <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a> | <strong>FAQ</strong> : <a class="reference internal" href="faq.html"><span class="doc">FAQ - Questions Fréquentes</span></a> | <strong>Glossaire</strong> : <a class="reference internal" href="glossaire.html"><span class="doc">Glossaire</span></a></p>
+<section id="installation-en-2-minutes">
+<h2>Installation en 2 Minutes<a class="headerlink" href="#installation-en-2-minutes" title="Lien vers cette rubrique"></a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Cloner et installer</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/julienlafrance/backtothefuturekitchen.git<span class="w"> </span>~/mangetamain
+<span class="nb">cd</span><span class="w"> </span>~/mangetamain/10_preprod
+uv<span class="w"> </span>sync
+
+<span class="c1"># Lancer l&#39;application</span>
+uv<span class="w"> </span>run<span class="w"> </span>streamlit<span class="w"> </span>run<span class="w"> </span>src/mangetamain_analytics/main.py
+</pre></div>
+</div>
+<p><strong>Accès</strong> : <a class="reference external" href="http://localhost:8501">http://localhost:8501</a></p>
+</section>
+<section id="commandes-essentielles">
+<h2>Commandes Essentielles<a class="headerlink" href="#commandes-essentielles" title="Lien vers cette rubrique"></a></h2>
+<section id="developpement-local">
+<h3>Développement Local<a class="headerlink" href="#developpement-local" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Lancer app</span>
+uv<span class="w"> </span>run<span class="w"> </span>streamlit<span class="w"> </span>run<span class="w"> </span>src/mangetamain_analytics/main.py
+
+<span class="c1"># Installer nouvelle dépendance</span>
+uv<span class="w"> </span>add<span class="w"> </span>nom-package
+
+<span class="c1"># Tests</span>
+uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/unit/<span class="w"> </span>-v<span class="w"> </span>--cov<span class="o">=</span>src
+
+<span class="c1"># Vérifier PEP8</span>
+uv<span class="w"> </span>run<span class="w"> </span>flake8<span class="w"> </span>src/<span class="w"> </span>tests/
+
+<span class="c1"># Formater code</span>
+uv<span class="w"> </span>run<span class="w"> </span>black<span class="w"> </span>src/<span class="w"> </span>tests/
+</pre></div>
+</div>
+</section>
+<section id="docker">
+<h3>Docker<a class="headerlink" href="#docker" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Démarrer PREPROD</span>
+<span class="nb">cd</span><span class="w"> </span>~/mangetamain/30_docker
+docker-compose<span class="w"> </span>up<span class="w"> </span>-d
+
+<span class="c1"># Voir logs</span>
+docker-compose<span class="w"> </span>logs<span class="w"> </span>-f
+
+<span class="c1"># Redémarrer</span>
+docker-compose<span class="w"> </span>restart
+
+<span class="c1"># Arrêter</span>
+docker-compose<span class="w"> </span>down
+</pre></div>
+</div>
+</section>
+<section id="git-et-deploiement">
+<h3>Git et Déploiement<a class="headerlink" href="#git-et-deploiement" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Commit et push (déclenche CI/CD)</span>
+git<span class="w"> </span>add<span class="w"> </span>.
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Ma modification&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main
+
+<span class="c1"># Voir statut CI</span>
+gh<span class="w"> </span>run<span class="w"> </span>list<span class="w"> </span>--limit<span class="w"> </span><span class="m">5</span>
+gh<span class="w"> </span>run<span class="w"> </span>watch
+</pre></div>
+</div>
+</section>
+<section id="tests">
+<h3>Tests<a class="headerlink" href="#tests" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tests unitaires avec coverage</span>
+uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/unit/<span class="w"> </span>-v<span class="w"> </span>--cov<span class="o">=</span>src<span class="w"> </span>--cov-report<span class="o">=</span>html
+
+<span class="c1"># Test spécifique</span>
+uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/unit/test_colors.py<span class="w"> </span>-v
+
+<span class="c1"># Tests infrastructure</span>
+<span class="nb">cd</span><span class="w"> </span>~/mangetamain/50_test
+pytest<span class="w"> </span>-v
+</pre></div>
+</div>
+</section>
+</section>
+<section id="cheat-sheet">
+<h2>Cheat Sheet<a class="headerlink" href="#cheat-sheet" title="Lien vers cette rubrique"></a></h2>
+<section id="structure-projet">
+<h3>Structure Projet<a class="headerlink" href="#structure-projet" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>~/mangetamain/
+├── 00_eda/          # Notebooks exploration
+├── 10_preprod/      # Code source PREPROD
+│   ├── src/         # Code application
+│   ├── tests/       # Tests unitaires
+│   └── pyproject    # Configuration uv
+├── 20_prod/         # Artefact PRODUCTION
+├── 30_docker/       # Docker Compose
+├── 50_test/         # Tests infrastructure
+├── 90_doc/          # Documentation Sphinx
+└── 96_keys/         # Credentials S3 (gitignore)
+</pre></div>
+</div>
+</section>
+<section id="imports-courants">
+<h3>Imports Courants<a class="headerlink" href="#imports-courants" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Données</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">data.cached_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_recipes_clean</span><span class="p">,</span> <span class="n">get_ratings_longterm</span>
+
+<span class="c1"># Graphiques</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">chart_theme</span><span class="p">,</span> <span class="n">colors</span>
+
+<span class="c1"># Streamlit</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">streamlit</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+
+<span class="c1"># Data science</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+</pre></div>
+</div>
+</section>
+<section id="creer-un-graphique">
+<h3>Créer un Graphique<a class="headerlink" href="#creer-un-graphique" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">chart_theme</span><span class="p">,</span> <span class="n">colors</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
+
+<span class="c1"># Créer figure</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span><span class="n">go</span><span class="o">.</span><span class="n">Bar</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span>
+    <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">],</span>
+    <span class="n">marker_color</span><span class="o">=</span><span class="n">colors</span><span class="o">.</span><span class="n">ORANGE_PRIMARY</span>
+<span class="p">))</span>
+
+<span class="c1"># Appliquer thème</span>
+<span class="n">chart_theme</span><span class="o">.</span><span class="n">apply_chart_theme</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Mon Graphique&quot;</span><span class="p">)</span>
+
+<span class="c1"># Afficher</span>
+<span class="n">st</span><span class="o">.</span><span class="n">plotly_chart</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">use_container_width</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="charger-donnees">
+<h3>Charger Données<a class="headerlink" href="#charger-donnees" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">data.cached_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_recipes_clean</span><span class="p">,</span> <span class="n">get_ratings_longterm</span>
+
+<span class="c1"># Charger recettes (178K recettes)</span>
+<span class="n">recipes</span> <span class="o">=</span> <span class="n">get_recipes_clean</span><span class="p">()</span>
+
+<span class="c1"># Charger ratings (1.1M+ ratings)</span>
+<span class="n">ratings</span> <span class="o">=</span> <span class="n">get_ratings_longterm</span><span class="p">()</span>
+
+<span class="c1"># Avec options</span>
+<span class="n">ratings</span><span class="p">,</span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">get_ratings_longterm</span><span class="p">(</span>
+    <span class="n">min_interactions</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">return_metadata</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="filtrer-avec-polars">
+<h3>Filtrer avec Polars<a class="headerlink" href="#filtrer-avec-polars" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="c1"># Filtrer par année</span>
+<span class="n">recipes_2018</span> <span class="o">=</span> <span class="n">recipes</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2018</span><span class="p">)</span>
+
+<span class="c1"># Recettes rapides</span>
+<span class="n">quick</span> <span class="o">=</span> <span class="n">recipes</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;minutes&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">)</span>
+
+<span class="c1"># Recettes hiver</span>
+<span class="n">winter</span> <span class="o">=</span> <span class="n">recipes</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;season&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Hiver&#39;</span><span class="p">)</span>
+
+<span class="c1"># Multiples conditions</span>
+<span class="n">filtered</span> <span class="o">=</span> <span class="n">recipes</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2010</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;minutes&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">)</span> <span class="o">&amp;</span>
+    <span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;calories&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="couleurs-charte">
+<h3>Couleurs Charte<a class="headerlink" href="#couleurs-charte" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">colors</span>
+
+<span class="c1"># Couleurs principales</span>
+<span class="n">ORANGE_PRIMARY</span> <span class="o">=</span> <span class="s2">&quot;#FF8C00&quot;</span>      <span class="c1"># Orange vif</span>
+<span class="n">ORANGE_SECONDARY</span> <span class="o">=</span> <span class="s2">&quot;#E24E1B&quot;</span>    <span class="c1"># Rouge/Orange</span>
+<span class="n">BACKGROUND_MAIN</span> <span class="o">=</span> <span class="s2">&quot;#1E1E1E&quot;</span>     <span class="c1"># Gris foncé</span>
+<span class="n">TEXT_PRIMARY</span> <span class="o">=</span> <span class="s2">&quot;#F0F0F0&quot;</span>        <span class="c1"># Gris clair</span>
+
+<span class="c1"># Palettes</span>
+<span class="n">colors</span><span class="o">.</span><span class="n">CHART_COLORS</span>             <span class="c1"># 8 couleurs graphiques</span>
+<span class="n">colors</span><span class="o">.</span><span class="n">SEASONAL_COLORS</span>          <span class="c1"># Dict saison → couleur</span>
+</pre></div>
+</div>
+</section>
+<section id="urls-et-ports">
+<h3>URLs et Ports<a class="headerlink" href="#urls-et-ports" title="Lien vers cette rubrique"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Environnement</p></th>
+<th class="head"><p>Port</p></th>
+<th class="head"><p>URL</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Local PREPROD</p></td>
+<td><p>8500</p></td>
+<td><p>localhost:8500</p></td>
+</tr>
+<tr class="row-odd"><td><p>Local PRODUCTION</p></td>
+<td><p>8501</p></td>
+<td><p>localhost:8501</p></td>
+</tr>
+<tr class="row-even"><td><p>Public PREPROD</p></td>
+<td><p>443</p></td>
+<td><p>mangetamain.lafrance.io</p></td>
+</tr>
+<tr class="row-odd"><td><p>Public PRODUCTION</p></td>
+<td><p>443</p></td>
+<td><p>backtothefuturekitchen.lafrance.io</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="troubleshooting-rapide">
+<h2>Troubleshooting Rapide<a class="headerlink" href="#troubleshooting-rapide" title="Lien vers cette rubrique"></a></h2>
+<section id="uv-command-not-found">
+<h3>« uv: command not found »<a class="headerlink" href="#uv-command-not-found" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-LsSf<span class="w"> </span>https://astral.sh/uv/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh
+<span class="nb">source</span><span class="w"> </span><span class="nv">$HOME</span>/.cargo/env
+</pre></div>
+</div>
+</section>
+<section id="no-s3-credentials">
+<h3>« No S3 credentials »<a class="headerlink" href="#no-s3-credentials" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>96_keys
+<span class="c1"># Ajouter credentials dans 96_keys/credentials</span>
+chmod<span class="w"> </span><span class="m">600</span><span class="w"> </span>96_keys/credentials
+</pre></div>
+</div>
+</section>
+<section id="coverage-below-90">
+<h3>« Coverage below 90% »<a class="headerlink" href="#coverage-below-90" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Identifier lignes manquantes</span>
+uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>--cov<span class="o">=</span>src<span class="w"> </span>--cov-report<span class="o">=</span>term-missing
+
+<span class="c1"># Ajouter tests ou marquer non testable</span>
+def<span class="w"> </span>ui_function<span class="o">()</span>:<span class="w">  </span><span class="c1"># pragma: no cover</span>
+<span class="w">    </span>st.plotly_chart<span class="o">(</span>fig<span class="o">)</span>
+</pre></div>
+</div>
+</section>
+<section id="port-already-in-use">
+<h3>« Port already in use »<a class="headerlink" href="#port-already-in-use" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linux/macOS</span>
+lsof<span class="w"> </span>-i<span class="w"> </span>:8501
+<span class="nb">kill</span><span class="w"> </span>&lt;PID&gt;
+
+<span class="c1"># Ou utiliser autre port</span>
+uv<span class="w"> </span>run<span class="w"> </span>streamlit<span class="w"> </span>run<span class="w"> </span>src/main.py<span class="w"> </span>--server.port<span class="w"> </span><span class="m">8502</span>
+</pre></div>
+</div>
+</section>
+<section id="docker-container-unhealthy">
+<h3>« Docker container unhealthy »<a class="headerlink" href="#docker-container-unhealthy" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Voir logs</span>
+docker-compose<span class="w"> </span>logs<span class="w"> </span>-f
+
+<span class="c1"># Redémarrer</span>
+docker-compose<span class="w"> </span>down
+docker-compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>--build
+</pre></div>
+</div>
+</section>
+</section>
+<section id="flux-de-travail-typique">
+<h2>Flux de Travail Typique<a class="headerlink" href="#flux-de-travail-typique" title="Lien vers cette rubrique"></a></h2>
+<section id="id1">
+<h3>Développement Local<a class="headerlink" href="#id1" title="Lien vers cette rubrique"></a></h3>
+<ol class="arabic simple">
+<li><p><strong>Créer branche</strong> :</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>feature/ma-fonctionnalite
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p><strong>Développer</strong> : Modifier code dans <code class="docutils literal notranslate"><span class="pre">10_preprod/src/</span></code></p></li>
+<li><p><strong>Tester</strong> :</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/unit/<span class="w"> </span>-v<span class="w"> </span>--cov<span class="o">=</span>src
+uv<span class="w"> </span>run<span class="w"> </span>flake8<span class="w"> </span>src/
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p><strong>Commit</strong> :</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>.
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Ajouter ma fonctionnalité&quot;</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p><strong>Push et PR</strong> :</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>feature/ma-fonctionnalite
+gh<span class="w"> </span>pr<span class="w"> </span>create<span class="w"> </span>--title<span class="w"> </span><span class="s2">&quot;Ma fonctionnalité&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="deploiement">
+<h3>Déploiement<a class="headerlink" href="#deploiement" title="Lien vers cette rubrique"></a></h3>
+<p><strong>PREPROD</strong> (automatique) :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main
+<span class="c1"># CI/CD s&#39;occupe du reste</span>
+</pre></div>
+</div>
+<p><strong>PRODUCTION</strong> (manuel) :</p>
+<ol class="arabic simple">
+<li><p>GitHub Actions → CD Production</p></li>
+<li><p>« Run workflow »</p></li>
+<li><p>Taper « DEPLOY »</p></li>
+<li><p>Confirmer</p></li>
+</ol>
+</section>
+</section>
+<section id="metriques-cles">
+<h2>Métriques Clés<a class="headerlink" href="#metriques-cles" title="Lien vers cette rubrique"></a></h2>
+<section id="projet">
+<h3>Projet<a class="headerlink" href="#projet" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>Code source</strong> : ~15,000 lignes Python</p></li>
+<li><p><strong>Tests</strong> : 118 tests, 93% coverage</p></li>
+<li><p><strong>Documentation</strong> : 4200+ lignes RST</p></li>
+<li><p><strong>Données</strong> : 178K recettes, 1.1M ratings</p></li>
+</ul>
+</section>
+<section id="performance">
+<h3>Performance<a class="headerlink" href="#performance" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>Premier chargement</strong> : 5-10 secondes</p></li>
+<li><p><strong>Chargements suivants</strong> : &lt;0.1 seconde (cache)</p></li>
+<li><p><strong>S3 sans DNAT</strong> : 50-100 MB/s</p></li>
+<li><p><strong>S3 avec DNAT</strong> : 500-917 MB/s (10x gain)</p></li>
+</ul>
+</section>
+<section id="ci-cd">
+<h3>CI/CD<a class="headerlink" href="#ci-cd" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>CI build</strong> : ~2-3 minutes</p></li>
+<li><p><strong>CD PREPROD</strong> : ~30 secondes</p></li>
+<li><p><strong>CD PROD</strong> : ~45 secondes (backup inclus)</p></li>
+<li><p><strong>Health checks</strong> : 3 tentatives, 10s timeout</p></li>
+</ul>
+</section>
+</section>
+<section id="ressources">
+<h2>Ressources<a class="headerlink" href="#ressources" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p><strong>Documentation complète</strong> : <a class="reference internal" href="index.html"><span class="doc">Documentation Mangetamain Analytics</span></a></p></li>
+<li><p><strong>Installation</strong> : <a class="reference internal" href="installation.html"><span class="doc">Installation</span></a></p></li>
+<li><p><strong>FAQ</strong> : <a class="reference internal" href="faq.html"><span class="doc">FAQ - Questions Fréquentes</span></a></p></li>
+<li><p><strong>API</strong> : <a class="reference internal" href="api/index.html"><span class="doc">Référence API</span></a></p></li>
+<li><p><strong>GitHub</strong> : <a class="reference external" href="https://github.com/julienlafrance/backtothefuturekitchen">https://github.com/julienlafrance/backtothefuturekitchen</a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="index.html" class="btn btn-neutral float-left" title="Documentation Mangetamain Analytics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, Mangetamain Team.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

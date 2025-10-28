@@ -155,10 +155,12 @@ jobs:
 
           chmod +x /tmp/watch-ci-${{ github.sha }}.sh
 
-          # Lancer en background (le script écrit directement dans son log)
-          nohup /tmp/watch-ci-${{ github.sha }}.sh > /dev/null 2>&1 &
+          # Lancer en background DETACHE (setsid crée nouvelle session indépendante)
+          # Cela empêche GitHub Actions de tuer le processus à la fin du job
+          setsid bash /tmp/watch-ci-${{ github.sha }}.sh > /dev/null 2>&1 < /dev/null &
+          disown
 
-          echo "✅ CI watcher launched in background"
+          echo "✅ CI watcher launched in background (detached session)"
 
       - name: ✅ Notify deployment complete
         if: success()
