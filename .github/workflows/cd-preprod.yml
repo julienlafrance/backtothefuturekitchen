@@ -38,7 +38,7 @@ jobs:
         run: |
           COMMIT_MSG=$(git log -1 --pretty=%B ${{ github.sha }} | head -1)
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"🚀 **Déploiement Preprod démarré**\\n📦 Commit: \\\`${{ github.sha }}\\\`\\n💬 ${COMMIT_MSG}\\n👤 Par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"🚀 **Déploiement Preprod démarré**\n📦 Commit: \`${{ github.sha }}\`\n💬 ${COMMIT_MSG}\n👤 Par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: 🚀 Deploy IMMEDIATELY
@@ -111,7 +111,7 @@ jobs:
 
               # Notification Discord
               curl -H "Content-Type: application/json" \
-                -d "{\"content\":\"✅ **CI Pipeline réussi pour Preprod**\\n📦 Commit: \\\`$COMMIT_SHA\\\`\\n🌐 https://mangetamain.lafrance.io/\\n✨ Déploiement validé et persisté!\"}" \
+                -d "{\"content\":\"✅ **CI Pipeline réussi pour Preprod**\n📦 Commit: \`$COMMIT_SHA\`\n🌐 https://mangetamain.lafrance.io/\n✨ Déploiement validé et persisté!\"}" \
                 "$DISCORD_WEBHOOK"
 
               exit 0
@@ -140,7 +140,7 @@ jobs:
 
               # Notification Discord
               curl -H "Content-Type: application/json" \
-                -d "{\"content\":\"🔄 **ROLLBACK Preprod effectué**\\n❌ Raison: CI a échoué\\n📦 Commit annulé: \\\`$COMMIT_SHA\\\`\\n↩️  Restauré vers: \\\`$ROLLBACK_SHA\\\`\\n🌐 https://mangetamain.lafrance.io/\"}" \
+                -d "{\"content\":\"🔄 **ROLLBACK Preprod effectué**\n❌ Raison: CI a échoué\n📦 Commit annulé: \`$COMMIT_SHA\`\n↩️  Restauré vers: \`$ROLLBACK_SHA\`\n🌐 https://mangetamain.lafrance.io/\"}" \
                 "$DISCORD_WEBHOOK"
 
               exit 1
@@ -164,14 +164,14 @@ jobs:
         if: success()
         run: |
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"✅ **Déploiement Preprod terminé!**\\n🌐 URL: https://mangetamain.lafrance.io/\\n📦 Commit: \\\`${{ github.sha }}\\\`\\n⏳ CI en cours, rollback auto si échec\\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
+            -d "{\"content\":\"✅ **Déploiement Preprod terminé!**\n🌐 URL: https://mangetamain.lafrance.io/\n📦 Commit: \`${{ github.sha }}\`\n⏳ CI en cours, rollback auto si échec\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
       - name: ❌ Notify deployment failure
         if: failure()
         run: |
           curl -H "Content-Type: application/json" \
-            -d "{\"content\":\"❌ **ÉCHEC Déploiement Preprod**\\n📦 Commit: \\\`${{ github.sha }}\\\`\\n⚠️  **Deploy échoué - intervention requise**\\n👤 Commit par: ${{ github.actor }}\"}" \
+            -d "{\"content\":\"❌ **ÉCHEC Déploiement Preprod**\n📦 Commit: \`${{ github.sha }}\`\n⚠️  **Deploy échoué - intervention requise**\n👤 Commit par: ${{ github.actor }}\"}" \
             "${{ secrets.DISCORD_WEBHOOK_URL }}"
 
 # ═══════════════════════════════════════════════════════
