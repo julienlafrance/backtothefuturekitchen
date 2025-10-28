@@ -363,5 +363,5 @@ Ressources
 * **Documentation complète** : :doc:`index`
 * **Installation** : :doc:`installation`
 * **FAQ** : :doc:`faq`
-* **API** : :doc:`api/index`
+* **Documentation code** : :doc:`modules/index`
 * **GitHub** : https://github.com/julienlafrance/backtothefuturekitchen

@@ -1,7 +1,7 @@
-Conformité Académique
-=====================
+Standards Qualité
+=================
 
-Ce projet répond aux exigences du cours de développement Python.
+Ce projet respecte les standards de qualité pour un projet Python moderne.
 
 **Voir aussi** : :doc:`tests` (coverage 93%), :doc:`cicd` (pipeline automatisé), :doc:`architecture` (stack technique)
 
@@ -55,9 +55,53 @@ Programmation Orientée Objet
 
 Classes implémentées dans le projet :
 
-* Configuration et gestion de l'environnement
-* Loaders de données avec cache
-* Utilitaires graphiques (thème, couleurs)
+**Classe DataLoader** (``data.loaders``)
+
+Gestion du chargement de données avec exceptions :
+
+.. code-block:: python
+
+   class DataLoader:
+       def load_recipes(self) -> pl.DataFrame:
+           """Charge recettes depuis S3 avec gestion erreurs."""
+
+       def load_ratings(
+           self,
+           min_interactions: int = 100,
+           return_metadata: bool = False,
+           verbose: bool = False
+       ) -> pl.DataFrame | tuple:
+           """Charge ratings avec options configurables."""
+
+**Hiérarchie Exceptions** (``exceptions.py``)
+
+6 classes d'exceptions personnalisées :
+
+.. code-block:: python
+
+   class MangetamainError(Exception):
+       """Exception de base."""
+
+   class DataLoadError(MangetamainError):
+       """Erreur chargement S3/DuckDB."""
+       def __init__(self, source: str, detail: str): ...
+
+   class AnalysisError(MangetamainError):
+       """Erreur analyse statistique."""
+
+   class ConfigurationError(MangetamainError):
+       """Erreur configuration."""
+
+   class DatabaseError(MangetamainError):
+       """Erreur opérations DuckDB."""
+
+   class ValidationError(MangetamainError):
+       """Erreur validation données."""
+
+**Autres Classes**
+
+* Configuration environnement (logging, détection preprod/prod)
+* Utilitaires graphiques (application thème, gestion couleurs)
 
 Type Hinting
 ^^^^^^^^^^^^
@@ -293,21 +337,21 @@ Isolation complète :
 * Variables d'environnement différenciées
 * Ports distincts (8500 vs 8501)
 
-Résumé Conformité
------------------
+Résumé Standards
+----------------
 
 ============================== ========= ===================
-Exigence                       Statut    Détails
+Standard                       Statut    Détails
 ============================== ========= ===================
 Structure projet               ✅        Packages, modules
 Environnement Python           ✅        uv + pyproject.toml
 Git + GitHub                   ✅        Commits réguliers
 README.md                      ✅        Complet
 Streamlit                      ✅        UX interactive
-POO                            ✅        Classes utilitaires
+POO                            ✅        DataLoader + hiérarchie exceptions
 Type Hinting                   ✅        Complet
 PEP8                           ✅        100% compliance
-Exceptions                     ✅        Try/except partout
+Exceptions personnalisées      ✅        Hiérarchie 6 classes
 Logger                         ✅        Loguru complet
 Sécurité                       ✅        Secrets protégés
 Tests unitaires                ✅        118 tests

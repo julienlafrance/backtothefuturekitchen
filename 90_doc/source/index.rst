@@ -1,95 +1,84 @@
 Documentation Mangetamain Analytics
 ====================================
 
-**Mangetamain Analytics** est une application web interactive d'analyse de données culinaires Food.com développée dans le cadre d'un projet académique.
+Application web d'analyse de données culinaires basée sur le dataset Food.com (2.3M interactions, 1999-2018).
 
-Architecture : Python 3.13.3 + Streamlit + DuckDB + S3 Storage.
+Environnements Déployés
+-----------------------
 
-Liens
------
+* PREPROD : https://mangetamain.lafrance.io/
+* PRODUCTION : https://backtothefuturekitchen.lafrance.io/
 
-* Application PREPROD: https://mangetamain.lafrance.io/
-* Application PRODUCTION: https://backtothefuturekitchen.lafrance.io/
-* Repository GitHub: https://github.com/julienlafrance/backtothefuturekitchen
+Dataset
+-------
 
-Fonctionnalités Principales
-----------------------------
-
-* **Analyse des tendances** : Évolution des recettes 1999-2018
-* **Analyse saisonnière** : Patterns saisonniers des recettes
-* **Analyse weekend** : Impact du rythme hebdomadaire
-* **Analyse des ratings** : Distribution des notes utilisateurs
-* **Visualisations interactives** : Graphiques Plotly dynamiques
-
-Dataset Food.com
------------------
-
-* 2.3M+ interactions (1999-2018)
-* 25K+ utilisateurs contributeurs
-* 230K+ recettes avec tags, nutrition, ingrédients
+* 178,265 recettes
 * 1.1M+ ratings utilisateurs
+* 25,076 contributeurs
+* Période 1999-2018
 
-Démarrage Rapide
+Métriques Projet
 ----------------
 
-**Installation locale**:
+* Tests : 118 tests, 93% coverage
+* Documentation : Sphinx auto-générée, docstrings Google style
+* CI/CD : Pipeline automatisé GitHub Actions
+* Type hinting : Complet sur toutes fonctions
 
-.. code-block:: bash
-
-   git clone https://github.com/julienlafrance/backtothefuturekitchen.git ~/mangetamain
-   cd ~/mangetamain/10_preprod
-   uv sync
-   uv run streamlit run src/mangetamain_analytics/main.py
-
-**Voir**: :doc:`installation` pour guide complet
-
-**Documentation S3**: :doc:`s3` pour configuration stockage
-
-**Tests**: 93% coverage, 118 tests → :doc:`tests`
-
-**CI/CD**: Pipeline automatisé → :doc:`cicd`
-
-Navigation Documentation
-------------------------
-
-**Premiers pas** : :doc:`quickstart` → :doc:`installation` → :doc:`usage`
-
-**Référence** : :doc:`faq` | :doc:`glossaire` | :doc:`api/index`
-
-**Infrastructure** : :doc:`s3` | :doc:`architecture` | :doc:`cicd` | :doc:`tests`
-
-Sommaire
---------
+Navigation
+----------
 
 .. toctree::
    :maxdepth: 2
-   :caption: Guide Utilisateur
+   :caption: Le Projet
 
+   projet
    quickstart
    installation
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Application Streamlit
+
+   application
    usage
-   faq
-   glossaire
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Documentation Code
+
+   modules/index
+   modules/utils
+   modules/visualization
+   modules/data
+   modules/exceptions
+   modules/infrastructure
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Infrastructure
+
    s3
    architecture
    cicd
    tests
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Standards Qualité
+
    conformite
 
 .. toctree::
-   :maxdepth: 3
-   :caption: Référence API
+   :maxdepth: 2
+   :caption: Référence
 
-   api/index
-   api/utils
-   api/visualization
-   api/data
-   api/infrastructure
+   faq
+   glossaire
 
-Indices et Tables
-=================
+Indices
+=======
 
-* :ref:`genindex` - Index général
-* :ref:`modindex` - Index modules Python
-* :ref:`search` - Recherche documentation
-* :doc:`glossaire` - Définitions et acronymes
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

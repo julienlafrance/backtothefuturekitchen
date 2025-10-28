@@ -3,9 +3,9 @@ Utilisation
 
 Guide d'utilisation de l'application Mangetamain Analytics.
 
-**API complète** : voir :doc:`api/index` pour référence détaillée.
+**Documentation code** : voir :doc:`modules/index` pour référence détaillée.
 
-**Exemples code** : voir :doc:`api/utils` (couleurs, thème) et :doc:`api/data` (chargement données).
+**Exemples code** : voir :doc:`modules/utils` (couleurs, thème) et :doc:`modules/data` (chargement données).
 
 Architecture de l'Application
 ------------------------------
@@ -149,8 +149,8 @@ Chaque analyse propose des widgets :
 Personnalisation et API
 -----------------------
 
-**Charte graphique et couleurs** : voir :doc:`api/utils` pour exemples complets (``chart_theme``, ``colors``).
+**Charte graphique et couleurs** : voir :doc:`modules/utils` pour exemples complets (``chart_theme``, ``colors``).
 
-**Chargement et cache données** : voir :doc:`api/data` pour détails cache Streamlit (TTL 3600s) et fonctions ``get_recipes_clean()``, ``get_ratings_longterm()``.
+**Chargement et cache données** : voir :doc:`modules/data` pour détails cache Streamlit (TTL 3600s) et fonctions ``get_recipes_clean()``, ``get_ratings_longterm()``.
 
 **URLs des environnements** : voir :doc:`glossaire` pour PREPROD/PRODUCTION.

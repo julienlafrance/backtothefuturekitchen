@@ -106,6 +106,11 @@ Modules Applicatifs
 **Module data**
 
 * ``cached_loaders.py`` : Chargement des données avec cache Streamlit
+* ``loaders.py`` : Classe DataLoader pour chargement données avec gestion d'erreurs
+
+**Module exceptions**
+
+* ``exceptions.py`` : Hiérarchie d'exceptions personnalisées (5 classes)
 
 CI/CD Pipeline
 --------------

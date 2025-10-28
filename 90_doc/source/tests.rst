@@ -14,9 +14,9 @@ Résumé Exécutif
 ^^^^^^^^^^^^^^^
 
 * **Coverage code source**: 93% (objectif 90% dépassé)
-* **Tests unitaires**: 83 tests (10_preprod/tests/unit/)
+* **Tests unitaires**: 118 tests (10_preprod/tests/unit/)
 * **Tests infrastructure**: 35 tests (50_test/)
-* **Total**: 118 tests
+* **Total**: 153 tests
 * **Temps exécution**: ~6 secondes
 * **CI/CD**: Seuil 90% obligatoire
 

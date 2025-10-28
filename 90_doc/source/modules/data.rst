@@ -5,6 +5,55 @@ Chargement et cache des données depuis S3 Parquet avec Streamlit @st.cache_data
 
 **Données** : 178K recettes + 1.1M ratings (~450 MB Parquet) → voir :doc:`../glossaire` pour détails.
 
+data.loaders
+------------
+
+Classe DataLoader pour chargement de données avec gestion d'erreurs robuste.
+
+.. automodule:: mangetamain_analytics.data.loaders
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Classe DataLoader
+^^^^^^^^^^^^^^^^^
+
+Encapsule la logique de chargement depuis mangetamain_data_utils avec exceptions personnalisées.
+
+**Méthodes** :
+
+* ``load_recipes()`` : Charge recettes depuis S3 Parquet
+* ``load_ratings(min_interactions, return_metadata, verbose)`` : Charge ratings pour analyse long-terme
+
+**Exceptions levées** :
+
+* ``DataLoadError`` : Si module introuvable ou chargement S3 échoue
+
+**Exemple** :
+
+.. code-block:: python
+
+   from mangetamain_analytics.data.loaders import DataLoader
+   from mangetamain_analytics.exceptions import DataLoadError
+
+   loader = DataLoader()
+
+   try:
+       recipes = loader.load_recipes()
+       print(f"Chargé {len(recipes)} recettes")
+   except DataLoadError as e:
+       print(f"Erreur: {e.source} - {e.detail}")
+
+Relation avec cached_loaders
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``cached_loaders`` utilise DataLoader en interne :
+
+1. ``DataLoader`` : Logique métier + gestion erreurs (testable)
+2. ``cached_loaders`` : Wrapping avec ``@st.cache_data`` (cache Streamlit)
+
+Cette séparation permet de tester DataLoader sans mocker Streamlit.
+
 data.cached_loaders
 -------------------
 

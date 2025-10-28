@@ -427,4 +427,4 @@ Ressources Supplémentaires
 * **Tests** : :doc:`tests` - Guide complet tests et coverage
 * **CI/CD** : :doc:`cicd` - Pipeline automatisé
 * **Architecture** : :doc:`architecture` - Stack technique détaillée
-* **API** : :doc:`api/index` - Référence complète des modules
+* **Documentation code** : :doc:`modules/index` - Référence complète des modules
