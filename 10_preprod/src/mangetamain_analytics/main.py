@@ -9,7 +9,6 @@ import pandas as pd
 from pathlib import Path
 from loguru import logger
 import sys
-import os
 import plotly.express as px
 from utils.environment import EnvironmentDetector
 from visualization.custom_charts import (
@@ -651,7 +650,7 @@ def main():
         )
 
         # BADGE ENVIRONNEMENT - Style pill avec classe CSS
-        env = detect_environment()
+        env = EnvironmentDetector.get_name()
         if "PREPROD" in env:
             badge_class = "env-badge preprod-badge"
             label = "PREPROD"

@@ -1,6 +1,5 @@
 """Tests pour le module utils_logger."""
 
-import pytest
 from pathlib import Path
 from loguru import logger
 import sys
@@ -26,7 +25,7 @@ class TestLoggerConfig:
     def test_init_creates_log_dir(self, tmp_path):
         """Vérifie que __init__ crée le répertoire de logs."""
         log_dir = tmp_path / "test_logs"
-        config = LoggerConfig(log_dir=str(log_dir))
+        LoggerConfig(log_dir=str(log_dir))
 
         assert log_dir.exists()
         assert log_dir.is_dir()
@@ -123,8 +122,6 @@ class TestLoggerConfig:
         interactions_log = tmp_path / "preprod_user_interactions.log"
         assert interactions_log.exists()
 
-        # Vérifier que le log contient user123 (si le buffer a flush)
-        content = interactions_log.read_text()
         # Le test passe si le fichier existe, même si le contenu n'est pas encore écrit
         # (problème de buffering de loguru dans les tests)
 

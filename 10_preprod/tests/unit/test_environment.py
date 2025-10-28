@@ -1,7 +1,5 @@
 """Tests pour le module utils.environment."""
 
-import pytest
-from pathlib import Path
 from mangetamain_analytics.utils.environment import Environment, EnvironmentDetector
 
 
