@@ -6,7 +6,7 @@ Teste le chargement de données avec gestion d'erreurs personnalisées.
 import sys
 from pathlib import Path
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import polars as pl
 
 # Ajout du chemin vers le module

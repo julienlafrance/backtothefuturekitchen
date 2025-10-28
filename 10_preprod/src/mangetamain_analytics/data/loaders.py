@@ -4,7 +4,7 @@ Ce module contient les classes pour charger les données depuis S3/DuckDB
 avec une gestion robuste des exceptions personnalisées.
 """
 
-from typing import Optional, Tuple, Any
+from typing import Any
 
 try:
     from exceptions import DataLoadError

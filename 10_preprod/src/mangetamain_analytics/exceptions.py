@@ -9,8 +9,6 @@ Conformément aux exigences académiques du projet, ces exceptions permettent
 de distinguer les différents types d'erreurs et d'améliorer le debugging.
 """
 
-from typing import Optional
-
 
 class MangetamainError(Exception):
     """
