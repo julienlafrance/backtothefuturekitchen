@@ -20,8 +20,8 @@ Installation Locale
 
 .. code-block:: bash
 
-   git clone https://github.com/julienlafrance/backtothefuturekitchen.git
-   cd backtothefuturekitchen/000_dev/10_preprod
+   git clone https://github.com/julienlafrance/backtothefuturekitchen.git ~/mangetamain
+   cd ~/mangetamain/10_preprod
 
 2. Créer l'Environnement Virtuel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -62,8 +62,8 @@ Installation avec Docker
 
 .. code-block:: bash
 
-   git clone https://github.com/julienlafrance/backtothefuturekitchen.git
-   cd backtothefuturekitchen/000_dev/30_docker
+   git clone https://github.com/julienlafrance/backtothefuturekitchen.git ~/mangetamain
+   cd ~/mangetamain/30_docker
 
 2. Lancer avec Docker Compose
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -118,11 +118,11 @@ Gestion Docker
 .. code-block:: bash
 
    # 1. Ajouter dépendance localement
-   cd 10_preprod
+   cd ~/mangetamain/10_preprod
    uv add nouvelle-dependance
 
    # 2. Redémarrer conteneur
-   cd ../30_docker
+   cd ~/mangetamain/30_docker
    docker-compose restart
 
 **Arrêter les services :**
@@ -193,7 +193,7 @@ Lancer les Tests Unitaires
 
 .. code-block:: bash
 
-   cd 10_preprod
+   cd ~/mangetamain/10_preprod
    uv run pytest tests/unit/ -v --cov=src
 
 Résultat attendu : 93% coverage (118 tests)
@@ -278,7 +278,7 @@ Tester la connexion S3 :
 
 .. code-block:: bash
 
-   cd 50_test
+   cd ~/mangetamain/50_test
    pytest test_s3_parquet_files.py -v
 
 Si le test échoue, vérifier :
@@ -358,7 +358,7 @@ Erreur : Tests pytest échouent
 
 .. code-block:: bash
 
-   cd 10_preprod
+   cd ~/mangetamain/10_preprod
    uv sync
    uv run pytest --version  # Attendu: pytest 8.5.0+
 

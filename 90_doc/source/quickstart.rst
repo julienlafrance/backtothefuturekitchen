@@ -11,8 +11,8 @@ Installation en 2 Minutes
 .. code-block:: bash
 
    # Cloner et installer
-   git clone https://github.com/julienlafrance/backtothefuturekitchen.git
-   cd backtothefuturekitchen/000_dev/10_preprod
+   git clone https://github.com/julienlafrance/backtothefuturekitchen.git ~/mangetamain
+   cd ~/mangetamain/10_preprod
    uv sync
 
    # Lancer l'application
@@ -49,7 +49,7 @@ Docker
 .. code-block:: bash
 
    # Démarrer PREPROD
-   cd 30_docker
+   cd ~/mangetamain/30_docker
    docker-compose up -d
 
    # Voir logs
@@ -87,7 +87,7 @@ Tests
    uv run pytest tests/unit/test_colors.py -v
 
    # Tests infrastructure
-   cd 50_test
+   cd ~/mangetamain/50_test
    pytest -v
 
 Cheat Sheet
@@ -98,7 +98,7 @@ Structure Projet
 
 ::
 
-    000_dev/
+    ~/mangetamain/
     ├── 00_eda/          # Notebooks exploration
     ├── 10_preprod/      # Code source PREPROD
     │   ├── src/         # Code application

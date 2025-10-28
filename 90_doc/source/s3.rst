@@ -386,7 +386,7 @@ Lancer Tests S3
 
 .. code-block:: bash
 
-   cd 50_test
+   cd ~/mangetamain/50_test
    pytest S3_duckdb_test.py -v
 
 Dépannage

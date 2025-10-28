@@ -68,7 +68,7 @@ Comment configurer S3 ?
 
 .. code-block:: bash
 
-   cd 50_test
+   cd ~/mangetamain/50_test
    pytest test_s3_parquet_files.py -v
 
 **Voir** : :doc:`s3` pour configuration complète.
@@ -253,14 +253,14 @@ Comment lancer les tests ?
 
 .. code-block:: bash
 
-   cd 10_preprod
+   cd ~/mangetamain/10_preprod
    uv run pytest tests/unit/ -v --cov=src
 
 **Tests infrastructure (50_test) :**
 
 .. code-block:: bash
 
-   cd 50_test
+   cd ~/mangetamain/50_test
    pytest -v
 
 **Test spécifique :**
@@ -353,8 +353,8 @@ Le conteneur Docker ne démarre pas
 .. code-block:: bash
 
    # Vérifier paths existent
-   ls -la ../10_preprod/src
-   ls -la ../10_preprod/data
+   ls -la ~/mangetamain/10_preprod/src
+   ls -la ~/mangetamain/10_preprod/data
 
 3. **Rebuild image** :
 
@@ -423,7 +423,7 @@ Comment rollback en cas d'erreur ?
 .. code-block:: bash
 
    ssh dataia
-   cd 20_prod
+   cd ~/mangetamain/20_prod
 
    # Voir backups disponibles
    ls backups/
@@ -449,7 +449,7 @@ Erreurs Courantes
 
 .. code-block:: bash
 
-   cd 10_preprod
+   cd ~/mangetamain/10_preprod
    uv sync  # Réinstaller dépendances
    uv run streamlit --version  # Vérifier
 

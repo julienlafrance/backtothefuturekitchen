@@ -36,8 +36,8 @@ Démarrage Rapide
 
 .. code-block:: bash
 
-   git clone https://github.com/julienlafrance/backtothefuturekitchen.git
-   cd backtothefuturekitchen/000_dev/10_preprod
+   git clone https://github.com/julienlafrance/backtothefuturekitchen.git ~/mangetamain
+   cd ~/mangetamain/10_preprod
    uv sync
    uv run streamlit run src/mangetamain_analytics/main.py
 

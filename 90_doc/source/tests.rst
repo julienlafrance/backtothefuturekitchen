@@ -41,7 +41,7 @@ Tests Unitaires (10_preprod)
 
 .. code-block:: bash
 
-   cd 10_preprod
+   cd ~/mangetamain/10_preprod
    uv run pytest tests/unit/ -v --cov=src --cov-report=html
    xdg-open htmlcov/index.html
 
@@ -52,7 +52,7 @@ Tests Infrastructure (50_test)
 
 .. code-block:: bash
 
-   cd 50_test
+   cd ~/mangetamain/50_test
    pytest -v
 
 **Résultat attendu**: 35 tests (S3, DuckDB, SQL)

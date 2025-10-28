@@ -160,9 +160,9 @@ Script watcher (``/tmp/watch-ci-SHA.sh``) :
 .. code-block:: bash
 
    ssh dataia
-   cd /app/mangetamain/000_dev/20_prod
+   cd ~/mangetamain/20_prod
    git reset --hard PREVIOUS_SHA
-   docker-compose -f ../30_docker/docker-compose-prod.yml restart
+   docker-compose -f ~/mangetamain/30_docker/docker-compose-prod.yml restart
 
 4. Health Check Monitoring
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -303,7 +303,7 @@ Erreur: flake8 not found
 
 .. code-block:: bash
 
-   cd 10_preprod
+   cd ~/mangetamain/10_preprod
    uv pip install -e ".[dev]"
 
 Erreur: Coverage < 90%
@@ -372,14 +372,14 @@ Rollback Manuel Production
 .. code-block:: bash
 
    ssh dataia
-   cd /app/mangetamain/000_dev/20_prod
+   cd ~/mangetamain/20_prod
 
    # Trouver dernier SHA validé
    git log --oneline -5
 
    # Rollback
    git reset --hard PREVIOUS_SHA
-   docker-compose -f ../30_docker/docker-compose-prod.yml restart
+   docker-compose -f ~/mangetamain/30_docker/docker-compose-prod.yml restart
 
    # Vérifier
    curl https://backtothefuturekitchen.lafrance.io/
@@ -511,7 +511,7 @@ Rollback Après Erreur
 
    # Sur VM dataia
    ssh dataia
-   cd ~/mangetamain/000_dev/20_prod
+   cd ~/mangetamain/20_prod
 
    # Identifier commit stable
    git log --oneline -10

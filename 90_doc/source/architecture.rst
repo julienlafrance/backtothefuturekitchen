@@ -69,24 +69,23 @@ Organisation des Répertoires
 
 ::
 
-    mangetamain/
-    └── 000_dev/
-        ├── 00_eda/                    # Notebooks Jupyter d'exploration
-        ├── 10_preprod/                # Application PREPROD (source de vérité)
-        │   ├── src/
-        │   │   └── mangetamain_analytics/
-        │   │       ├── main.py
-        │   │       ├── utils/
-        │   │       ├── visualization/
-        │   │       ├── data/
-        │   │       └── assets/
-        │   ├── tests/
-        │   └── pyproject.toml
-        ├── 20_prod/                   # Application PRODUCTION (artifact)
-        ├── 30_docker/                 # Docker Compose
-        ├── 50_test/                   # Tests infrastructure
-        ├── 90_doc/                    # Documentation (ce répertoire)
-        └── .github/workflows/         # CI/CD
+    ~/mangetamain/
+    ├── 00_eda/                    # Notebooks Jupyter d'exploration
+    ├── 10_preprod/                # Application PREPROD (source de vérité)
+    │   ├── src/
+    │   │   └── mangetamain_analytics/
+    │   │       ├── main.py
+    │   │       ├── utils/
+    │   │       ├── visualization/
+    │   │       ├── data/
+    │   │       └── assets/
+    │   ├── tests/
+    │   └── pyproject.toml
+    ├── 20_prod/                   # Application PRODUCTION (artefact)
+    ├── 30_docker/                 # Docker Compose
+    ├── 50_test/                   # Tests infrastructure
+    ├── 90_doc/                    # Documentation (ce répertoire)
+    └── .github/workflows/         # CI/CD
 
 Modules Applicatifs
 ^^^^^^^^^^^^^^^^^^^
