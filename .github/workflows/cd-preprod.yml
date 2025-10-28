@@ -155,12 +155,11 @@ jobs:
 
           chmod +x /tmp/watch-ci-${{ github.sha }}.sh
 
-          # Lancer avec systemd-run pour créer scope complètement indépendant
-          # systemd-run --user --scope garantit que GitHub Actions ne peut pas tuer le processus
-          systemd-run --user --scope --unit=ci-watcher-${{ github.sha }} \
-            bash /tmp/watch-ci-${{ github.sha }}.sh
+          # Vider RUNNER_TRACKING_ID pour que le runner ne track pas ce processus
+          # Solution officielle: https://stackoverflow.com/a/68439890
+          RUNNER_TRACKING_ID="" && nohup /tmp/watch-ci-${{ github.sha }}.sh > /dev/null 2>&1 &
 
-          echo "✅ CI watcher launched as systemd scope (pid-isolated)"
+          echo "✅ CI watcher launched (untracked by runner)"
 
       - name: ✅ Notify deployment complete
         if: success()
