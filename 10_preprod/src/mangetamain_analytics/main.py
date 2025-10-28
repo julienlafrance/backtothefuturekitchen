@@ -29,6 +29,7 @@ from visualization.analyse_seasonality import render_seasonality_analysis
 from visualization.analyse_weekend import render_weekend_analysis
 from visualization.analyse_ratings import render_ratings_analysis
 from utils import colors
+from exceptions import DataLoadError, DatabaseError, AnalysisError, ConfigurationError
 
 # Configuration des chemins relatifs (fonctionne en PREPROD et PROD)
 SCRIPT_DIR = Path(__file__).parent
@@ -258,7 +259,12 @@ def create_rating_analysis(conn):
 
                     break
 
-        except Exception:
+        except DatabaseError:
+            # Table n'existe pas ou erreur SQL, continuer avec la suivante
+            continue
+        except Exception as e:
+            # Autres erreurs (pandas, plotly, etc.)
+            logger.warning(f"Erreur lors de l'analyse de {table}: {e}")
             continue
     else:
         st.warning("⚠️ Aucune table avec des notes trouvée")
@@ -283,7 +289,8 @@ def create_temporal_analysis(conn):
 
             if "date" in column_names:
                 tables_with_dates.append(table)
-        except Exception:
+        except DatabaseError:
+            # Table n'existe pas ou erreur SQL, continuer
             continue
 
     if tables_with_dates:
@@ -324,8 +331,15 @@ def create_temporal_analysis(conn):
                     f"({date_range.days} jours)"
                 )
 
+        except DatabaseError as e:
+            st.error(f"❌ Erreur base de données lors de l'analyse temporelle: {e}")
+            logger.error(f"DatabaseError in temporal analysis: {e}")
+        except AnalysisError as e:
+            st.error(f"❌ Erreur d'analyse temporelle: {e}")
+            logger.error(f"AnalysisError in temporal analysis: {e}")
         except Exception as e:
-            st.error(f"❌ Erreur lors de l'analyse temporelle: {e}")
+            st.error(f"❌ Erreur inattendue lors de l'analyse temporelle: {e}")
+            logger.error(f"Unexpected error in temporal analysis: {e}")
     else:
         st.warning("⚠️ Aucune table avec des dates trouvée")
 
@@ -383,8 +397,15 @@ def create_user_analysis(conn):
         else:
             st.warning("⚠️ Aucune donnée utilisateur trouvée")
 
+    except DatabaseError as e:
+        st.error(f"❌ Erreur base de données lors de l'analyse utilisateurs: {e}")
+        logger.error(f"DatabaseError in user analysis: {e}")
+    except AnalysisError as e:
+        st.error(f"❌ Erreur d'analyse utilisateurs: {e}")
+        logger.error(f"AnalysisError in user analysis: {e}")
     except Exception as e:
-        st.error(f"❌ Erreur lors de l'analyse des utilisateurs: {e}")
+        st.error(f"❌ Erreur inattendue lors de l'analyse utilisateurs: {e}")
+        logger.error(f"Unexpected error in user analysis: {e}")
 
 
 def display_raw_data_explorer(conn):
@@ -629,7 +650,11 @@ def main():
                 )
                 response = s3.list_objects_v2(Bucket="mangetamain", MaxKeys=1)
                 s3_ready = "Contents" in response
-        except Exception:
+        except (ConfigurationError, DataLoadError) as e:
+            logger.warning(f"S3 not accessible: {e}")
+            s3_ready = False
+        except Exception as e:
+            logger.warning(f"Unexpected error checking S3: {e}")
             s3_ready = False
 
         # Indicateur S3 Ready avec classe CSS
