@@ -13,6 +13,7 @@ import polars as pl
 sys.path.insert(0, str(Path(__file__).parents[2] / "src" / "mangetamain_analytics"))
 
 from data.loaders import DataLoader
+
 # Import depuis le même chemin que loaders.py pour cohérence
 try:
     from exceptions import DataLoadError, MangetamainError
@@ -87,7 +88,9 @@ class TestDataLoaderRecipes:
 class TestDataLoaderRatings:
     """Tests pour le chargement des ratings."""
 
-    @patch("mangetamain_data_utils.data_utils_ratings.load_ratings_for_longterm_analysis")
+    @patch(
+        "mangetamain_data_utils.data_utils_ratings.load_ratings_for_longterm_analysis"
+    )
     def test_load_ratings_success(self, mock_load, loader, mock_ratings_df):
         """Vérifie que load_ratings retourne les données correctement."""
         mock_load.return_value = mock_ratings_df
@@ -97,12 +100,12 @@ class TestDataLoaderRatings:
         assert result is not None
         assert len(result) == 3
         mock_load.assert_called_once_with(
-            min_interactions=100,
-            return_metadata=False,
-            verbose=False
+            min_interactions=100, return_metadata=False, verbose=False
         )
 
-    @patch("mangetamain_data_utils.data_utils_ratings.load_ratings_for_longterm_analysis")
+    @patch(
+        "mangetamain_data_utils.data_utils_ratings.load_ratings_for_longterm_analysis"
+    )
     def test_load_ratings_with_parameters(self, mock_load, loader, mock_ratings_df):
         """Vérifie que load_ratings accepte les paramètres correctement."""
         mock_load.return_value = mock_ratings_df
@@ -111,12 +114,12 @@ class TestDataLoaderRatings:
 
         assert result is not None
         mock_load.assert_called_once_with(
-            min_interactions=50,
-            return_metadata=False,
-            verbose=True
+            min_interactions=50, return_metadata=False, verbose=True
         )
 
-    @patch("mangetamain_data_utils.data_utils_ratings.load_ratings_for_longterm_analysis")
+    @patch(
+        "mangetamain_data_utils.data_utils_ratings.load_ratings_for_longterm_analysis"
+    )
     def test_load_ratings_with_metadata(self, mock_load, loader):
         """Vérifie que load_ratings retourne metadata si demandé."""
         mock_data = pl.DataFrame({"user_id": [1], "rating": [5]})
@@ -128,12 +131,12 @@ class TestDataLoaderRatings:
         assert isinstance(result, tuple)
         assert len(result) == 2
         mock_load.assert_called_once_with(
-            min_interactions=100,
-            return_metadata=True,
-            verbose=False
+            min_interactions=100, return_metadata=True, verbose=False
         )
 
-    @patch("mangetamain_data_utils.data_utils_ratings.load_ratings_for_longterm_analysis")
+    @patch(
+        "mangetamain_data_utils.data_utils_ratings.load_ratings_for_longterm_analysis"
+    )
     def test_load_ratings_raises_dataload_error_on_s3_failure(self, mock_load, loader):
         """Vérifie que DataLoadError est levée si S3 échoue."""
         mock_load.side_effect = Exception("Connection timeout")
@@ -160,7 +163,9 @@ class TestDataLoaderExceptionIntegration:
 
     def test_dataload_error_is_catchable_as_mangetamain_error(self, loader):
         """Vérifie que DataLoadError peut être capturée comme MangetamainError."""
-        with patch("mangetamain_data_utils.data_utils_recipes.load_recipes_clean") as mock_load:
+        with patch(
+            "mangetamain_data_utils.data_utils_recipes.load_recipes_clean"
+        ) as mock_load:
             mock_load.side_effect = Exception("Test error")
 
             with pytest.raises(MangetamainError):
@@ -168,14 +173,16 @@ class TestDataLoaderExceptionIntegration:
 
     def test_dataload_error_attributes_are_preserved(self, loader):
         """Vérifie que les attributs source et detail sont préservés."""
-        with patch("mangetamain_data_utils.data_utils_recipes.load_recipes_clean") as mock_load:
+        with patch(
+            "mangetamain_data_utils.data_utils_recipes.load_recipes_clean"
+        ) as mock_load:
             mock_load.side_effect = Exception("Test error")
 
             with pytest.raises(DataLoadError) as exc_info:
                 loader.load_recipes()
 
             # Vérifier attributs
-            assert hasattr(exc_info.value, 'source')
-            assert hasattr(exc_info.value, 'detail')
+            assert hasattr(exc_info.value, "source")
+            assert hasattr(exc_info.value, "detail")
             assert exc_info.value.source == "S3 (recipes)"
             assert "Test error" in exc_info.value.detail

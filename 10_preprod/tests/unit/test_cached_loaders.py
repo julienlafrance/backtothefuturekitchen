@@ -157,7 +157,9 @@ class TestCachedLoadersExceptions:
     - "exceptions.DataLoadError: Échec chargement depuis S3 (ratings)"
     """
 
-    @pytest.mark.skip(reason="st.cache_data wrappe l'exception - test d'intégration complexe")
+    @pytest.mark.skip(
+        reason="st.cache_data wrappe l'exception - test d'intégration complexe"
+    )
     @patch("mangetamain_data_utils.data_utils_recipes.load_recipes_clean")
     def test_get_recipes_raises_dataload_error_on_s3_failure(self, mock_load):
         """Vérifie que DataLoadError est levée si S3 échoue pour recipes.
@@ -169,6 +171,7 @@ class TestCachedLoadersExceptions:
         """
         mock_load.side_effect = Exception("S3 bucket not accessible")
         from data.cached_loaders import get_recipes_clean
+
         get_recipes_clean.clear()
 
         with pytest.raises(DataLoadError) as exc_info:
@@ -176,8 +179,12 @@ class TestCachedLoadersExceptions:
 
         assert exc_info.value.source == "S3 (recipes)"
 
-    @pytest.mark.skip(reason="st.cache_data wrappe l'exception - test d'intégration complexe")
-    @patch("mangetamain_data_utils.data_utils_ratings.load_ratings_for_longterm_analysis")
+    @pytest.mark.skip(
+        reason="st.cache_data wrappe l'exception - test d'intégration complexe"
+    )
+    @patch(
+        "mangetamain_data_utils.data_utils_ratings.load_ratings_for_longterm_analysis"
+    )
     def test_get_ratings_raises_dataload_error_on_s3_failure(self, mock_load):
         """Vérifie que DataLoadError est levée si S3 échoue pour ratings.
 
@@ -188,6 +195,7 @@ class TestCachedLoadersExceptions:
         """
         mock_load.side_effect = Exception("Connection timeout")
         from data.cached_loaders import get_ratings_longterm
+
         get_ratings_longterm.clear()
 
         with pytest.raises(DataLoadError) as exc_info:

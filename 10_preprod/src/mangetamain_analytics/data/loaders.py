@@ -38,22 +38,21 @@ class DataLoader:
         except ImportError as e:
             raise DataLoadError(
                 source="module mangetamain_data_utils",
-                detail=f"Module introuvable: {e}"
+                detail=f"Module introuvable: {e}",
             )
 
         try:
             return load_recipes_clean()
         except Exception as e:
             raise DataLoadError(
-                source="S3 (recipes)",
-                detail=f"Échec chargement recettes: {e}"
+                source="S3 (recipes)", detail=f"Échec chargement recettes: {e}"
             )
 
     def load_ratings(
         self,
         min_interactions: int = 100,
         return_metadata: bool = False,
-        verbose: bool = False
+        verbose: bool = False,
     ) -> Any:
         """Charge les ratings pour analyse long-terme depuis S3.
 
@@ -75,7 +74,7 @@ class DataLoader:
         except ImportError as e:
             raise DataLoadError(
                 source="module mangetamain_data_utils",
-                detail=f"Module introuvable: {e}"
+                detail=f"Module introuvable: {e}",
             )
 
         try:
@@ -86,6 +85,5 @@ class DataLoader:
             )
         except Exception as e:
             raise DataLoadError(
-                source="S3 (ratings)",
-                detail=f"Échec chargement ratings: {e}"
+                source="S3 (ratings)", detail=f"Échec chargement ratings: {e}"
             )
