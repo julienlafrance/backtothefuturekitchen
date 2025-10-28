@@ -5,6 +5,33 @@
 
 ---
 
+## 🚨 GAPS CRITIQUES Identifiés (vs PDF Exigences)
+
+**Voir**: `CONFORMITE_PDF_ANALYSE.md` pour analyse complète
+
+### ⚠️ 3 Non-Conformités CRITIQUES
+
+1. **POO Insuffisant** (-3 à -5 points)
+   - Actuellement: 3 classes, AUCUN héritage
+   - Requis PDF: "paradigme orienté objet, encapsulation et héritage"
+   - Action: TODO_POO_REFACTORING.md (8-11h)
+
+2. **Exceptions Personnalisées Absentes** (-1 à -2 points)
+   - Actuellement: Aucune exception custom définie
+   - Requis PDF: "exceptions personnalisées lorsque nécessaire"
+   - Action: TODO_POO Phase 1 (1h)
+
+3. **Logger Fichier Unique** (-1 à -2 points)
+   - Actuellement: 1 seul fichier log
+   - Requis PDF: "un fichier de log pour le debug, et un autre pour les erreurs"
+   - Action: TODO_LOGGING (4h)
+
+**Score Estimé Actuel**: 16-17/20
+**Score Cible**: 19-20/20
+**Temps Requis**: 15-20h
+
+---
+
 ## 📊 État Actuel du Projet
 
 ### Infrastructure ✅ COMPLÈTE
