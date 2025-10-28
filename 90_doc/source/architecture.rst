@@ -5,6 +5,62 @@ Vue d'ensemble de l'architecture technique du projet.
 
 **Termes et acronymes**: voir :doc:`glossaire`
 
+Infrastructure Déploiement
+---------------------------
+
+VM Autonome (virsh/KVM)
+^^^^^^^^^^^^^^^^^^^^^^^
+
+* **Technologie** : Machine virtuelle créée avec virsh (KVM/QEMU)
+* **Nom** : dataia
+* **Hébergement** : Serveur physique (réseau VPN interne)
+* **OS** : Linux (distribution basée Debian)
+* **Ressources** : CPU 4 cores, RAM 32 GB, Disk 500 GB
+* **Accès** : SSH uniquement depuis réseau VPN
+
+Containerisation Docker
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Tous les environnements applicatifs tournent dans des **containers Docker isolés** :
+
+**Container PREPROD** :
+
+* Nom : mangetamain_preprod
+* Port : 8500
+* Base données : 10_preprod/data/mangetamain.duckdb
+* Logs : 10_preprod/logs/
+* Variables env : APP_ENV=preprod
+
+**Container PROD** :
+
+* Nom : mangetamain_prod
+* Port : 8501
+* Base données : 20_prod/data/mangetamain.duckdb
+* Logs : 20_prod/logs/
+* Variables env : APP_ENV=prod
+
+**Orchestration** : Docker Compose (30_docker/)
+
+**Isolation complète** :
+
+* Bases de données distinctes
+* Logs séparés par environnement
+* Variables d'environnement différenciées
+* Pas de partage de volumes entre containers
+
+Runner GitHub Self-Hosted
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Le **runner GitHub self-hosted** installé sur la VM dataia orchestre les déploiements :
+
+* Écoute les événements GitHub (push, workflow_dispatch)
+* Exécute les workflows CI/CD (.github/workflows/)
+* Accès direct aux containers pour déploiement
+* Exécute git reset + docker-compose restart
+* **Avantage** : Déploiement automatique sans VPN manuel
+
+**Voir** : :doc:`cicd` pour détails complets du pipeline.
+
 Stack Technique
 ---------------
 
