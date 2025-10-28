@@ -11,6 +11,7 @@ from loguru import logger
 import sys
 import os
 import plotly.express as px
+from utils.environment import EnvironmentDetector
 from visualization.custom_charts import (
     create_correlation_heatmap,
     create_distribution_plot,
@@ -52,30 +53,9 @@ def create_nav_option_with_icon(icon_name, text):
     return f'<div style="display: flex; align-items: center; gap: 10px;">{icon_svg}<span>{text}</span></div>'
 
 
-def detect_environment():
-    """Detect if running in PREPROD or PROD environment."""
-    # Priority 1: Check environment variable (Docker or manual set)
-    app_env = os.getenv("APP_ENV")
-    if app_env:
-        return app_env.upper()
-
-    # Priority 2: Check if we are in a Docker container
-    if Path("/.dockerenv").exists():
-        return "PROD (Docker)"
-
-    # Priority 3: Check the current working directory path
-    current_path = str(Path.cwd())
-    if "10_preprod" in current_path:
-        return "PREPROD"
-    elif "20_prod" in current_path:
-        return "PROD"
-    else:
-        return "UNKNOWN"
-
-
 def display_environment_badge():
     """Display environment badge in sidebar."""
-    env = detect_environment()
+    env = EnvironmentDetector.get_name()
 
     if "PREPROD" in env:
         badge_config = colors.ENV_PREPROD
