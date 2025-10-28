@@ -87,6 +87,9 @@ jobs:
 
           echo "[$(date)] 👀 Starting CI watch for $COMMIT_SHA" >> "$LOG_FILE"
 
+          # Se placer dans le répertoire du repo pour que gh fonctionne
+          cd $APP_PATH
+
           # Attendre démarrage CI (30s)
           echo "[$(date)] ⏳ Waiting 30s for CI to start..." >> "$LOG_FILE"
           sleep 30
