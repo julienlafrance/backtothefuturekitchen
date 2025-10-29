@@ -66,36 +66,10 @@ section.main > div {
     height: 100vh;
 }
 
-/* Désactiver le collapse de la sidebar - Approche élégante */
-/* Cache le bouton de collapse et empêche la sidebar de se refermer */
-[data-testid="stSidebarCollapseButton"],
-[data-testid="collapsedControl"] {
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-}
-
-/* Force la sidebar à rester ouverte en permanence */
-section[data-testid="stSidebar"] {
-    transform: none !important;
-    transition: none !important;
-}
-
-section[data-testid="stSidebar"][aria-expanded="false"] {
-    transform: none !important;
-    margin-left: 0 !important;
-}
-
 /* Container pour le contenu qui scroll */
 [data-testid="stSidebar"] .block-container {
     flex: 1;
     overflow-y: auto;
-}
-
-/* Cacher le bouton fullscreen sur les images dans la sidebar (logo) */
-[data-testid="stSidebar"] .stElementToolbar,
-[data-testid="stSidebar"] [data-testid="stElementToolbar"] {
-    display: none !important;
 }
 
 /* ============================================================================
@@ -320,39 +294,59 @@ small, .caption {
     border-color: #FFD700;
 }
 
-/* Item sélectionné - Cibler le LABEL complet avec :has() pour fond doré sur toute la largeur */
-[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:has(input:checked) {
-    background: linear-gradient(90deg, #FF8C00 0%, #FFD700 100%) !important;
-    border: 1px solid #FFD700 !important;
-    box-shadow: 0 2px 8px rgba(255, 140, 0, 0.3) !important;
+/* Item sélectionné - Orange vif avec bordure dorée */
+[data-testid="stSidebar"] .stRadio input:checked + div {
+    background: linear-gradient(90deg, #FF8C00 0%, #FFD700 100%);
+    border-radius: 8px;
+    padding: 12px 15px;
+    font-weight: bold;
+    color: #000000;
+    border: 1px solid #FFD700;
+    box-shadow: 0 2px 8px rgba(255, 140, 0, 0.3);
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-height: 48px !important;
+    height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
-/* Tous les textes dans le label sélectionné deviennent noirs */
-[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:has(input:checked) * {
-    color: #000000 !important;
-}
-
-/* Force le texte en noir et gras */
-[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:has(input:checked) p {
+/* Texte de l'item sélectionné - Noir pur pour meilleure lisibilité */
+[data-testid="stSidebar"] .stRadio input:checked + div > div {
     color: #000000 !important;
     font-weight: 700 !important;
 }
 
-/* Changer les icônes en noir pour l'item sélectionné */
-[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:has(input:checked):nth-child(1)::before {
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>') !important;
+/* Force TOUS les enfants du label sélectionné en noir */
+[data-testid="stSidebar"] .stRadio input:checked + div * {
+    color: #000000 !important;
 }
 
-[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:has(input:checked):nth-child(2)::before {
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>') !important;
+/* Span et p dans l'item sélectionné */
+[data-testid="stSidebar"] .stRadio input:checked + div span,
+[data-testid="stSidebar"] .stRadio input:checked + div p {
+    color: #000000 !important;
 }
 
-[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:has(input:checked):nth-child(3)::before {
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>') !important;
+/* Icônes de l'item sélectionné - Noir */
+/* 1. bar-chart-2 (Tendances 1999-2018) - SELECTED */
+[data-testid="stSidebar"] .stRadio input:checked + div[data-baseweb="radio"]:nth-child(1)::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%231E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>') !important;
 }
 
-[data-testid="stSidebar"] .stRadio label[data-baseweb="radio"]:has(input:checked):nth-child(4)::before {
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%23000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>') !important;
+/* 2. calendar-days (Analyses Saisonnières) - SELECTED */
+[data-testid="stSidebar"] .stRadio input:checked + div[data-baseweb="radio"]:nth-child(2)::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%231E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>') !important;
+}
+
+/* 3. sun (Effet Jour/Week-end) - SELECTED */
+[data-testid="stSidebar"] .stRadio input:checked + div[data-baseweb="radio"]:nth-child(3)::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%231E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>') !important;
+}
+
+/* 4. star (Analyses Ratings) - SELECTED */
+[data-testid="stSidebar"] .stRadio input:checked + div[data-baseweb="radio"]:nth-child(4)::before {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%231E1E1E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>') !important;
 }
 
 /* ============================================================================
