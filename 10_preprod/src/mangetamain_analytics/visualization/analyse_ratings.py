@@ -614,7 +614,7 @@ def analyse_ratings_distribution():
             y=[upper_bound_weighted] * len(monthly_df)
             + [lower_bound_weighted] * len(monthly_df),
             fill="toself",
-            fillcolor=ColorTheme.get_rgba(ColorTheme.ORANGE_SECONDARY, 0.2),
+            fillcolor=ColorTheme.to_rgba(ColorTheme.ORANGE_SECONDARY, 0.2),
             line=dict(color="rgba(255,255,255,0)"),
             name=f"IC 95% (±{1.96 * std_rating_weighted / np.sqrt(np.sum(weights)):.3f})",
             showlegend=True,
@@ -673,7 +673,7 @@ def analyse_ratings_distribution():
             y=[upper_bound_weighted] * len(monthly_df)
             + [lower_bound_weighted] * len(monthly_df),
             fill="toself",
-            fillcolor=ColorTheme.get_rgba(ColorTheme.ORANGE_SECONDARY, 0.3),
+            fillcolor=ColorTheme.to_rgba(ColorTheme.ORANGE_SECONDARY, 0.3),
             line=dict(color="rgba(255,255,255,0)"),
             name=f"IC 95% (±{1.96 * std_rating_weighted / np.sqrt(np.sum(weights)):.4f})",
             showlegend=False,
@@ -1067,7 +1067,7 @@ def analyse_ratings_seasonality_2():
             fill="toself",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=3),
             marker=dict(size=8),
-            fillcolor=ColorTheme.get_rgba(ColorTheme.ORANGE_SECONDARY, 0.25),
+            fillcolor=ColorTheme.to_rgba(ColorTheme.ORANGE_SECONDARY, 0.25),
             showlegend=False,
         ),
         row=1,
