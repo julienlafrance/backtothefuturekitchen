@@ -5,6 +5,7 @@ avec une gestion robuste des exceptions personnalisées.
 """
 
 from typing import Any
+from loguru import logger
 
 try:
     from exceptions import DataLoadError
@@ -36,14 +37,19 @@ class DataLoader:
         try:
             from mangetamain_data_utils.data_utils_recipes import load_recipes_clean
         except ImportError as e:
+            logger.error(f"Module mangetamain_data_utils introuvable: {e}")
             raise DataLoadError(
                 source="module mangetamain_data_utils",
                 detail=f"Module introuvable: {e}",
             )
 
         try:
-            return load_recipes_clean()
+            logger.info("Chargement recettes depuis S3 (Parquet)")
+            recipes = load_recipes_clean()
+            logger.info(f"Recettes chargées: {len(recipes)} lignes")
+            return recipes
         except Exception as e:
+            logger.error(f"Échec chargement recettes depuis S3: {e}")
             raise DataLoadError(
                 source="S3 (recipes)", detail=f"Échec chargement recettes: {e}"
             )
@@ -72,18 +78,29 @@ class DataLoader:
                 load_ratings_for_longterm_analysis,
             )
         except ImportError as e:
+            logger.error(f"Module mangetamain_data_utils introuvable: {e}")
             raise DataLoadError(
                 source="module mangetamain_data_utils",
                 detail=f"Module introuvable: {e}",
             )
 
         try:
-            return load_ratings_for_longterm_analysis(
+            logger.info(
+                f"Chargement ratings depuis S3 (Parquet) - min_interactions={min_interactions}"
+            )
+            result = load_ratings_for_longterm_analysis(
                 min_interactions=min_interactions,
                 return_metadata=return_metadata,
                 verbose=verbose,
             )
+            if return_metadata:
+                data, metadata = result
+                logger.info(f"Ratings chargés: {len(data)} lignes (avec metadata)")
+            else:
+                logger.info(f"Ratings chargés: {len(result)} lignes")
+            return result
         except Exception as e:
+            logger.error(f"Échec chargement ratings depuis S3: {e}")
             raise DataLoadError(
                 source="S3 (ratings)", detail=f"Échec chargement ratings: {e}"
             )

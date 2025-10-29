@@ -171,6 +171,59 @@ Système Loguru 0.7.3 complet avec séparation PREPROD/PROD :
 
 **Voir** : :doc:`architecture` section Logging pour configuration complète.
 
+Événements Loggués
+^^^^^^^^^^^^^^^^^^
+
+L'application Streamlit enregistre **21 événements** dans les fichiers de log.
+
+**main.py (13 événements)**
+
+Démarrage application:
+
+* ``logger.info`` (519) : "🚀 Enhanced Streamlit application starting"
+* ``logger.info`` (833) : "✅ Application fully loaded"
+* ``logger.info`` (837) : "🌟 Starting Enhanced Mangetamain Analytics"
+
+Ressources et vérifications:
+
+* ``logger.warning`` (527) : "CSS file not found: {css_path}"
+* ``logger.warning`` (633) : "S3 not accessible: {e}"
+* ``logger.warning`` (636) : "Unexpected error checking S3: {e}"
+
+Erreurs analyses:
+
+* ``logger.warning`` (246) : "Erreur lors de l'analyse de {table}: {e}"
+* ``logger.error`` (315) : "DatabaseError in temporal analysis: {e}"
+* ``logger.error`` (318) : "AnalysisError in temporal analysis: {e}"
+* ``logger.error`` (321) : "Unexpected error in temporal analysis: {e}"
+* ``logger.error`` (381) : "DatabaseError in user analysis: {e}"
+* ``logger.error`` (384) : "AnalysisError in user analysis: {e}"
+* ``logger.error`` (387) : "Unexpected error in user analysis: {e}"
+
+**Chargement données (data/loaders.py - 8 événements)**
+
+Le chargement des fichiers Parquet depuis S3 génère des logs détaillés avec gestion d'erreurs via ``DataLoadError`` :
+
+Chargement recettes :
+
+* ``logger.error`` (40) : \"Module mangetamain_data_utils introuvable: {e}\"
+* ``logger.info`` (47) : \"Chargement recettes depuis S3 (Parquet)\"
+* ``logger.info`` (49) : \"Recettes chargées: {len(recipes)} lignes\"
+* ``logger.error`` (52) : \"Échec chargement recettes depuis S3: {e}\"
+
+Chargement ratings :
+
+* ``logger.error`` (81) : \"Module mangetamain_data_utils introuvable: {e}\"
+* ``logger.info`` (88) : \"Chargement ratings depuis S3 (Parquet) - min_interactions={min_interactions}\"
+* ``logger.info`` (98/100) : \"Ratings chargés: {len(data)} lignes (avec metadata)\" ou \"Ratings chargés: {len(result)} lignes\"
+* ``logger.error`` (103) : \"Échec chargement ratings depuis S3: {e}\"
+
+**Répartition par niveau:**
+
+* INFO : 7 événements (3 démarrage + 4 chargement données)
+* WARNING : 4 événements (CSS, S3, analyses)
+* ERROR : 10 événements (6 analyses + 4 chargement données)
+
 Sécurité
 ^^^^^^^^
 
