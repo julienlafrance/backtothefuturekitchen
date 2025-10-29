@@ -7,8 +7,19 @@ Le pipeline CI/CD automatise la validation qualité, les tests et le déploiemen
 
 **Workflows pratiques** : voir fin de page pour exemples concrets.
 
-Architecture
-------------
+Infrastructure
+--------------
+
+Le pipeline CI/CD s'appuie sur l'infrastructure décrite dans :doc:`architecture` :
+
+* **VM autonome** dataia (virsh/KVM) hébergeant l'ensemble
+* **2 containers Docker isolés** : preprod (port 8500) et prod (port 8501)
+* **Runner GitHub self-hosted** orchestrant les déploiements automatiques
+
+Cette architecture permet le déploiement sans connexion VPN manuelle. Le runner exécute ``git reset --hard SHA`` + ``docker-compose restart`` directement sur la VM.
+
+Architecture Pipeline
+---------------------
 
 Pipeline Séquentiel 3 Phases
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

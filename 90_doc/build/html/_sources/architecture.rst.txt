@@ -5,6 +5,62 @@ Vue d'ensemble de l'architecture technique du projet.
 
 **Termes et acronymes**: voir :doc:`glossaire`
 
+Infrastructure Déploiement
+---------------------------
+
+VM Autonome (virsh/KVM)
+^^^^^^^^^^^^^^^^^^^^^^^
+
+* **Technologie** : Machine virtuelle créée avec virsh (KVM/QEMU)
+* **Nom** : dataia
+* **Hébergement** : Serveur physique (réseau VPN interne)
+* **OS** : Linux (distribution basée Debian)
+* **Ressources** : CPU 4 cores, RAM 32 GB, Disk 500 GB
+* **Accès** : SSH uniquement depuis réseau VPN
+
+Containerisation Docker
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Tous les environnements applicatifs tournent dans des **containers Docker isolés** :
+
+**Container PREPROD** :
+
+* Nom : mangetamain_preprod
+* Port : 8500
+* Base données : 10_preprod/data/mangetamain.duckdb
+* Logs : 10_preprod/logs/
+* Variables env : APP_ENV=preprod
+
+**Container PROD** :
+
+* Nom : mangetamain_prod
+* Port : 8501
+* Base données : 20_prod/data/mangetamain.duckdb
+* Logs : 20_prod/logs/
+* Variables env : APP_ENV=prod
+
+**Orchestration** : Docker Compose (30_docker/)
+
+**Isolation complète** :
+
+* Bases de données distinctes
+* Logs séparés par environnement
+* Variables d'environnement différenciées
+* Pas de partage de volumes entre containers
+
+Runner GitHub Self-Hosted
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Le **runner GitHub self-hosted** installé sur la VM dataia orchestre les déploiements :
+
+* Écoute les événements GitHub (push, workflow_dispatch)
+* Exécute les workflows CI/CD (.github/workflows/)
+* Accès direct aux containers pour déploiement
+* Exécute git reset + docker-compose restart
+* **Avantage** : Déploiement automatique sans VPN manuel
+
+**Voir** : :doc:`cicd` pour détails complets du pipeline.
+
 Stack Technique
 ---------------
 
@@ -106,6 +162,11 @@ Modules Applicatifs
 **Module data**
 
 * ``cached_loaders.py`` : Chargement des données avec cache Streamlit
+* ``loaders.py`` : Classe DataLoader pour chargement données avec gestion d'erreurs
+
+**Module exceptions**
+
+* ``exceptions.py`` : Hiérarchie d'exceptions personnalisées (5 classes)
 
 CI/CD Pipeline
 --------------
@@ -245,82 +306,75 @@ Le système de logging utilise **Loguru 0.7.3** avec séparation automatique des
 **Fonctionnalités clés :**
 
 * Détection automatique environnement (prod/preprod/local)
-* 2 fichiers séparés : debug.log et errors.log
-* Rotation automatique (10 MB debug, 5 MB errors)
+* 3 fichiers séparés : debug.log, errors.log, user_interactions.log
+* Rotation automatique (10 MB debug, 5 MB errors, 1 jour user_interactions)
 * Compression automatique (.zip)
 * Thread-safe pour Streamlit (``enqueue=True``)
 * Backtrace complet pour erreurs
+* Module EnvironmentDetector avec cache
 
 Configuration
 ^^^^^^^^^^^^^
 
+**Module**: ``utils_logger.py``
+
 .. code-block:: python
 
-   from loguru import logger
-   import sys
-   from pathlib import Path
+   from utils_logger import LoggerConfig, log_user_action, log_error, log_performance
 
-   def setup_logging():
-       """Configure Loguru avec fichiers spécifiques à l'environnement."""
+   # Configuration automatique au démarrage
+   log_config = LoggerConfig()  # Détecte env automatiquement
+   log_config.setup_logger()
 
-       env = get_environment()  # 'prod', 'preprod', ou 'local'
-       log_dir = Path("logs")
-       log_dir.mkdir(exist_ok=True)
+**Handlers configurés**:
 
-       logger.remove()  # Supprimer handler par défaut
+1. **Console**: PREPROD/LOCAL (DEBUG colorisé), PROD (WARNING non colorisé)
+2. **Debug**: {env}_debug.log - Tous niveaux ≥ DEBUG (10 MB, 7j, zip)
+3. **Errors**: {env}_errors.log - ERROR et CRITICAL (5 MB, 7j preprod / 30j prod, zip, backtrace)
+4. **User Interactions**: {env}_user_interactions.log - Actions utilisateur (1 jour, 90j preprod / 30j prod, zip)
 
-       # 1. Handler DEBUG + INFO
-       logger.add(
-           f"logs/{env}_debug.log",
-           level="DEBUG",
-           rotation="10 MB",
-           retention="7 days",
-           compression="zip",
-           filter=lambda record: record["level"].name in ["DEBUG", "INFO", "SUCCESS"],
-           enqueue=True,
-       )
+**Fonctions utilitaires**:
 
-       # 2. Handler ERROR + CRITICAL
-       logger.add(
-           f"logs/{env}_errors.log",
-           level="ERROR",
-           rotation="5 MB",
-           retention="30 days",
-           compression="zip",
-           backtrace=True,
-           diagnose=True,
-           enqueue=True,
-       )
+.. code-block:: python
 
-       # 3. Handler console (local uniquement)
-       if env == "local":
-           logger.add(sys.stderr, level="INFO", colorize=True)
+   # Erreurs avec contexte
+   log_error(exception, context="data_loading")
 
-       logger.info(f"Logging initialized for environment: {env}")
+   # Actions utilisateur
+   log_user_action("filter_change", {"value": "2024"}, user_id="anonymous")
+
+   # Métriques performance
+   log_performance("load_ratings", 1.234, records=1000)
 
 Détection Environnement
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-La détection se fait automatiquement par :
+**Module**: ``src/mangetamain_analytics/utils/environment.py``
 
-1. **Variable d'environnement** ``APP_ENV`` (prioritaire)
+La détection se fait automatiquement via la classe ``EnvironmentDetector`` :
+
+1. **Variable d'environnement** ``APP_ENV`` (case-insensitive, prioritaire)
 2. **Path automatique** : détection via ``10_preprod/`` ou ``20_prod/`` dans le path
-3. **Fallback** : ``local`` si aucun des deux
+3. **Fallback** : ``LOCAL`` si aucun des deux
+
+**Caractéristiques** :
+
+* Cache du résultat (performance)
+* Méthode ``reset_cache()`` pour tests unitaires
+* Méthode ``get_name()`` retournant string uppercase
 
 .. code-block:: python
 
-   def get_environment() -> str:
-       """Detect current environment."""
-       env = os.getenv("APP_ENV", None)
-       if env:
-           return env.lower()
+   from mangetamain_analytics.utils.environment import Environment, EnvironmentDetector
 
-       current_path = str(Path.cwd())
-       if "20_prod" in current_path:
-           return "prod"
-       elif "10_preprod" in current_path:
-           return "preprod"
-       return "local"
+   # Détection automatique avec cache
+   env = EnvironmentDetector.detect()  # Returns Environment.PREPROD|PROD|LOCAL
+
+   # Nom environnement (string uppercase)
+   env_name = EnvironmentDetector.get_name()  # Returns "PREPROD"|"PROD"|"LOCAL"
+
+   # Reset cache (tests uniquement)
+   EnvironmentDetector.reset_cache()
 
 Structure des Logs
 ^^^^^^^^^^^^^^^^^^
@@ -328,50 +382,62 @@ Structure des Logs
 ::
 
     10_preprod/logs/
-    ├── preprod_debug.log       # DEBUG, INFO, SUCCESS
-    ├── preprod_errors.log      # ERROR, CRITICAL
+    ├── preprod_debug.log              # Tous niveaux ≥ DEBUG
+    ├── preprod_errors.log             # ERROR, CRITICAL (7j)
+    ├── preprod_user_interactions.log  # Actions utilisateur (90j)
     └── .gitkeep
 
     20_prod/logs/
-    ├── prod_debug.log          # DEBUG, INFO, SUCCESS
-    ├── prod_errors.log         # ERROR, CRITICAL
+    ├── prod_debug.log                 # Tous niveaux ≥ DEBUG
+    ├── prod_errors.log                # ERROR, CRITICAL (30j)
+    ├── prod_user_interactions.log     # Actions utilisateur (30j)
     └── .gitkeep
 
 **Rotation :**
 
 * Debug logs : 10 MB max, rétention 7 jours
-* Error logs : 5 MB max, rétention 30 jours
+* Error logs : 5 MB max, rétention 7j (preprod) / 30j (prod)
+* User interactions : 1 jour, rétention 90j (preprod) / 30j (prod)
 * Compression automatique en .zip
 
 Utilisation
 ^^^^^^^^^^^
 
+**Logging basique**:
+
 .. code-block:: python
 
    from loguru import logger
 
-   def load_data():
-       """Load data from S3."""
-       try:
-           logger.info("Starting data load from S3")
-           data = some_loading_function()
-           logger.success(f"Loaded {len(data)} records")
-           return data
-       except Exception as e:
-           logger.error(f"Failed to load data: {e}")
-           raise
+   logger.info("Application started")
+   logger.warning("S3 not accessible")
+   logger.error("Failed to load data", exc_info=True)
 
-   def process_input(value):
-       """Process user input."""
-       logger.debug(f"User input received: {value}")
+**Avec fonctions utilitaires**:
 
-       if not validate(value):
-           logger.warning(f"Invalid input: {value}")
-           return None
+.. code-block:: python
 
-       result = compute(value)
-       logger.info(f"Computation result: {result}")
-       return result
+   from utils_logger import log_error, log_user_action, log_performance
+
+   # Erreurs avec contexte
+   try:
+       data = load_from_s3()
+   except Exception as e:
+       log_error(e, context="data_loading")
+
+   # Actions utilisateur (pour analytics)
+   log_user_action(
+       action="filter_applied",
+       details={"filter": "year", "value": "2024"},
+       user_id="anonymous"
+   )
+
+   # Métriques de performance
+   import time
+   start = time.time()
+   result = expensive_computation()
+   duration = time.time() - start
+   log_performance("expensive_computation", duration, records=len(result))
 
 Configuration Docker
 ^^^^^^^^^^^^^^^^^^^^
@@ -403,12 +469,15 @@ Les fichiers Docker Compose définissent explicitement l'environnement :
 Avantages
 ^^^^^^^^^
 
-* ✅ **Séparation Prod/Preprod** : Logs distincts automatiquement
-* ✅ **Thread-safe** : Compatible Streamlit multithread
-* ✅ **Rotation automatique** : Pas de logs géants
-* ✅ **Compression** : Économie d'espace disque
-* ✅ **Détection auto** : Fonctionne sans configuration manuelle
-* ✅ **Backtrace complet** : Debugging simplifié pour erreurs
+* ✅ **Séparation Prod/Preprod/Local** : Logs distincts automatiquement par environnement
+* ✅ **Thread-safe** : Compatible Streamlit multithread (``enqueue=True``)
+* ✅ **Rotation automatique** : Pas de logs géants (taille et temps)
+* ✅ **Compression** : Économie d'espace disque (.zip)
+* ✅ **Détection auto** : ``EnvironmentDetector`` avec cache
+* ✅ **Backtrace complet** : Debugging simplifié pour erreurs (``backtrace=True``, ``diagnose=True``)
+* ✅ **Tracking utilisateur** : Fichier dédié ``user_interactions.log``
+* ✅ **Fonctions utilitaires** : ``log_error()``, ``log_user_action()``, ``log_performance()``
+* ✅ **Rétention différenciée** : 7j preprod, 30j prod pour errors
 
 Performance
 -----------

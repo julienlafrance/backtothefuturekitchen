@@ -27,7 +27,9 @@ def apply_chart_theme(fig, title=None):
         title=(
             dict(
                 text=title,
-                font=dict(color=ColorTheme.PRIMARY, size=16, family="Michroma, sans-serif"),
+                font=dict(
+                    color=ColorTheme.PRIMARY, size=16, family="Michroma, sans-serif"
+                ),
                 x=0.5,
                 xanchor="center",
             )

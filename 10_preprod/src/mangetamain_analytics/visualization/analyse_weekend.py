@@ -204,11 +204,7 @@ def analyse_weekend_volume():
 
     # --- PANEL 3: Écarts à la moyenne ---
     colors_deviation = [
-        (
-            ColorTheme.CHART_COLORS[2]
-            if x > 0
-            else ColorTheme.ORANGE_PRIMARY
-        )
+        (ColorTheme.CHART_COLORS[2] if x > 0 else ColorTheme.ORANGE_PRIMARY)
         for x in recipes_per_day["deviation_pct"]
     ]
 
@@ -410,9 +406,7 @@ def analyse_weekend_duree():
                 x=[period],
                 y=[q25],
                 mode="markers",
-                marker=dict(
-                    size=6, color=ColorTheme.TEXT_PRIMARY, symbol="circle"
-                ),
+                marker=dict(size=6, color=ColorTheme.TEXT_PRIMARY, symbol="circle"),
                 showlegend=False,
                 hovertemplate=f"Q1: {q25:.1f}",
             ),
@@ -424,9 +418,7 @@ def analyse_weekend_duree():
                 x=[period],
                 y=[q75],
                 mode="markers",
-                marker=dict(
-                    size=6, color=ColorTheme.TEXT_PRIMARY, symbol="circle"
-                ),
+                marker=dict(size=6, color=ColorTheme.TEXT_PRIMARY, symbol="circle"),
                 showlegend=False,
                 hovertemplate=f"Q3: {q75:.1f}",
             ),
@@ -987,11 +979,7 @@ def analyse_weekend_ingredients():
 
         # Couleurs
         colors = [
-            (
-                ColorTheme.ORANGE_PRIMARY
-                if x < 0
-                else ColorTheme.CHART_COLORS[2]
-            )
+            (ColorTheme.ORANGE_PRIMARY if x < 0 else ColorTheme.CHART_COLORS[2])
             for x in top_ingredients["diff_abs"]
         ]
 
@@ -1159,11 +1147,7 @@ def analyse_weekend_tags():
 
         # Couleurs
         colors = [
-            (
-                ColorTheme.ORANGE_PRIMARY
-                if x < 0
-                else ColorTheme.CHART_COLORS[2]
-            )
+            (ColorTheme.ORANGE_PRIMARY if x < 0 else ColorTheme.CHART_COLORS[2])
             for x in top_tags["diff_abs"]
         ]
 

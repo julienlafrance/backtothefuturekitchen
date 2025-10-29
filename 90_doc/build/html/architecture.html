@@ -43,8 +43,17 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Guide Utilisateur</span></p>
-<ul class="current">
+              <p class="caption" role="heading"><span class="caption-text">Le Projet</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="projet.html">Le Projet</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="projet.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l2"><a class="reference internal" href="projet.html#processus-de-developpement">Processus de Développement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="projet.html#correspondance-eda-application">Correspondance EDA → Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="projet.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l2"><a class="reference internal" href="projet.html#environnements">Environnements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="projet.html#standards-appliques">Standards Appliqués</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Guide Démarrage Rapide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#installation-en-2-minutes">Installation en 2 Minutes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#commandes-essentielles">Commandes Essentielles</a><ul>
@@ -133,6 +142,24 @@
 <li class="toctree-l2"><a class="reference internal" href="installation.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
 </ul>
 </li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Application Streamlit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="application.html">Application Streamlit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="application.html#architecture">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application.html#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application.html#les-4-analyses">Les 4 Analyses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="application.html#analyse-des-tendances-long-terme">1. Analyse des Tendances Long-Terme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="application.html#analyse-de-saisonnalite">2. Analyse de Saisonnalité</a></li>
+<li class="toctree-l3"><a class="reference internal" href="application.html#analyse-effet-weekend">3. Analyse Effet Weekend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="application.html#analyse-des-ratings">4. Analyse des Ratings</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="application.html#chargement-des-donnees">Chargement des Données</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application.html#navigation">Navigation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="application.html#performance">Performance</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Utilisation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#architecture-de-l-application">Architecture de l’Application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#modules-d-analyse-disponibles">Modules d’Analyse Disponibles</a><ul>
@@ -150,70 +177,194 @@
 <li class="toctree-l2"><a class="reference internal" href="usage.html#personnalisation-et-api">Personnalisation et API</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ - Questions Fréquentes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#installation-et-configuration">Installation et Configuration</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-installer-python-3-13">Comment installer Python 3.13 ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#pourquoi-uv-et-pas-pip">Pourquoi uv et pas pip ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-configurer-s3">Comment configurer S3 ?</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Documentation Code</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/index.html">Documentation Code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/index.html#organisation">Organisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/index.html#modules-disponibles">Modules Disponibles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-colors">utils.colors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#donnees-et-performance">Données et Performance</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#combien-de-donnees-sont-chargees">Combien de données sont chargées ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-ameliorer-la-performance-s3">Comment améliorer la performance S3 ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#pourquoi-polars-et-pas-pandas">Pourquoi Polars et pas Pandas ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#le-cache-streamlit-expire-quand">Le cache Streamlit expire quand ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#developpement">Développement</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-ajouter-une-nouvelle-analyse">Comment ajouter une nouvelle analyse ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-personnaliser-les-couleurs">Comment personnaliser les couleurs ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-debugger-un-graphique-plotly">Comment debugger un graphique Plotly ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/data.html#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/data.html#data-cached-loaders">data.cached_loaders</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#tests-et-ci-cd">Tests et CI/CD</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-lancer-les-tests">Comment lancer les tests ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-augmenter-le-coverage">Comment augmenter le coverage ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#le-ci-echoue-comment-debugger">Le CI échoue, comment débugger ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#classe-dataloaderror">Classe DataLoadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#autres-exceptions">Autres Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#tests">Tests</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#docker">Docker</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#le-conteneur-docker-ne-demarre-pas">Le conteneur Docker ne démarre pas</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-voir-les-modifications-en-temps-reel">Comment voir les modifications en temps réel ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/infrastructure.html">Modules Infrastructure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#configuration-et-logging">Configuration et Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#gestion-base-de-donnees">Gestion Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#utilitaires-exploration-donnees">Utilitaires Exploration Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#voir-also">Voir Also</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#deploiement">Déploiement</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-deployer-en-preprod">Comment déployer en PREPROD ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-deployer-en-production">Comment déployer en PRODUCTION ?</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-rollback-en-cas-d-erreur">Comment rollback en cas d’erreur ?</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#erreurs-courantes">Erreurs Courantes</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#importerror-no-module-named-streamlit">« ImportError: No module named “streamlit” »</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#duckdb-database-is-locked">« DuckDB database is locked »</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#s3-connection-timeout">« S3 connection timeout »</a></li>
-<li class="toctree-l3"><a class="reference internal" href="faq.html#coverage-below-90">« Coverage below 90% »</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/index.html#conventions">Conventions</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="faq.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/utils.html">Module utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/utils.html#utils-colors">utils.colors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.colors.get_rgba"><code class="docutils literal notranslate"><span class="pre">get_rgba()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.colors.get_plotly_theme"><code class="docutils literal notranslate"><span class="pre">get_plotly_theme()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#constantes-principales">Constantes Principales</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#exemples-d-utilisation">Exemples d’Utilisation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="glossaire.html">Glossaire</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="glossaire.html#termes-techniques">Termes Techniques</a></li>
-<li class="toctree-l2"><a class="reference internal" href="glossaire.html#termes-projet">Termes Projet</a></li>
-<li class="toctree-l2"><a class="reference internal" href="glossaire.html#termes-analytics">Termes Analytics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="glossaire.html#termes-infrastructure">Termes Infrastructure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="glossaire.html#acronymes">Acronymes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="glossaire.html#commandes-courantes">Commandes Courantes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="glossaire.html#valeurs-cles">Valeurs Clés</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="glossaire.html#objectifs-qualite">Objectifs Qualité</a></li>
-<li class="toctree-l3"><a class="reference internal" href="glossaire.html#metriques-performance">Métriques Performance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="glossaire.html#donnees-projet">Données Projet</a></li>
-<li class="toctree-l3"><a class="reference internal" href="glossaire.html#configurations">Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/utils.html#utils-chart-theme">utils.chart_theme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.chart_theme.apply_chart_theme"><code class="docutils literal notranslate"><span class="pre">apply_chart_theme()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.chart_theme.get_bar_color"><code class="docutils literal notranslate"><span class="pre">get_bar_color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.chart_theme.get_line_colors"><code class="docutils literal notranslate"><span class="pre">get_line_colors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.chart_theme.get_scatter_color"><code class="docutils literal notranslate"><span class="pre">get_scatter_color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.chart_theme.get_reference_line_color"><code class="docutils literal notranslate"><span class="pre">get_reference_line_color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.chart_theme.apply_subplot_theme"><code class="docutils literal notranslate"><span class="pre">apply_subplot_theme()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#fonctions-principales">Fonctions Principales</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#id1">Exemples d’Utilisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#theme-applique-automatiquement">Thème Appliqué Automatiquement</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="glossaire.html#voir-aussi">Voir Aussi</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#metriques-analysees">Métriques Analysées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#insights-cles">Insights Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#visualisations-generees">Visualisations Générées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#exemple-d-utilisation">Exemple d’Utilisation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#id1">Métriques Analysées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#id2">Insights Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#id3">Visualisations Générées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#id4">Exemple d’Utilisation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#id5">Métriques Analysées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#id6">Insights Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#id7">Visualisations Générées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#id8">Exemple d’Utilisation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#id9">Métriques Analysées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#id10">Insights Clés</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#id11">Visualisations Générées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#id12">Exemple d’Utilisation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.setup_s3_connection"><code class="docutils literal notranslate"><span class="pre">setup_s3_connection()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.get_ratings_data"><code class="docutils literal notranslate"><span class="pre">get_ratings_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.process_data"><code class="docutils literal notranslate"><span class="pre">process_data()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.create_plots_streamlit"><code class="docutils literal notranslate"><span class="pre">create_plots_streamlit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.create_plots_matplotlib"><code class="docutils literal notranslate"><span class="pre">create_plots_matplotlib()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.print_stats"><code class="docutils literal notranslate"><span class="pre">print_stats()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.print_interpretation"><code class="docutils literal notranslate"><span class="pre">print_interpretation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.render_analysis"><code class="docutils literal notranslate"><span class="pre">render_analysis()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.custom_charts.create_correlation_heatmap"><code class="docutils literal notranslate"><span class="pre">create_correlation_heatmap()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.custom_charts.create_distribution_plot"><code class="docutils literal notranslate"><span class="pre">create_distribution_plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.custom_charts.create_time_series_plot"><code class="docutils literal notranslate"><span class="pre">create_time_series_plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.custom_charts.create_custom_scatter_plot"><code class="docutils literal notranslate"><span class="pre">create_custom_scatter_plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html#mangetamain_analytics.visualization.plotly_config.apply_theme"><code class="docutils literal notranslate"><span class="pre">apply_theme()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/data.html">Module data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/data.html#data-loaders">data.loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#mangetamain_analytics.data.loaders.DataLoader"><code class="docutils literal notranslate"><span class="pre">DataLoader</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/data.html#mangetamain_analytics.data.loaders.DataLoader.load_recipes"><code class="docutils literal notranslate"><span class="pre">DataLoader.load_recipes()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/data.html#mangetamain_analytics.data.loaders.DataLoader.load_ratings"><code class="docutils literal notranslate"><span class="pre">DataLoader.load_ratings()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#classe-dataloader">Classe DataLoader</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#relation-avec-cached-loaders">Relation avec cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/data.html#data-cached-loaders">data.cached_loaders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#mangetamain_analytics.data.cached_loaders.get_recipes_clean"><code class="docutils literal notranslate"><span class="pre">get_recipes_clean()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#mangetamain_analytics.data.cached_loaders.get_ratings_longterm"><code class="docutils literal notranslate"><span class="pre">get_ratings_longterm()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#fonctions-principales">Fonctions Principales</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#schema-des-donnees">Schéma des Données</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#options-avancees">Options Avancées</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#mecanisme-de-cache">Mécanisme de Cache</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#exemples-d-utilisation">Exemples d’Utilisation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#performance">Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#optimisation-memoire">Optimisation Mémoire</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html#source-des-donnees">Source des Données</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/exceptions.html#classe-dataloaderror">Classe DataLoadError</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/exceptions.html#autres-exceptions">Autres Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/infrastructure.html">Modules Infrastructure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/infrastructure.html#configuration-et-logging">Configuration et Logging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/infrastructure.html#utils-logger">utils_logger</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#classe-loggerconfig">Classe LoggerConfig</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/infrastructure.html#gestion-base-de-donnees">Gestion Base de Données</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/infrastructure.html#models-database">models_database</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#classe-databasemanager">Classe DatabaseManager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#classe-querytemplates">Classe QueryTemplates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/infrastructure.html#utilitaires-exploration-donnees">Utilitaires Exploration Données</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/infrastructure.html#eda-data-utils">00_eda/_data_utils</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/infrastructure.html#tests-infrastructure">Tests Infrastructure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/infrastructure.html#test">50_test</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="modules/infrastructure.html#voir-also">Voir Also</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Infrastructure</span></p>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="s3.html">Stockage S3 Garage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="s3.html#vue-d-ensemble">Vue d’ensemble</a></li>
 <li class="toctree-l2"><a class="reference internal" href="s3.html#installation">Installation</a><ul>
@@ -293,6 +444,12 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Architecture Technique</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#infrastructure-deploiement">Infrastructure Déploiement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vm-autonome-virsh-kvm">VM Autonome (virsh/KVM)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#containerisation-docker">Containerisation Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#runner-github-self-hosted">Runner GitHub Self-Hosted</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#stack-technique">Stack Technique</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#details-des-technologies-cles">Détails des Technologies Clés</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#outils-de-developpement">Outils de Développement</a></li>
@@ -349,7 +506,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cicd.html">Pipeline CI/CD</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cicd.html#architecture">Architecture</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cicd.html#architecture-pipeline">Architecture Pipeline</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="cicd.html#pipeline-sequentiel-3-phases">Pipeline Séquentiel 3 Phases</a></li>
 </ul>
 </li>
@@ -479,7 +637,10 @@
 <li class="toctree-l2"><a class="reference internal" href="tests.html#voir-aussi">Voir Aussi</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="conformite.html">Conformité Académique</a><ul>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Standards Qualité</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="conformite.html">Standards Qualité</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="conformite.html#gestion-de-projet">Gestion de Projet</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#structure-coherente">Structure Cohérente</a></li>
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#environnement-python">Environnement Python</a></li>
@@ -520,166 +681,74 @@
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#architecture-preprod-prod">Architecture PREPROD/PROD</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="conformite.html#resume-conformite">Résumé Conformité</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conformite.html#resume-standards">Résumé Standards</a></li>
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Référence API</span></p>
+<p class="caption" role="heading"><span class="caption-text">Référence</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="api/index.html">Référence API</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/index.html#modules-disponibles">Modules Disponibles</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html">Module utils</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/utils.html#utils-colors">utils.colors</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ - Questions Fréquentes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#installation-et-configuration">Installation et Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-installer-python-3-13">Comment installer Python 3.13 ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#pourquoi-uv-et-pas-pip">Pourquoi uv et pas pip ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-configurer-s3">Comment configurer S3 ?</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html">Module visualization</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#donnees-et-performance">Données et Performance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#combien-de-donnees-sont-chargees">Combien de données sont chargées ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-ameliorer-la-performance-s3">Comment améliorer la performance S3 ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#pourquoi-polars-et-pas-pandas">Pourquoi Polars et pas Pandas ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#le-cache-streamlit-expire-quand">Le cache Streamlit expire quand ?</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="api/data.html">Module data</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/data.html#data-cached-loaders">data.cached_loaders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#developpement">Développement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-ajouter-une-nouvelle-analyse">Comment ajouter une nouvelle analyse ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-personnaliser-les-couleurs">Comment personnaliser les couleurs ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-debugger-un-graphique-plotly">Comment debugger un graphique Plotly ?</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="api/infrastructure.html">Modules Infrastructure</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#configuration-et-logging">Configuration et Logging</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#gestion-base-de-donnees">Gestion Base de Données</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#utilitaires-exploration-donnees">Utilitaires Exploration Données</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#tests-infrastructure">Tests Infrastructure</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#voir-also">Voir Also</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#tests-et-ci-cd">Tests et CI/CD</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-lancer-les-tests">Comment lancer les tests ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-augmenter-le-coverage">Comment augmenter le coverage ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#le-ci-echoue-comment-debugger">Le CI échoue, comment débugger ?</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#docker">Docker</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#le-conteneur-docker-ne-demarre-pas">Le conteneur Docker ne démarre pas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-voir-les-modifications-en-temps-reel">Comment voir les modifications en temps réel ?</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="api/index.html#organisation">Organisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#deploiement">Déploiement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-deployer-en-preprod">Comment déployer en PREPROD ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-deployer-en-production">Comment déployer en PRODUCTION ?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#comment-rollback-en-cas-d-erreur">Comment rollback en cas d’erreur ?</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api/utils.html">Module utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#utils-colors">utils.colors</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.colors.get_rgba"><code class="docutils literal notranslate"><span class="pre">get_rgba()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.colors.get_plotly_theme"><code class="docutils literal notranslate"><span class="pre">get_plotly_theme()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#constantes-principales">Constantes Principales</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#exemples-d-utilisation">Exemples d’Utilisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#erreurs-courantes">Erreurs Courantes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#importerror-no-module-named-streamlit">« ImportError: No module named “streamlit” »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#duckdb-database-is-locked">« DuckDB database is locked »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#s3-connection-timeout">« S3 connection timeout »</a></li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html#coverage-below-90">« Coverage below 90% »</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="api/utils.html#utils-chart-theme">utils.chart_theme</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.chart_theme.apply_chart_theme"><code class="docutils literal notranslate"><span class="pre">apply_chart_theme()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.chart_theme.get_bar_color"><code class="docutils literal notranslate"><span class="pre">get_bar_color()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.chart_theme.get_line_colors"><code class="docutils literal notranslate"><span class="pre">get_line_colors()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.chart_theme.get_scatter_color"><code class="docutils literal notranslate"><span class="pre">get_scatter_color()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.chart_theme.get_reference_line_color"><code class="docutils literal notranslate"><span class="pre">get_reference_line_color()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#mangetamain_analytics.utils.chart_theme.apply_subplot_theme"><code class="docutils literal notranslate"><span class="pre">apply_subplot_theme()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#fonctions-principales">Fonctions Principales</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#id1">Exemples d’Utilisation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/utils.html#theme-applique-automatiquement">Thème Appliqué Automatiquement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="glossaire.html">Glossaire</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#termes-techniques">Termes Techniques</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#termes-projet">Termes Projet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#termes-analytics">Termes Analytics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#termes-infrastructure">Termes Infrastructure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#acronymes">Acronymes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#commandes-courantes">Commandes Courantes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#valeurs-cles">Valeurs Clés</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="glossaire.html#objectifs-qualite">Objectifs Qualité</a></li>
+<li class="toctree-l3"><a class="reference internal" href="glossaire.html#metriques-performance">Métriques Performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="glossaire.html#donnees-projet">Données Projet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="glossaire.html#configurations">Configurations</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api/visualization.html">Module visualization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#metriques-analysees">Métriques Analysées</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#insights-cles">Insights Clés</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#visualisations-generees">Visualisations Générées</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#exemple-d-utilisation">Exemple d’Utilisation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id1">Métriques Analysées</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id2">Insights Clés</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id3">Visualisations Générées</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id4">Exemple d’Utilisation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id5">Métriques Analysées</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id6">Insights Clés</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id7">Visualisations Générées</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id8">Exemple d’Utilisation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id9">Métriques Analysées</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id10">Insights Clés</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id11">Visualisations Générées</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#id12">Exemple d’Utilisation</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.setup_s3_connection"><code class="docutils literal notranslate"><span class="pre">setup_s3_connection()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.get_ratings_data"><code class="docutils literal notranslate"><span class="pre">get_ratings_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.process_data"><code class="docutils literal notranslate"><span class="pre">process_data()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.create_plots_streamlit"><code class="docutils literal notranslate"><span class="pre">create_plots_streamlit()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.create_plots_matplotlib"><code class="docutils literal notranslate"><span class="pre">create_plots_matplotlib()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.print_stats"><code class="docutils literal notranslate"><span class="pre">print_stats()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.print_interpretation"><code class="docutils literal notranslate"><span class="pre">print_interpretation()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.render_analysis"><code class="docutils literal notranslate"><span class="pre">render_analysis()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-custom-charts">visualization.custom_charts</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.custom_charts.create_correlation_heatmap"><code class="docutils literal notranslate"><span class="pre">create_correlation_heatmap()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.custom_charts.create_distribution_plot"><code class="docutils literal notranslate"><span class="pre">create_distribution_plot()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.custom_charts.create_time_series_plot"><code class="docutils literal notranslate"><span class="pre">create_time_series_plot()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.custom_charts.create_custom_scatter_plot"><code class="docutils literal notranslate"><span class="pre">create_custom_scatter_plot()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/visualization.html#visualization-plotly-config">visualization.plotly_config</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/visualization.html#mangetamain_analytics.visualization.plotly_config.apply_theme"><code class="docutils literal notranslate"><span class="pre">apply_theme()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api/data.html">Module data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/data.html#data-cached-loaders">data.cached_loaders</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/data.html#mangetamain_analytics.data.cached_loaders.get_recipes_clean"><code class="docutils literal notranslate"><span class="pre">get_recipes_clean()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/data.html#mangetamain_analytics.data.cached_loaders.get_ratings_longterm"><code class="docutils literal notranslate"><span class="pre">get_ratings_longterm()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/data.html#fonctions-principales">Fonctions Principales</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/data.html#schema-des-donnees">Schéma des Données</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/data.html#options-avancees">Options Avancées</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/data.html#mecanisme-de-cache">Mécanisme de Cache</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/data.html#exemples-d-utilisation">Exemples d’Utilisation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/data.html#performance">Performance</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/data.html#optimisation-memoire">Optimisation Mémoire</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/data.html#troubleshooting">Troubleshooting</a></li>
-<li class="toctree-l3"><a class="reference internal" href="api/data.html#source-des-donnees">Source des Données</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="api/infrastructure.html">Modules Infrastructure</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/infrastructure.html#configuration-et-logging">Configuration et Logging</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/infrastructure.html#utils-logger">utils_logger</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#classe-loggerconfig">Classe LoggerConfig</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/infrastructure.html#gestion-base-de-donnees">Gestion Base de Données</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/infrastructure.html#models-database">models_database</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#classe-databasemanager">Classe DatabaseManager</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/infrastructure.html#classe-querytemplates">Classe QueryTemplates</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/infrastructure.html#utilitaires-exploration-donnees">Utilitaires Exploration Données</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/infrastructure.html#eda-data-utils">00_eda/_data_utils</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/infrastructure.html#tests-infrastructure">Tests Infrastructure</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/infrastructure.html#test">50_test</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="api/infrastructure.html#voir-also">Voir Also</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossaire.html#voir-aussi">Voir Aussi</a></li>
 </ul>
 </li>
 </ul>
@@ -712,6 +781,60 @@
 <h1>Architecture Technique<a class="headerlink" href="#architecture-technique" title="Lien vers cette rubrique"></a></h1>
 <p>Vue d’ensemble de l’architecture technique du projet.</p>
 <p><strong>Termes et acronymes</strong>: voir <a class="reference internal" href="glossaire.html"><span class="doc">Glossaire</span></a></p>
+<section id="infrastructure-deploiement">
+<h2>Infrastructure Déploiement<a class="headerlink" href="#infrastructure-deploiement" title="Lien vers cette rubrique"></a></h2>
+<section id="vm-autonome-virsh-kvm">
+<h3>VM Autonome (virsh/KVM)<a class="headerlink" href="#vm-autonome-virsh-kvm" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>Technologie</strong> : Machine virtuelle créée avec virsh (KVM/QEMU)</p></li>
+<li><p><strong>Nom</strong> : dataia</p></li>
+<li><p><strong>Hébergement</strong> : Serveur physique (réseau VPN interne)</p></li>
+<li><p><strong>OS</strong> : Linux (distribution basée Debian)</p></li>
+<li><p><strong>Ressources</strong> : CPU 4 cores, RAM 32 GB, Disk 500 GB</p></li>
+<li><p><strong>Accès</strong> : SSH uniquement depuis réseau VPN</p></li>
+</ul>
+</section>
+<section id="containerisation-docker">
+<h3>Containerisation Docker<a class="headerlink" href="#containerisation-docker" title="Lien vers cette rubrique"></a></h3>
+<p>Tous les environnements applicatifs tournent dans des <strong>containers Docker isolés</strong> :</p>
+<p><strong>Container PREPROD</strong> :</p>
+<ul class="simple">
+<li><p>Nom : mangetamain_preprod</p></li>
+<li><p>Port : 8500</p></li>
+<li><p>Base données : 10_preprod/data/mangetamain.duckdb</p></li>
+<li><p>Logs : 10_preprod/logs/</p></li>
+<li><p>Variables env : APP_ENV=preprod</p></li>
+</ul>
+<p><strong>Container PROD</strong> :</p>
+<ul class="simple">
+<li><p>Nom : mangetamain_prod</p></li>
+<li><p>Port : 8501</p></li>
+<li><p>Base données : 20_prod/data/mangetamain.duckdb</p></li>
+<li><p>Logs : 20_prod/logs/</p></li>
+<li><p>Variables env : APP_ENV=prod</p></li>
+</ul>
+<p><strong>Orchestration</strong> : Docker Compose (30_docker/)</p>
+<p><strong>Isolation complète</strong> :</p>
+<ul class="simple">
+<li><p>Bases de données distinctes</p></li>
+<li><p>Logs séparés par environnement</p></li>
+<li><p>Variables d’environnement différenciées</p></li>
+<li><p>Pas de partage de volumes entre containers</p></li>
+</ul>
+</section>
+<section id="runner-github-self-hosted">
+<h3>Runner GitHub Self-Hosted<a class="headerlink" href="#runner-github-self-hosted" title="Lien vers cette rubrique"></a></h3>
+<p>Le <strong>runner GitHub self-hosted</strong> installé sur la VM dataia orchestre les déploiements :</p>
+<ul class="simple">
+<li><p>Écoute les événements GitHub (push, workflow_dispatch)</p></li>
+<li><p>Exécute les workflows CI/CD (.github/workflows/)</p></li>
+<li><p>Accès direct aux containers pour déploiement</p></li>
+<li><p>Exécute git reset + docker-compose restart</p></li>
+<li><p><strong>Avantage</strong> : Déploiement automatique sans VPN manuel</p></li>
+</ul>
+<p><strong>Voir</strong> : <a class="reference internal" href="cicd.html"><span class="doc">Pipeline CI/CD</span></a> pour détails complets du pipeline.</p>
+</section>
+</section>
 <section id="stack-technique">
 <h2>Stack Technique<a class="headerlink" href="#stack-technique" title="Lien vers cette rubrique"></a></h2>
 <div class="line-block">
@@ -809,6 +932,11 @@
 <p><strong>Module data</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">cached_loaders.py</span></code> : Chargement des données avec cache Streamlit</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">loaders.py</span></code> : Classe DataLoader pour chargement données avec gestion d’erreurs</p></li>
+</ul>
+<p><strong>Module exceptions</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">exceptions.py</span></code> : Hiérarchie d’exceptions personnalisées (5 classes)</p></li>
 </ul>
 </section>
 </section>
@@ -958,128 +1086,126 @@
 <p><strong>Fonctionnalités clés :</strong></p>
 <ul class="simple">
 <li><p>Détection automatique environnement (prod/preprod/local)</p></li>
-<li><p>2 fichiers séparés : debug.log et errors.log</p></li>
-<li><p>Rotation automatique (10 MB debug, 5 MB errors)</p></li>
+<li><p>3 fichiers séparés : debug.log, errors.log, user_interactions.log</p></li>
+<li><p>Rotation automatique (10 MB debug, 5 MB errors, 1 jour user_interactions)</p></li>
 <li><p>Compression automatique (.zip)</p></li>
 <li><p>Thread-safe pour Streamlit (<code class="docutils literal notranslate"><span class="pre">enqueue=True</span></code>)</p></li>
 <li><p>Backtrace complet pour erreurs</p></li>
+<li><p>Module EnvironmentDetector avec cache</p></li>
 </ul>
 </section>
 <section id="id1">
 <h3>Configuration<a class="headerlink" href="#id1" title="Lien vers cette rubrique"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<p><strong>Module</strong>: <code class="docutils literal notranslate"><span class="pre">utils_logger.py</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">utils_logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggerConfig</span><span class="p">,</span> <span class="n">log_user_action</span><span class="p">,</span> <span class="n">log_error</span><span class="p">,</span> <span class="n">log_performance</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">setup_logging</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configure Loguru avec fichiers spécifiques à l&#39;environnement.&quot;&quot;&quot;</span>
+<span class="c1"># Configuration automatique au démarrage</span>
+<span class="n">log_config</span> <span class="o">=</span> <span class="n">LoggerConfig</span><span class="p">()</span>  <span class="c1"># Détecte env automatiquement</span>
+<span class="n">log_config</span><span class="o">.</span><span class="n">setup_logger</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Handlers configurés</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Console</strong>: PREPROD/LOCAL (DEBUG colorisé), PROD (WARNING non colorisé)</p></li>
+<li><p><strong>Debug</strong>: {env}_debug.log - Tous niveaux ≥ DEBUG (10 MB, 7j, zip)</p></li>
+<li><p><strong>Errors</strong>: {env}_errors.log - ERROR et CRITICAL (5 MB, 7j preprod / 30j prod, zip, backtrace)</p></li>
+<li><p><strong>User Interactions</strong>: {env}_user_interactions.log - Actions utilisateur (1 jour, 90j preprod / 30j prod, zip)</p></li>
+</ol>
+<p><strong>Fonctions utilitaires</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Erreurs avec contexte</span>
+<span class="n">log_error</span><span class="p">(</span><span class="n">exception</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s2">&quot;data_loading&quot;</span><span class="p">)</span>
 
-    <span class="n">env</span> <span class="o">=</span> <span class="n">get_environment</span><span class="p">()</span>  <span class="c1"># &#39;prod&#39;, &#39;preprod&#39;, ou &#39;local&#39;</span>
-    <span class="n">log_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&quot;logs&quot;</span><span class="p">)</span>
-    <span class="n">log_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Actions utilisateur</span>
+<span class="n">log_user_action</span><span class="p">(</span><span class="s2">&quot;filter_change&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;2024&quot;</span><span class="p">},</span> <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;anonymous&quot;</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>  <span class="c1"># Supprimer handler par défaut</span>
-
-    <span class="c1"># 1. Handler DEBUG + INFO</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;logs/</span><span class="si">{</span><span class="n">env</span><span class="si">}</span><span class="s2">_debug.log&quot;</span><span class="p">,</span>
-        <span class="n">level</span><span class="o">=</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span>
-        <span class="n">rotation</span><span class="o">=</span><span class="s2">&quot;10 MB&quot;</span><span class="p">,</span>
-        <span class="n">retention</span><span class="o">=</span><span class="s2">&quot;7 days&quot;</span><span class="p">,</span>
-        <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;zip&quot;</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="o">=</span><span class="k">lambda</span> <span class="n">record</span><span class="p">:</span> <span class="n">record</span><span class="p">[</span><span class="s2">&quot;level&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">],</span>
-        <span class="n">enqueue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="c1"># 2. Handler ERROR + CRITICAL</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">add</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;logs/</span><span class="si">{</span><span class="n">env</span><span class="si">}</span><span class="s2">_errors.log&quot;</span><span class="p">,</span>
-        <span class="n">level</span><span class="o">=</span><span class="s2">&quot;ERROR&quot;</span><span class="p">,</span>
-        <span class="n">rotation</span><span class="o">=</span><span class="s2">&quot;5 MB&quot;</span><span class="p">,</span>
-        <span class="n">retention</span><span class="o">=</span><span class="s2">&quot;30 days&quot;</span><span class="p">,</span>
-        <span class="n">compression</span><span class="o">=</span><span class="s2">&quot;zip&quot;</span><span class="p">,</span>
-        <span class="n">backtrace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">diagnose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">enqueue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="c1"># 3. Handler console (local uniquement)</span>
-    <span class="k">if</span> <span class="n">env</span> <span class="o">==</span> <span class="s2">&quot;local&quot;</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="n">colorize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Logging initialized for environment: </span><span class="si">{</span><span class="n">env</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Métriques performance</span>
+<span class="n">log_performance</span><span class="p">(</span><span class="s2">&quot;load_ratings&quot;</span><span class="p">,</span> <span class="mf">1.234</span><span class="p">,</span> <span class="n">records</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="detection-environnement">
 <h3>Détection Environnement<a class="headerlink" href="#detection-environnement" title="Lien vers cette rubrique"></a></h3>
-<p>La détection se fait automatiquement par :</p>
+<p><strong>Module</strong>: <code class="docutils literal notranslate"><span class="pre">src/mangetamain_analytics/utils/environment.py</span></code></p>
+<p>La détection se fait automatiquement via la classe <code class="docutils literal notranslate"><span class="pre">EnvironmentDetector</span></code> :</p>
 <ol class="arabic simple">
-<li><p><strong>Variable d’environnement</strong> <code class="docutils literal notranslate"><span class="pre">APP_ENV</span></code> (prioritaire)</p></li>
+<li><p><strong>Variable d’environnement</strong> <code class="docutils literal notranslate"><span class="pre">APP_ENV</span></code> (case-insensitive, prioritaire)</p></li>
 <li><p><strong>Path automatique</strong> : détection via <code class="docutils literal notranslate"><span class="pre">10_preprod/</span></code> ou <code class="docutils literal notranslate"><span class="pre">20_prod/</span></code> dans le path</p></li>
-<li><p><strong>Fallback</strong> : <code class="docutils literal notranslate"><span class="pre">local</span></code> si aucun des deux</p></li>
+<li><p><strong>Fallback</strong> : <code class="docutils literal notranslate"><span class="pre">LOCAL</span></code> si aucun des deux</p></li>
 </ol>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_environment</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detect current environment.&quot;&quot;&quot;</span>
-    <span class="n">env</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;APP_ENV&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">env</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">env</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<p><strong>Caractéristiques</strong> :</p>
+<ul class="simple">
+<li><p>Cache du résultat (performance)</p></li>
+<li><p>Méthode <code class="docutils literal notranslate"><span class="pre">reset_cache()</span></code> pour tests unitaires</p></li>
+<li><p>Méthode <code class="docutils literal notranslate"><span class="pre">get_name()</span></code> retournant string uppercase</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mangetamain_analytics.utils.environment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">EnvironmentDetector</span>
 
-    <span class="n">current_path</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">())</span>
-    <span class="k">if</span> <span class="s2">&quot;20_prod&quot;</span> <span class="ow">in</span> <span class="n">current_path</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;prod&quot;</span>
-    <span class="k">elif</span> <span class="s2">&quot;10_preprod&quot;</span> <span class="ow">in</span> <span class="n">current_path</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;preprod&quot;</span>
-    <span class="k">return</span> <span class="s2">&quot;local&quot;</span>
+<span class="c1"># Détection automatique avec cache</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">EnvironmentDetector</span><span class="o">.</span><span class="n">detect</span><span class="p">()</span>  <span class="c1"># Returns Environment.PREPROD|PROD|LOCAL</span>
+
+<span class="c1"># Nom environnement (string uppercase)</span>
+<span class="n">env_name</span> <span class="o">=</span> <span class="n">EnvironmentDetector</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>  <span class="c1"># Returns &quot;PREPROD&quot;|&quot;PROD&quot;|&quot;LOCAL&quot;</span>
+
+<span class="c1"># Reset cache (tests uniquement)</span>
+<span class="n">EnvironmentDetector</span><span class="o">.</span><span class="n">reset_cache</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
 <section id="structure-des-logs">
 <h3>Structure des Logs<a class="headerlink" href="#structure-des-logs" title="Lien vers cette rubrique"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>10_preprod/logs/
-├── preprod_debug.log       # DEBUG, INFO, SUCCESS
-├── preprod_errors.log      # ERROR, CRITICAL
+├── preprod_debug.log              # Tous niveaux ≥ DEBUG
+├── preprod_errors.log             # ERROR, CRITICAL (7j)
+├── preprod_user_interactions.log  # Actions utilisateur (90j)
 └── .gitkeep
 
 20_prod/logs/
-├── prod_debug.log          # DEBUG, INFO, SUCCESS
-├── prod_errors.log         # ERROR, CRITICAL
+├── prod_debug.log                 # Tous niveaux ≥ DEBUG
+├── prod_errors.log                # ERROR, CRITICAL (30j)
+├── prod_user_interactions.log     # Actions utilisateur (30j)
 └── .gitkeep
 </pre></div>
 </div>
 <p><strong>Rotation :</strong></p>
 <ul class="simple">
 <li><p>Debug logs : 10 MB max, rétention 7 jours</p></li>
-<li><p>Error logs : 5 MB max, rétention 30 jours</p></li>
+<li><p>Error logs : 5 MB max, rétention 7j (preprod) / 30j (prod)</p></li>
+<li><p>User interactions : 1 jour, rétention 90j (preprod) / 30j (prod)</p></li>
 <li><p>Compression automatique en .zip</p></li>
 </ul>
 </section>
 <section id="utilisation">
 <h3>Utilisation<a class="headerlink" href="#utilisation" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Logging basique</strong>:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">load_data</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load data from S3.&quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting data load from S3&quot;</span><span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">some_loading_function</span><span class="p">()</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2"> records&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">data</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to load data: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">raise</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Application started&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;S3 not accessible&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to load data&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Avec fonctions utilitaires</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">utils_logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_error</span><span class="p">,</span> <span class="n">log_user_action</span><span class="p">,</span> <span class="n">log_performance</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">process_input</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process user input.&quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;User input received: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># Erreurs avec contexte</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">load_from_s3</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">log_error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s2">&quot;data_loading&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">validate</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid input: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span>
+<span class="c1"># Actions utilisateur (pour analytics)</span>
+<span class="n">log_user_action</span><span class="p">(</span>
+    <span class="n">action</span><span class="o">=</span><span class="s2">&quot;filter_applied&quot;</span><span class="p">,</span>
+    <span class="n">details</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;2024&quot;</span><span class="p">},</span>
+    <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;anonymous&quot;</span>
+<span class="p">)</span>
 
-    <span class="n">result</span> <span class="o">=</span> <span class="n">compute</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Computation result: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">result</span>
+<span class="c1"># Métriques de performance</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">expensive_computation</span><span class="p">()</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="n">log_performance</span><span class="p">(</span><span class="s2">&quot;expensive_computation&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">records</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
 </pre></div>
 </div>
 </section>
@@ -1108,12 +1234,15 @@
 <section id="avantages">
 <h3>Avantages<a class="headerlink" href="#avantages" title="Lien vers cette rubrique"></a></h3>
 <ul class="simple">
-<li><p>✅ <strong>Séparation Prod/Preprod</strong> : Logs distincts automatiquement</p></li>
-<li><p>✅ <strong>Thread-safe</strong> : Compatible Streamlit multithread</p></li>
-<li><p>✅ <strong>Rotation automatique</strong> : Pas de logs géants</p></li>
-<li><p>✅ <strong>Compression</strong> : Économie d’espace disque</p></li>
-<li><p>✅ <strong>Détection auto</strong> : Fonctionne sans configuration manuelle</p></li>
-<li><p>✅ <strong>Backtrace complet</strong> : Debugging simplifié pour erreurs</p></li>
+<li><p>✅ <strong>Séparation Prod/Preprod/Local</strong> : Logs distincts automatiquement par environnement</p></li>
+<li><p>✅ <strong>Thread-safe</strong> : Compatible Streamlit multithread (<code class="docutils literal notranslate"><span class="pre">enqueue=True</span></code>)</p></li>
+<li><p>✅ <strong>Rotation automatique</strong> : Pas de logs géants (taille et temps)</p></li>
+<li><p>✅ <strong>Compression</strong> : Économie d’espace disque (.zip)</p></li>
+<li><p>✅ <strong>Détection auto</strong> : <code class="docutils literal notranslate"><span class="pre">EnvironmentDetector</span></code> avec cache</p></li>
+<li><p>✅ <strong>Backtrace complet</strong> : Debugging simplifié pour erreurs (<code class="docutils literal notranslate"><span class="pre">backtrace=True</span></code>, <code class="docutils literal notranslate"><span class="pre">diagnose=True</span></code>)</p></li>
+<li><p>✅ <strong>Tracking utilisateur</strong> : Fichier dédié <code class="docutils literal notranslate"><span class="pre">user_interactions.log</span></code></p></li>
+<li><p>✅ <strong>Fonctions utilitaires</strong> : <code class="docutils literal notranslate"><span class="pre">log_error()</span></code>, <code class="docutils literal notranslate"><span class="pre">log_user_action()</span></code>, <code class="docutils literal notranslate"><span class="pre">log_performance()</span></code></p></li>
+<li><p>✅ <strong>Rétention différenciée</strong> : 7j preprod, 30j prod pour errors</p></li>
 </ul>
 </section>
 </section>

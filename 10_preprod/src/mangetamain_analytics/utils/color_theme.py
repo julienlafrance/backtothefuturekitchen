@@ -181,9 +181,7 @@ class ColorTheme:
         hex_color = hex_color.lstrip("#")
 
         if len(hex_color) != 6:
-            raise ValueError(
-                f"Couleur hex doit avoir 6 caractères, reçu: #{hex_color}"
-            )
+            raise ValueError(f"Couleur hex doit avoir 6 caractères, reçu: #{hex_color}")
 
         try:
             r, g, b = tuple(int(hex_color[i : i + 2], 16) for i in (0, 2, 4))

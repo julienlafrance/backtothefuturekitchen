@@ -1528,9 +1528,7 @@ def analyse_trendline_complexite():
                 y=reg["y_pred"],
                 mode="lines",
                 name=f"Régression WLS (R²={reg['r2']:.3f})",
-                line=dict(
-                    color=ColorTheme.CHART_COLORS[3], width=2, dash="dash"
-                ),
+                line=dict(color=ColorTheme.CHART_COLORS[3], width=2, dash="dash"),
                 showlegend=(idx == 1),
             ),
             row=1,
@@ -1688,9 +1686,7 @@ def analyse_trendline_nutrition():
                 y=reg["y_pred"],
                 mode="lines",
                 name=f"Régression WLS (R²={reg['r2']:.3f})",
-                line=dict(
-                    color=ColorTheme.CHART_COLORS[4], width=2, dash="dash"
-                ),
+                line=dict(color=ColorTheme.CHART_COLORS[4], width=2, dash="dash"),
                 showlegend=(row == 1 and col == 1),
             ),
             row=row,
@@ -1864,9 +1860,7 @@ def analyse_trendline_ingredients(top_n=10):
             y=unique_per_year["n_unique"],
             mode="lines+markers",
             line=dict(color=ColorTheme.CHART_COLORS[1], width=2),
-            marker=dict(
-                size=sizes_div, color=ColorTheme.CHART_COLORS[1], opacity=0.6
-            ),
+            marker=dict(size=sizes_div, color=ColorTheme.CHART_COLORS[1], opacity=0.6),
             showlegend=False,
         ),
         row=1,
