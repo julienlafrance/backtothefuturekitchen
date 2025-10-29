@@ -28,7 +28,7 @@ from visualization.analyse_trendlines_v2 import (
 from visualization.analyse_seasonality import render_seasonality_analysis
 from visualization.analyse_weekend import render_weekend_analysis
 from visualization.analyse_ratings import render_ratings_analysis
-from utils import colors
+from utils.color_theme import ColorTheme
 from exceptions import DataLoadError, DatabaseError, AnalysisError, ConfigurationError
 
 # Configuration des chemins relatifs (fonctionne en PREPROD et PROD)
@@ -57,10 +57,10 @@ def display_environment_badge():
     env = EnvironmentDetector.get_name()
 
     if "PREPROD" in env:
-        badge_config = colors.ENV_PREPROD
+        badge_config = ColorTheme.ENV_PREPROD
         label = "PREPROD"
     elif "PROD" in env:
-        badge_config = colors.ENV_PROD
+        badge_config = ColorTheme.ENV_PROD
         label = "PROD"
     else:
         return
@@ -693,10 +693,10 @@ def main():
         with col1:
             st.markdown(
                 f"""
-                <div style="background-color: {colors.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {colors.CARD_BORDER};">
-                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📅 Période</div>
-                    <div style="color: {colors.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">1999-2018</div>
-                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">20 années</div>
+                <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {ColorTheme.CARD_BORDER};">
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📅 Période</div>
+                    <div style="color: {ColorTheme.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">1999-2018</div>
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">20 années</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -705,10 +705,10 @@ def main():
         with col2:
             st.markdown(
                 f"""
-                <div style="background-color: {colors.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {colors.CARD_BORDER};">
-                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">🍽️ Recettes</div>
-                    <div style="color: {colors.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">178,265</div>
-                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Total analysées</div>
+                <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {ColorTheme.CARD_BORDER};">
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">🍽️ Recettes</div>
+                    <div style="color: {ColorTheme.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">178,265</div>
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Total analysées</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -717,10 +717,10 @@ def main():
         with col3:
             st.markdown(
                 f"""
-                <div style="background-color: {colors.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {colors.CARD_BORDER};">
-                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📊 Analyses</div>
-                    <div style="color: {colors.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">6</div>
-                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Dimensions étudiées</div>
+                <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {ColorTheme.CARD_BORDER};">
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📊 Analyses</div>
+                    <div style="color: {ColorTheme.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">6</div>
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Dimensions étudiées</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -729,10 +729,10 @@ def main():
         with col4:
             st.markdown(
                 f"""
-                <div style="background-color: {colors.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {colors.CARD_BORDER};">
-                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📈 Méthode</div>
-                    <div style="color: {colors.ORANGE_PRIMARY}; font-size: 1.25rem; font-weight: 700;">WLS</div>
-                    <div style="color: {colors.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Weighted Least Squares</div>
+                <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {ColorTheme.CARD_BORDER};">
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📈 Méthode</div>
+                    <div style="color: {ColorTheme.ORANGE_PRIMARY}; font-size: 1.25rem; font-weight: 700;">WLS</div>
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Weighted Least Squares</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -799,9 +799,9 @@ def main():
     with footer_col1:
         st.markdown(
             f"""
-            <div style="background-color: {colors.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {colors.CARD_BORDER}; text-align: center;">
-                <span style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem;">🕒 Dernière màj: </span>
-                <span style="color: {colors.TEXT_PRIMARY}; font-weight: 600;">{today}</span>
+            <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {ColorTheme.CARD_BORDER}; text-align: center;">
+                <span style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem;">🕒 Dernière màj: </span>
+                <span style="color: {ColorTheme.TEXT_PRIMARY}; font-weight: 600;">{today}</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -810,9 +810,9 @@ def main():
     with footer_col2:
         st.markdown(
             f"""
-            <div style="background-color: {colors.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {colors.CARD_BORDER}; text-align: center;">
-                <span style="color: {colors.TEXT_SECONDARY}; font-size: 0.875rem;">📦 Version: </span>
-                <span style="color: {colors.TEXT_PRIMARY}; font-weight: 600;">1.0.0</span>
+            <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {ColorTheme.CARD_BORDER}; text-align: center;">
+                <span style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem;">📦 Version: </span>
+                <span style="color: {ColorTheme.TEXT_PRIMARY}; font-weight: 600;">1.0.0</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -821,8 +821,8 @@ def main():
     with footer_col3:
         st.markdown(
             f"""
-            <div style="background-color: {colors.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {colors.CARD_BORDER}; text-align: center;">
-                <a href="https://github.com/julienlafrance/backtothefuturekitchen" target="_blank" style="color: {colors.ORANGE_PRIMARY}; text-decoration: none; font-weight: 600;">
+            <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {ColorTheme.CARD_BORDER}; text-align: center;">
+                <a href="https://github.com/julienlafrance/backtothefuturekitchen" target="_blank" style="color: {ColorTheme.ORANGE_PRIMARY}; text-decoration: none; font-weight: 600;">
                     📚 Documentation
                 </a>
             </div>

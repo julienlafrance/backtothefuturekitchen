@@ -4,7 +4,7 @@ Ce module fournit des fonctions pour appliquer automatiquement
 la charte graphique Back to the Kitchen aux graphiques Plotly.
 """
 
-from . import colors
+from .color_theme import ColorTheme
 
 
 def apply_chart_theme(fig, title=None):
@@ -22,12 +22,12 @@ def apply_chart_theme(fig, title=None):
         plot_bgcolor="rgba(0,0,0,0)",
         paper_bgcolor="rgba(0,0,0,0)",
         # Police et couleurs de texte
-        font=dict(color=colors.TEXT_PRIMARY, family="Inter, sans-serif", size=12),
+        font=dict(color=ColorTheme.TEXT_PRIMARY, family="Inter, sans-serif", size=12),
         # Titre du graphique
         title=(
             dict(
                 text=title,
-                font=dict(color=colors.PRIMARY, size=16, family="Michroma, sans-serif"),
+                font=dict(color=ColorTheme.PRIMARY, size=16, family="Michroma, sans-serif"),
                 x=0.5,
                 xanchor="center",
             )
@@ -39,38 +39,38 @@ def apply_chart_theme(fig, title=None):
             showgrid=True,
             gridcolor="#444444",
             gridwidth=1,
-            tickfont=dict(color=colors.TEXT_PRIMARY, size=12),
-            title=dict(font=dict(color=colors.TEXT_SECONDARY, size=13)),
+            tickfont=dict(color=ColorTheme.TEXT_PRIMARY, size=12),
+            title=dict(font=dict(color=ColorTheme.TEXT_SECONDARY, size=13)),
         ),
         yaxis=dict(
             showgrid=True,
             gridcolor="#444444",
             gridwidth=1,
-            tickfont=dict(color=colors.TEXT_PRIMARY, size=12),
-            title=dict(font=dict(color=colors.TEXT_SECONDARY, size=13)),
+            tickfont=dict(color=ColorTheme.TEXT_PRIMARY, size=12),
+            title=dict(font=dict(color=ColorTheme.TEXT_SECONDARY, size=13)),
         ),
         # Légende
         legend=dict(
             bgcolor="rgba(42, 42, 42, 0.8)",
             bordercolor="#666666",
             borderwidth=1,
-            font=dict(color=colors.TEXT_PRIMARY),
+            font=dict(color=ColorTheme.TEXT_PRIMARY),
         ),
         # Hover label
         hoverlabel=dict(
-            bgcolor=colors.BACKGROUND_CARD,
+            bgcolor=ColorTheme.BACKGROUND_CARD,
             font_size=12,
             font_family="Inter, sans-serif",
-            font_color=colors.TEXT_WHITE,
-            bordercolor=colors.PRIMARY,
+            font_color=ColorTheme.TEXT_WHITE,
+            bordercolor=ColorTheme.PRIMARY,
         ),
         # Marges
         margin=dict(l=60, r=40, t=60, b=60),
         # Mode bar
         modebar=dict(
             bgcolor="rgba(0,0,0,0)",
-            color=colors.TEXT_SECONDARY,
-            activecolor=colors.PRIMARY,
+            color=ColorTheme.TEXT_SECONDARY,
+            activecolor=ColorTheme.PRIMARY,
         ),
     )
 
@@ -83,7 +83,7 @@ def get_bar_color():
     Returns:
         Couleur hex pour les barres d'histogramme
     """
-    return colors.CHART_COLORS[0]
+    return ColorTheme.CHART_COLORS[0]
 
 
 def get_line_colors():
@@ -92,7 +92,7 @@ def get_line_colors():
     Returns:
         Liste de couleurs hex
     """
-    return colors.CHART_COLORS
+    return ColorTheme.CHART_COLORS
 
 
 def get_scatter_color():
@@ -101,7 +101,7 @@ def get_scatter_color():
     Returns:
         Couleur hex pour les points de scatter
     """
-    return colors.CHART_COLORS[1]  # Bleu clair
+    return ColorTheme.CHART_COLORS[1]  # Jaune doré
 
 
 def get_reference_line_color():
@@ -110,7 +110,7 @@ def get_reference_line_color():
     Returns:
         Couleur hex pour les lignes de référence
     """
-    return colors.ERROR  # Rouge pour les lignes de référence
+    return ColorTheme.ERROR  # Rouge pour les lignes de référence
 
 
 def apply_subplot_theme(fig, num_rows=1, num_cols=2):
@@ -134,8 +134,8 @@ def apply_subplot_theme(fig, num_rows=1, num_cols=2):
                 showgrid=True,
                 gridcolor="#444444",
                 gridwidth=1,
-                tickfont=dict(color=colors.TEXT_PRIMARY, size=12),
-                title_font=dict(color=colors.TEXT_SECONDARY, size=13),
+                tickfont=dict(color=ColorTheme.TEXT_PRIMARY, size=12),
+                title_font=dict(color=ColorTheme.TEXT_SECONDARY, size=13),
                 row=row,
                 col=col,
             )
@@ -143,15 +143,15 @@ def apply_subplot_theme(fig, num_rows=1, num_cols=2):
                 showgrid=True,
                 gridcolor="#444444",
                 gridwidth=1,
-                tickfont=dict(color=colors.TEXT_PRIMARY, size=12),
-                title_font=dict(color=colors.TEXT_SECONDARY, size=13),
+                tickfont=dict(color=ColorTheme.TEXT_PRIMARY, size=12),
+                title_font=dict(color=ColorTheme.TEXT_SECONDARY, size=13),
                 row=row,
                 col=col,
             )
 
     # Titres de subplots en orange
     fig.update_annotations(
-        font=dict(color=colors.PRIMARY, size=13, family="Inter, sans-serif")
+        font=dict(color=ColorTheme.PRIMARY, size=13, family="Inter, sans-serif")
     )
 
     return fig
