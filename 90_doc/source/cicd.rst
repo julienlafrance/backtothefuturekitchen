@@ -21,36 +21,63 @@ Cette architecture permet le déploiement sans connexion VPN manuelle. Le runner
 Architecture Pipeline
 ---------------------
 
-Pipeline Séquentiel 3 Phases
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Pipeline Parallèle avec Rollback Automatique
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: text
 
-   ┌─────────────────────────────────────────────────────────┐
-   │  1. CI Pipeline - Quality & Tests                      │
-   │     (GitHub-hosted runners)                             │
-   │     - PEP8, Black, Docstrings, Tests                    │
-   │     - Déclenché sur push/PR vers main                   │
-   └────────────────┬────────────────────────────────────────┘
-                    │
-                    ▼ (si succès)
-   ┌─────────────────────────────────────────────────────────┐
-   │  2. CD Preprod - Auto Deploy                           │
-   │     (Self-hosted runner sur VM dataia)                  │
-   │     - Pull code, restart container, health check        │
-   │     - Notifications Discord                             │
-   │     - URL: https://mangetamain.lafrance.io/             │
-   └─────────────────────────────────────────────────────────┘
+   Push vers main
+        │
+        ├──────────────────────────────────────┐
+        │                                       │
+        ▼                                       ▼
+   ┌─────────────────────────────────┐  ┌──────────────────────────────────┐
+   │  1. CI Pipeline                 │  │  2. CD Preprod                   │
+   │  (GitHub-hosted runners)        │  │  (Self-hosted runner)            │
+   │                                 │  │                                  │
+   │  - PEP8, Black, Docstrings      │  │  ⚡ DEPLOY FIRST (~40s)          │
+   │  - Tests unitaires              │  │  - Save rollback point           │
+   │  - Coverage ≥90%                │  │  - git reset --hard SHA          │
+   │  - Tests infrastructure         │  │  - docker-compose restart        │
+   │                                 │  │  - Health check                  │
+   │  Durée: ~2-3 minutes            │  │  - Launch CI watcher script      │
+   └────────────┬────────────────────┘  │                                  │
+                │                       │  🔍 WATCH CI IN BACKGROUND       │
+                │                       │  - Poll CI status (5 min max)    │
+                │                       │                                  │
+                ├───────────────────────┤                                  │
+                │                       │                                  │
+                ▼                       ▼                                  │
+           ✅ CI SUCCESS          ❌ CI FAILURE                           │
+                │                       │                                  │
+                │                       ▼                                  │
+                │              🔄 ROLLBACK AUTOMATIQUE                    │
+                │              - git reset --hard last-validated-sha      │
+                │              - docker-compose restart                   │
+                │              - Notification Discord avec logs CI        │
+                │                                                          │
+                ▼                                                          │
+           Marquer SHA validé                                             │
+           Notification succès                                            │
+   └──────────────────────────────────────────────────────────────────────┘
 
    ┌─────────────────────────────────────────────────────────┐
    │  3. CD Production - Manuel avec confirmation            │
    │     (Self-hosted runner sur VM dataia)                  │
-   │     - Backup, deploy, restart, health checks            │
-   │     - Notifications Discord avec rollback si échec      │
+   │     - Backup automatique avant deploy                   │
+   │     - git reset --hard SHA validé                       │
+   │     - docker-compose restart                            │
+   │     - Health checks (3 tentatives)                      │
+   │     - Notifications Discord                             │
    │     - URL: https://backtothefuturekitchen.lafrance.io/  │
    └─────────────────────────────────────────────────────────┘
 
-**Avantage clé**: Si le CI échoue, le déploiement PREPROD est automatiquement bloqué.
+**Avantages clés**:
+
+* ⚡ **Déploiement ultra-rapide**: 40s au lieu de 3-5 min (pas d'attente CI)
+* 🔒 **Sécurité garantie**: Rollback automatique si CI échoue
+* 🎯 **Traçabilité**: Chaque déploiement correspond exactement au SHA testé
+* 🔄 **Runner libéré**: Self-hosted runner disponible immédiatement
 
 Workflows GitHub Actions
 -------------------------
