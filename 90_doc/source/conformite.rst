@@ -333,7 +333,9 @@ CD PREPROD
 
 Déploiement automatique sur https://mangetamain.lafrance.io/
 
-* Déclenché après succès du CI
+* **Déclenché en parallèle du CI** (pas d'attente)
+* **Déploiement ultra-rapide** : ~40 secondes
+* **Rollback automatique** si CI échoue
 * Runner self-hosted (VM dataia)
 * Health checks automatiques
 * Notifications Discord

@@ -1,5 +1,33 @@
 # Changelog Documentation Sphinx
 
+## Version 2.2 - Correction Architecture CI/CD (2025-10-30)
+
+### Résumé
+Correction du schéma d'architecture CI/CD pour refléter fidèlement le comportement réel : déploiement parallèle avec rollback automatique.
+
+### Changements
+
+**source/cicd.rst** - Schéma architecture CI/CD
+- ❌ **AVANT**: Schéma séquentiel incorrect (CI → CD Preprod)
+- ✅ **APRÈS**: Schéma parallèle avec rollback automatique
+
+**Architecture corrigée**:
+```
+Push vers main
+     ├──→ CI Pipeline (GitHub-hosted, 2-3 min)
+     └──→ CD Preprod (Self-hosted, 40s deploy + watcher background)
+          ├──→ CI SUCCESS: Marquer SHA validé
+          └──→ CI FAILURE: Rollback automatique vers last-validated-sha
+```
+
+**Avantages documentés**:
+- ⚡ Déploiement ultra-rapide: 40s au lieu de 3-5 min
+- 🔒 Sécurité garantie: Rollback automatique si CI échoue
+- 🎯 Traçabilité: SHA déployé = SHA testé
+- 🔄 Runner libéré immédiatement
+
+**Commit**: b4f9a0c - Corriger schéma architecture CI/CD pour refléter parallélisation et rollback automatique
+
 ## Version 2.1 - Refactoring POO ColorTheme (2025-10-30)
 
 ### Résumé
