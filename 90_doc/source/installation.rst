@@ -372,7 +372,7 @@ Erreur : Tests pytest échouent
 
 .. code-block:: bash
 
-   uv run pytest tests/unit/test_colors.py -v
+   uv run pytest tests/unit/test_color_theme.py -v
 
 Port 8501 déjà utilisé
 ^^^^^^^^^^^^^^^^^^^^^^^

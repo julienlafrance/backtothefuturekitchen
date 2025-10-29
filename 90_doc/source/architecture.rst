@@ -161,8 +161,8 @@ Modules Applicatifs
 
 **Module utils**
 
-* ``colors.py`` : Palette de couleurs de la charte graphique
-* ``chart_theme.py`` : Thème Plotly unifié
+* ``color_theme.py`` : Classe ColorTheme POO pour la charte graphique "Back to the Kitchen"
+* ``chart_theme.py`` : Fonctions d'application du thème Plotly
 
 **Module visualization**
 

@@ -257,7 +257,7 @@ Métriques par Module
 =========================== ========= ======
 Module                      Coverage  Tests
 =========================== ========= ======
-utils/colors.py             100%      10
+utils/color_theme.py        97%       35
 utils/chart_theme.py        100%      10
 visualization/trendlines.py 100%      8
 visualization/ratings.py    90-100%   5-14

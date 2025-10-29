@@ -189,26 +189,27 @@ Comment ajouter une nouvelle analyse ?
 Comment personnaliser les couleurs ?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**Modifier** : ``src/mangetamain_analytics/utils/colors.py``
+**Modifier** : ``src/mangetamain_analytics/utils/color_theme.py``
 
 .. code-block:: python
 
-   # Changer couleur primaire
-   ORANGE_PRIMARY = "#FF8C00"  # Modifier HEX ici
+   class ColorTheme:
+       # Changer couleur primaire
+       ORANGE_PRIMARY: str = "#FF8C00"  # Modifier HEX ici
 
-   # Ajouter nouvelle couleur
-   MA_COULEUR_PERSO = "#123456"
+       # Ajouter nouvelle couleur
+       MA_COULEUR_PERSO: str = "#123456"
 
 **Utiliser** :
 
 .. code-block:: python
 
-   from utils import colors
+   from utils.color_theme import ColorTheme
 
    fig.add_trace(go.Bar(
        x=data['x'],
        y=data['y'],
-       marker_color=colors.MA_COULEUR_PERSO
+       marker_color=ColorTheme.MA_COULEUR_PERSO
    ))
 
 Comment debugger un graphique Plotly ?
@@ -267,7 +268,7 @@ Comment lancer les tests ?
 
 .. code-block:: bash
 
-   uv run pytest tests/unit/test_colors.py::test_get_rgba -v
+   uv run pytest tests/unit/test_color_theme.py::test_to_rgba_basic -v
 
 Comment augmenter le coverage ?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

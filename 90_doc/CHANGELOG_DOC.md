@@ -1,5 +1,127 @@
 # Changelog Documentation Sphinx
 
+## Version 2.1 - Refactoring POO ColorTheme (2025-10-30)
+
+### Résumé
+Implémentation Phase 1.1 du refactoring POO : Classe ColorTheme pour centraliser la gestion des couleurs de la charte graphique "Back to the Kitchen".
+
+### Nouveaux Modules
+
+**src/mangetamain_analytics/utils/color_theme.py** (262 lignes)
+- Classe ColorTheme avec encapsulation POO complète
+- 40+ constantes couleurs typées (fond, texte, orange, états)
+- Palette graphiques CHART_COLORS (8 couleurs logo)
+- Méthodes utilitaires:
+  - `to_rgba(hex_color, alpha)`: Conversion HEX → RGBA avec validation
+  - `get_plotly_theme()`: Configuration Plotly complète
+  - `get_seasonal_colors()`: Mapping saisons → couleurs
+  - `get_seasonal_color(season)`: Couleur individuelle par saison
+- Validation entrées (ValueError si hex/alpha invalide)
+- Docstrings Google Style avec exemples
+
+**tests/unit/test_color_theme.py** (35 tests)
+- TestColorThemeConstants: 8 tests constantes
+- TestColorThemeToRgba: 11 tests conversion RGBA + validation
+- TestColorThemePlotlyTheme: 6 tests thème Plotly
+- TestColorThemeSeasonalColors: 10 tests couleurs saisonnières
+- Coverage: 97% du module color_theme
+
+### Migration Code (7 fichiers, ~129 occurrences)
+
+**Fichiers migrés**:
+1. `src/mangetamain_analytics/utils/chart_theme.py` (16 occurrences)
+2. `src/mangetamain_analytics/main.py` (26 occurrences)
+3. `src/mangetamain_analytics/visualization/analyse_ratings.py` (39 occurrences)
+4. `src/mangetamain_analytics/visualization/analyse_trendlines_v2.py` (20 occurrences)
+5. `src/mangetamain_analytics/visualization/analyse_weekend.py` (~15 occurrences)
+6. `src/mangetamain_analytics/visualization/analyse_seasonality.py` (~10 occurrences)
+7. `tests/unit/test_chart_theme.py` (3 occurrences)
+
+**Pattern migration**:
+- Avant: `colors.TEXT_PRIMARY` ou `chart_theme.colors.TEXT_PRIMARY`
+- Après: `ColorTheme.TEXT_PRIMARY`
+- Import: `from utils.color_theme import ColorTheme`
+
+### Hotfixes Production (3 corrections)
+
+**Hotfix 1: Imports manquants** (commit 0bd7a8d)
+- Erreur: `AttributeError: module 'utils.chart_theme' has no attribute 'colors'`
+- Fichiers: analyse_trendlines_v2.py, analyse_weekend.py, analyse_seasonality.py
+- Fix: Ajout imports ColorTheme + migration chart_theme.colors → ColorTheme
+
+**Hotfix 2: Méthode renommée** (commit 67f41ab)
+- Erreur: `AttributeError: 'ColorTheme' has no attribute 'get_rgba'`
+- Fichier: analyse_ratings.py ligne 617
+- Fix: get_rgba() → to_rgba() (3 occurrences)
+
+**Hotfix 3: Formatage Black** (commit 8a6a887)
+- Erreur: CI black check failed (lignes >88 caractères)
+- Fichiers: chart_theme.py, color_theme.py, analyse_weekend.py, analyse_trendlines_v2.py
+- Fix: Application black localement avant commit
+
+### CI/CD Complet
+
+**CI Pipeline** (run 18924982517) - ✅ SUCCÈS
+- Code Quality Checks: 43s (flake8, black, pydocstyle, mypy)
+- Tests unitaires (coverage >= 90%): 37s - 118 tests passed
+- Tests infrastructure: 22s
+
+**CD PREPROD** (run 18924982526) - ✅ SUCCÈS
+- Deploy + Watch CI: 42s
+- Health check: ✅
+- Application PREPROD: Running without errors
+
+### Commits Principaux
+
+1. `87475a0` - Créer classe ColorTheme POO avec validation complète
+2. `b1055dd` - Migrer main.py + chart_theme.py vers ColorTheme
+3. `0bd7a8d` - Hotfix: corriger imports chart_theme.colors manquants
+4. `67f41ab` - Hotfix: corriger get_rgba → to_rgba
+5. `8a6a887` - Appliquer formatage black sur fichiers ColorTheme
+
+### Métriques
+
+**Code**:
+- Nouveau: 262 lignes (color_theme.py)
+- Modifiés: 7 fichiers (~129 occurrences migrées)
+- Tests: 35 tests (97% coverage ColorTheme)
+- Tests totaux: 118 passed
+
+**Qualité**:
+- Type hints complets: ✅
+- Validation entrées: ✅
+- Docstrings Google Style: ✅
+- PEP8 compliance: ✅
+- Black formatting: ✅
+
+### Bénéfices
+
+1. **Encapsulation POO**: Couleurs centralisées dans classe unique
+2. **Validation robuste**: Erreurs explicites si couleurs/alpha invalides
+3. **Maintenabilité**: Import unique `ColorTheme.ORANGE_PRIMARY`
+4. **Documentation**: Docstrings avec exemples d'usage
+5. **Testabilité**: 35 tests couvrant tous les cas d'usage
+6. **Type safety**: Type hints complets pour IDE autocomplete
+
+### Statut Refactoring POO
+
+**Phase 1.1: ColorTheme** - ✅ TERMINÉ
+- Classe implémentée: ✅
+- Tests créés: ✅
+- Code migré: ✅
+- Déployé PREPROD: ✅
+
+**Phase 1.2: AnalysisConfig** - ⏳ À VENIR
+**Phase 2: DataManager** - ⏳ À VENIR
+
+---
+
+**Date**: 2025-10-30
+**Auteur**: Refactoring POO Phase 1.1
+**Statut**: ✅ Production-ready (PREPROD)
+
+---
+
 ## Version 2.0 - Itérations 21-50 (2025-10-27)
 
 ### Résumé Global
