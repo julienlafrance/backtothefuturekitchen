@@ -64,17 +64,30 @@ Le **runner GitHub self-hosted** installé sur la VM dataia orchestre les déplo
 Stack Technique
 ---------------
 
-| Catégorie | Technologies |
-|-----------|--------------|
-| **Backend** | DuckDB 1.4.0 (base OLAP columnar) |
-| **Frontend** | Streamlit 1.50.0 + Plotly 5.24.1 |
-| **Data Science** | Pandas 2.2.3, NumPy 2.2.6, Polars 1.19.0 |
-| **Logging** | Loguru 0.7.3 (rotation automatique) |
-| **Package Manager** | uv 0.8.22 (ultrafast pip replacement) |
-| **Tests** | pytest 8.5.0, pytest-cov 6.0.0 |
-| **CI/CD** | GitHub Actions + self-hosted runner |
-| **Déploiement** | Docker Compose, VM dataia (VPN) |
-| **Monitoring** | Discord webhooks (notifications temps réel) |
+.. list-table::
+   :header-rows: 1
+   :widths: 30 70
+
+   * - Catégorie
+     - Technologies
+   * - **Backend**
+     - DuckDB 1.4.0 (base OLAP columnar)
+   * - **Frontend**
+     - Streamlit 1.50.0 + Plotly 5.24.1
+   * - **Data Science**
+     - Pandas 2.2.3, NumPy 2.2.6, Polars 1.19.0
+   * - **Logging**
+     - Loguru 0.7.3 (rotation automatique)
+   * - **Package Manager**
+     - uv 0.8.22 (ultrafast pip replacement)
+   * - **Tests**
+     - pytest 8.5.0, pytest-cov 6.0.0
+   * - **CI/CD**
+     - GitHub Actions + self-hosted runner
+   * - **Déploiement**
+     - Docker Compose, VM dataia (VPN)
+   * - **Monitoring**
+     - Discord webhooks (notifications temps réel)
 
 Détails des Technologies Clés
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
