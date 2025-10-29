@@ -20,6 +20,7 @@ from data.cached_loaders import get_recipes_clean as load_recipes_clean
 
 # Import de la charte graphique
 from utils import chart_theme
+from utils.color_theme import ColorTheme
 
 
 # ============================================================================
@@ -64,10 +65,10 @@ def analyse_seasonality_volume():
     # Palette de couleurs "Back to the Kitchen" pour les saisons
     # Adaptation des couleurs saisonnières au thème orange/noir/gris
     season_colors_btk = {
-        "Winter": chart_theme.colors.CHART_COLORS[1],  # Jaune doré (#FFD700)
-        "Spring": chart_theme.colors.CHART_COLORS[2],  # Rouge/Orange profond (#E24E1B)
-        "Summer": chart_theme.colors.ORANGE_PRIMARY,  # Orange vif (#FF8C00)
-        "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Rouge/Orange profond (#E24E1B)
+        "Winter": ColorTheme.CHART_COLORS[1],  # Jaune doré (#FFD700)
+        "Spring": ColorTheme.CHART_COLORS[2],  # Rouge/Orange profond (#E24E1B)
+        "Summer": ColorTheme.ORANGE_PRIMARY,  # Orange vif (#FF8C00)
+        "Autumn": ColorTheme.ORANGE_SECONDARY,  # Rouge/Orange profond (#E24E1B)
     }
 
     # Calcul des statistiques
@@ -140,11 +141,11 @@ def analyse_seasonality_volume():
             marker=dict(
                 color=colors_bars,
                 opacity=0.85,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             text=[f"{val:,}" for val in recipes_per_season_pd["n_recipes"]],
             textposition="outside",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             hovertemplate="<b>%{x}</b><br>Recettes: %{y:,}<extra></extra>",
             showlegend=False,
         ),
@@ -252,10 +253,10 @@ def analyse_seasonality_duree():
 
     # Palette de couleurs
     season_colors_btk = {
-        "Winter": chart_theme.colors.CHART_COLORS[1],  # Jaune doré (#FFD700)
-        "Spring": chart_theme.colors.CHART_COLORS[2],  # Rouge/Orange profond (#E24E1B)
-        "Summer": chart_theme.colors.ORANGE_PRIMARY,  # Orange vif (#FF8C00)
-        "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Rouge/Orange profond (#E24E1B)
+        "Winter": ColorTheme.CHART_COLORS[1],  # Jaune doré (#FFD700)
+        "Spring": ColorTheme.CHART_COLORS[2],  # Rouge/Orange profond (#E24E1B)
+        "Summer": ColorTheme.ORANGE_PRIMARY,  # Orange vif (#FF8C00)
+        "Autumn": ColorTheme.ORANGE_SECONDARY,  # Rouge/Orange profond (#E24E1B)
     }
 
     # ========================================
@@ -317,12 +318,12 @@ def analyse_seasonality_duree():
             marker=dict(
                 color=colors_bars,
                 opacity=0.85,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             name="Moyenne",
             text=[f"{val:.1f} min" for val in minutes_by_season_pd["mean_minutes"]],
             textposition="outside",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             hovertemplate="<b>%{x}</b><br>Moyenne: %{y:.1f} min<extra></extra>",
         ),
         row=1,
@@ -335,8 +336,8 @@ def analyse_seasonality_duree():
             x=minutes_by_season_pd["season"],
             y=minutes_by_season_pd["median_minutes"],
             mode="lines+markers",
-            line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=2, dash="dash"),
-            marker=dict(size=8, color=chart_theme.colors.TEXT_PRIMARY),
+            line=dict(color=ColorTheme.TEXT_PRIMARY, width=2, dash="dash"),
+            marker=dict(size=8, color=ColorTheme.TEXT_PRIMARY),
             name="Médiane",
             hovertemplate="<b>%{x}</b><br>Médiane: %{y:.1f} min<extra></extra>",
         ),
@@ -351,7 +352,7 @@ def analyse_seasonality_duree():
                 x=[row["season"], row["season"]],
                 y=[row["q25"], row["q75"]],
                 mode="lines",
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=3),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=3),
                 showlegend=False,
                 hovertemplate=f"<b>{row['season']}</b><br>IQR: {row['IQR']:.1f} min<br>Q25: {row['q25']:.1f}<br>Q75: {row['q75']:.1f}<extra></extra>",
             ),
@@ -468,10 +469,10 @@ def analyse_seasonality_complexite():
 
     # Palette de couleurs
     season_colors_btk = {
-        "Winter": chart_theme.colors.CHART_COLORS[1],  # Jaune doré (#FFD700)
-        "Spring": chart_theme.colors.CHART_COLORS[2],  # Rouge/Orange profond (#E24E1B)
-        "Summer": chart_theme.colors.ORANGE_PRIMARY,  # Orange vif (#FF8C00)
-        "Autumn": chart_theme.colors.ORANGE_SECONDARY,  # Rouge/Orange profond (#E24E1B)
+        "Winter": ColorTheme.CHART_COLORS[1],  # Jaune doré (#FFD700)
+        "Spring": ColorTheme.CHART_COLORS[2],  # Rouge/Orange profond (#E24E1B)
+        "Summer": ColorTheme.ORANGE_PRIMARY,  # Orange vif (#FF8C00)
+        "Autumn": ColorTheme.ORANGE_SECONDARY,  # Rouge/Orange profond (#E24E1B)
     }
 
     # ========================================
@@ -534,12 +535,12 @@ def analyse_seasonality_complexite():
             marker=dict(
                 color=colors_bars,
                 opacity=0.85,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             name="Moyenne",
             text=[f"{val:.2f}" for val in complexity_by_season_pd["mean_complexity"]],
             textposition="outside",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             hovertemplate="<b>%{x}</b><br>Complexité: %{y:.2f}<extra></extra>",
             showlegend=False,
         ),
@@ -555,12 +556,12 @@ def analyse_seasonality_complexite():
             marker=dict(
                 color=colors_bars,
                 opacity=0.85,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             name="Moyenne",
             text=[f"{val:.1f}" for val in complexity_by_season_pd["mean_steps"]],
             textposition="outside",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             hovertemplate="<b>%{x}</b><br>Étapes: %{y:.1f}<extra></extra>",
             showlegend=False,
         ),
@@ -576,12 +577,12 @@ def analyse_seasonality_complexite():
             marker=dict(
                 color=colors_bars,
                 opacity=0.85,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             name="Moyenne",
             text=[f"{val:.1f}" for val in complexity_by_season_pd["mean_ingredients"]],
             textposition="outside",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             hovertemplate="<b>%{x}</b><br>Ingrédients: %{y:.1f}<extra></extra>",
             showlegend=False,
         ),
@@ -746,15 +747,15 @@ def analyse_seasonality_nutrition():
             colorscale="RdYlGn_r",  # Rouge = élevé, Vert = faible
             text=np.round(nutrition_norm_transposed, 2),
             texttemplate="%{text}",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             hovertemplate="<b>%{y}</b><br>Saison: %{x}<br>Z-score: %{z:.2f}<extra></extra>",
             colorbar=dict(
                 title=dict(
                     text="Z-score<br>(écart à la moyenne)",
                     side="right",
-                    font=dict(color=chart_theme.colors.TEXT_PRIMARY),
+                    font=dict(color=ColorTheme.TEXT_PRIMARY),
                 ),
-                tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY),
+                tickfont=dict(color=ColorTheme.TEXT_PRIMARY),
             ),
         )
     )
@@ -969,9 +970,9 @@ def analyse_seasonality_ingredients():
                 title=dict(
                     text="Utilisation<br>saisonnière (%)",
                     side="right",
-                    font=dict(color=chart_theme.colors.TEXT_PRIMARY),
+                    font=dict(color=ColorTheme.TEXT_PRIMARY),
                 ),
-                tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY),
+                tickfont=dict(color=ColorTheme.TEXT_PRIMARY),
             ),
         )
     )
@@ -1144,9 +1145,9 @@ def analyse_seasonality_tags():
                 title=dict(
                     text="Utilisation<br>saisonnière (%)",
                     side="right",
-                    font=dict(color=chart_theme.colors.TEXT_PRIMARY),
+                    font=dict(color=ColorTheme.TEXT_PRIMARY),
                 ),
-                tickfont=dict(color=chart_theme.colors.TEXT_PRIMARY),
+                tickfont=dict(color=ColorTheme.TEXT_PRIMARY),
             ),
         )
     )

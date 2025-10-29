@@ -16,6 +16,7 @@ import matplotlib.colors as mcolors
 
 from data.cached_loaders import get_recipes_clean as load_recipes_clean
 from utils import chart_theme
+from utils.color_theme import ColorTheme
 
 warnings.filterwarnings("ignore")
 
@@ -130,7 +131,7 @@ def analyse_trendline_volume():
                 for val in recipes_per_year["n_recipes"]
             ],
             textposition="outside",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             showlegend=False,
             hovertemplate="<b>Année %{x}</b><br>Recettes: %{y:,}<extra></extra>",
         ),
@@ -148,7 +149,7 @@ def analyse_trendline_volume():
                 color=chart_theme.get_scatter_color(),
                 size=8,
                 opacity=0.7,
-                line=dict(width=1, color=chart_theme.colors.TEXT_PRIMARY),
+                line=dict(width=1, color=ColorTheme.TEXT_PRIMARY),
             ),
             name="Observations",
             hovertemplate="Théorique: %{x:.2f}<br>Observé: %{y:,.0f}<extra></extra>",
@@ -330,8 +331,8 @@ def analyse_trendline_duree():
     w = minutes_by_year["n_recipes"].values
 
     # Couleurs de la charte "Back to the Kitchen"
-    color_mean = chart_theme.colors.CHART_COLORS[0]  # Orange primary
-    color_median = chart_theme.colors.CHART_COLORS[1]  # Jaune doré
+    color_mean = ColorTheme.CHART_COLORS[0]  # Orange primary
+    color_median = ColorTheme.CHART_COLORS[1]  # Jaune doré
 
     metrics_config = {
         "mean_minutes": {
@@ -465,7 +466,7 @@ def analyse_trendline_duree():
                     color=color_mean,
                     size=sizes,
                     opacity=0.6,
-                    line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=0.5),
+                    line=dict(color=ColorTheme.TEXT_PRIMARY, width=0.5),
                 ),
                 hovertemplate="<b>Année %{x}</b><br>Moyenne: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
                 customdata=minutes_by_year["n_recipes"],
@@ -480,7 +481,7 @@ def analyse_trendline_duree():
             y=regressions["mean_minutes"]["y_pred"],
             mode="lines",
             name=f"Régression Moyenne (R²={regressions['mean_minutes']['r2']:.3f})",
-            line=dict(color=chart_theme.colors.CHART_COLORS[2], width=2.5, dash="dash"),
+            line=dict(color=ColorTheme.CHART_COLORS[2], width=2.5, dash="dash"),
             opacity=0.8,
             hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>",
         )
@@ -512,7 +513,7 @@ def analyse_trendline_duree():
                     color=color_median,
                     size=sizes,
                     opacity=0.6,
-                    line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=0.5),
+                    line=dict(color=ColorTheme.TEXT_PRIMARY, width=0.5),
                 ),
                 hovertemplate="<b>Année %{x}</b><br>Médiane: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
                 customdata=minutes_by_year["n_recipes"],
@@ -527,7 +528,7 @@ def analyse_trendline_duree():
             y=regressions["median_minutes"]["y_pred"],
             mode="lines",
             name=f"Régression Médiane (R²={regressions['median_minutes']['r2']:.3f})",
-            line=dict(color=chart_theme.colors.CHART_COLORS[3], width=2.5, dash="dash"),
+            line=dict(color=ColorTheme.CHART_COLORS[3], width=2.5, dash="dash"),
             opacity=0.8,
             hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>",
         )
@@ -1415,19 +1416,19 @@ def analyse_trendline_complexite():
     # Couleurs de la charte "Back to the Kitchen"
     metrics_config = {
         "mean_complexity": {
-            "color": chart_theme.colors.CHART_COLORS[0],  # Orange
+            "color": ColorTheme.CHART_COLORS[0],  # Orange
             "title": "Score de complexité",
             "ylabel": "Complexity Score",
             "show_std": True,
         },
         "mean_steps": {
-            "color": chart_theme.colors.CHART_COLORS[1],  # Jaune
+            "color": ColorTheme.CHART_COLORS[1],  # Jaune
             "title": "Nombre d'étapes",
             "ylabel": "Nombre d'étapes",
             "show_std": False,
         },
         "mean_ingredients": {
-            "color": chart_theme.colors.CHART_COLORS[2],  # Orange foncé
+            "color": ColorTheme.CHART_COLORS[2],  # Orange foncé
             "title": "Nombre d'ingrédients",
             "ylabel": "Nombre d'ingrédients",
             "show_std": False,
@@ -1528,7 +1529,7 @@ def analyse_trendline_complexite():
                 mode="lines",
                 name=f"Régression WLS (R²={reg['r2']:.3f})",
                 line=dict(
-                    color=chart_theme.colors.CHART_COLORS[3], width=2, dash="dash"
+                    color=ColorTheme.CHART_COLORS[3], width=2, dash="dash"
                 ),
                 showlegend=(idx == 1),
             ),
@@ -1604,22 +1605,22 @@ def analyse_trendline_nutrition():
 
     metrics_config = {
         "mean_calories": {
-            "color": chart_theme.colors.CHART_COLORS[0],
+            "color": ColorTheme.CHART_COLORS[0],
             "title": "Calories moyennes",
             "ylabel": "Calories",
         },
         "mean_carbs": {
-            "color": chart_theme.colors.CHART_COLORS[1],
+            "color": ColorTheme.CHART_COLORS[1],
             "title": "Glucides (%)",
             "ylabel": "Carbs %",
         },
         "mean_fat": {
-            "color": chart_theme.colors.CHART_COLORS[2],
+            "color": ColorTheme.CHART_COLORS[2],
             "title": "Lipides (%)",
             "ylabel": "Fat %",
         },
         "mean_protein": {
-            "color": chart_theme.colors.CHART_COLORS[3],
+            "color": ColorTheme.CHART_COLORS[3],
             "title": "Protéines (%)",
             "ylabel": "Protein %",
         },
@@ -1688,7 +1689,7 @@ def analyse_trendline_nutrition():
                 mode="lines",
                 name=f"Régression WLS (R²={reg['r2']:.3f})",
                 line=dict(
-                    color=chart_theme.colors.CHART_COLORS[4], width=2, dash="dash"
+                    color=ColorTheme.CHART_COLORS[4], width=2, dash="dash"
                 ),
                 showlegend=(row == 1 and col == 1),
             ),
@@ -1846,7 +1847,7 @@ def analyse_trendline_ingredients(top_n=10):
             y=top_global["ingredient_norm"],
             x=top_global["total_count"],
             orientation="h",
-            marker=dict(color=chart_theme.colors.CHART_COLORS[0], opacity=0.8),
+            marker=dict(color=ColorTheme.CHART_COLORS[0], opacity=0.8),
             showlegend=False,
         ),
         row=1,
@@ -1862,9 +1863,9 @@ def analyse_trendline_ingredients(top_n=10):
             x=unique_per_year["year"],
             y=unique_per_year["n_unique"],
             mode="lines+markers",
-            line=dict(color=chart_theme.colors.CHART_COLORS[1], width=2),
+            line=dict(color=ColorTheme.CHART_COLORS[1], width=2),
             marker=dict(
-                size=sizes_div, color=chart_theme.colors.CHART_COLORS[1], opacity=0.6
+                size=sizes_div, color=ColorTheme.CHART_COLORS[1], opacity=0.6
             ),
             showlegend=False,
         ),
@@ -1878,7 +1879,7 @@ def analyse_trendline_ingredients(top_n=10):
             y=biggest_increase["ingredient_norm"],
             x=biggest_increase["delta"],
             orientation="h",
-            marker=dict(color=chart_theme.colors.CHART_COLORS[0], opacity=0.8),
+            marker=dict(color=ColorTheme.CHART_COLORS[0], opacity=0.8),
             showlegend=False,
         ),
         row=2,
@@ -1891,7 +1892,7 @@ def analyse_trendline_ingredients(top_n=10):
             y=biggest_decrease["ingredient_norm"],
             x=biggest_decrease["delta"],
             orientation="h",
-            marker=dict(color=chart_theme.colors.CHART_COLORS[2], opacity=0.8),
+            marker=dict(color=ColorTheme.CHART_COLORS[2], opacity=0.8),
             showlegend=False,
         ),
         row=2,
@@ -1900,11 +1901,11 @@ def analyse_trendline_ingredients(top_n=10):
 
     # (5) Évolution hausses - Utilisation du dégradé orange de la charte
     orange_gradient = [
-        chart_theme.colors.CHART_COLORS[0],  # Orange primary
-        chart_theme.colors.CHART_COLORS[5],  # Orange light
-        chart_theme.colors.CHART_COLORS[7],  # Yellow gold
-        chart_theme.colors.CHART_COLORS[1],  # Yellow
-        chart_theme.colors.CHART_COLORS[0],  # Orange (repeat for more variations)
+        ColorTheme.CHART_COLORS[0],  # Orange primary
+        ColorTheme.CHART_COLORS[5],  # Orange light
+        ColorTheme.CHART_COLORS[7],  # Yellow gold
+        ColorTheme.CHART_COLORS[1],  # Yellow
+        ColorTheme.CHART_COLORS[0],  # Orange (repeat for more variations)
     ]
     for idx, (_, row_data) in enumerate(biggest_increase.head(N_VARIATIONS).iterrows()):
         ing = row_data["ingredient_norm"]
@@ -1929,11 +1930,11 @@ def analyse_trendline_ingredients(top_n=10):
 
     # (6) Évolution baisses - Utilisation du dégradé rouge-orange de la charte
     red_gradient = [
-        chart_theme.colors.CHART_COLORS[2],  # Red-orange primary
-        chart_theme.colors.CHART_COLORS[0],  # Orange
-        chart_theme.colors.CHART_COLORS[5],  # Orange light
-        chart_theme.colors.CHART_COLORS[2],  # Red-orange (repeat)
-        chart_theme.colors.CHART_COLORS[0],  # Orange (repeat)
+        ColorTheme.CHART_COLORS[2],  # Red-orange primary
+        ColorTheme.CHART_COLORS[0],  # Orange
+        ColorTheme.CHART_COLORS[5],  # Orange light
+        ColorTheme.CHART_COLORS[2],  # Red-orange (repeat)
+        ColorTheme.CHART_COLORS[0],  # Orange (repeat)
     ]
     for idx, (_, row_data) in enumerate(biggest_decrease.head(N_VARIATIONS).iterrows()):
         ing = row_data["ingredient_norm"]
@@ -2108,7 +2109,7 @@ def analyse_trendline_tags(top_n=10):
             y=top_global_tags["tag_norm"],
             x=top_global_tags["total_count"],
             orientation="h",
-            marker=dict(color=chart_theme.colors.CHART_COLORS[0], opacity=0.8),
+            marker=dict(color=ColorTheme.CHART_COLORS[0], opacity=0.8),
             showlegend=False,
         ),
         row=1,
@@ -2124,10 +2125,10 @@ def analyse_trendline_tags(top_n=10):
             x=unique_per_year_tags["year"],
             y=unique_per_year_tags["n_unique"],
             mode="lines+markers",
-            line=dict(color=chart_theme.colors.CHART_COLORS[1], width=2),
+            line=dict(color=ColorTheme.CHART_COLORS[1], width=2),
             marker=dict(
                 size=sizes_div_tags,
-                color=chart_theme.colors.CHART_COLORS[1],
+                color=ColorTheme.CHART_COLORS[1],
                 opacity=0.6,
             ),
             showlegend=False,
@@ -2142,7 +2143,7 @@ def analyse_trendline_tags(top_n=10):
             y=biggest_increase_tags["tag_norm"],
             x=biggest_increase_tags["delta"],
             orientation="h",
-            marker=dict(color=chart_theme.colors.CHART_COLORS[0], opacity=0.8),
+            marker=dict(color=ColorTheme.CHART_COLORS[0], opacity=0.8),
             showlegend=False,
         ),
         row=2,
@@ -2155,7 +2156,7 @@ def analyse_trendline_tags(top_n=10):
             y=biggest_decrease_tags["tag_norm"],
             x=biggest_decrease_tags["delta"],
             orientation="h",
-            marker=dict(color=chart_theme.colors.CHART_COLORS[2], opacity=0.8),
+            marker=dict(color=ColorTheme.CHART_COLORS[2], opacity=0.8),
             showlegend=False,
         ),
         row=2,
@@ -2164,11 +2165,11 @@ def analyse_trendline_tags(top_n=10):
 
     # (5) Évolution hausses - Utilisation du dégradé orange de la charte
     orange_gradient_tags = [
-        chart_theme.colors.CHART_COLORS[0],  # Orange primary
-        chart_theme.colors.CHART_COLORS[5],  # Orange light
-        chart_theme.colors.CHART_COLORS[7],  # Yellow gold
-        chart_theme.colors.CHART_COLORS[1],  # Yellow
-        chart_theme.colors.CHART_COLORS[0],  # Orange (repeat for more variations)
+        ColorTheme.CHART_COLORS[0],  # Orange primary
+        ColorTheme.CHART_COLORS[5],  # Orange light
+        ColorTheme.CHART_COLORS[7],  # Yellow gold
+        ColorTheme.CHART_COLORS[1],  # Yellow
+        ColorTheme.CHART_COLORS[0],  # Orange (repeat for more variations)
     ]
     for idx, (_, row_data) in enumerate(
         biggest_increase_tags.head(N_VARIATIONS).iterrows()
@@ -2193,11 +2194,11 @@ def analyse_trendline_tags(top_n=10):
 
     # (6) Évolution baisses - Utilisation du dégradé rouge-orange de la charte
     red_gradient_tags = [
-        chart_theme.colors.CHART_COLORS[2],  # Red-orange primary
-        chart_theme.colors.CHART_COLORS[0],  # Orange
-        chart_theme.colors.CHART_COLORS[5],  # Orange light
-        chart_theme.colors.CHART_COLORS[2],  # Red-orange (repeat)
-        chart_theme.colors.CHART_COLORS[0],  # Orange (repeat)
+        ColorTheme.CHART_COLORS[2],  # Red-orange primary
+        ColorTheme.CHART_COLORS[0],  # Orange
+        ColorTheme.CHART_COLORS[5],  # Orange light
+        ColorTheme.CHART_COLORS[2],  # Red-orange (repeat)
+        ColorTheme.CHART_COLORS[0],  # Orange (repeat)
     ]
     for idx, (_, row_data) in enumerate(
         biggest_decrease_tags.head(N_VARIATIONS).iterrows()

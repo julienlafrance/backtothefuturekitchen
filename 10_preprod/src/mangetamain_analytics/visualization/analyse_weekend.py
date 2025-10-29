@@ -25,6 +25,7 @@ from plotly.subplots import make_subplots
 
 from data.cached_loaders import get_recipes_clean as load_recipes_clean
 from utils import chart_theme
+from utils.color_theme import ColorTheme
 
 
 def analyse_weekend_volume():
@@ -128,8 +129,8 @@ def analyse_weekend_volume():
 
     # 🎨 VISUALISATION (3 panels)
     period_colors_btk = [
-        chart_theme.colors.CHART_COLORS[1],
-        chart_theme.colors.ORANGE_PRIMARY,
+        ColorTheme.CHART_COLORS[1],
+        ColorTheme.ORANGE_PRIMARY,
     ]
 
     fig = make_subplots(
@@ -150,11 +151,11 @@ def analyse_weekend_volume():
             y=recipes_week_period["recipes_per_day"],
             marker=dict(
                 color=period_colors_btk,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             text=[f"{val:,.0f}/jour" for val in recipes_week_period["recipes_per_day"]],
             textposition="outside",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             name="Volume pondéré",
             showlegend=False,
         ),
@@ -165,9 +166,9 @@ def analyse_weekend_volume():
     # --- PANEL 2: Distribution 7 jours avec moyennes ---
     day_colors_btk = [
         (
-            chart_theme.colors.CHART_COLORS[1]
+            ColorTheme.CHART_COLORS[1]
             if j not in ["Sam", "Dim"]
-            else chart_theme.colors.ORANGE_PRIMARY
+            else ColorTheme.ORANGE_PRIMARY
         )
         for j in recipes_per_day["jour"]
     ]
@@ -178,11 +179,11 @@ def analyse_weekend_volume():
             y=recipes_per_day["n_recipes"],
             marker=dict(
                 color=day_colors_btk,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             text=[f"{val:,}" for val in recipes_per_day["n_recipes"]],
             textposition="outside",
-            textfont=dict(size=11, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=11, color=ColorTheme.TEXT_PRIMARY),
             name="Recettes par jour",
             showlegend=False,
         ),
@@ -193,10 +194,10 @@ def analyse_weekend_volume():
     # Lignes moyennes
     fig.add_hline(
         y=mean_all,
-        line=dict(color=chart_theme.colors.TEXT_PRIMARY, dash="dash", width=2),
+        line=dict(color=ColorTheme.TEXT_PRIMARY, dash="dash", width=2),
         annotation_text=f"Moy. globale: {mean_all:,.0f}",
         annotation_position="top right",
-        annotation_font=dict(size=10, color=chart_theme.colors.TEXT_PRIMARY),
+        annotation_font=dict(size=10, color=ColorTheme.TEXT_PRIMARY),
         row=1,
         col=2,
     )
@@ -204,9 +205,9 @@ def analyse_weekend_volume():
     # --- PANEL 3: Écarts à la moyenne ---
     colors_deviation = [
         (
-            chart_theme.colors.CHART_COLORS[2]
+            ColorTheme.CHART_COLORS[2]
             if x > 0
-            else chart_theme.colors.ORANGE_PRIMARY
+            else ColorTheme.ORANGE_PRIMARY
         )
         for x in recipes_per_day["deviation_pct"]
     ]
@@ -217,11 +218,11 @@ def analyse_weekend_volume():
             y=recipes_per_day["deviation_pct"],
             marker=dict(
                 color=colors_deviation,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             text=[f"{val:+.1f}%" for val in recipes_per_day["deviation_pct"]],
             textposition="outside",
-            textfont=dict(size=11, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=11, color=ColorTheme.TEXT_PRIMARY),
             name="Écart (%)",
             showlegend=False,
         ),
@@ -230,7 +231,7 @@ def analyse_weekend_volume():
     )
 
     fig.add_hline(
-        y=0, line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1.5), row=1, col=3
+        y=0, line=dict(color=ColorTheme.TEXT_PRIMARY, width=1.5), row=1, col=3
     )
 
     # Axes
@@ -285,8 +286,8 @@ def analyse_weekend_duree():
 
     week_period_order = ["Weekday", "Weekend"]
     period_colors_btk = [
-        chart_theme.colors.CHART_COLORS[1],
-        chart_theme.colors.ORANGE_PRIMARY,
+        ColorTheme.CHART_COLORS[1],
+        ColorTheme.ORANGE_PRIMARY,
     ]
 
     # Agrégation
@@ -358,11 +359,11 @@ def analyse_weekend_duree():
             y=minutes_by_period["mean_minutes"],
             marker=dict(
                 color=period_colors_btk,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             text=[f"{val:.1f} m" for val in minutes_by_period["mean_minutes"]],
             textposition="outside",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             name="Moyenne",
             showlegend=True,
         ),
@@ -376,8 +377,8 @@ def analyse_weekend_duree():
             x=minutes_by_period["week_period"],
             y=minutes_by_period["median_minutes"],
             mode="lines+markers",
-            line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=2, dash="dash"),
-            marker=dict(size=8, color=chart_theme.colors.TEXT_PRIMARY, symbol="circle"),
+            line=dict(color=ColorTheme.TEXT_PRIMARY, width=2, dash="dash"),
+            marker=dict(size=8, color=ColorTheme.TEXT_PRIMARY, symbol="circle"),
             name="Médiane",
         ),
         row=1,
@@ -395,7 +396,7 @@ def analyse_weekend_duree():
                 x=[period, period],
                 y=[q25, q75],
                 mode="lines",
-                line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=3),
+                line=dict(color=ColorTheme.TEXT_PRIMARY, width=3),
                 showlegend=False,
                 hoverinfo="skip",
             ),
@@ -410,7 +411,7 @@ def analyse_weekend_duree():
                 y=[q25],
                 mode="markers",
                 marker=dict(
-                    size=6, color=chart_theme.colors.TEXT_PRIMARY, symbol="circle"
+                    size=6, color=ColorTheme.TEXT_PRIMARY, symbol="circle"
                 ),
                 showlegend=False,
                 hovertemplate=f"Q1: {q25:.1f}",
@@ -424,7 +425,7 @@ def analyse_weekend_duree():
                 y=[q75],
                 mode="markers",
                 marker=dict(
-                    size=6, color=chart_theme.colors.TEXT_PRIMARY, symbol="circle"
+                    size=6, color=ColorTheme.TEXT_PRIMARY, symbol="circle"
                 ),
                 showlegend=False,
                 hovertemplate=f"Q3: {q75:.1f}",
@@ -494,8 +495,8 @@ def analyse_weekend_complexite():
 
     week_period_order = ["Weekday", "Weekend"]
     period_colors_btk = [
-        chart_theme.colors.CHART_COLORS[1],
-        chart_theme.colors.ORANGE_PRIMARY,
+        ColorTheme.CHART_COLORS[1],
+        ColorTheme.ORANGE_PRIMARY,
     ]
 
     # Agrégation par période
@@ -576,11 +577,11 @@ def analyse_weekend_complexite():
             y=complexity_by_period["mean_complexity"],
             marker=dict(
                 color=period_colors_btk,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             text=[f"{val:.2f}" for val in complexity_by_period["mean_complexity"]],
             textposition="outside",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             name="Moyenne",
             showlegend=False,
         ),
@@ -593,8 +594,8 @@ def analyse_weekend_complexite():
             x=complexity_by_period["week_period"],
             y=complexity_by_period["median_complexity"],
             mode="lines+markers",
-            line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=2, dash="dash"),
-            marker=dict(size=8, color=chart_theme.colors.TEXT_PRIMARY, symbol="square"),
+            line=dict(color=ColorTheme.TEXT_PRIMARY, width=2, dash="dash"),
+            marker=dict(size=8, color=ColorTheme.TEXT_PRIMARY, symbol="square"),
             name="Médiane",
         ),
         row=1,
@@ -608,11 +609,11 @@ def analyse_weekend_complexite():
             y=complexity_by_period["mean_steps"],
             marker=dict(
                 color=period_colors_btk,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             text=[f"{val:.1f}" for val in complexity_by_period["mean_steps"]],
             textposition="outside",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             name="Moyenne",
             showlegend=False,
         ),
@@ -625,8 +626,8 @@ def analyse_weekend_complexite():
             x=complexity_by_period["week_period"],
             y=complexity_by_period["median_steps"],
             mode="lines+markers",
-            line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=2, dash="dash"),
-            marker=dict(size=8, color=chart_theme.colors.TEXT_PRIMARY, symbol="square"),
+            line=dict(color=ColorTheme.TEXT_PRIMARY, width=2, dash="dash"),
+            marker=dict(size=8, color=ColorTheme.TEXT_PRIMARY, symbol="square"),
             name="Médiane",
         ),
         row=1,
@@ -640,11 +641,11 @@ def analyse_weekend_complexite():
             y=complexity_by_period["mean_ingredients"],
             marker=dict(
                 color=period_colors_btk,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             text=[f"{val:.1f}" for val in complexity_by_period["mean_ingredients"]],
             textposition="outside",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             name="Moyenne",
             showlegend=False,
         ),
@@ -657,8 +658,8 @@ def analyse_weekend_complexite():
             x=complexity_by_period["week_period"],
             y=complexity_by_period["median_ingredients"],
             mode="lines+markers",
-            line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=2, dash="dash"),
-            marker=dict(size=8, color=chart_theme.colors.TEXT_PRIMARY, symbol="square"),
+            line=dict(color=ColorTheme.TEXT_PRIMARY, width=2, dash="dash"),
+            marker=dict(size=8, color=ColorTheme.TEXT_PRIMARY, symbol="square"),
             name="Médiane",
         ),
         row=1,
@@ -809,15 +810,15 @@ def analyse_weekend_nutrition():
     # Couleurs selon direction et significativité
     colors = [
         (
-            chart_theme.colors.CHART_COLORS[2]
+            ColorTheme.CHART_COLORS[2]
             if (row["diff_pct"] < 0 and row["significant"])
             else (
-                chart_theme.colors.ORANGE_PRIMARY
+                ColorTheme.ORANGE_PRIMARY
                 if (row["diff_pct"] > 0 and row["significant"])
                 else (
-                    chart_theme.colors.CHART_COLORS[1]
+                    ColorTheme.CHART_COLORS[1]
                     if row["diff_pct"] < 0
-                    else chart_theme.colors.ORANGE_LIGHT
+                    else ColorTheme.ORANGE_LIGHT
                 )
             )
         )
@@ -831,26 +832,26 @@ def analyse_weekend_nutrition():
             orientation="h",
             marker=dict(
                 color=colors,
-                line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
             ),
             text=[
                 f"{row['diff_pct']:+.1f}%" + (" *" if row["significant"] else "")
                 for row in results_df.iter_rows(named=True)
             ],
             textposition="outside",
-            textfont=dict(size=12, color=chart_theme.colors.TEXT_PRIMARY),
+            textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
             showlegend=False,
             hovertemplate=("<b>%{y}</b><br>" "Écart: %{x:+.1f}%<br>" "<extra></extra>"),
         )
     )
 
     # Ligne zéro
-    fig.add_vline(x=0, line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=2))
+    fig.add_vline(x=0, line=dict(color=ColorTheme.TEXT_PRIMARY, width=2))
 
     # Mise en page
     fig.update_xaxes(
         title_text="Différence Weekend vs Weekday (%)",
-        title_font=dict(size=13, color=chart_theme.colors.TEXT_PRIMARY),
+        title_font=dict(size=13, color=ColorTheme.TEXT_PRIMARY),
     )
 
     fig.update_yaxes(title_text="", autorange="reversed")
@@ -861,7 +862,7 @@ def analyse_weekend_nutrition():
             "text": "Profil nutritionnel: Écarts Weekend vs Weekday<br><sub>(* = effet significatif, p < 0.05)</sub>",
             "x": 0.5,
             "xanchor": "center",
-            "font": {"size": 16, "color": chart_theme.colors.TEXT_PRIMARY},
+            "font": {"size": 16, "color": ColorTheme.TEXT_PRIMARY},
         },
         height=500,
     )
@@ -987,9 +988,9 @@ def analyse_weekend_ingredients():
         # Couleurs
         colors = [
             (
-                chart_theme.colors.ORANGE_PRIMARY
+                ColorTheme.ORANGE_PRIMARY
                 if x < 0
-                else chart_theme.colors.CHART_COLORS[2]
+                else ColorTheme.CHART_COLORS[2]
             )
             for x in top_ingredients["diff_abs"]
         ]
@@ -1003,11 +1004,11 @@ def analyse_weekend_ingredients():
                 orientation="h",
                 marker=dict(
                     color=colors,
-                    line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                    line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
                 ),
                 text=[f"{val:+.2f}" for val in top_ingredients["diff_abs"]],
                 textposition="outside",
-                textfont=dict(size=11, color=chart_theme.colors.TEXT_PRIMARY),
+                textfont=dict(size=11, color=ColorTheme.TEXT_PRIMARY),
                 showlegend=False,
                 hovertemplate=(
                     "<b>%{y}</b><br>" "Écart: %{x:+.2f}pp<br>" "<extra></extra>"
@@ -1016,12 +1017,12 @@ def analyse_weekend_ingredients():
         )
 
         # Ligne zéro
-        fig.add_vline(x=0, line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1.5))
+        fig.add_vline(x=0, line=dict(color=ColorTheme.TEXT_PRIMARY, width=1.5))
 
         # Axes
         fig.update_xaxes(
             title_text="Δ Weekend - Weekday (pp)",
-            title_font=dict(size=13, color=chart_theme.colors.TEXT_PRIMARY),
+            title_font=dict(size=13, color=ColorTheme.TEXT_PRIMARY),
         )
         fig.update_yaxes(autorange="reversed")
 
@@ -1031,7 +1032,7 @@ def analyse_weekend_ingredients():
                 "text": f"Top {len(top_ingredients)} ingrédients: Écarts Weekend vs Weekday (+ si week-end)",
                 "x": 0.5,
                 "xanchor": "center",
-                "font": {"size": 16, "color": chart_theme.colors.TEXT_PRIMARY},
+                "font": {"size": 16, "color": ColorTheme.TEXT_PRIMARY},
             },
             height=max(500, len(top_ingredients) * 25),
         )
@@ -1159,9 +1160,9 @@ def analyse_weekend_tags():
         # Couleurs
         colors = [
             (
-                chart_theme.colors.ORANGE_PRIMARY
+                ColorTheme.ORANGE_PRIMARY
                 if x < 0
-                else chart_theme.colors.CHART_COLORS[2]
+                else ColorTheme.CHART_COLORS[2]
             )
             for x in top_tags["diff_abs"]
         ]
@@ -1175,11 +1176,11 @@ def analyse_weekend_tags():
                 orientation="h",
                 marker=dict(
                     color=colors,
-                    line=dict(color=chart_theme.colors.TEXT_SECONDARY, width=1),
+                    line=dict(color=ColorTheme.TEXT_SECONDARY, width=1),
                 ),
                 text=[f"{val:+.2f}" for val in top_tags["diff_abs"]],
                 textposition="outside",
-                textfont=dict(size=11, color=chart_theme.colors.TEXT_PRIMARY),
+                textfont=dict(size=11, color=ColorTheme.TEXT_PRIMARY),
                 showlegend=False,
                 hovertemplate=(
                     "<b>%{y}</b><br>" "Écart: %{x:+.2f}pp<br>" "<extra></extra>"
@@ -1188,12 +1189,12 @@ def analyse_weekend_tags():
         )
 
         # Ligne zéro
-        fig.add_vline(x=0, line=dict(color=chart_theme.colors.TEXT_PRIMARY, width=1.5))
+        fig.add_vline(x=0, line=dict(color=ColorTheme.TEXT_PRIMARY, width=1.5))
 
         # Axes
         fig.update_xaxes(
             title_text="Δ Weekend - Weekday (pp)",
-            title_font=dict(size=13, color=chart_theme.colors.TEXT_PRIMARY),
+            title_font=dict(size=13, color=ColorTheme.TEXT_PRIMARY),
         )
         fig.update_yaxes(autorange="reversed")
 
@@ -1203,7 +1204,7 @@ def analyse_weekend_tags():
                 "text": f"Top {len(top_tags)} tags: Écarts Weekend vs Weekday",
                 "x": 0.5,
                 "xanchor": "center",
-                "font": {"size": 16, "color": chart_theme.colors.TEXT_PRIMARY},
+                "font": {"size": 16, "color": ColorTheme.TEXT_PRIMARY},
             },
             height=max(500, len(top_tags) * 25),
         )
