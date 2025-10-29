@@ -5,12 +5,12 @@ Fonctions utilitaires pour la charte graphique "Back to the Kitchen" : couleurs 
 
 **Usage pratique** : voir exemples code ci-dessous pour intégration dans vos graphiques.
 
-utils.colors
-------------
+utils.color_theme
+------------------
 
-Définit la palette de couleurs du projet "Back to the Kitchen".
+Classe POO ColorTheme pour la charte graphique "Back to the Kitchen".
 
-.. automodule:: mangetamain_analytics.utils.colors
+.. automodule:: mangetamain_analytics.utils.color_theme
    :members:
    :undoc-members:
    :show-inheritance:
@@ -44,12 +44,12 @@ Constantes Principales
 
 **Palettes saisonnières :**
 
-* ``SEASONAL_COLORS`` : Mapping saison → couleur (Automne, Hiver, Printemps, Été)
-* ``COLORSCALE_SEQUENTIAL`` : Palette séquentielle pour heatmaps (bleu → orange)
+* ``get_seasonal_colors()`` : Mapping saison → couleur (Automne, Hiver, Printemps, Été)
+* ``get_seasonal_color(season)`` : Couleur individuelle pour une saison
 
-**Fonctions utilitaires :**
+**Méthodes utilitaires :**
 
-* ``get_rgba(hex_color, alpha)`` : Convertit HEX en RGBA
+* ``to_rgba(hex_color, alpha)`` : Convertit HEX en RGBA avec validation
 * ``get_plotly_theme()`` : Retourne le thème Plotly personnalisé
 
 Exemples d'Utilisation
@@ -59,7 +59,7 @@ Exemples d'Utilisation
 
 .. code-block:: python
 
-   from utils import colors
+   from utils.color_theme import ColorTheme
    import plotly.graph_objects as go
 
    # Graphique avec couleur primaire
@@ -67,19 +67,19 @@ Exemples d'Utilisation
    fig.add_trace(go.Bar(
        x=['A', 'B', 'C'],
        y=[10, 20, 30],
-       marker_color=colors.ORANGE_PRIMARY
+       marker_color=ColorTheme.ORANGE_PRIMARY
    ))
 
 **Utiliser la palette graphique :**
 
 .. code-block:: python
 
-   from utils import colors
+   from utils.color_theme import ColorTheme
 
    # Pour graphiques multi-séries
    fig = go.Figure()
    for i, serie in enumerate(data_series):
-       color = colors.CHART_COLORS[i % len(colors.CHART_COLORS)]
+       color = ColorTheme.CHART_COLORS[i % len(ColorTheme.CHART_COLORS)]
        fig.add_trace(go.Scatter(
            x=serie['x'],
            y=serie['y'],
@@ -91,25 +91,22 @@ Exemples d'Utilisation
 
 .. code-block:: python
 
-   from utils import colors
+   from utils.color_theme import ColorTheme
 
-   # Couleur par saison
-   season_color = colors.SEASONAL_COLORS['Automne']  # #FF8C00
+   # Couleur par saison (méthode 1)
+   season_color = ColorTheme.get_seasonal_colors()['Automne']  # #FF8C00
 
-   # Heatmap séquentielle
-   fig = go.Figure(data=go.Heatmap(
-       z=data,
-       colorscale=colors.COLORSCALE_SEQUENTIAL
-   ))
+   # Couleur par saison (méthode 2 - recommandée)
+   season_color = ColorTheme.get_seasonal_color('Automne')  # #FF8C00
 
 **Convertir en RGBA :**
 
 .. code-block:: python
 
-   from utils.colors import get_rgba
+   from utils.color_theme import ColorTheme
 
    # Ajouter transparence
-   transparent_orange = get_rgba(colors.ORANGE_PRIMARY, alpha=0.5)
+   transparent_orange = ColorTheme.to_rgba(ColorTheme.ORANGE_PRIMARY, alpha=0.5)
    # Retourne: 'rgba(255, 140, 0, 0.5)'
 
 utils.chart_theme
@@ -194,7 +191,8 @@ Exemples d'Utilisation
 
 .. code-block:: python
 
-   from utils import chart_theme, colors
+   from utils import chart_theme
+   from utils.color_theme import ColorTheme
    import plotly.graph_objects as go
 
    fig = go.Figure()
