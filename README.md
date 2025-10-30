@@ -128,7 +128,7 @@ docker-compose -f docker-compose-prod.yml up -d
 - 🏥 **Health checks** - Vérification automatique des URLs
 - 📬 **Discord** - Notifications succès/échec avec instructions rollback
 
-📚 **Documentation complète:** Voir [README_CI_CD.md](README_CI_CD.md)
+📚 **Documentation complète:** Voir [90_doc/](90_doc/) (section CI/CD)
 
 ### Tests d'infrastructure (50_test/)
 **Test complet S3 + DuckDB**
