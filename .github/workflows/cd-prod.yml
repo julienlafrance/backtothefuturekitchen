@@ -53,9 +53,8 @@ jobs:
 
       - name: Deploy PREPROD to PROD
         run: |
-          cd /home/dataia25/mangetamain
           echo "🚀 Exécution du script de déploiement PREPROD → PROD"
-          ./70_scripts/deploy_preprod_to_prod.sh
+          /home/dataia25/mangetamain/70_scripts/deploy_preprod_to_prod.sh
           echo "✅ Fichiers copiés de PREPROD vers PROD"
 
       - name: Restart production container
