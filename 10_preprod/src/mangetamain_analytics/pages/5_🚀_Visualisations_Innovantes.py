@@ -80,23 +80,24 @@ def prepare_temporal_data(df):
     # Catégoriser recettes
     if 'tags' in df.columns:
         # Extraire catégorie dominante des tags
-        categories = []
-        for tags in df['tags']:
-            if pd.isna(tags):
-                categories.append('Autre')
-            elif 'dessert' in str(tags).lower():
-                categories.append('Desserts')
-            elif 'main' in str(tags).lower() or 'dish' in str(tags).lower():
-                categories.append('Plats principaux')
-            elif 'appetizer' in str(tags).lower():
-                categories.append('Entrées')
-            elif 'salad' in str(tags).lower():
-                categories.append('Salades')
-            elif 'soup' in str(tags).lower():
-                categories.append('Soupes')
+        def categorize_recipe(tags):
+            if tags is None or (isinstance(tags, float) and pd.isna(tags)):
+                return 'Autre'
+            tags_str = str(tags).lower()
+            if 'dessert' in tags_str:
+                return 'Desserts'
+            elif 'main' in tags_str or 'dish' in tags_str:
+                return 'Plats principaux'
+            elif 'appetizer' in tags_str:
+                return 'Entrées'
+            elif 'salad' in tags_str:
+                return 'Salades'
+            elif 'soup' in tags_str:
+                return 'Soupes'
             else:
-                categories.append('Autre')
-        df['category'] = categories
+                return 'Autre'
+
+        df['category'] = df['tags'].apply(categorize_recipe)
     else:
         df['category'] = 'Recettes'
 
