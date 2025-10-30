@@ -54,8 +54,6 @@ jobs:
       - name: Deploy PREPROD to PROD
         run: |
           cd /home/dataia25/mangetamain
-          echo "📥 Mise à jour du code depuis GitHub..."
-          git pull origin main
           echo "🚀 Exécution du script de déploiement PREPROD → PROD"
           ./70_scripts/deploy_preprod_to_prod.sh
           echo "✅ Fichiers copiés de PREPROD vers PROD"
