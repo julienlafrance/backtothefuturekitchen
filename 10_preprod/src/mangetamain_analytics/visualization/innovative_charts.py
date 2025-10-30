@@ -130,8 +130,7 @@ def create_calendar_heatmap(df: pd.DataFrame, year: int = 2018) -> go.Figure:
         showscale=True,
         hovertemplate='Semaine %{x}<br>%{y}<br>%{z} recettes<extra></extra>',
         colorbar=dict(
-            title="Recettes",
-            titleside="right",
+            title=dict(text="Recettes", side="right"),
             tickmode="linear",
             tick0=0,
             dtick=10
