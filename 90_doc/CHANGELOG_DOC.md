@@ -1,9 +1,9 @@
 # Changelog Documentation Sphinx
 
-## Version 2.2 - Correction Architecture CI/CD (2025-10-30)
+## Version 2.2 - Correction Architecture CI/CD et Amélioration Rédaction (2025-10-30)
 
 ### Résumé
-Correction du schéma d'architecture CI/CD pour refléter fidèlement le comportement réel : déploiement parallèle avec rollback automatique.
+Correction du schéma d'architecture CI/CD pour refléter fidèlement le comportement réel : déploiement parallèle avec rollback automatique. Amélioration de la qualité rédactionnelle et professionnalisme de la documentation.
 
 ### Changements
 
@@ -26,7 +26,20 @@ Push vers main
 - 🎯 Traçabilité: SHA déployé = SHA testé
 - 🔄 Runner libéré immédiatement
 
-**Commit**: b4f9a0c - Corriger schéma architecture CI/CD pour refléter parallélisation et rollback automatique
+**source/conformite.rst** - Amélioration qualité rédactionnelle
+- ❌ **AVANT**: Section "Points Bonus" (maladroit, ton informel)
+- ✅ **APRÈS**: "Choix Techniques Avancés" (professionnel, structuré)
+
+**Améliorations**:
+- Titres professionnels et descriptifs
+- Mise en forme cohérente avec gras pour mots-clés
+- Détails techniques explicites
+- Justification des choix architecturaux
+
+**Commits**:
+- b4f9a0c - Corriger schéma architecture CI/CD pour refléter parallélisation et rollback automatique
+- 0a21d97 - Corriger description CD PREPROD dans conformite.rst - parallélisation et rollback
+- 7ec5252 - Remplacer 'Points Bonus' par 'Choix Techniques Avancés' dans conformite.rst
 
 ## Version 2.1 - Refactoring POO ColorTheme (2025-10-30)
 
