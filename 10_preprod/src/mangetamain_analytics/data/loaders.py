@@ -25,7 +25,7 @@ class DataLoader:
         >>> ratings = loader.load_ratings(min_interactions=100)
     """
 
-    def load_recipes(self):
+    def load_recipes(self) -> Any:
         """Charge les recettes depuis S3.
 
         Returns:

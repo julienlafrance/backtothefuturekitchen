@@ -39,7 +39,7 @@ warnings.filterwarnings("ignore")
 # La fonction apply_white_theme est maintenant importée depuis plotly_config (renommée apply_theme)
 
 
-def analyse_trendline_volume():
+def analyse_trendline_volume() -> None:
     """Analyse du volume de recettes par année.
 
     Affiche:
@@ -167,7 +167,7 @@ def analyse_trendline_volume():
     )
 
 
-def analyse_trendline_duree():
+def analyse_trendline_duree() -> None:
     """Analyse de l'évolution de la durée de préparation.
 
     Affiche:
@@ -322,7 +322,7 @@ def analyse_trendline_duree():
     )
 
 
-def analyse_trendline_complexite():
+def analyse_trendline_complexite() -> None:
     """Analyse de l'évolution de la complexité des recettes.
 
     Affiche:
@@ -469,7 +469,7 @@ def analyse_trendline_complexite():
     )
 
 
-def analyse_trendline_nutrition():
+def analyse_trendline_nutrition() -> None:
     """Analyse de l'évolution des valeurs nutritionnelles.
 
     Affiche:
@@ -617,7 +617,7 @@ def analyse_trendline_nutrition():
     )
 
 
-def analyse_trendline_ingredients(top_n=10):
+def analyse_trendline_ingredients(top_n=10) -> None:
     """Analyse de l'évolution des ingrédients.
 
     Args:
@@ -859,7 +859,7 @@ def analyse_trendline_ingredients(top_n=10):
     )
 
 
-def analyse_trendline_tags(top_n=10):
+def analyse_trendline_tags(top_n=10) -> None:
     """Analyse de l'évolution des tags/catégories.
 
     Args:

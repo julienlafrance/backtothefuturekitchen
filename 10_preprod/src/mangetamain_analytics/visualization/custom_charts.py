@@ -6,7 +6,7 @@ import plotly.express as px
 from typing import Optional
 
 
-def create_correlation_heatmap(conn, table_name: str):
+def create_correlation_heatmap(conn, table_name: str) -> None:
     """Crée une heatmap de corrélation."""
     try:
         # Récupérer les colonnes numériques
@@ -39,7 +39,7 @@ def create_correlation_heatmap(conn, table_name: str):
         st.error(f"Erreur: {e}")
 
 
-def create_distribution_plot(conn, table_name: str, column_name: str):
+def create_distribution_plot(conn, table_name: str, column_name: str) -> None:
     """Crée un graphique de distribution."""
     try:
         data_df = conn.execute(
@@ -65,7 +65,7 @@ def create_distribution_plot(conn, table_name: str, column_name: str):
         st.error(f"Erreur: {e}")
 
 
-def create_time_series_plot(conn, table_name: str, date_col: str, value_col: str):
+def create_time_series_plot(conn, table_name: str, date_col: str, value_col: str) -> None:
     """Crée un graphique temporel."""
     try:
         data_df = conn.execute(
@@ -96,7 +96,7 @@ def create_time_series_plot(conn, table_name: str, date_col: str, value_col: str
 
 def create_custom_scatter_plot(
     conn, table_name: str, x_col: str, y_col: str, color_col: Optional[str] = None
-):
+) -> None:
     """Crée un graphique en nuage de points personnalisé."""
     try:
         color_clause = f", {color_col}" if color_col else ""

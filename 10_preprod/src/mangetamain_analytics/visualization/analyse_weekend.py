@@ -28,7 +28,7 @@ from utils import chart_theme
 from utils.color_theme import ColorTheme
 
 
-def analyse_weekend_volume():
+def analyse_weekend_volume() -> None:
     """
     📊 ANALYSE 1: Volume de recettes (Weekday vs Weekend)
 
@@ -263,7 +263,7 @@ def analyse_weekend_volume():
     )
 
 
-def analyse_weekend_duree():
+def analyse_weekend_duree() -> None:
     """
     📊 ANALYSE 2: Durée des recettes (Weekday vs Weekend)
 
@@ -468,7 +468,7 @@ def analyse_weekend_duree():
     )
 
 
-def analyse_weekend_complexite():
+def analyse_weekend_complexite() -> None:
     """
     📊 ANALYSE 3: Complexité (Weekday vs Weekend)
 
@@ -688,7 +688,7 @@ def analyse_weekend_complexite():
     )
 
 
-def analyse_weekend_nutrition():
+def analyse_weekend_nutrition() -> None:
     """
     📊 ANALYSE 4: Nutrition (Weekday vs Weekend)
 
@@ -873,7 +873,7 @@ def analyse_weekend_nutrition():
     )
 
 
-def analyse_weekend_ingredients():
+def analyse_weekend_ingredients() -> None:
     """
     📊 ANALYSE 5: Ingrédients les plus variables (Weekday vs Weekend)
 
@@ -1051,7 +1051,7 @@ def analyse_weekend_ingredients():
         )
 
 
-def analyse_weekend_tags():
+def analyse_weekend_tags() -> None:
     """
     📊 ANALYSE 6: Tags les plus variables (Weekday vs Weekend)
 
@@ -1222,7 +1222,7 @@ def analyse_weekend_tags():
         )
 
 
-def render_weekend_analysis():
+def render_weekend_analysis() -> None:
     """
     Point d'entrée principal pour les analyses d'effet week-end.
 

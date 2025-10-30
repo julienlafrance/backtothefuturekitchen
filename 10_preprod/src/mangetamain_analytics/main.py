@@ -37,7 +37,7 @@ ASSETS_DIR = SCRIPT_DIR / "assets"
 
 
 # Fonction helper pour créer des options de menu avec icônes Lucide
-def create_nav_option_with_icon(icon_name, text):
+def create_nav_option_with_icon(icon_name, text) -> str:
     """Crée une option de navigation avec icône Lucide inline."""
     # SVG Lucide inline pour meilleur contrôle
     lucide_icons = {
@@ -52,7 +52,7 @@ def create_nav_option_with_icon(icon_name, text):
     return f'<div style="display: flex; align-items: center; gap: 10px;">{icon_svg}<span>{text}</span></div>'
 
 
-def display_environment_badge():
+def display_environment_badge() -> None:
     """Display environment badge in sidebar."""
     env = EnvironmentDetector.get_name()
 
@@ -80,7 +80,7 @@ Path("logs").mkdir(exist_ok=True)
 
 # Configure Loguru logger (only once)
 if not any(
-    "logs/mangetamain" in str(handler) for handler in logger._core.handlers.values()
+    "logs/mangetamain" in str(handler) for handler in logger._core.handlers.values()  # type: ignore[attr-defined]
 ):
     logger.remove()
 
@@ -127,7 +127,7 @@ st.set_page_config(
 ########################################################################################################
 
 
-def _OBSOLETE_create_tables_overview(conn):
+def _OBSOLETE_create_tables_overview(conn) -> None:
     """Create interactive overview of all tables."""
     st.subheader("📊 Vue d'ensemble des tables")
 
@@ -177,7 +177,7 @@ def _OBSOLETE_create_tables_overview(conn):
     st.dataframe(df_stats, use_container_width=True)
 
 
-def create_rating_analysis(conn):
+def create_rating_analysis(conn) -> None:
     """Enhanced rating distribution analysis."""
     st.subheader("⭐ Analyse des notes")
 
@@ -249,7 +249,7 @@ def create_rating_analysis(conn):
         st.warning("⚠️ Aucune table avec des notes trouvée")
 
 
-def create_temporal_analysis(conn):
+def create_temporal_analysis(conn) -> None:
     """Analyze temporal patterns in interactions."""
     st.subheader("📅 Analyse temporelle")
 
@@ -323,7 +323,7 @@ def create_temporal_analysis(conn):
         st.warning("⚠️ Aucune table avec des dates trouvée")
 
 
-def create_user_analysis(conn):
+def create_user_analysis(conn) -> None:
     """Enhanced user activity analysis."""
     st.subheader("👥 Analyse des utilisateurs")
 
@@ -387,7 +387,7 @@ def create_user_analysis(conn):
         logger.error(f"Unexpected error in user analysis: {e}")
 
 
-def display_raw_data_explorer(conn):
+def display_raw_data_explorer(conn) -> None:
     """Interactive data explorer."""
     with st.expander("🔍 Explorateur de données"):
         # Table selector
@@ -418,7 +418,7 @@ def display_raw_data_explorer(conn):
             st.dataframe(sample_df, use_container_width=True)
 
 
-def create_custom_visualizations(conn):
+def create_custom_visualizations(conn) -> None:
     """Interface pour créer des graphiques personnalisés."""
     st.subheader("📈 Graphiques personnalisés")
 
@@ -514,7 +514,7 @@ def create_custom_visualizations(conn):
                 )
 
 
-def main():
+def main() -> None:
     """Main Streamlit application - Enhanced version."""
     logger.info("🚀 Enhanced Streamlit application starting")
 

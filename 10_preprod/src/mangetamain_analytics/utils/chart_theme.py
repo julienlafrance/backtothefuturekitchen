@@ -4,10 +4,11 @@ Ce module fournit des fonctions pour appliquer automatiquement
 la charte graphique Back to the Kitchen aux graphiques Plotly.
 """
 
+from typing import Optional, Any
 from .color_theme import ColorTheme
 
 
-def apply_chart_theme(fig, title=None):
+def apply_chart_theme(fig: Any, title: Optional[str] = None) -> Any:
     """Applique le thème Back to the Kitchen à un graphique Plotly.
 
     Args:
@@ -79,7 +80,7 @@ def apply_chart_theme(fig, title=None):
     return fig
 
 
-def get_bar_color():
+def get_bar_color() -> str:
     """Retourne la couleur principale pour les barres.
 
     Returns:
@@ -88,7 +89,7 @@ def get_bar_color():
     return ColorTheme.CHART_COLORS[0]
 
 
-def get_line_colors():
+def get_line_colors() -> list[str]:
     """Retourne la liste de couleurs pour les lignes multiples.
 
     Returns:
@@ -97,7 +98,7 @@ def get_line_colors():
     return ColorTheme.CHART_COLORS
 
 
-def get_scatter_color():
+def get_scatter_color() -> str:
     """Retourne la couleur pour les scatter plots.
 
     Returns:
@@ -106,7 +107,7 @@ def get_scatter_color():
     return ColorTheme.CHART_COLORS[1]  # Jaune doré
 
 
-def get_reference_line_color():
+def get_reference_line_color() -> str:
     """Retourne la couleur pour les lignes de référence (régression, etc).
 
     Returns:
@@ -115,7 +116,7 @@ def get_reference_line_color():
     return ColorTheme.ERROR  # Rouge pour les lignes de référence
 
 
-def apply_subplot_theme(fig, num_rows=1, num_cols=2):
+def apply_subplot_theme(fig: Any, num_rows: int = 1, num_cols: int = 2) -> Any:
     """Applique le thème à un graphique avec subplots.
 
     Args:

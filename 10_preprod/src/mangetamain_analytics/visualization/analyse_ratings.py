@@ -63,7 +63,7 @@ def weighted_spearman(x, y, w):
     return weighted_corr
 
 
-def analyse_ratings_validation_ponderee():
+def analyse_ratings_validation_ponderee() -> None:
     """Analyse 1: Validation méthodologique - Tests pondérés vs non-pondérés."""
     st.markdown(
         """
@@ -291,7 +291,7 @@ def analyse_ratings_validation_ponderee():
     )
 
 
-def analyse_ratings_tendance_temporelle():
+def analyse_ratings_tendance_temporelle() -> None:
     """Analyse 2: Tendance temporelle des ratings (Méthodes pondérées)."""
     st.markdown(
         """
@@ -521,7 +521,7 @@ def analyse_ratings_tendance_temporelle():
     )
 
 
-def analyse_ratings_distribution():
+def analyse_ratings_distribution() -> None:
     """Analyse 3: Évolution détaillée et corrélations (bandes de confiance)."""
     st.markdown(
         """
@@ -791,7 +791,7 @@ def analyse_ratings_distribution():
     )
 
 
-def analyse_ratings_seasonality_1():
+def analyse_ratings_seasonality_1() -> None:
     """Analyse 4: Statistiques descriptives des données saisonnières."""
     st.markdown(
         """
@@ -949,7 +949,7 @@ def analyse_ratings_seasonality_1():
     )
 
 
-def analyse_ratings_seasonality_2():
+def analyse_ratings_seasonality_2() -> None:
     """Analyse 5: Variations saisonnières des ratings (Stats et Visualisations)."""
     st.markdown(
         """
@@ -1203,7 +1203,7 @@ def analyse_ratings_seasonality_2():
     )
 
 
-def render_ratings_analysis():
+def render_ratings_analysis() -> None:
     """Point d'entrée principal pour les analyses de ratings."""
     st.markdown(
         '<h1 style="margin-top: 0; padding-top: 0;">⭐ Analyses des Ratings (1999-2018)</h1>',

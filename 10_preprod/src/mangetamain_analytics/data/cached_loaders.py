@@ -5,6 +5,7 @@ pour améliorer les performances. La logique de chargement et de gestion
 d'erreurs est déléguée à la classe DataLoader.
 """
 
+from typing import Any
 import streamlit as st
 from .loaders import DataLoader
 
@@ -14,7 +15,7 @@ _loader = DataLoader()
 
 
 @st.cache_data(ttl=3600, show_spinner="🔄 Chargement des recettes depuis S3...")
-def get_recipes_clean():
+def get_recipes_clean() -> Any:
     """Charge les recettes depuis S3 avec cache (1h)."""
     return _loader.load_recipes()
 
@@ -31,6 +32,6 @@ def get_recipes_clean():
 
 
 @st.cache_data(ttl=3600, show_spinner="🔄 Chargement des ratings depuis S3...")
-def get_ratings_longterm(min_interactions=100, return_metadata=False, verbose=False):
+def get_ratings_longterm(min_interactions: int = 100, return_metadata: bool = False, verbose: bool = False) -> Any:
     """Charge les ratings pour analyse long-terme depuis S3 avec cache (1h)."""
     return _loader.load_ratings(min_interactions, return_metadata, verbose)

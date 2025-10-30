@@ -85,8 +85,7 @@ class ColorTheme:
     # ========================================================================
 
     @classmethod
-    @property
-    def GRADIENT_ORANGE(cls) -> str:
+    def gradient_orange(cls) -> str:
         """Dégradé orange (PRIMARY → ORANGE_SECONDARY)."""
         return (
             f"linear-gradient(135deg, {cls.PRIMARY} 0%, "
@@ -94,8 +93,7 @@ class ColorTheme:
         )
 
     @classmethod
-    @property
-    def GRADIENT_DARK(cls) -> str:
+    def gradient_dark(cls) -> str:
         """Dégradé fond sombre (SIDEBAR → MAIN)."""
         return (
             f"linear-gradient(180deg, {cls.BACKGROUND_SIDEBAR} 0%, "

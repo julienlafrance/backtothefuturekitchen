@@ -4,6 +4,8 @@ Ce module définit les styles, couleurs et configurations réutilisables
 pour tous les graphiques de l'application.
 """
 
+from typing import Optional, Any
+
 # Palette de couleurs cohérente (inspirée de ton exemple matplotlib)
 COLORS = {
     "observed": "#00416A",  # darkblue - pour données observées
@@ -44,7 +46,7 @@ AXIS_CONFIG = {
 }
 
 
-def apply_theme(fig, title=None, height=600, add_grids=False):
+def apply_theme(fig: Any, title: Optional[str] = None, height: int = 600, add_grids: bool = False) -> Any:
     """Applique le thème blanc cohérent à un graphique Plotly.
 
     Args:

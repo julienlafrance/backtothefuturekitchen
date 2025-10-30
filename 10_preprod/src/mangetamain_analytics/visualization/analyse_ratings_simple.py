@@ -91,7 +91,7 @@ def process_data(ratings_data):
     return ratings_data, stats
 
 
-def create_plots_streamlit(ratings_data, stats):  # pragma: no cover
+def create_plots_streamlit(ratings_data, stats) -> None:  # pragma: no cover
     """Crée les graphiques pour Streamlit"""
     # <GRAPHIQUE_PRINCIPAL>
     fig = px.bar(
@@ -122,7 +122,7 @@ def create_plots_streamlit(ratings_data, stats):  # pragma: no cover
     # </GRAPHIQUES_SECONDAIRES>
 
 
-def create_plots_matplotlib(ratings_data, stats):  # pragma: no cover
+def create_plots_matplotlib(ratings_data, stats) -> None:  # pragma: no cover
     """Crée les graphiques avec matplotlib (mode standalone)"""
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6))
 
@@ -145,7 +145,7 @@ def create_plots_matplotlib(ratings_data, stats):  # pragma: no cover
     plt.show()
 
 
-def print_stats(stats):
+def print_stats(stats) -> None:
     """Affiche les statistiques en mode console"""
     print("\n" + "=" * 50)
     print("📊 STATISTIQUES")
@@ -156,7 +156,7 @@ def print_stats(stats):
     print(f"% de 5 étoiles       : {stats['pct_5_stars']:.1f}%")
 
 
-def print_interpretation():
+def print_interpretation() -> None:
     """Affiche l'interprétation"""
     # <INTERPRÉTATION>
     print("\n" + "=" * 50)
@@ -173,7 +173,7 @@ def print_interpretation():
     # </INTERPRÉTATION>
 
 
-def render_analysis(conn=None):  # pragma: no cover
+def render_analysis(conn=None) -> None:  # pragma: no cover
     """
     Fonction principale pour Streamlit
 
@@ -228,7 +228,7 @@ def render_analysis(conn=None):  # pragma: no cover
         st.error(f"Erreur dans l'analyse : {e}")
 
 
-def main():  # pragma: no cover
+def main() -> None:  # pragma: no cover
     """Fonction principale pour exécution standalone"""
     print("🚀 Analyse des Ratings - Mode Standalone")
     print("=" * 50)

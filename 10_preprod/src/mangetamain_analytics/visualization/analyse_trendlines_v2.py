@@ -27,7 +27,7 @@ warnings.filterwarnings("ignore")
 
 
 @st.cache_data
-def load_and_prepare_data():
+def load_and_prepare_data() -> None:
     """Charge et prépare les données depuis S3 (avec cache Streamlit)."""
     df = load_recipes_clean()
     # Ajouter complexity_score si nécessaire
@@ -46,7 +46,7 @@ def load_and_prepare_data():
 # ============================================================================
 
 
-def analyse_trendline_volume():
+def analyse_trendline_volume() -> None:
     """
     Analyse interactive du volume de recettes par année.
     Version preprod avec filtres et statistiques.
@@ -244,7 +244,7 @@ def analyse_trendline_volume():
 # ============================================================================
 
 
-def analyse_trendline_duree():
+def analyse_trendline_duree() -> None:
     """
     Analyse WLS de l'évolution de la durée - Version style professionnel.
     MÊME ANALYSE que l'original matplotlib, juste un meilleur rendu visuel.
@@ -629,7 +629,7 @@ def analyse_trendline_duree():
     )
 
 
-def analyse_trendline_duree_old_intervals():
+def analyse_trendline_duree_old_intervals() -> None:
     """
     Analyse professionnelle de l'évolution de la durée de préparation.
     Avec intervalles de confiance (95%) et intervalles de prédiction.
@@ -994,7 +994,7 @@ def analyse_trendline_duree_old_intervals():
         st.text(wls_result.summary())
 
 
-def analyse_trendline_duree_old():
+def analyse_trendline_duree_old() -> None:
     """
     Analyse interactive de l'évolution de la durée de préparation.
     Version preprod avec filtres, régressions WLS et statistiques.
@@ -1389,7 +1389,7 @@ def analyse_trendline_duree_old():
 # ============================================================================
 
 
-def analyse_trendline_complexite():
+def analyse_trendline_complexite() -> None:
     """Analyse de l'évolution de la complexité des recettes."""
     df = load_and_prepare_data()
 
@@ -1577,7 +1577,7 @@ def analyse_trendline_complexite():
 # ============================================================================
 
 
-def analyse_trendline_nutrition():
+def analyse_trendline_nutrition() -> None:
     """Analyse de l'évolution des valeurs nutritionnelles."""
     df = load_and_prepare_data()
 
@@ -1736,7 +1736,7 @@ def analyse_trendline_nutrition():
 # ============================================================================
 
 
-def analyse_trendline_ingredients(top_n=10):
+def analyse_trendline_ingredients(top_n=10) -> None:
     """Analyse de l'évolution des ingrédients."""
     df = load_and_prepare_data()
 
@@ -2005,7 +2005,7 @@ def analyse_trendline_ingredients(top_n=10):
 # ============================================================================
 
 
-def analyse_trendline_tags(top_n=10):
+def analyse_trendline_tags(top_n=10) -> None:
     """Analyse de l'évolution des tags."""
     df = load_and_prepare_data()
 

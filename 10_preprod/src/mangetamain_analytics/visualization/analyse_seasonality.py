@@ -28,7 +28,7 @@ from utils.color_theme import ColorTheme
 # ============================================================================
 
 
-def analyse_seasonality_volume():
+def analyse_seasonality_volume() -> None:
     """
     Analyse du volume de recettes publiées par saison.
 
@@ -204,7 +204,7 @@ def analyse_seasonality_volume():
 # ============================================================================
 
 
-def analyse_seasonality_duree():
+def analyse_seasonality_duree() -> None:
     """
     Analyse de la durée de préparation des recettes par saison.
 
@@ -419,7 +419,7 @@ def analyse_seasonality_duree():
 # ============================================================================
 
 
-def analyse_seasonality_complexite():
+def analyse_seasonality_complexite() -> None:
     """
     Analyse de la complexité des recettes par saison.
 
@@ -631,7 +631,7 @@ def analyse_seasonality_complexite():
 # ============================================================================
 
 
-def analyse_seasonality_nutrition():
+def analyse_seasonality_nutrition() -> None:
     """
     Analyse du profil nutritionnel des recettes par saison.
 
@@ -826,7 +826,7 @@ def analyse_seasonality_nutrition():
 # ============================================================================
 
 
-def analyse_seasonality_ingredients():
+def analyse_seasonality_ingredients() -> None:
     """
     Analyse des ingrédients les plus variables par saison.
 
@@ -1017,7 +1017,7 @@ def analyse_seasonality_ingredients():
 # ============================================================================
 
 
-def analyse_seasonality_tags():
+def analyse_seasonality_tags() -> None:
     """
     Analyse des tags les plus variables par saison.
 
@@ -1191,7 +1191,7 @@ def analyse_seasonality_tags():
 # ============================================================================
 
 
-def render_seasonality_analysis():
+def render_seasonality_analysis() -> None:
     """
     Fonction principale pour afficher toutes les analyses saisonnières.
 
