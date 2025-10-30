@@ -61,6 +61,44 @@ Le **runner GitHub self-hosted** installé sur la VM dataia orchestre les déplo
 
 **Voir** : :doc:`cicd` pour détails complets du pipeline.
 
+Monitoring et Surveillance
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Surveillance externe des environnements avec **UptimeRobot** :
+
+**Service** : UptimeRobot (plan gratuit, 50 monitors)
+
+**URLs surveillées** :
+
+* PREPROD : https://mangetamain.lafrance.io/ (port 8500)
+* PRODUCTION : https://backtothefuturekitchen.lafrance.io/ (port 8501)
+
+**Configuration** :
+
+* Intervalle de vérification : toutes les 5 minutes
+* Timeout : 30 secondes
+* Protocole : HTTPS (via reverse proxy)
+
+**Détection** :
+
+* Serveur inaccessible (pas de réponse réseau)
+* Backend Streamlit down (erreur 502/503 du reverse proxy)
+* Timeouts dépassant 30 secondes
+* Erreurs HTTP (codes 4xx/5xx)
+
+**Alertes** :
+
+* Email automatique en cas de panne détectée
+* Webhook Discord pour notifications temps réel
+* Dashboard UptimeRobot avec historique uptime
+
+**Avantages monitoring externe** :
+
+* Détection fiable (externe au serveur surveillé)
+* Fréquence élevée (5 min vs anciennes checks GitHub 1h)
+* Pas de dépendance au runner self-hosted
+* Statistiques d'uptime et SLA automatiques
+
 Stack Technique
 ---------------
 
@@ -87,7 +125,7 @@ Stack Technique
    * - **Déploiement**
      - Docker Compose, VM dataia (VPN)
    * - **Monitoring**
-     - Discord webhooks (notifications temps réel)
+     - UptimeRobot (surveillance externe toutes les 5 min)
 
 Détails des Technologies Clés
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
