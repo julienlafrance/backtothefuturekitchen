@@ -32,6 +32,8 @@ def get_recipes_clean() -> Any:
 
 
 @st.cache_data(ttl=3600, show_spinner="🔄 Chargement des ratings depuis S3...")
-def get_ratings_longterm(min_interactions: int = 100, return_metadata: bool = False, verbose: bool = False) -> Any:
+def get_ratings_longterm(
+    min_interactions: int = 100, return_metadata: bool = False, verbose: bool = False
+) -> Any:
     """Charge les ratings pour analyse long-terme depuis S3 avec cache (1h)."""
     return _loader.load_ratings(min_interactions, return_metadata, verbose)

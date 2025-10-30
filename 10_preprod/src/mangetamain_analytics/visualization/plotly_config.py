@@ -46,7 +46,9 @@ AXIS_CONFIG = {
 }
 
 
-def apply_theme(fig: Any, title: Optional[str] = None, height: int = 600, add_grids: bool = False) -> Any:
+def apply_theme(
+    fig: Any, title: Optional[str] = None, height: int = 600, add_grids: bool = False
+) -> Any:
     """Applique le thème blanc cohérent à un graphique Plotly.
 
     Args:

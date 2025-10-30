@@ -65,7 +65,9 @@ def create_distribution_plot(conn, table_name: str, column_name: str) -> None:
         st.error(f"Erreur: {e}")
 
 
-def create_time_series_plot(conn, table_name: str, date_col: str, value_col: str) -> None:
+def create_time_series_plot(
+    conn, table_name: str, date_col: str, value_col: str
+) -> None:
     """Crée un graphique temporel."""
     try:
         data_df = conn.execute(
