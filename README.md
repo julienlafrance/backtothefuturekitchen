@@ -110,8 +110,8 @@ docker-compose -f docker-compose-prod.yml up -d
 
 **Vérification locale avant push**
 ```bash
-./run_ci_checks.sh prod    # Teste 20_prod
-./run_ci_checks.sh preprod # Teste 10_preprod
+./70_scripts/run_ci_checks.sh prod    # Teste 20_prod
+./70_scripts/run_ci_checks.sh preprod # Teste 10_preprod
 ```
 
 **GitHub Actions vérifie automatiquement:**

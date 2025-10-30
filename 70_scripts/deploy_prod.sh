@@ -2,7 +2,8 @@
 # Script pour déclencher le déploiement en production
 # Usage: ./deploy_prod.sh
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Script situé dans 70_scripts/, on remonte au parent (000_dev/)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TOKEN_FILE="$SCRIPT_DIR/96_keys/github_deploy_token.txt"
 
 if [ ! -f "$TOKEN_FILE" ]; then

@@ -9,7 +9,8 @@
 set -e
 
 # Configuration
-BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Script situé dans 70_scripts/, on remonte au parent (000_dev/)
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BACKUP_DIR="$BASE_DIR/backups/prod_$(date +%Y%m%d_%H%M%S)"
 PROD_DIR="$BASE_DIR/20_prod"
 

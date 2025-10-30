@@ -231,8 +231,8 @@ Vérification Locale Avant Push
 .. code-block:: bash
 
    # Script de vérification local
-   ./run_ci_checks.sh preprod   # Teste 10_preprod
-   ./run_ci_checks.sh prod      # Teste 20_prod
+   ./70_scripts/run_ci_checks.sh preprod   # Teste 10_preprod
+   ./70_scripts/run_ci_checks.sh prod      # Teste 20_prod
 
 Déclenchement Manuel Workflows
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

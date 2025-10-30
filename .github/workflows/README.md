@@ -71,7 +71,7 @@ Cliquer sur le job → Expander les étapes → Lire l'erreur
 ### Étape 3: Reproduire localement
 ```bash
 cd /home/julien/code/mangetamain/000_dev
-./run_ci_checks.sh prod
+./70_scripts/run_ci_checks.sh prod
 ```
 
 ### Étape 4: Corriger et re-push
@@ -117,7 +117,7 @@ Les tests sont exécutés en parallèle :
 ### Ajouter un nouveau check
 1. Éditer `.github/workflows/ci.yml`
 2. Ajouter une nouvelle étape dans le job `quality-checks`
-3. Tester localement avec `./run_ci_checks.sh`
+3. Tester localement avec `./70_scripts/run_ci_checks.sh`
 4. Commit et push
 
 ### Modifier le seuil de coverage

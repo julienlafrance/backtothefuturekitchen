@@ -35,6 +35,13 @@ print_error() {
     echo -e "${RED}❌ $1${NC}"
 }
 
+# Se positionner dans le bon répertoire (000_dev/)
+# Si le script est dans 70_scripts/, remonter au parent
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [[ "$SCRIPT_DIR" == */70_scripts ]]; then
+    cd "$SCRIPT_DIR/.."
+fi
+
 # Vérifier qu'on est dans le bon répertoire
 if [ ! -f "README_CI_CD.md" ]; then
     print_error "Ce script doit être exécuté depuis 000_dev/"
