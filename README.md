@@ -78,7 +78,7 @@ mangetamain/
 ## 🚀 Démarrage Rapide
 
 ### 1. Installation S3 (une seule fois)
-Suivre [S3_INSTALL.md](S3_INSTALL.md)
+Voir la documentation dans [90_doc/](90_doc/) (section S3)
 
 ### 2. Lancement PREPROD
 ```bash
@@ -203,9 +203,10 @@ Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
 ## 📚 Documentation
 
 ### Configuration et utilisation
-- **[S3_INSTALL.md](S3_INSTALL.md)** - Guide d'installation S3
-- **[S3_USAGE.md](S3_USAGE.md)** - Guide d'utilisation S3
-- **[90_doc/](90_doc/)** - Documentation technique complète
+- **[90_doc/](90_doc/)** - Documentation technique complète (Sphinx)
+  - Guide installation S3
+  - Guide utilisation S3
+  - Architecture, CI/CD, tests
 
 ### Tests et coverage
 - **[README_TESTS.md](README_TESTS.md)** - 📊 Guide complet des tests (118 tests, 93% coverage)
