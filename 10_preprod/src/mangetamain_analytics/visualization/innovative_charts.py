@@ -7,11 +7,7 @@ qui vont au-delà des graphiques standard pour offrir des insights uniques.
 import altair as alt
 import pandas as pd
 import plotly.graph_objects as go
-import plotly.express as px
-from plotly.subplots import make_subplots
-import numpy as np
 from mangetamain_analytics.utils.color_theme import ColorTheme
-from mangetamain_analytics.utils import chart_theme
 
 
 def create_linked_brushing_dashboard(df: pd.DataFrame) -> alt.Chart:

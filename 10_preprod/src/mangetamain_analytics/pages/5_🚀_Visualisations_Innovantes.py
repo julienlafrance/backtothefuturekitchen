@@ -6,12 +6,6 @@ pour offrir des insights uniques et une expérience "WHAOH".
 
 import streamlit as st
 import pandas as pd
-import sys
-from pathlib import Path
-
-# Ajouter le répertoire parent au PYTHONPATH
-SCRIPT_DIR = Path(__file__).parent.parent
-sys.path.insert(0, str(SCRIPT_DIR))
 
 from mangetamain_analytics.data.cached_loaders import get_recipes_clean
 from mangetamain_analytics.visualization.innovative_charts import (
@@ -23,7 +17,6 @@ from mangetamain_analytics.visualization.innovative_charts import (
     create_parallel_coordinates,
     create_radar_chart_comparison
 )
-from mangetamain_analytics.utils.color_theme import ColorTheme
 
 st.set_page_config(
     page_title="Visualisations Innovantes",
@@ -299,8 +292,11 @@ def main():
             # Stats
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric("📆 Période couverte",
-                         f"{temporal_data['date'].min().strftime('%Y')} - {temporal_data['date'].max().strftime('%Y')}")
+                st.metric(
+                    "📆 Période couverte",
+                    f"{temporal_data['date'].min().strftime('%Y')} - "
+                    f"{temporal_data['date'].max().strftime('%Y')}"
+                )
             with col2:
                 st.metric("🏷️ Catégories", len(temporal_data['category'].unique()))
             with col3:
