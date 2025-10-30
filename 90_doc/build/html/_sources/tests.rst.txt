@@ -66,7 +66,7 @@ Modules Testés (10_preprod)
 ================================= ========== ======== ====================
 Fichier                           Coverage   Tests    Lignes Manquantes
 ================================= ========== ======== ====================
-``utils/colors.py``               100%       10       0
+``utils/color_theme.py``               100%       10       0
 ``utils/chart_theme.py``          100%       10       0
 ``visualization/trendlines.py``   100%       8        0
 ``visualization/ratings_simple``  100%       14       0
@@ -91,7 +91,7 @@ Fichiers de Tests Créés
    ├── test_analyse_ratings.py          (5 tests)
    ├── test_analyse_seasonality.py      (6 tests)
    ├── test_analyse_weekend.py          (6 tests)
-   ├── test_colors.py                   (10 tests)
+   ├── test_color_theme.py                   (10 tests)
    ├── test_chart_theme.py              (10 tests)
    ├── test_analyse_ratings_simple.py   (14 tests)
    ├── test_custom_charts.py            (8 tests)
@@ -406,7 +406,7 @@ Fichiers Ajoutés (2025-10-25)
 2. ``test_analyse_ratings.py`` - 5 tests
 3. ``test_analyse_seasonality.py`` - 6 tests
 4. ``test_analyse_weekend.py`` - 6 tests
-5. ``test_colors.py`` - 10 tests
+5. ``test_color_theme.py`` - 10 tests
 6. ``test_chart_theme.py`` - 10 tests
 7. ``test_cached_loaders.py`` - 4 tests
 

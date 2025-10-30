@@ -6,11 +6,11 @@ pour offrir des insights uniques et une expérience "WHAOH".
 
 import streamlit as st
 import pandas as pd
+import duckdb
+from configparser import ConfigParser
+from pathlib import Path
 
-from mangetamain_analytics.data.cached_loaders import (
-    get_recipes_clean,
-    get_ratings_longterm,
-)
+from mangetamain_analytics.data.cached_loaders import get_recipes_clean
 from mangetamain_analytics.visualization.innovative_charts import (
     create_linked_brushing_dashboard,
     create_calendar_heatmap,
@@ -31,26 +31,68 @@ st.set_page_config(
 
 @st.cache_data(ttl=3600)
 def load_recipes_with_ratings():
-    """Charge recettes avec ratings agrégés par recette."""
+    """Charge recettes avec ratings agrégés par recette via DuckDB."""
     # Charger recettes
     recipes = get_recipes_clean()
     if hasattr(recipes, "to_pandas"):
         recipes = recipes.to_pandas()
 
-    # Charger ratings
-    ratings_data, _ = get_ratings_longterm(
-        min_interactions=10, return_metadata=True, verbose=False
-    )
-    if hasattr(ratings_data, "to_pandas"):
-        ratings_data = ratings_data.to_pandas()
+    # Charger les credentials S3
+    try:
+        config = ConfigParser()
+        cred_file = '/home/julien/code/mangetamain/000_dev/96_keys/credentials'
+        config.read(cred_file)
 
-    # Agréger ratings par recipe_id
-    ratings_agg = (
-        ratings_data.groupby("recipe_id")
-        .agg({"rating": ["mean", "count"], "user_id": "nunique"})
-        .reset_index()
-    )
-    ratings_agg.columns = ["id", "rating", "n_ratings", "n_users"]
+        creds = {
+            'aws_access_key_id': config['s3fast']['aws_access_key_id'],
+            'aws_secret_access_key': config['s3fast']['aws_secret_access_key'],
+            'endpoint_url': config['s3fast']['endpoint_url'],
+            'region_name': config['s3fast']['region'],
+            'bucket': config['s3fast']['bucket']
+        }
+    except Exception as e:
+        st.error(f"Impossible de charger les credentials S3: {e}")
+        # Retourner les recettes sans ratings
+        df = recipes.copy()
+        df["rating"] = 3.0
+        df["n_ratings"] = 0
+        df["n_users"] = 0
+        return df
+
+    # Connexion DuckDB pour lire les interactions depuis S3
+    conn = duckdb.connect()
+    conn.execute("INSTALL httpfs")
+    conn.execute("LOAD httpfs")
+
+    # Créer le secret S3
+    conn.execute(f"""
+        CREATE SECRET s3_secret (
+            TYPE S3,
+            KEY_ID '{creds['aws_access_key_id']}',
+            SECRET '{creds['aws_secret_access_key']}',
+            ENDPOINT '{creds['endpoint_url'].replace('http://', '')}',
+            REGION '{creds['region_name']}',
+            URL_STYLE 'path',
+            USE_SSL false
+        )
+    """)
+
+    # Charger et agréger les ratings depuis S3
+    try:
+        ratings_agg = conn.execute("""
+            SELECT
+                recipe_id as id,
+                AVG(rating) as rating,
+                COUNT(*) as n_ratings,
+                COUNT(DISTINCT user_id) as n_users
+            FROM 's3://mangetamain/final_interactions.parquet'
+            GROUP BY recipe_id
+        """).fetchdf()
+    except Exception as e:
+        st.warning(f"Impossible de charger les ratings: {e}")
+        ratings_agg = pd.DataFrame(columns=['id', 'rating', 'n_ratings', 'n_users'])
+    finally:
+        conn.close()
 
     # Jointure
     df = recipes.merge(ratings_agg, on="id", how="left")
@@ -59,6 +101,10 @@ def load_recipes_with_ratings():
     df["rating"] = df["rating"].fillna(3.0)
     df["n_ratings"] = df["n_ratings"].fillna(0).astype(int)
     df["n_users"] = df["n_users"].fillna(0).astype(int)
+
+    # Convertir la colonne tags en string pour éviter les problèmes de hashing
+    if "tags" in df.columns:
+        df["tags"] = df["tags"].astype(str)
 
     # Ajouter colonnes season si manquante
     if "season" not in df.columns and "submitted" in df.columns:
@@ -180,52 +226,77 @@ def prepare_seasonal_profiles(df):
     if "season" not in df.columns:
         return pd.DataFrame()
 
+    # Filtrer les saisons valides
+    df_with_season = df[df["season"].notna()].copy()
+    if len(df_with_season) == 0:
+        return pd.DataFrame()
+
+    # Calculer max volumes pour normalisation
+    season_counts = df_with_season["season"].value_counts()
+    max_volume = season_counts.max() if len(season_counts) > 0 else 1
+
+    # Calculer max popularity
+    max_popularity = 1
+    if "n_ratings" in df_with_season.columns:
+        popularity_by_season = df_with_season.groupby("season")["n_ratings"].sum()
+        max_popularity = popularity_by_season.max() if len(popularity_by_season) > 0 else 1
+
     profiles = []
-    for season in ["Printemps", "Été", "Automne", "Hiver"]:
-        season_data = df[df["season"] == season]
+    # Mapping saisons anglais -> français pour affichage
+    season_mapping = {
+        'Spring': 'Printemps',
+        'Summer': 'Été',
+        'Autumn': 'Automne',
+        'Winter': 'Hiver'
+    }
+
+    for season_en, season_fr in season_mapping.items():
+        season_data = df_with_season[df_with_season["season"] == season_en]
 
         if len(season_data) == 0:
             continue
 
-        # Calculer métriques
+        # Calculer métriques en filtrant les valeurs extrêmes (outliers)
         volume = len(season_data)
-        avg_duration = season_data["minutes"].mean() if "minutes" in season_data else 30
-        avg_complexity = (
-            season_data["n_steps"].mean() if "n_steps" in season_data else 7
-        )
-        avg_ingredients = (
-            season_data["n_ingredients"].mean() if "n_ingredients" in season_data else 9
-        )
-        avg_rating = season_data["rating"].mean() if "rating" in season_data else 4.0
-        popularity = (
-            season_data["n_interactions"].sum()
-            if "n_interactions" in season_data
-            else volume
-        )
 
-        # Normaliser sur [0, 100]
+        # Durée: filtrer valeurs < 5 min ou > 180 min (3h)
+        if "minutes" in season_data.columns and season_data["minutes"].notna().any():
+            duration_filtered = season_data["minutes"][(season_data["minutes"] >= 5) & (season_data["minutes"] <= 180)]
+            avg_duration = float(duration_filtered.mean()) if len(duration_filtered) > 0 else 30.0
+        else:
+            avg_duration = 30.0
+
+        # Complexité: filtrer valeurs > 25 étapes
+        if "n_steps" in season_data.columns and season_data["n_steps"].notna().any():
+            steps_filtered = season_data["n_steps"][season_data["n_steps"] <= 25]
+            avg_complexity = float(steps_filtered.mean()) if len(steps_filtered) > 0 else 7.0
+        else:
+            avg_complexity = 7.0
+
+        # Ingrédients: filtrer valeurs < 2 ou > 25
+        if "n_ingredients" in season_data.columns and season_data["n_ingredients"].notna().any():
+            ingredients_filtered = season_data["n_ingredients"][(season_data["n_ingredients"] >= 2) & (season_data["n_ingredients"] <= 25)]
+            avg_ingredients = float(ingredients_filtered.mean()) if len(ingredients_filtered) > 0 else 9.0
+        else:
+            avg_ingredients = 9.0
+
+        avg_rating = float(season_data["rating"].mean()) if "rating" in season_data.columns and season_data["rating"].notna().any() else 4.0
+
+        popularity = volume
+        if "n_ratings" in season_data.columns:
+            popularity = float(season_data["n_ratings"].sum())
+
+        # Normaliser sur [0, 100] - ajuster échelles pour mieux couvrir le radar
+        # Utiliser des valeurs max plus réalistes basées sur les moyennes attendues
         profiles.append(
             {
-                "season": season,
-                "volume_norm": min(
-                    100, (volume / df["season"].value_counts().max()) * 100
-                ),
-                "duration_norm": min(100, (avg_duration / 120) * 100),
-                "complexity_norm": min(100, (avg_complexity / 20) * 100),
-                "ingredients_norm": min(100, (avg_ingredients / 20) * 100),
+                "season": season_fr,
+                "volume_norm": min(100, (volume / max_volume) * 100) if max_volume > 0 else 50,
+                "duration_norm": min(100, (avg_duration / 60) * 100),  # Max 60 min au lieu de 120
+                "complexity_norm": min(100, (avg_complexity / 12) * 100),  # Max 12 étapes au lieu de 20
+                "ingredients_norm": min(100, (avg_ingredients / 12) * 100),  # Max 12 ingrédients au lieu de 20
                 "rating_norm": (avg_rating / 5) * 100,
-                "popularity_norm": (
-                    min(
-                        100,
-                        (
-                            popularity
-                            / df.groupby("season")["n_interactions"].sum().max()
-                        )
-                        * 100,
-                    )
-                    if "n_interactions" in df
-                    else 50
-                ),
+                "popularity_norm": min(100, (popularity / max_popularity) * 100) if max_popularity > 0 else 50,
             }
         )
 

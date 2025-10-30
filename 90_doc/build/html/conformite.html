@@ -184,7 +184,7 @@
 <li class="toctree-l2"><a class="reference internal" href="modules/index.html#organisation">Organisation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/index.html#modules-disponibles">Modules Disponibles</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="modules/utils.html">Module utils</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-colors">utils.colors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-color-theme">utils.color_theme</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
 </ul>
 </li>
@@ -225,9 +225,55 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/utils.html">Module utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/utils.html#utils-colors">utils.colors</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.colors.get_rgba"><code class="docutils literal notranslate"><span class="pre">get_rgba()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.colors.get_plotly_theme"><code class="docutils literal notranslate"><span class="pre">get_plotly_theme()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/utils.html#utils-color-theme">utils.color_theme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme"><code class="docutils literal notranslate"><span class="pre">ColorTheme</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SECONDARY_BACKGROUND"><code class="docutils literal notranslate"><span class="pre">ColorTheme.SECONDARY_BACKGROUND</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_MAIN"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_MAIN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_SIDEBAR"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_SIDEBAR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_FOOTER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_FOOTER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_CARD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_CARD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_PRIMARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT_PRIMARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_SECONDARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT_SECONDARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_WHITE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT_WHITE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.PRIMARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.PRIMARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SECONDARY_ACCENT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.SECONDARY_ACCENT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_PRIMARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ORANGE_PRIMARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_SECONDARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ORANGE_SECONDARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_LIGHT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ORANGE_LIGHT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SUCCESS"><code class="docutils literal notranslate"><span class="pre">ColorTheme.SUCCESS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.WARNING"><code class="docutils literal notranslate"><span class="pre">ColorTheme.WARNING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ERROR"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ERROR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INFO"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INFO</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CHART_COLORS"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CHART_COLORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.STEELBLUE_PALETTE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.STEELBLUE_PALETTE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_ORANGE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_ORANGE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_DARK"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_DARK</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_PRIMARY_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_PRIMARY_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_HOVER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_PRIMARY_HOVER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_SECONDARY_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_SECONDARY_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_SECONDARY_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CARD_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_SHADOW"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CARD_SHADOW</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_SHADOW_ORANGE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CARD_SHADOW_ORANGE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INPUT_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_FOCUS_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INPUT_FOCUS_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INPUT_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.to_rgba"><code class="docutils literal notranslate"><span class="pre">ColorTheme.to_rgba()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_plotly_theme"><code class="docutils literal notranslate"><span class="pre">ColorTheme.get_plotly_theme()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_seasonal_colors"><code class="docutils literal notranslate"><span class="pre">ColorTheme.get_seasonal_colors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_seasonal_color"><code class="docutils literal notranslate"><span class="pre">ColorTheme.get_seasonal_color()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="modules/utils.html#constantes-principales">Constantes Principales</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules/utils.html#exemples-d-utilisation">Exemples d’Utilisation</a></li>
 </ul>
@@ -508,7 +554,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cicd.html">Pipeline CI/CD</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="cicd.html#infrastructure">Infrastructure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cicd.html#architecture-pipeline">Architecture Pipeline</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cicd.html#pipeline-sequentiel-3-phases">Pipeline Séquentiel 3 Phases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#pipeline-parallele-avec-rollback-automatique">Pipeline Parallèle avec Rollback Automatique</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="cicd.html#workflows-github-actions">Workflows GitHub Actions</a><ul>
@@ -655,6 +701,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#respect-pep8">Respect PEP8</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#gestion-des-exceptions">Gestion des Exceptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#logging">Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#evenements-loggues">Événements Loggués</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#securite">Sécurité</a></li>
 </ul>
 </li>
@@ -675,10 +722,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#alerting">Alerting</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#points-bonus">Points Bonus</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#base-de-donnees">Base de Données</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choix-techniques-avances">Choix Techniques Avancés</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#base-de-donnees-olap">Base de Données OLAP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#runner-self-hosted">Runner Self-Hosted</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#architecture-preprod-prod">Architecture PREPROD/PROD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#architecture-multi-environnement">Architecture Multi-Environnement</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#resume-standards">Résumé Standards</a></li>
@@ -939,6 +986,55 @@
 </div>
 <p><strong>Voir</strong> : <a class="reference internal" href="architecture.html"><span class="doc">Architecture Technique</span></a> section Logging pour configuration complète.</p>
 </section>
+<section id="evenements-loggues">
+<h3>Événements Loggués<a class="headerlink" href="#evenements-loggues" title="Lien vers cette rubrique"></a></h3>
+<p>L’application Streamlit enregistre <strong>21 événements</strong> dans les fichiers de log.</p>
+<p><strong>main.py (13 événements)</strong></p>
+<p>Démarrage application:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.info</span></code> (519) : « 🚀 Enhanced Streamlit application starting »</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.info</span></code> (833) : « ✅ Application fully loaded »</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.info</span></code> (837) : « 🌟 Starting Enhanced Mangetamain Analytics »</p></li>
+</ul>
+<p>Ressources et vérifications:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.warning</span></code> (527) : « CSS file not found: {css_path} »</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.warning</span></code> (633) : « S3 not accessible: {e} »</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.warning</span></code> (636) : « Unexpected error checking S3: {e} »</p></li>
+</ul>
+<p>Erreurs analyses:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.warning</span></code> (246) : « Erreur lors de l’analyse de {table}: {e} »</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.error</span></code> (315) : « DatabaseError in temporal analysis: {e} »</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.error</span></code> (318) : « AnalysisError in temporal analysis: {e} »</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.error</span></code> (321) : « Unexpected error in temporal analysis: {e} »</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.error</span></code> (381) : « DatabaseError in user analysis: {e} »</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.error</span></code> (384) : « AnalysisError in user analysis: {e} »</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.error</span></code> (387) : « Unexpected error in user analysis: {e} »</p></li>
+</ul>
+<p><strong>Chargement données (data/loaders.py - 8 événements)</strong></p>
+<p>Le chargement des fichiers Parquet depuis S3 génère des logs détaillés avec gestion d’erreurs via <code class="docutils literal notranslate"><span class="pre">DataLoadError</span></code> :</p>
+<p>Chargement recettes :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.error</span></code> (40) : &quot;Module mangetamain_data_utils introuvable: {e}&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.info</span></code> (47) : &quot;Chargement recettes depuis S3 (Parquet)&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.info</span></code> (49) : &quot;Recettes chargées: {len(recipes)} lignes&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.error</span></code> (52) : &quot;Échec chargement recettes depuis S3: {e}&quot;</p></li>
+</ul>
+<p>Chargement ratings :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.error</span></code> (81) : &quot;Module mangetamain_data_utils introuvable: {e}&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.info</span></code> (88) : &quot;Chargement ratings depuis S3 (Parquet) - min_interactions={min_interactions}&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.info</span></code> (98/100) : &quot;Ratings chargés: {len(data)} lignes (avec metadata)&quot; ou &quot;Ratings chargés: {len(result)} lignes&quot;</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">logger.error</span></code> (103) : &quot;Échec chargement ratings depuis S3: {e}&quot;</p></li>
+</ul>
+<p><strong>Répartition par niveau:</strong></p>
+<ul class="simple">
+<li><p>INFO : 7 événements (3 démarrage + 4 chargement données)</p></li>
+<li><p>WARNING : 4 événements (CSS, S3, analyses)</p></li>
+<li><p>ERROR : 10 événements (6 analyses + 4 chargement données)</p></li>
+</ul>
+</section>
 <section id="securite">
 <h3>Sécurité<a class="headerlink" href="#securite" title="Lien vers cette rubrique"></a></h3>
 <ul class="simple">
@@ -979,9 +1075,9 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>utils/colors.py</p></td>
-<td><p>100%</p></td>
-<td><p>10</p></td>
+<tr class="row-even"><td><p>utils/color_theme.py</p></td>
+<td><p>97%</p></td>
+<td><p>35</p></td>
 </tr>
 <tr class="row-odd"><td><p>utils/chart_theme.py</p></td>
 <td><p>100%</p></td>
@@ -1073,7 +1169,9 @@
 <h3>CD PREPROD<a class="headerlink" href="#cd-preprod" title="Lien vers cette rubrique"></a></h3>
 <p>Déploiement automatique sur <a class="reference external" href="https://mangetamain.lafrance.io/">https://mangetamain.lafrance.io/</a></p>
 <ul class="simple">
-<li><p>Déclenché après succès du CI</p></li>
+<li><p><strong>Déclenché en parallèle du CI</strong> (pas d’attente)</p></li>
+<li><p><strong>Déploiement ultra-rapide</strong> : ~40 secondes</p></li>
+<li><p><strong>Rollback automatique</strong> si CI échoue</p></li>
 <li><p>Runner self-hosted (VM dataia)</p></li>
 <li><p>Health checks automatiques</p></li>
 <li><p>Notifications Discord</p></li>
@@ -1100,35 +1198,36 @@
 </ul>
 </section>
 </section>
-<section id="points-bonus">
-<h2>Points Bonus<a class="headerlink" href="#points-bonus" title="Lien vers cette rubrique"></a></h2>
-<section id="base-de-donnees">
-<h3>Base de Données<a class="headerlink" href="#base-de-donnees" title="Lien vers cette rubrique"></a></h3>
-<p>DuckDB - Base OLAP columnar :</p>
+<section id="choix-techniques-avances">
+<h2>Choix Techniques Avancés<a class="headerlink" href="#choix-techniques-avances" title="Lien vers cette rubrique"></a></h2>
+<section id="base-de-donnees-olap">
+<h3>Base de Données OLAP<a class="headerlink" href="#base-de-donnees-olap" title="Lien vers cette rubrique"></a></h3>
+<p><strong>DuckDB</strong> - Base de données columnar haute performance :</p>
 <ul class="simple">
-<li><p>10-100x plus rapide que SQLite</p></li>
-<li><p>Zero-copy sur Parquet</p></li>
-<li><p>581 MB, 7 tables</p></li>
-<li><p>178K recettes, 1.1M+ interactions</p></li>
+<li><p><strong>Performance</strong> : 10-100x plus rapide que SQLite sur agrégations</p></li>
+<li><p><strong>Zero-copy</strong> : Lecture directe Parquet sans import</p></li>
+<li><p><strong>Volume</strong> : 581 MB, 7 tables</p></li>
+<li><p><strong>Données</strong> : 178K recettes, 1.1M+ interactions</p></li>
 </ul>
 </section>
 <section id="runner-self-hosted">
 <h3>Runner Self-Hosted<a class="headerlink" href="#runner-self-hosted" title="Lien vers cette rubrique"></a></h3>
-<p>Innovation : Déploiement sans VPN</p>
+<p><strong>Infrastructure autonome</strong> : Déploiement sans dépendance VPN</p>
 <ul class="simple">
-<li><p>Runner GitHub sur VM dataia</p></li>
-<li><p>Déploiement en 30 secondes</p></li>
-<li><p>Gain : 10 minutes manuelles → 30 secondes auto</p></li>
+<li><p>Runner GitHub hébergé sur VM dataia</p></li>
+<li><p><strong>Déploiement ultra-rapide</strong> : 30-40 secondes</p></li>
+<li><p><strong>Gain productivité</strong> : 10 min manuelles → 30s automatiques</p></li>
+<li><p><strong>Disponibilité</strong> : 24/7 sans intervention</p></li>
 </ul>
 </section>
-<section id="architecture-preprod-prod">
-<h3>Architecture PREPROD/PROD<a class="headerlink" href="#architecture-preprod-prod" title="Lien vers cette rubrique"></a></h3>
-<p>Isolation complète :</p>
+<section id="architecture-multi-environnement">
+<h3>Architecture Multi-Environnement<a class="headerlink" href="#architecture-multi-environnement" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Isolation complète PREPROD/PROD</strong> :</p>
 <ul class="simple">
-<li><p>Bases de données distinctes</p></li>
-<li><p>Logs séparés (debug PREPROD, errors PROD)</p></li>
-<li><p>Variables d’environnement différenciées</p></li>
-<li><p>Ports distincts (8500 vs 8501)</p></li>
+<li><p><strong>Bases de données</strong> : Distinctes par environnement</p></li>
+<li><p><strong>Logs</strong> : Niveau debug (PREPROD), errors only (PROD)</p></li>
+<li><p><strong>Variables</strong> : Environment-specific configuration</p></li>
+<li><p><strong>Ports</strong> : 8500 (PREPROD) vs 8501 (PROD)</p></li>
 </ul>
 </section>
 </section>

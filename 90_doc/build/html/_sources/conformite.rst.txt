@@ -171,6 +171,59 @@ Système Loguru 0.7.3 complet avec séparation PREPROD/PROD :
 
 **Voir** : :doc:`architecture` section Logging pour configuration complète.
 
+Événements Loggués
+^^^^^^^^^^^^^^^^^^
+
+L'application Streamlit enregistre **21 événements** dans les fichiers de log.
+
+**main.py (13 événements)**
+
+Démarrage application:
+
+* ``logger.info`` (519) : "🚀 Enhanced Streamlit application starting"
+* ``logger.info`` (833) : "✅ Application fully loaded"
+* ``logger.info`` (837) : "🌟 Starting Enhanced Mangetamain Analytics"
+
+Ressources et vérifications:
+
+* ``logger.warning`` (527) : "CSS file not found: {css_path}"
+* ``logger.warning`` (633) : "S3 not accessible: {e}"
+* ``logger.warning`` (636) : "Unexpected error checking S3: {e}"
+
+Erreurs analyses:
+
+* ``logger.warning`` (246) : "Erreur lors de l'analyse de {table}: {e}"
+* ``logger.error`` (315) : "DatabaseError in temporal analysis: {e}"
+* ``logger.error`` (318) : "AnalysisError in temporal analysis: {e}"
+* ``logger.error`` (321) : "Unexpected error in temporal analysis: {e}"
+* ``logger.error`` (381) : "DatabaseError in user analysis: {e}"
+* ``logger.error`` (384) : "AnalysisError in user analysis: {e}"
+* ``logger.error`` (387) : "Unexpected error in user analysis: {e}"
+
+**Chargement données (data/loaders.py - 8 événements)**
+
+Le chargement des fichiers Parquet depuis S3 génère des logs détaillés avec gestion d'erreurs via ``DataLoadError`` :
+
+Chargement recettes :
+
+* ``logger.error`` (40) : \"Module mangetamain_data_utils introuvable: {e}\"
+* ``logger.info`` (47) : \"Chargement recettes depuis S3 (Parquet)\"
+* ``logger.info`` (49) : \"Recettes chargées: {len(recipes)} lignes\"
+* ``logger.error`` (52) : \"Échec chargement recettes depuis S3: {e}\"
+
+Chargement ratings :
+
+* ``logger.error`` (81) : \"Module mangetamain_data_utils introuvable: {e}\"
+* ``logger.info`` (88) : \"Chargement ratings depuis S3 (Parquet) - min_interactions={min_interactions}\"
+* ``logger.info`` (98/100) : \"Ratings chargés: {len(data)} lignes (avec metadata)\" ou \"Ratings chargés: {len(result)} lignes\"
+* ``logger.error`` (103) : \"Échec chargement ratings depuis S3: {e}\"
+
+**Répartition par niveau:**
+
+* INFO : 7 événements (3 démarrage + 4 chargement données)
+* WARNING : 4 événements (CSS, S3, analyses)
+* ERROR : 10 événements (6 analyses + 4 chargement données)
+
 Sécurité
 ^^^^^^^^
 
@@ -204,7 +257,7 @@ Métriques par Module
 =========================== ========= ======
 Module                      Coverage  Tests
 =========================== ========= ======
-utils/colors.py             100%      10
+utils/color_theme.py        97%       35
 utils/chart_theme.py        100%      10
 visualization/trendlines.py 100%      8
 visualization/ratings.py    90-100%   5-14
@@ -280,7 +333,9 @@ CD PREPROD
 
 Déploiement automatique sur https://mangetamain.lafrance.io/
 
-* Déclenché après succès du CI
+* **Déclenché en parallèle du CI** (pas d'attente)
+* **Déploiement ultra-rapide** : ~40 secondes
+* **Rollback automatique** si CI échoue
 * Runner self-hosted (VM dataia)
 * Health checks automatiques
 * Notifications Discord
@@ -305,37 +360,38 @@ Notifications Discord temps réel :
 * Instructions rollback si échec
 * Historique complet des déploiements
 
-Points Bonus
-------------
+Choix Techniques Avancés
+-------------------------
 
-Base de Données
-^^^^^^^^^^^^^^^
+Base de Données OLAP
+^^^^^^^^^^^^^^^^^^^^
 
-DuckDB - Base OLAP columnar :
+**DuckDB** - Base de données columnar haute performance :
 
-* 10-100x plus rapide que SQLite
-* Zero-copy sur Parquet
-* 581 MB, 7 tables
-* 178K recettes, 1.1M+ interactions
+* **Performance** : 10-100x plus rapide que SQLite sur agrégations
+* **Zero-copy** : Lecture directe Parquet sans import
+* **Volume** : 581 MB, 7 tables
+* **Données** : 178K recettes, 1.1M+ interactions
 
 Runner Self-Hosted
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
-Innovation : Déploiement sans VPN
+**Infrastructure autonome** : Déploiement sans dépendance VPN
 
-* Runner GitHub sur VM dataia
-* Déploiement en 30 secondes
-* Gain : 10 minutes manuelles → 30 secondes auto
+* Runner GitHub hébergé sur VM dataia
+* **Déploiement ultra-rapide** : 30-40 secondes
+* **Gain productivité** : 10 min manuelles → 30s automatiques
+* **Disponibilité** : 24/7 sans intervention
 
-Architecture PREPROD/PROD
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Architecture Multi-Environnement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Isolation complète :
+**Isolation complète PREPROD/PROD** :
 
-* Bases de données distinctes
-* Logs séparés (debug PREPROD, errors PROD)
-* Variables d'environnement différenciées
-* Ports distincts (8500 vs 8501)
+* **Bases de données** : Distinctes par environnement
+* **Logs** : Niveau debug (PREPROD), errors only (PROD)
+* **Variables** : Environment-specific configuration
+* **Ports** : 8500 (PREPROD) vs 8501 (PROD)
 
 Résumé Standards
 ----------------

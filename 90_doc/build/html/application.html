@@ -3,9 +3,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="fr" data-content_root="./">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; Documentation Mangetamain Analytics 1.0.0</title>
+  <title>Application Streamlit &mdash; Documentation Mangetamain Analytics 1.0.0</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
@@ -17,8 +18,10 @@
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
       <script src="_static/translations.js?v=e6b791cb"></script>
     <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="#" />
-    <link rel="search" title="Recherche" href="search.html" /> 
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="Utilisation" href="usage.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -141,20 +144,20 @@
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Application Streamlit</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="application.html">Application Streamlit</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="application.html#architecture">Architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application.html#structure">Structure</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application.html#les-4-analyses">Les 4 Analyses</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="application.html#analyse-des-tendances-long-terme">1. Analyse des Tendances Long-Terme</a></li>
-<li class="toctree-l3"><a class="reference internal" href="application.html#analyse-de-saisonnalite">2. Analyse de Saisonnalité</a></li>
-<li class="toctree-l3"><a class="reference internal" href="application.html#analyse-effet-weekend">3. Analyse Effet Weekend</a></li>
-<li class="toctree-l3"><a class="reference internal" href="application.html#analyse-des-ratings">4. Analyse des Ratings</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Application Streamlit</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#structure">Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#les-4-analyses">Les 4 Analyses</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#analyse-des-tendances-long-terme">1. Analyse des Tendances Long-Terme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyse-de-saisonnalite">2. Analyse de Saisonnalité</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyse-effet-weekend">3. Analyse Effet Weekend</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#analyse-des-ratings">4. Analyse des Ratings</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="application.html#chargement-des-donnees">Chargement des Données</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application.html#navigation">Navigation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="application.html#performance">Performance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#chargement-des-donnees">Chargement des Données</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#navigation">Navigation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance">Performance</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Utilisation</a><ul>
@@ -719,10 +722,10 @@
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#alerting">Alerting</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="conformite.html#choix-techniques-avances">Choix Techniques Avancés</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="conformite.html#base-de-donnees-olap">Base de Données OLAP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conformite.html#points-bonus">Points Bonus</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#base-de-donnees">Base de Données</a></li>
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#runner-self-hosted">Runner Self-Hosted</a></li>
-<li class="toctree-l3"><a class="reference internal" href="conformite.html#architecture-multi-environnement">Architecture Multi-Environnement</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#architecture-preprod-prod">Architecture PREPROD/PROD</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="conformite.html#resume-standards">Résumé Standards</a></li>
@@ -811,8 +814,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Index</li>
+      <li class="breadcrumb-item active">Application Streamlit</li>
       <li class="wy-breadcrumbs-aside">
+            <a href="_sources/application.rst.txt" rel="nofollow"> Afficher la source de la page</a>
       </li>
   </ul>
   <hr/>
@@ -820,356 +824,103 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-
-<h1 id="index">Index</h1>
-
-<div class="genindex-jumpbox">
- <a href="#A"><strong>A</strong></a>
- | <a href="#B"><strong>B</strong></a>
- | <a href="#C"><strong>C</strong></a>
- | <a href="#D"><strong>D</strong></a>
- | <a href="#E"><strong>E</strong></a>
- | <a href="#G"><strong>G</strong></a>
- | <a href="#I"><strong>I</strong></a>
- | <a href="#L"><strong>L</strong></a>
- | <a href="#M"><strong>M</strong></a>
- | <a href="#O"><strong>O</strong></a>
- | <a href="#P"><strong>P</strong></a>
- | <a href="#R"><strong>R</strong></a>
- | <a href="#S"><strong>S</strong></a>
- | <a href="#T"><strong>T</strong></a>
- | <a href="#W"><strong>W</strong></a>
- 
-</div>
-<h2 id="A">A</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.chart_theme.apply_chart_theme">apply_chart_theme() (dans le module mangetamain_analytics.utils.chart_theme)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.chart_theme.apply_subplot_theme">apply_subplot_theme() (dans le module mangetamain_analytics.utils.chart_theme)</a>
-</li>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.plotly_config.apply_theme">apply_theme() (dans le module mangetamain_analytics.visualization.plotly_config)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND">BACKGROUND (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_CARD">BACKGROUND_CARD (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_FOOTER">BACKGROUND_FOOTER (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_MAIN">BACKGROUND_MAIN (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_SIDEBAR">BACKGROUND_SIDEBAR (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_BG">BUTTON_PRIMARY_BG (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_HOVER">BUTTON_PRIMARY_HOVER (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_TEXT">BUTTON_PRIMARY_TEXT (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_BG">BUTTON_SECONDARY_BG (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_BORDER">BUTTON_SECONDARY_BORDER (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_TEXT">BUTTON_SECONDARY_TEXT (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="C">C</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_BORDER">CARD_BORDER (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_SHADOW">CARD_SHADOW (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_SHADOW_ORANGE">CARD_SHADOW_ORANGE (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CHART_COLORS">CHART_COLORS (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme">ColorTheme (classe dans mangetamain_analytics.utils.color_theme)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.custom_charts.create_correlation_heatmap">create_correlation_heatmap() (dans le module mangetamain_analytics.visualization.custom_charts)</a>
-</li>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.custom_charts.create_custom_scatter_plot">create_custom_scatter_plot() (dans le module mangetamain_analytics.visualization.custom_charts)</a>
-</li>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.custom_charts.create_distribution_plot">create_distribution_plot() (dans le module mangetamain_analytics.visualization.custom_charts)</a>
-</li>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.create_plots_matplotlib">create_plots_matplotlib() (dans le module mangetamain_analytics.visualization.analyse_ratings_simple)</a>
-</li>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.create_plots_streamlit">create_plots_streamlit() (dans le module mangetamain_analytics.visualization.analyse_ratings_simple)</a>
-</li>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.custom_charts.create_time_series_plot">create_time_series_plot() (dans le module mangetamain_analytics.visualization.custom_charts)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="D">D</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/data.html#mangetamain_analytics.data.loaders.DataLoader">DataLoader (classe dans mangetamain_analytics.data.loaders)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="E">E</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD">ENV_PREPROD (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD_BG">ENV_PREPROD_BG (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD_TEXT">ENV_PREPROD_TEXT (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD">ENV_PROD (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_BG">ENV_PROD_BG (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_TEXT">ENV_PROD_TEXT (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ERROR">ERROR (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="G">G</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.chart_theme.get_bar_color">get_bar_color() (dans le module mangetamain_analytics.utils.chart_theme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.chart_theme.get_line_colors">get_line_colors() (dans le module mangetamain_analytics.utils.chart_theme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_plotly_theme">get_plotly_theme() (méthode de la classe mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.get_ratings_data">get_ratings_data() (dans le module mangetamain_analytics.visualization.analyse_ratings_simple)</a>
-</li>
-      <li><a href="modules/data.html#mangetamain_analytics.data.cached_loaders.get_ratings_longterm">get_ratings_longterm() (dans le module mangetamain_analytics.data.cached_loaders)</a>
-</li>
-      <li><a href="modules/data.html#mangetamain_analytics.data.cached_loaders.get_recipes_clean">get_recipes_clean() (dans le module mangetamain_analytics.data.cached_loaders)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.chart_theme.get_reference_line_color">get_reference_line_color() (dans le module mangetamain_analytics.utils.chart_theme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.chart_theme.get_scatter_color">get_scatter_color() (dans le module mangetamain_analytics.utils.chart_theme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_seasonal_color">get_seasonal_color() (méthode de la classe mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_seasonal_colors">get_seasonal_colors() (méthode de la classe mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_DARK">GRADIENT_DARK (propriété mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_ORANGE">GRADIENT_ORANGE (propriété mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="I">I</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INFO">INFO (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_BG">INPUT_BG (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_BORDER">INPUT_BORDER (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_FOCUS_BORDER">INPUT_FOCUS_BORDER (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="L">L</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/data.html#mangetamain_analytics.data.loaders.DataLoader.load_ratings">load_ratings() (méthode mangetamain_analytics.data.loaders.DataLoader)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/data.html#mangetamain_analytics.data.loaders.DataLoader.load_recipes">load_recipes() (méthode mangetamain_analytics.data.loaders.DataLoader)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="M">M</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.main">main() (dans le module mangetamain_analytics.visualization.analyse_ratings_simple)</a>
-</li>
-      <li>
-    mangetamain_analytics.data.cached_loaders
-
-      <ul>
-        <li><a href="modules/data.html#module-mangetamain_analytics.data.cached_loaders">module</a>
-</li>
-      </ul></li>
-      <li>
-    mangetamain_analytics.data.loaders
-
-      <ul>
-        <li><a href="modules/data.html#module-mangetamain_analytics.data.loaders">module</a>
-</li>
-      </ul></li>
-      <li>
-    mangetamain_analytics.utils.chart_theme
-
-      <ul>
-        <li><a href="modules/utils.html#module-mangetamain_analytics.utils.chart_theme">module</a>
-</li>
-      </ul></li>
-      <li>
-    mangetamain_analytics.utils.color_theme
-
-      <ul>
-        <li><a href="modules/utils.html#module-mangetamain_analytics.utils.color_theme">module</a>
-</li>
-      </ul></li>
-      <li>
-    mangetamain_analytics.visualization.analyse_ratings_simple
-
-      <ul>
-        <li><a href="modules/visualization.html#module-mangetamain_analytics.visualization.analyse_ratings_simple">module</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    mangetamain_analytics.visualization.custom_charts
-
-      <ul>
-        <li><a href="modules/visualization.html#module-mangetamain_analytics.visualization.custom_charts">module</a>
-</li>
-      </ul></li>
-      <li>
-    mangetamain_analytics.visualization.plotly_config
-
-      <ul>
-        <li><a href="modules/visualization.html#module-mangetamain_analytics.visualization.plotly_config">module</a>
-</li>
-      </ul></li>
-      <li>
-    module
-
-      <ul>
-        <li><a href="modules/data.html#module-mangetamain_analytics.data.cached_loaders">mangetamain_analytics.data.cached_loaders</a>
-</li>
-        <li><a href="modules/data.html#module-mangetamain_analytics.data.loaders">mangetamain_analytics.data.loaders</a>
-</li>
-        <li><a href="modules/utils.html#module-mangetamain_analytics.utils.chart_theme">mangetamain_analytics.utils.chart_theme</a>
-</li>
-        <li><a href="modules/utils.html#module-mangetamain_analytics.utils.color_theme">mangetamain_analytics.utils.color_theme</a>
-</li>
-        <li><a href="modules/visualization.html#module-mangetamain_analytics.visualization.analyse_ratings_simple">mangetamain_analytics.visualization.analyse_ratings_simple</a>
-</li>
-        <li><a href="modules/visualization.html#module-mangetamain_analytics.visualization.custom_charts">mangetamain_analytics.visualization.custom_charts</a>
-</li>
-        <li><a href="modules/visualization.html#module-mangetamain_analytics.visualization.plotly_config">mangetamain_analytics.visualization.plotly_config</a>
-</li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="O">O</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_LIGHT">ORANGE_LIGHT (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_PRIMARY">ORANGE_PRIMARY (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_SECONDARY">ORANGE_SECONDARY (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="P">P</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.PRIMARY">PRIMARY (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.print_interpretation">print_interpretation() (dans le module mangetamain_analytics.visualization.analyse_ratings_simple)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.print_stats">print_stats() (dans le module mangetamain_analytics.visualization.analyse_ratings_simple)</a>
-</li>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.process_data">process_data() (dans le module mangetamain_analytics.visualization.analyse_ratings_simple)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="R">R</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.render_analysis">render_analysis() (dans le module mangetamain_analytics.visualization.analyse_ratings_simple)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="S">S</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SECONDARY_ACCENT">SECONDARY_ACCENT (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SECONDARY_BACKGROUND">SECONDARY_BACKGROUND (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.setup_s3_connection">setup_s3_connection() (dans le module mangetamain_analytics.visualization.analyse_ratings_simple)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.STEELBLUE_PALETTE">STEELBLUE_PALETTE (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SUCCESS">SUCCESS (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="T">T</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT">TEXT (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_PRIMARY">TEXT_PRIMARY (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_SECONDARY">TEXT_SECONDARY (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_WHITE">TEXT_WHITE (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.to_rgba">to_rgba() (méthode de la classe mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="W">W</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.WARNING">WARNING (attribut mangetamain_analytics.utils.color_theme.ColorTheme)</a>
-</li>
-  </ul></td>
-</tr></table>
-
+  <section id="application-streamlit">
+<h1>Application Streamlit<a class="headerlink" href="#application-streamlit" title="Lien vers cette rubrique"></a></h1>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Lien vers cette rubrique"></a></h2>
+<p>Application web interactive développée avec Streamlit pour présenter les analyses issues des notebooks EDA.</p>
+</section>
+<section id="structure">
+<h2>Structure<a class="headerlink" href="#structure" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Page principale avec navigation sidebar</p></li>
+<li><p>4 modules d’analyse indépendants</p></li>
+<li><p>Widgets interactifs (sliders, selectbox, filtres)</p></li>
+<li><p>Cache données (TTL 1h) pour performance</p></li>
+</ul>
+</section>
+<section id="les-4-analyses">
+<h2>Les 4 Analyses<a class="headerlink" href="#les-4-analyses" title="Lien vers cette rubrique"></a></h2>
+<section id="analyse-des-tendances-long-terme">
+<h3>1. Analyse des Tendances Long-Terme<a class="headerlink" href="#analyse-des-tendances-long-terme" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Source</strong> : 01_long_term/recipe_analysis_trendline.ipynb</p>
+<p>Présente l’évolution 1999-2018 de :</p>
+<ul class="simple">
+<li><p>Volume d’interactions</p></li>
+<li><p>Durée de préparation</p></li>
+<li><p>Complexité des recettes</p></li>
+<li><p>Profils nutritionnels</p></li>
+</ul>
+<p><strong>Visualisations</strong> : 6 graphiques temporels synchronisés avec régression linéaire.</p>
+</section>
+<section id="analyse-de-saisonnalite">
+<h3>2. Analyse de Saisonnalité<a class="headerlink" href="#analyse-de-saisonnalite" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Source</strong> : 02_seasonality/recipe_analysis_seasonality.ipynb</p>
+<p>Identifie les patterns saisonniers :</p>
+<ul class="simple">
+<li><p>Distribution recettes par saison</p></li>
+<li><p>Variations mensuelles nutritionnelles</p></li>
+<li><p>Pics d’activité saisonniers</p></li>
+</ul>
+<p><strong>Visualisations</strong> : Histogrammes, heatmaps mensuelles, palette couleurs thématique.</p>
+</section>
+<section id="analyse-effet-weekend">
+<h3>3. Analyse Effet Weekend<a class="headerlink" href="#analyse-effet-weekend" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Source</strong> : 03_week_end_effect/recipe_analysis_weekend.ipynb</p>
+<p>Compare publications jour ouvré vs weekend :</p>
+<ul class="simple">
+<li><p>Volume par jour de semaine</p></li>
+<li><p>Impact sur complexité/durée</p></li>
+<li><p>Tests statistiques (Chi-2)</p></li>
+</ul>
+<p><strong>Visualisations</strong> : 3 panels comparatifs avec p-values affichées.</p>
+</section>
+<section id="analyse-des-ratings">
+<h3>4. Analyse des Ratings<a class="headerlink" href="#analyse-des-ratings" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Source</strong> : 01_long_term/rating_analysis.ipynb</p>
+<p>Étudie la distribution des notes utilisateurs :</p>
+<ul class="simple">
+<li><p>Distribution 0-5 étoiles</p></li>
+<li><p>Statistiques agrégées</p></li>
+<li><p>Détection biais positif</p></li>
+</ul>
+<p><strong>Visualisations</strong> : Histogrammes interactifs, boxplots, métriques satisfaction.</p>
+</section>
+</section>
+<section id="chargement-des-donnees">
+<h2>Chargement des Données<a class="headerlink" href="#chargement-des-donnees" title="Lien vers cette rubrique"></a></h2>
+<p>Les données sont chargées depuis S3 au démarrage via :</p>
+<ul class="simple">
+<li><p>DataLoader (gestion erreurs)</p></li>
+<li><p>cached_loaders (cache Streamlit TTL 1h)</p></li>
+<li><p>178K recettes + 1.1M ratings (~450 MB Parquet)</p></li>
+</ul>
+</section>
+<section id="navigation">
+<h2>Navigation<a class="headerlink" href="#navigation" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p><strong>Sidebar</strong> : Sélection analyse + badges environnement</p></li>
+<li><p><strong>Filtres</strong> : Années, catégories, plages nutritionnelles</p></li>
+<li><p><strong>Graphiques</strong> : Interactifs Plotly (zoom, pan, hover)</p></li>
+</ul>
+</section>
+<section id="performance">
+<h2>Performance<a class="headerlink" href="#performance" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p>Premier chargement : 5-10 secondes (S3)</p></li>
+<li><p>Chargements suivants : &lt;0.1 seconde (cache)</p></li>
+<li><p>Optimisation DNAT : 500+ MB/s</p></li>
+</ul>
+</section>
+</section>
 
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Utilisation" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 

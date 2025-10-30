@@ -184,7 +184,7 @@
 <li class="toctree-l2"><a class="reference internal" href="modules/index.html#organisation">Organisation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/index.html#modules-disponibles">Modules Disponibles</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="modules/utils.html">Module utils</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-colors">utils.colors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-color-theme">utils.color_theme</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
 </ul>
 </li>
@@ -225,9 +225,55 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/utils.html">Module utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/utils.html#utils-colors">utils.colors</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.colors.get_rgba"><code class="docutils literal notranslate"><span class="pre">get_rgba()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.colors.get_plotly_theme"><code class="docutils literal notranslate"><span class="pre">get_plotly_theme()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/utils.html#utils-color-theme">utils.color_theme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme"><code class="docutils literal notranslate"><span class="pre">ColorTheme</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SECONDARY_BACKGROUND"><code class="docutils literal notranslate"><span class="pre">ColorTheme.SECONDARY_BACKGROUND</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_MAIN"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_MAIN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_SIDEBAR"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_SIDEBAR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_FOOTER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_FOOTER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_CARD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_CARD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_PRIMARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT_PRIMARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_SECONDARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT_SECONDARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_WHITE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT_WHITE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.PRIMARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.PRIMARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SECONDARY_ACCENT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.SECONDARY_ACCENT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_PRIMARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ORANGE_PRIMARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_SECONDARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ORANGE_SECONDARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_LIGHT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ORANGE_LIGHT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SUCCESS"><code class="docutils literal notranslate"><span class="pre">ColorTheme.SUCCESS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.WARNING"><code class="docutils literal notranslate"><span class="pre">ColorTheme.WARNING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ERROR"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ERROR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INFO"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INFO</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CHART_COLORS"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CHART_COLORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.STEELBLUE_PALETTE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.STEELBLUE_PALETTE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_ORANGE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_ORANGE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_DARK"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_DARK</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_PRIMARY_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_PRIMARY_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_HOVER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_PRIMARY_HOVER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_SECONDARY_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_SECONDARY_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_SECONDARY_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CARD_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_SHADOW"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CARD_SHADOW</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_SHADOW_ORANGE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CARD_SHADOW_ORANGE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INPUT_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_FOCUS_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INPUT_FOCUS_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INPUT_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.to_rgba"><code class="docutils literal notranslate"><span class="pre">ColorTheme.to_rgba()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_plotly_theme"><code class="docutils literal notranslate"><span class="pre">ColorTheme.get_plotly_theme()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_seasonal_colors"><code class="docutils literal notranslate"><span class="pre">ColorTheme.get_seasonal_colors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_seasonal_color"><code class="docutils literal notranslate"><span class="pre">ColorTheme.get_seasonal_color()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="modules/utils.html#constantes-principales">Constantes Principales</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules/utils.html#exemples-d-utilisation">Exemples d’Utilisation</a></li>
 </ul>
@@ -508,7 +554,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cicd.html">Pipeline CI/CD</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="cicd.html#infrastructure">Infrastructure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cicd.html#architecture-pipeline">Architecture Pipeline</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cicd.html#pipeline-sequentiel-3-phases">Pipeline Séquentiel 3 Phases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html#pipeline-parallele-avec-rollback-automatique">Pipeline Parallèle avec Rollback Automatique</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="cicd.html#workflows-github-actions">Workflows GitHub Actions</a><ul>
@@ -655,6 +701,7 @@
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#respect-pep8">Respect PEP8</a></li>
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#gestion-des-exceptions">Gestion des Exceptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#logging">Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#evenements-loggues">Événements Loggués</a></li>
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#securite">Sécurité</a></li>
 </ul>
 </li>
@@ -1088,7 +1135,7 @@ uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </sp
 <ol class="arabic simple" start="3">
 <li><p>Si un module spécifique échoue, tester isolément :</p></li>
 </ol>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/unit/test_colors.py<span class="w"> </span>-v
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/unit/test_color_theme.py<span class="w"> </span>-v
 </pre></div>
 </div>
 </section>

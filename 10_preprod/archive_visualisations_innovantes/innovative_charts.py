@@ -13,8 +13,7 @@ from mangetamain_analytics.utils.color_theme import ColorTheme
 def create_linked_brushing_dashboard(df: pd.DataFrame) -> alt.Chart:
     """
     Crée un dashboard Altair avec sélections inter-graphiques synchronisées.
-
-    Cliquer-glisser sur un graphique filtre automatiquement les autres.
+    Copie exacte de l'exemple officiel Altair adapted to our data.
 
     Args:
         df: DataFrame avec colonnes 'minutes', 'rating', 'n_steps', 'season'
@@ -22,67 +21,32 @@ def create_linked_brushing_dashboard(df: pd.DataFrame) -> alt.Chart:
     Returns:
         Chart Altair composé avec linked brushing
     """
-    # Sélection interactive partagée
-    brush = alt.selection_interval(encodings=['x'])
+    # Exactly from official example
+    brush = alt.selection_interval()
 
-    # Configuration couleurs pour Altair
-    color_scale = alt.Scale(
-        domain=['Printemps', 'Été', 'Automne', 'Hiver'],
-        range=[
-            ColorTheme.get_seasonal_color('Printemps'),
-            ColorTheme.get_seasonal_color('Été'),
-            ColorTheme.get_seasonal_color('Automne'),
-            ColorTheme.get_seasonal_color('Hiver')
-        ]
-    )
-
-    # Scatter plot principal
-    scatter = alt.Chart(df).mark_circle(size=60, opacity=0.6).encode(
-        x=alt.X('minutes:Q', scale=alt.Scale(zero=False), title='Durée (min)'),
-        y=alt.Y('rating:Q', scale=alt.Scale(domain=[3, 5]), title='Note moyenne'),
-        color=alt.condition(
-            brush,
-            alt.Color('season:N', scale=color_scale, legend=alt.Legend(title="Saison")),
-            alt.value('lightgray')
-        ),
-        size=alt.Size('n_steps:Q', scale=alt.Scale(range=[20, 200]), legend=None),
-        tooltip=[
-            alt.Tooltip('name:N', title='Recette'),
-            alt.Tooltip('minutes:Q', title='Durée'),
-            alt.Tooltip('rating:Q', title='Note', format='.2f'),
-            alt.Tooltip('n_steps:Q', title='Étapes'),
-            alt.Tooltip('season:N', title='Saison')
-        ]
-    ).add_selection(brush).properties(
+    # Base scatter plot
+    points = alt.Chart(df).mark_point(size=60, opacity=0.8).encode(
+        x=alt.X('minutes:Q', title='Durée (min)'),
+        y=alt.Y('rating:Q', title='Note moyenne'),
+        color=alt.when(brush).then("season").otherwise(alt.ColorValue("gray")),
+        tooltip=['name', 'minutes', 'rating', 'season']
+    ).add_params(brush).properties(
         width=500,
         height=400,
-        title='Durée vs Note (cliquer-glisser pour filtrer)'
+        title='Cliquez-glissez pour sélectionner'
     )
 
-    # Histogramme des notes (filtré)
+    # Histogram with filter
     bars = alt.Chart(df).mark_bar().encode(
-        x=alt.X('rating:Q', bin=alt.Bin(step=0.5), title='Note'),
-        y=alt.Y('count():Q', title='Nombre de recettes'),
-        color=alt.value(ColorTheme.ORANGE_PRIMARY),
-        tooltip=[
-            alt.Tooltip('count():Q', title='Nombre'),
-            alt.Tooltip('rating:Q', bin=alt.Bin(step=0.5), title='Note')
-        ]
+        x=alt.X('rating:Q', bin=True),
+        y='count()',
+        color=alt.value('#FF8C00')
     ).transform_filter(brush).properties(
         width=500,
-        height=150,
-        title='Distribution des notes (zone sélectionnée)'
+        height=150
     )
 
-    # Combiner verticalement
-    chart = (scatter & bars).configure_axis(
-        gridColor='#333333',
-        domainColor='#888888'
-    ).configure_view(
-        strokeWidth=0
-    )
-
-    return chart
+    return points & bars
 
 
 def create_calendar_heatmap(df: pd.DataFrame, year: int = 2018) -> go.Figure:
@@ -104,12 +68,16 @@ def create_calendar_heatmap(df: pd.DataFrame, year: int = 2018) -> go.Figure:
     daily.columns = ['date', 'count']
     daily['date'] = pd.to_datetime(daily['date'])
 
-    # Créer grille semaine × jour
-    daily['week'] = daily['date'].dt.isocalendar().week
+    # Créer numéro de semaine unique pour l'année (évite duplicates)
+    # Utiliser semaine de l'année basée sur le 1er janvier
+    daily['week'] = ((daily['date'] - pd.Timestamp(f'{year}-01-01')).dt.days // 7) + 1
     daily['day_of_week'] = daily['date'].dt.dayofweek
 
+    # Agréger les doublons avant pivot (en cas de semaines se chevauchant)
+    daily_agg = daily.groupby(['day_of_week', 'week'])['count'].sum().reset_index()
+
     # Pivot pour heatmap
-    heatmap_data = daily.pivot(index='day_of_week', columns='week', values='count')
+    heatmap_data = daily_agg.pivot(index='day_of_week', columns='week', values='count')
     heatmap_data = heatmap_data.fillna(0)
 
     fig = go.Figure(go.Heatmap(

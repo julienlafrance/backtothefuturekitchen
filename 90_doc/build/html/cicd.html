@@ -184,7 +184,7 @@
 <li class="toctree-l2"><a class="reference internal" href="modules/index.html#organisation">Organisation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/index.html#modules-disponibles">Modules Disponibles</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="modules/utils.html">Module utils</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-colors">utils.colors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-color-theme">utils.color_theme</a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
 </ul>
 </li>
@@ -225,9 +225,55 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="modules/utils.html">Module utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/utils.html#utils-colors">utils.colors</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.colors.get_rgba"><code class="docutils literal notranslate"><span class="pre">get_rgba()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.colors.get_plotly_theme"><code class="docutils literal notranslate"><span class="pre">get_plotly_theme()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/utils.html#utils-color-theme">utils.color_theme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme"><code class="docutils literal notranslate"><span class="pre">ColorTheme</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SECONDARY_BACKGROUND"><code class="docutils literal notranslate"><span class="pre">ColorTheme.SECONDARY_BACKGROUND</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_MAIN"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_MAIN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_SIDEBAR"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_SIDEBAR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_FOOTER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_FOOTER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_CARD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_CARD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_PRIMARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT_PRIMARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_SECONDARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT_SECONDARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_WHITE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT_WHITE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.PRIMARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.PRIMARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SECONDARY_ACCENT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.SECONDARY_ACCENT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_PRIMARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ORANGE_PRIMARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_SECONDARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ORANGE_SECONDARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_LIGHT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ORANGE_LIGHT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SUCCESS"><code class="docutils literal notranslate"><span class="pre">ColorTheme.SUCCESS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.WARNING"><code class="docutils literal notranslate"><span class="pre">ColorTheme.WARNING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ERROR"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ERROR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INFO"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INFO</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CHART_COLORS"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CHART_COLORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.STEELBLUE_PALETTE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.STEELBLUE_PALETTE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_ORANGE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_ORANGE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_DARK"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_DARK</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_PRIMARY_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_PRIMARY_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_HOVER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_PRIMARY_HOVER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_SECONDARY_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_SECONDARY_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_SECONDARY_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CARD_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_SHADOW"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CARD_SHADOW</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_SHADOW_ORANGE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CARD_SHADOW_ORANGE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INPUT_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_FOCUS_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INPUT_FOCUS_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INPUT_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.to_rgba"><code class="docutils literal notranslate"><span class="pre">ColorTheme.to_rgba()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_plotly_theme"><code class="docutils literal notranslate"><span class="pre">ColorTheme.get_plotly_theme()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_seasonal_colors"><code class="docutils literal notranslate"><span class="pre">ColorTheme.get_seasonal_colors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_seasonal_color"><code class="docutils literal notranslate"><span class="pre">ColorTheme.get_seasonal_color()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="modules/utils.html#constantes-principales">Constantes Principales</a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules/utils.html#exemples-d-utilisation">Exemples d’Utilisation</a></li>
 </ul>
@@ -508,7 +554,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Pipeline CI/CD</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#infrastructure">Infrastructure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#architecture-pipeline">Architecture Pipeline</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#pipeline-sequentiel-3-phases">Pipeline Séquentiel 3 Phases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pipeline-parallele-avec-rollback-automatique">Pipeline Parallèle avec Rollback Automatique</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#workflows-github-actions">Workflows GitHub Actions</a><ul>
@@ -655,6 +701,7 @@
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#respect-pep8">Respect PEP8</a></li>
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#gestion-des-exceptions">Gestion des Exceptions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#logging">Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#evenements-loggues">Événements Loggués</a></li>
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#securite">Sécurité</a></li>
 </ul>
 </li>
@@ -794,34 +841,62 @@
 </section>
 <section id="architecture-pipeline">
 <h2>Architecture Pipeline<a class="headerlink" href="#architecture-pipeline" title="Lien vers cette rubrique"></a></h2>
-<section id="pipeline-sequentiel-3-phases">
-<h3>Pipeline Séquentiel 3 Phases<a class="headerlink" href="#pipeline-sequentiel-3-phases" title="Lien vers cette rubrique"></a></h3>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>┌─────────────────────────────────────────────────────────┐
-│  1. CI Pipeline - Quality &amp; Tests                      │
-│     (GitHub-hosted runners)                             │
-│     - PEP8, Black, Docstrings, Tests                    │
-│     - Déclenché sur push/PR vers main                   │
-└────────────────┬────────────────────────────────────────┘
-                 │
-                 ▼ (si succès)
-┌─────────────────────────────────────────────────────────┐
-│  2. CD Preprod - Auto Deploy                           │
-│     (Self-hosted runner sur VM dataia)                  │
-│     - Pull code, restart container, health check        │
-│     - Notifications Discord                             │
-│     - URL: https://mangetamain.lafrance.io/             │
-└─────────────────────────────────────────────────────────┘
+<section id="pipeline-parallele-avec-rollback-automatique">
+<h3>Pipeline Parallèle avec Rollback Automatique<a class="headerlink" href="#pipeline-parallele-avec-rollback-automatique" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Push vers main
+     │
+     ├──────────────────────────────────────┐
+     │                                       │
+     ▼                                       ▼
+┌─────────────────────────────────┐  ┌──────────────────────────────────┐
+│  1. CI Pipeline                 │  │  2. CD Preprod                   │
+│  (GitHub-hosted runners)        │  │  (Self-hosted runner)            │
+│                                 │  │                                  │
+│  - PEP8, Black, Docstrings      │  │  ⚡ DEPLOY FIRST (~40s)          │
+│  - Tests unitaires              │  │  - Save rollback point           │
+│  - Coverage ≥90%                │  │  - git reset --hard SHA          │
+│  - Tests infrastructure         │  │  - docker-compose restart        │
+│                                 │  │  - Health check                  │
+│  Durée: ~2-3 minutes            │  │  - Launch CI watcher script      │
+└────────────┬────────────────────┘  │                                  │
+             │                       │  🔍 WATCH CI IN BACKGROUND       │
+             │                       │  - Poll CI status (5 min max)    │
+             │                       │                                  │
+             ├───────────────────────┤                                  │
+             │                       │                                  │
+             ▼                       ▼                                  │
+        ✅ CI SUCCESS          ❌ CI FAILURE                           │
+             │                       │                                  │
+             │                       ▼                                  │
+             │              🔄 ROLLBACK AUTOMATIQUE                    │
+             │              - git reset --hard last-validated-sha      │
+             │              - docker-compose restart                   │
+             │              - Notification Discord avec logs CI        │
+             │                                                          │
+             ▼                                                          │
+        Marquer SHA validé                                             │
+        Notification succès                                            │
+└──────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────┐
 │  3. CD Production - Manuel avec confirmation            │
 │     (Self-hosted runner sur VM dataia)                  │
-│     - Backup, deploy, restart, health checks            │
-│     - Notifications Discord avec rollback si échec      │
+│     - Backup automatique avant deploy                   │
+│     - git reset --hard SHA validé                       │
+│     - docker-compose restart                            │
+│     - Health checks (3 tentatives)                      │
+│     - Notifications Discord                             │
 │     - URL: https://backtothefuturekitchen.lafrance.io/  │
 └─────────────────────────────────────────────────────────┘
 </pre></div>
 </div>
-<p><strong>Avantage clé</strong>: Si le CI échoue, le déploiement PREPROD est automatiquement bloqué.</p>
+<p><strong>Avantages clés</strong>:</p>
+<ul class="simple">
+<li><p>⚡ <strong>Déploiement ultra-rapide</strong>: 40s au lieu de 3-5 min (pas d’attente CI)</p></li>
+<li><p>🔒 <strong>Sécurité garantie</strong>: Rollback automatique si CI échoue</p></li>
+<li><p>🎯 <strong>Traçabilité</strong>: Chaque déploiement correspond exactement au SHA testé</p></li>
+<li><p>🔄 <strong>Runner libéré</strong>: Self-hosted runner disponible immédiatement</p></li>
+</ul>
 </section>
 </section>
 <section id="workflows-github-actions">

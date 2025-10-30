@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mangetamain_analytics.utils.chart_theme &mdash; Documentation Mangetamain Analytics 1.0.0</title>
+  <title>mangetamain_analytics.utils.color_theme &mdash; Documentation Mangetamain Analytics 1.0.0</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
 
@@ -181,7 +181,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../modules/index.html#organisation">Organisation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../modules/index.html#modules-disponibles">Modules Disponibles</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules/utils.html">Module utils</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#utils-colors">utils.colors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#utils-color-theme">utils.color_theme</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
 </ul>
 </li>
@@ -222,9 +222,55 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules/utils.html">Module utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../modules/utils.html#utils-colors">utils.colors</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.colors.get_rgba"><code class="docutils literal notranslate"><span class="pre">get_rgba()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.colors.get_plotly_theme"><code class="docutils literal notranslate"><span class="pre">get_plotly_theme()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../modules/utils.html#utils-color-theme">utils.color_theme</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme"><code class="docutils literal notranslate"><span class="pre">ColorTheme</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SECONDARY_BACKGROUND"><code class="docutils literal notranslate"><span class="pre">ColorTheme.SECONDARY_BACKGROUND</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_MAIN"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_MAIN</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_SIDEBAR"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_SIDEBAR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_FOOTER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_FOOTER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BACKGROUND_CARD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BACKGROUND_CARD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_PRIMARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT_PRIMARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_SECONDARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT_SECONDARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.TEXT_WHITE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.TEXT_WHITE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.PRIMARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.PRIMARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SECONDARY_ACCENT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.SECONDARY_ACCENT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_PRIMARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ORANGE_PRIMARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_SECONDARY"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ORANGE_SECONDARY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ORANGE_LIGHT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ORANGE_LIGHT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.SUCCESS"><code class="docutils literal notranslate"><span class="pre">ColorTheme.SUCCESS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.WARNING"><code class="docutils literal notranslate"><span class="pre">ColorTheme.WARNING</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ERROR"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ERROR</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INFO"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INFO</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CHART_COLORS"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CHART_COLORS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.STEELBLUE_PALETTE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.STEELBLUE_PALETTE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_ORANGE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_ORANGE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_DARK"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_DARK</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_PRIMARY_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_PRIMARY_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_PRIMARY_HOVER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_PRIMARY_HOVER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_SECONDARY_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_SECONDARY_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.BUTTON_SECONDARY_TEXT"><code class="docutils literal notranslate"><span class="pre">ColorTheme.BUTTON_SECONDARY_TEXT</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CARD_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_SHADOW"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CARD_SHADOW</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CARD_SHADOW_ORANGE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CARD_SHADOW_ORANGE</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INPUT_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_FOCUS_BORDER"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INPUT_FOCUS_BORDER</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INPUT_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INPUT_BG</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.to_rgba"><code class="docutils literal notranslate"><span class="pre">ColorTheme.to_rgba()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_plotly_theme"><code class="docutils literal notranslate"><span class="pre">ColorTheme.get_plotly_theme()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_seasonal_colors"><code class="docutils literal notranslate"><span class="pre">ColorTheme.get_seasonal_colors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_seasonal_color"><code class="docutils literal notranslate"><span class="pre">ColorTheme.get_seasonal_color()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules/utils.html#constantes-principales">Constantes Principales</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../modules/utils.html#exemples-d-utilisation">Exemples d’Utilisation</a></li>
 </ul>
@@ -766,7 +812,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Code du module</a></li>
-      <li class="breadcrumb-item active">mangetamain_analytics.utils.chart_theme</li>
+      <li class="breadcrumb-item active">mangetamain_analytics.utils.color_theme</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -775,183 +821,280 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <h1>Code source de mangetamain_analytics.utils.chart_theme</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Thème graphique pour les visualisations Plotly.</span>
+  <h1>Code source de mangetamain_analytics.utils.color_theme</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Classe ColorTheme - Charte graphique Back to the Kitchen.</span>
 
-<span class="sd">Ce module fournit des fonctions pour appliquer automatiquement</span>
-<span class="sd">la charte graphique Back to the Kitchen aux graphiques Plotly.</span>
+<span class="sd">Ce module fournit une classe centralisée pour gérer toutes les couleurs</span>
+<span class="sd">de l&#39;application Mangetamain Analytics avec une approche POO.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.color_theme</span><span class="w"> </span><span class="kn">import</span> <span class="n">ColorTheme</span>
 
+<div class="viewcode-block" id="ColorTheme">
+<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ColorTheme</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Thème de couleurs &#39;Back to the Kitchen&#39; avec accesseurs typés.</span>
 
-<div class="viewcode-block" id="apply_chart_theme">
-<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.chart_theme.apply_chart_theme">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">apply_chart_theme</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Applique le thème Back to the Kitchen à un graphique Plotly.</span>
+<span class="sd">    Cette classe encapsule toutes les couleurs de la charte graphique</span>
+<span class="sd">    dans une interface POO avec méthodes utilitaires.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        fig: Figure Plotly à thématiser</span>
-<span class="sd">        title: Titre optionnel du graphique</span>
+<span class="sd">    Examples:</span>
+<span class="sd">        &gt;&gt;&gt; # Accès direct aux couleurs</span>
+<span class="sd">        &gt;&gt;&gt; bar_color = ColorTheme.ORANGE_PRIMARY</span>
+<span class="sd">        &gt;&gt;&gt; text_color = ColorTheme.TEXT_PRIMARY</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        Figure Plotly avec le thème appliqué</span>
+<span class="sd">        &gt;&gt;&gt; # Conversion en RGBA</span>
+<span class="sd">        &gt;&gt;&gt; rgba = ColorTheme.to_rgba(ColorTheme.ORANGE_PRIMARY, 0.5)</span>
+<span class="sd">        &gt;&gt;&gt; # &#39;rgba(255, 140, 0, 0.5)&#39;</span>
+
+<span class="sd">        &gt;&gt;&gt; # Récupération thème Plotly</span>
+<span class="sd">        &gt;&gt;&gt; theme = ColorTheme.get_plotly_theme()</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
-        <span class="c1"># Arrière-plans transparents</span>
-        <span class="n">plot_bgcolor</span><span class="o">=</span><span class="s2">&quot;rgba(0,0,0,0)&quot;</span><span class="p">,</span>
-        <span class="n">paper_bgcolor</span><span class="o">=</span><span class="s2">&quot;rgba(0,0,0,0)&quot;</span><span class="p">,</span>
-        <span class="c1"># Police et couleurs de texte</span>
-        <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">TEXT_PRIMARY</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s2">&quot;Inter, sans-serif&quot;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">),</span>
-        <span class="c1"># Titre du graphique</span>
-        <span class="n">title</span><span class="o">=</span><span class="p">(</span>
-            <span class="nb">dict</span><span class="p">(</span>
-                <span class="n">text</span><span class="o">=</span><span class="n">title</span><span class="p">,</span>
-                <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-                    <span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s2">&quot;Michroma, sans-serif&quot;</span>
-                <span class="p">),</span>
-                <span class="n">x</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-                <span class="n">xanchor</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">title</span>
-            <span class="k">else</span> <span class="kc">None</span>
-        <span class="p">),</span>
-        <span class="c1"># Grille et axes</span>
-        <span class="n">xaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">showgrid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">gridcolor</span><span class="o">=</span><span class="s2">&quot;#444444&quot;</span><span class="p">,</span>
-            <span class="n">gridwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">tickfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">TEXT_PRIMARY</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">),</span>
-            <span class="n">title</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">TEXT_SECONDARY</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">)),</span>
-        <span class="p">),</span>
-        <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">showgrid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">gridcolor</span><span class="o">=</span><span class="s2">&quot;#444444&quot;</span><span class="p">,</span>
-            <span class="n">gridwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">tickfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">TEXT_PRIMARY</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">),</span>
-            <span class="n">title</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">TEXT_SECONDARY</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">)),</span>
-        <span class="p">),</span>
-        <span class="c1"># Légende</span>
-        <span class="n">legend</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">bgcolor</span><span class="o">=</span><span class="s2">&quot;rgba(42, 42, 42, 0.8)&quot;</span><span class="p">,</span>
-            <span class="n">bordercolor</span><span class="o">=</span><span class="s2">&quot;#666666&quot;</span><span class="p">,</span>
-            <span class="n">borderwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">TEXT_PRIMARY</span><span class="p">),</span>
-        <span class="p">),</span>
-        <span class="c1"># Hover label</span>
-        <span class="n">hoverlabel</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">bgcolor</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">BACKGROUND_CARD</span><span class="p">,</span>
-            <span class="n">font_size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
-            <span class="n">font_family</span><span class="o">=</span><span class="s2">&quot;Inter, sans-serif&quot;</span><span class="p">,</span>
-            <span class="n">font_color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">TEXT_WHITE</span><span class="p">,</span>
-            <span class="n">bordercolor</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">,</span>
-        <span class="p">),</span>
-        <span class="c1"># Marges</span>
-        <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">60</span><span class="p">),</span>
-        <span class="c1"># Mode bar</span>
-        <span class="n">modebar</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
-            <span class="n">bgcolor</span><span class="o">=</span><span class="s2">&quot;rgba(0,0,0,0)&quot;</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">TEXT_SECONDARY</span><span class="p">,</span>
-            <span class="n">activecolor</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">fig</span></div>
+    <span class="c1"># ========================================================================</span>
+    <span class="c1"># COULEURS PRINCIPALES</span>
+    <span class="c1"># ========================================================================</span>
+
+    <span class="c1"># Fond et surfaces</span>
+    <span class="n">BACKGROUND</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#1E1E1E&quot;</span>  <span class="c1"># Fond sombre principal</span>
+    <span class="n">SECONDARY_BACKGROUND</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#333333&quot;</span>  <span class="c1"># Fond widgets/cartes</span>
+    <span class="n">BACKGROUND_MAIN</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#1E1E1E&quot;</span>  <span class="c1"># Gris foncé - zone principale</span>
+    <span class="n">BACKGROUND_SIDEBAR</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#000000&quot;</span>  <span class="c1"># Noir pur - sidebar</span>
+    <span class="n">BACKGROUND_FOOTER</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#1a1a1a&quot;</span>  <span class="c1"># Noir foncé - footer</span>
+    <span class="n">BACKGROUND_CARD</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#333333&quot;</span>  <span class="c1"># Gris moyen - cards et widgets</span>
+
+    <span class="c1"># Texte</span>
+    <span class="n">TEXT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#F0F0F0&quot;</span>  <span class="c1"># Texte clair principal</span>
+    <span class="n">TEXT_PRIMARY</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#F0F0F0&quot;</span>  <span class="c1"># Gris clair - texte principal</span>
+    <span class="n">TEXT_SECONDARY</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#888888&quot;</span>  <span class="c1"># Gris moyen - texte secondaire</span>
+    <span class="n">TEXT_WHITE</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#ffffff&quot;</span>  <span class="c1"># Blanc pur - texte sur fond sombre</span>
+
+    <span class="c1"># Orange primaire (accent principal) - COULEURS DU LOGO</span>
+    <span class="n">PRIMARY</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#FF8C00&quot;</span>  <span class="c1"># Orange vif - couleur principale</span>
+    <span class="n">SECONDARY_ACCENT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#FFD700&quot;</span>  <span class="c1"># Jaune doré - accent secondaire</span>
+    <span class="n">ORANGE_PRIMARY</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#FF8C00&quot;</span>  <span class="c1"># Orange vif (alias de PRIMARY)</span>
+    <span class="n">ORANGE_SECONDARY</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#E24E1B&quot;</span>  <span class="c1"># Rouge/Orange profond du logo</span>
+    <span class="n">ORANGE_LIGHT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#FFA07A&quot;</span>  <span class="c1"># Saumon - teinte douce</span>
+
+    <span class="c1"># ========================================================================</span>
+    <span class="c1"># COULEURS D&#39;ÉTAT</span>
+    <span class="c1"># ========================================================================</span>
+
+    <span class="n">SUCCESS</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#28A745&quot;</span>  <span class="c1"># Vert - succès, PROD badge</span>
+    <span class="n">WARNING</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#FFC107&quot;</span>  <span class="c1"># Jaune - warnings, PREPROD badge</span>
+    <span class="n">ERROR</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#DC3545&quot;</span>  <span class="c1"># Rouge - erreurs</span>
+    <span class="n">INFO</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#17A2B8&quot;</span>  <span class="c1"># Cyan - informations</span>
+
+    <span class="c1"># ========================================================================</span>
+    <span class="c1"># PALETTE GRAPHIQUES (Plotly/Matplotlib)</span>
+    <span class="c1"># ========================================================================</span>
+
+    <span class="n">CHART_COLORS</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;#FF8C00&quot;</span><span class="p">,</span>  <span class="c1"># Base Orange (du milieu du dégradé du logo)</span>
+        <span class="s2">&quot;#FFD700&quot;</span><span class="p">,</span>  <span class="c1"># Base Jaune (du point lumineux du dégradé)</span>
+        <span class="s2">&quot;#E24E1B&quot;</span><span class="p">,</span>  <span class="c1"># Rouge/Orange Profond (de la base du dégradé)</span>
+        <span class="s2">&quot;#1E90FF&quot;</span><span class="p">,</span>  <span class="c1"># Bleu Vif (du contour et des effets de vitesse)</span>
+        <span class="s2">&quot;#00CED1&quot;</span><span class="p">,</span>  <span class="c1"># Cyan (accent technologique du logo)</span>
+        <span class="s2">&quot;#FFA07A&quot;</span><span class="p">,</span>  <span class="c1"># Saumon (teinte plus douce du dégradé)</span>
+        <span class="s2">&quot;#B0E0E6&quot;</span><span class="p">,</span>  <span class="c1"># Bleu Clair (teinte plus claire du contour)</span>
+        <span class="s2">&quot;#DAA520&quot;</span><span class="p">,</span>  <span class="c1"># Jaune Doré (variation riche du jaune)</span>
+    <span class="p">]</span>
+
+    <span class="c1"># Palette steelblue (comme dans les wireframes)</span>
+    <span class="n">STEELBLUE_PALETTE</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;#4682b4&quot;</span><span class="p">,</span>  <span class="c1"># SteelBlue principal</span>
+        <span class="s2">&quot;#5a9bd5&quot;</span><span class="p">,</span>  <span class="c1"># SteelBlue clair</span>
+        <span class="s2">&quot;#3a6ba5&quot;</span><span class="p">,</span>  <span class="c1"># SteelBlue foncé</span>
+    <span class="p">]</span>
+
+    <span class="c1"># ========================================================================</span>
+    <span class="c1"># DÉGRADÉS</span>
+    <span class="c1"># ========================================================================</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">GRADIENT_ORANGE</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dégradé orange (PRIMARY → ORANGE_SECONDARY).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;linear-gradient(135deg, </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">PRIMARY</span><span class="si">}</span><span class="s2"> 0%, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">ORANGE_SECONDARY</span><span class="si">}</span><span class="s2"> 100%)&quot;</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">GRADIENT_DARK</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Dégradé fond sombre (SIDEBAR → MAIN).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;linear-gradient(180deg, </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">BACKGROUND_SIDEBAR</span><span class="si">}</span><span class="s2"> 0%, &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">BACKGROUND_MAIN</span><span class="si">}</span><span class="s2"> 100%)&quot;</span>
+        <span class="p">)</span>
+
+    <span class="c1"># ========================================================================</span>
+    <span class="c1"># BADGES ENVIRONNEMENT</span>
+    <span class="c1"># ========================================================================</span>
+
+    <span class="n">ENV_PROD</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;bg&quot;</span><span class="p">:</span> <span class="n">SUCCESS</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">TEXT_WHITE</span><span class="p">,</span>
+        <span class="s2">&quot;icon&quot;</span><span class="p">:</span> <span class="s2">&quot;🟢&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">ENV_PREPROD</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;bg&quot;</span><span class="p">:</span> <span class="n">WARNING</span><span class="p">,</span>
+        <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="s2">&quot;#333333&quot;</span><span class="p">,</span>  <span class="c1"># Texte sombre sur jaune</span>
+        <span class="s2">&quot;icon&quot;</span><span class="p">:</span> <span class="s2">&quot;🔍&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Constantes séparées pour utilisation directe</span>
+    <span class="n">ENV_PROD_BG</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">SUCCESS</span>
+    <span class="n">ENV_PROD_TEXT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">TEXT_WHITE</span>
+    <span class="n">ENV_PREPROD_BG</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">WARNING</span>
+    <span class="n">ENV_PREPROD_TEXT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#333333&quot;</span>
+
+    <span class="c1"># ========================================================================</span>
+    <span class="c1"># COMPOSANTS UI</span>
+    <span class="c1"># ========================================================================</span>
+
+    <span class="c1"># Boutons</span>
+    <span class="n">BUTTON_PRIMARY_BG</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">ORANGE_PRIMARY</span>
+    <span class="n">BUTTON_PRIMARY_TEXT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">TEXT_WHITE</span>
+    <span class="n">BUTTON_PRIMARY_HOVER</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">ORANGE_LIGHT</span>
+
+    <span class="n">BUTTON_SECONDARY_BG</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;transparent&quot;</span>
+    <span class="n">BUTTON_SECONDARY_BORDER</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">ORANGE_PRIMARY</span>
+    <span class="n">BUTTON_SECONDARY_TEXT</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">ORANGE_PRIMARY</span>
+
+    <span class="c1"># Cards et conteneurs</span>
+    <span class="n">CARD_BORDER</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#333333&quot;</span>
+    <span class="n">CARD_SHADOW</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0 4px 6px rgba(0, 0, 0, 0.3)&quot;</span>
+    <span class="n">CARD_SHADOW_ORANGE</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0 4px 6px rgba(255, 140, 66, 0.3)&quot;</span>
+
+    <span class="c1"># Inputs et contrôles</span>
+    <span class="n">INPUT_BORDER</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#444444&quot;</span>
+    <span class="n">INPUT_FOCUS_BORDER</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">ORANGE_PRIMARY</span>
+    <span class="n">INPUT_BG</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">BACKGROUND_CARD</span>
+
+    <span class="c1"># ========================================================================</span>
+    <span class="c1"># MÉTHODES UTILITAIRES</span>
+    <span class="c1"># ========================================================================</span>
+
+<div class="viewcode-block" id="ColorTheme.to_rgba">
+<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.to_rgba">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_rgba</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">hex_color</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convertit une couleur HEX en RGBA avec validation.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            hex_color: Couleur au format hex (#RRGGBB)</span>
+<span class="sd">            alpha: Transparence (0.0 à 1.0)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Couleur au format rgba(r, g, b, a)</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: Si hex_color invalide ou alpha hors range</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; ColorTheme.to_rgba(&quot;#FF8C00&quot;, 0.5)</span>
+<span class="sd">            &#39;rgba(255, 140, 0, 0.5)&#39;</span>
+
+<span class="sd">            &gt;&gt;&gt; ColorTheme.to_rgba(ColorTheme.ORANGE_PRIMARY, 0.8)</span>
+<span class="sd">            &#39;rgba(255, 140, 0, 0.8)&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">hex_color</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">hex_color</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couleur hex invalide: </span><span class="si">{</span><span class="n">hex_color</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">alpha</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Alpha doit être entre 0 et 1, reçu: </span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">hex_color</span> <span class="o">=</span> <span class="n">hex_color</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">hex_color</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">6</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couleur hex doit avoir 6 caractères, reçu: #</span><span class="si">{</span><span class="n">hex_color</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">hex_color</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couleur hex invalide: #</span><span class="si">{</span><span class="n">hex_color</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;rgba(</span><span class="si">{</span><span class="n">r</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2">)&quot;</span></div>
 
 
+<div class="viewcode-block" id="ColorTheme.get_plotly_theme">
+<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_plotly_theme">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_plotly_theme</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retourne le thème Plotly complet.</span>
 
-<div class="viewcode-block" id="get_bar_color">
-<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.chart_theme.get_bar_color">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_bar_color</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retourne la couleur principale pour les barres.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionnaire de configuration Plotly avec fond, grilles,</span>
+<span class="sd">            axes et palette de couleurs</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        Couleur hex pour les barres d&#39;histogramme</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ColorTheme</span><span class="o">.</span><span class="n">CHART_COLORS</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
-
-
-
-<div class="viewcode-block" id="get_line_colors">
-<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.chart_theme.get_line_colors">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_line_colors</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retourne la liste de couleurs pour les lignes multiples.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Liste de couleurs hex</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ColorTheme</span><span class="o">.</span><span class="n">CHART_COLORS</span></div>
-
-
-
-<div class="viewcode-block" id="get_scatter_color">
-<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.chart_theme.get_scatter_color">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_scatter_color</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retourne la couleur pour les scatter plots.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        Couleur hex pour les points de scatter</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ColorTheme</span><span class="o">.</span><span class="n">CHART_COLORS</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Jaune doré</span></div>
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; theme = ColorTheme.get_plotly_theme()</span>
+<span class="sd">            &gt;&gt;&gt; fig.update_layout(**theme[&#39;layout&#39;])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;layout&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;plot_bgcolor&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BACKGROUND_MAIN</span><span class="p">,</span>
+                <span class="s2">&quot;paper_bgcolor&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BACKGROUND_MAIN</span><span class="p">,</span>
+                <span class="s2">&quot;font&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">TEXT_PRIMARY</span><span class="p">},</span>
+                <span class="s2">&quot;xaxis&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;gridcolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#333333&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;linecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#444444&quot;</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;yaxis&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;gridcolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#333333&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;linecolor&quot;</span><span class="p">:</span> <span class="s2">&quot;#444444&quot;</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;colorway&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">CHART_COLORS</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">}</span></div>
 
 
+<div class="viewcode-block" id="ColorTheme.get_seasonal_colors">
+<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_seasonal_colors">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_seasonal_colors</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retourne le mapping couleurs saisonnières.</span>
 
-<div class="viewcode-block" id="get_reference_line_color">
-<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.chart_theme.get_reference_line_color">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_reference_line_color</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Retourne la couleur pour les lignes de référence (régression, etc).</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Dictionnaire {saison: couleur_hex}</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        Couleur hex pour les lignes de référence</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">ColorTheme</span><span class="o">.</span><span class="n">ERROR</span>  <span class="c1"># Rouge pour les lignes de référence</span></div>
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; colors = ColorTheme.get_seasonal_colors()</span>
+<span class="sd">            &gt;&gt;&gt; autumn_color = colors[&quot;Automne&quot;]</span>
+<span class="sd">            &gt;&gt;&gt; # &#39;#FF8C00&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;Printemps&quot;</span><span class="p">:</span> <span class="s2">&quot;#90EE90&quot;</span><span class="p">,</span>  <span class="c1"># Vert clair</span>
+            <span class="s2">&quot;Été&quot;</span><span class="p">:</span> <span class="s2">&quot;#FFD700&quot;</span><span class="p">,</span>  <span class="c1"># Jaune doré</span>
+            <span class="s2">&quot;Automne&quot;</span><span class="p">:</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ORANGE_PRIMARY</span><span class="p">,</span>  <span class="c1"># Orange vif</span>
+            <span class="s2">&quot;Hiver&quot;</span><span class="p">:</span> <span class="s2">&quot;#4682B4&quot;</span><span class="p">,</span>  <span class="c1"># Bleu acier</span>
+        <span class="p">}</span></div>
 
 
+<div class="viewcode-block" id="ColorTheme.get_seasonal_color">
+<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.get_seasonal_color">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_seasonal_color</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">season</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retourne la couleur pour une saison donnée.</span>
 
-<div class="viewcode-block" id="apply_subplot_theme">
-<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.chart_theme.apply_subplot_theme">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">apply_subplot_theme</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">num_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_cols</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Applique le thème à un graphique avec subplots.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            season: Nom de la saison (Printemps, Été, Automne, Hiver)</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        fig: Figure Plotly avec subplots</span>
-<span class="sd">        num_rows: Nombre de lignes de subplots</span>
-<span class="sd">        num_cols: Nombre de colonnes de subplots</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Couleur hex de la saison, ou ORANGE_PRIMARY si saison inconnue</span>
 
-<span class="sd">    Returns:</span>
-<span class="sd">        Figure Plotly avec le thème appliqué</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Applique le thème global</span>
-    <span class="n">apply_chart_theme</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+<span class="sd">        Examples:</span>
+<span class="sd">            &gt;&gt;&gt; ColorTheme.get_seasonal_color(&quot;Automne&quot;)</span>
+<span class="sd">            &#39;#FF8C00&#39;</span>
 
-    <span class="c1"># Applique le thème à chaque subplot</span>
-    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_rows</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_cols</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
-            <span class="n">fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span>
-                <span class="n">showgrid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">gridcolor</span><span class="o">=</span><span class="s2">&quot;#444444&quot;</span><span class="p">,</span>
-                <span class="n">gridwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                <span class="n">tickfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">TEXT_PRIMARY</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">),</span>
-                <span class="n">title_font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">TEXT_SECONDARY</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">),</span>
-                <span class="n">row</span><span class="o">=</span><span class="n">row</span><span class="p">,</span>
-                <span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span>
-                <span class="n">showgrid</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">gridcolor</span><span class="o">=</span><span class="s2">&quot;#444444&quot;</span><span class="p">,</span>
-                <span class="n">gridwidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-                <span class="n">tickfont</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">TEXT_PRIMARY</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">),</span>
-                <span class="n">title_font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">TEXT_SECONDARY</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">),</span>
-                <span class="n">row</span><span class="o">=</span><span class="n">row</span><span class="p">,</span>
-                <span class="n">col</span><span class="o">=</span><span class="n">col</span><span class="p">,</span>
-            <span class="p">)</span>
-
-    <span class="c1"># Titres de subplots en orange</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">update_annotations</span><span class="p">(</span>
-        <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorTheme</span><span class="o">.</span><span class="n">PRIMARY</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span> <span class="n">family</span><span class="o">=</span><span class="s2">&quot;Inter, sans-serif&quot;</span><span class="p">)</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">fig</span></div>
+<span class="sd">            &gt;&gt;&gt; ColorTheme.get_seasonal_color(&quot;Inconnu&quot;)</span>
+<span class="sd">            &#39;#FF8C00&#39;  # Fallback</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">seasonal_colors</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">get_seasonal_colors</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">seasonal_colors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">season</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ORANGE_PRIMARY</span><span class="p">)</span></div>
+</div>
 
 </pre></div>
 

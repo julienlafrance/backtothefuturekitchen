@@ -84,7 +84,7 @@ Tests
    uv run pytest tests/unit/ -v --cov=src --cov-report=html
 
    # Test spécifique
-   uv run pytest tests/unit/test_colors.py -v
+   uv run pytest tests/unit/test_color_theme.py -v
 
    # Tests infrastructure
    cd ~/mangetamain/50_test
@@ -120,7 +120,8 @@ Imports Courants
 
    # Graphiques
    import plotly.graph_objects as go
-   from utils import chart_theme, colors
+   from utils.color_theme import ColorTheme
+   from utils import chart_theme
 
    # Streamlit
    import streamlit as st
@@ -134,7 +135,8 @@ Créer un Graphique
 
 .. code-block:: python
 
-   from utils import chart_theme, colors
+   from utils.color_theme import ColorTheme
+   from utils import chart_theme
    import plotly.graph_objects as go
 
    # Créer figure
@@ -142,7 +144,7 @@ Créer un Graphique
    fig.add_trace(go.Bar(
        x=['A', 'B', 'C'],
        y=[10, 20, 30],
-       marker_color=colors.ORANGE_PRIMARY
+       marker_color=ColorTheme.ORANGE_PRIMARY
    ))
 
    # Appliquer thème
@@ -198,7 +200,7 @@ Couleurs Charte
 
 .. code-block:: python
 
-   from utils import colors
+   from utils.color_theme import ColorTheme
 
    # Couleurs principales
    ORANGE_PRIMARY = "#FF8C00"      # Orange vif
@@ -207,8 +209,8 @@ Couleurs Charte
    TEXT_PRIMARY = "#F0F0F0"        # Gris clair
 
    # Palettes
-   colors.CHART_COLORS             # 8 couleurs graphiques
-   colors.SEASONAL_COLORS          # Dict saison → couleur
+   ColorTheme.CHART_COLORS             # 8 couleurs graphiques
+   ColorTheme.get_seasonal_colors()    # Dict saison → couleur
 
 URLs et Ports
 ^^^^^^^^^^^^^
