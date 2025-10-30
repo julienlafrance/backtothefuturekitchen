@@ -1,189 +1,306 @@
-# 🍽️ Mangetamain Analytics - 10_preprod
+# 🍽️ Mangetamain Analytics
 
-![Tests](https://img.shields.io/badge/tests-22_passing-success)
-![Coverage](https://img.shields.io/badge/coverage-96%25-brightgreen)
+![Tests](https://img.shields.io/badge/tests-118_passing-success)
+![Coverage](https://img.shields.io/badge/coverage-93%25-brightgreen)
 ![Python](https://img.shields.io/badge/python-3.13.3-blue)
+![Streamlit](https://img.shields.io/badge/streamlit-1.50.0-red)
 
-Application d'analyse de données pour le dataset Food.com - Dashboard interactif avec DuckDB et Streamlit
+Application web d'analyse de données culinaires basée sur le dataset Food.com. Dashboard interactif avec pipeline complet d'exploration, développement et déploiement.
 
-## 📁 Architecture du projet
+## 🌐 Environnements Déployés
+
+- **PREPROD** : https://mangetamain.lafrance.io/ (port 8500)
+- **PRODUCTION** : https://backtothefuturekitchen.lafrance.io/ (port 8501)
+
+## 📊 Dataset Food.com
+
+- **178,265 recettes** avec nutrition, étapes et ingrédients
+- **1.1M+ ratings** utilisateurs (1999-2018)
+- **25,076 contributeurs** actifs
+- **Stockage S3** : données parquet optimisées DuckDB
+
+## 🏗️ Architecture du Projet
 
 ```
-mangetamain/
-├── 00_preprod/                     # Environnement de développement
-│   ├── src/mangetamain_analytics/  # Code source Streamlit
-│   ├── data/mangetamain.duckdb     # Base de données (581MB, 2.3M lignes)
-│   ├── logs/                       # Logs Loguru (app + erreurs)
-│   └── .venv/                      # Environnement Python (uv)
-├── 10_prod/                        # Environnement de production ✨
-│   ├── streamlit/main.py           # Application optimisée 
-│   ├── data/mangetamain.duckdb     # Base production
-│   ├── logs/                       # Logs isolés production
-│   └── pyproject.toml              # Configuration simplifiée
-├── 20_VibeCoding/
-│   └── Ydata/                      # Analyse YData SDK
-│       ├── ydata_advanced_analysis.py  # Profiling avancé
-│       └── profile_reports/        # Rapports HTML
-├── 30_docker/                      # Orchestration conteneurs
-│   ├── docker-compose.yml          # Docker preprod
-│   └── docker-compose-prod.yml     # Docker production ✨
-├── 90_doc/                         # Documentation technique
-│   └── RESUME_*_V01-V05.md         # Historique des versions
-└── README.md                       # Ce fichier
+000_dev/
+├── 00_eda/                         # Exploration de données
+│   ├── 01_long_term/               # Notebooks analyses temporelles
+│   ├── 02_seasonality/             # Notebooks saisonnalité
+│   ├── 03_week_end_effect/         # Notebooks effet weekend
+│   └── _data_utils/                # Utilitaires chargement données
+│
+├── 10_preprod/                     # ⭐ Application Streamlit
+│   ├── src/mangetamain_analytics/
+│   │   ├── main.py                 # Point d'entrée
+│   │   ├── visualization/          # Modules analyses (tendances, saisonnalité, ratings)
+│   │   ├── utils/                  # Utilitaires (data_loader, chart_theme, color_theme)
+│   │   ├── data/                   # Gestion données DuckDB/S3
+│   │   ├── exceptions.py           # Exceptions personnalisées
+│   │   └── infrastructure/         # Config et logging
+│   ├── tests/unit/                 # 118 tests unitaires
+│   └── pyproject.toml              # Dépendances uv
+│
+├── 20_prod/                        # Production (synchronisé depuis preprod)
+├── 30_docker/                      # Orchestration Docker
+├── 40_utils/                       # Package partagé mangetamain-data-utils
+├── 90_doc/                         # Documentation Sphinx
+│   ├── source/*.rst                # Documentation complète
+│   └── build/html/                 # Documentation générée
+└── 96_keys/                        # Credentials S3 (gitignored)
 ```
 
-## 🚀 Démarrage rapide
+## 🚀 Démarrage Rapide
 
-### Docker Production (Recommandé)
+### Installation en 2 minutes
 
 ```bash
-cd 30_docker/
-docker-compose -f docker-compose-prod.yml up -d
-```
+# Cloner le repo
+git clone https://github.com/julienlafrance/backtothefuturekitchen.git ~/mangetamain
+cd ~/mangetamain/10_preprod
 
-**Accès** : http://localhost:8501 (avec badges environnement automatiques)
-
-### Développement local
-
-```bash
-cd 00_preprod/
+# Installer dépendances
 uv sync
+
+# Lancer l'application
 uv run streamlit run src/mangetamain_analytics/main.py
 ```
 
-## 🎯 Fonctionnalités
+**Accès** : http://localhost:8501
 
-### Analyses disponibles
-- **Distribution des notes** : Visualisation 700K+ ratings Food.com (7 tables)
-- **Activité utilisateurs** : Métriques d'engagement (top users (25K total))  
-- **Base DuckDB** : Requêtes SQL rapides sur 7 tables
-- **Badges environnement** : Détection auto PREPROD/PROD
+### Docker (Recommandé pour Production)
 
-### Dashboard interactif
-- Interface Streamlit responsive
-- Graphiques temps réel avec Seaborn/Matplotlib
-- Sidebar informative avec metrics base de données
-- Logs Loguru avec rotation automatique
-
-## 🐳 Environnements Docker
-
-### Production (mange_prod)
 ```bash
-# Démarrage service persistant
-docker-compose -f docker-compose-prod.yml up -d
-
-# Monitoring logs
-docker-compose -f docker-compose-prod.yml logs -f
-
-# Santé du service
-docker-compose -f docker-compose-prod.yml ps
+cd ~/mangetamain/30_docker
+docker-compose up -d
 ```
 
-### Maintenance
-```bash
-# Switch preprod → production
-docker-compose down
-docker-compose -f docker-compose-prod.yml up -d
+## 🔧 Stack Technique
 
-# Redémarrage sans interruption
-docker-compose -f docker-compose-prod.yml restart
+| Composant | Technologie | Version |
+|-----------|------------|---------|
+| **Frontend** | Streamlit | 1.50.0 |
+| **Base de données** | DuckDB | 1.4.0 |
+| **Traitement données** | Polars | 1.19.0 |
+| **Visualisation** | Plotly | 5.24.1 |
+| **Stockage** | MinIO S3 | Compatible AWS S3 |
+| **Package manager** | uv | 0.8.22 |
+| **Python** | CPython | 3.13.3 |
+
+## 📈 Analyses Disponibles
+
+### 🎯 Vue d'ensemble
+- Métriques clés du dataset
+- Distribution des recettes et ratings
+- Statistiques utilisateurs
+
+### ⭐ Analyse des Ratings
+- Distribution des notes (0-5 étoiles)
+- Évolution temporelle des ratings
+- Patterns de notation par utilisateur
+
+### 📅 Tendances Temporelles (1999-2018)
+- Volume de recettes par année
+- Durée de préparation et complexité
+- Évolution des valeurs nutritionnelles
+- Tendances ingrédients et catégories
+
+### 🌸 Analyse Saisonnalité
+- Heatmap calendrier annuel
+- Patterns saisonniers par mois
+- Ingrédients et tags saisonniers
+
+### 📅 Effet Weekend
+- Comparaison weekend vs semaine
+- Différences comportementales utilisateurs
+- Patterns temporels hebdomadaires
+
+### 👥 Utilisateurs
+- Top contributeurs actifs
+- Analyse comportementale
+- Métriques d'engagement
+
+## 🧪 Qualité & Tests
+
+### Validation continue
+
+```bash
+# Tests unitaires
+uv run pytest tests/unit/ -v --cov=src
+
+# Vérification PEP8
+uv run flake8 src/ tests/
+
+# Formatage automatique
+uv run black src/ tests/
+
+# Type checking
+uv run mypy src/
 ```
 
-## 🔧 Stack technique
+### Métriques
 
-- **Backend** : DuckDB 1.4.0 (2.3M lignes analysées)
-- **Frontend** : Streamlit 1.50.0 avec badges environnement
-- **Visualisation** : Seaborn 0.13.2, Matplotlib 3.10.6
-- **Logs** : Loguru 0.7.3 (rotation 1MB, séparation erreurs)
-- **Package Manager** : uv 0.8.22 (gestionnaire moderne)
-- **Conteneurisation** : Python 3.13.3-slim, Docker Compose
-- **Données** : Dataset Food.com (1999-2018, 25K utilisateurs)
+- **118 tests** unitaires
+- **93% coverage** de code
+- **Type hinting** complet
+- **Docstrings** Google style
+- **Pipeline CI/CD** automatisé
 
-## 📊 Données
+## 🔄 Workflow Développement
 
-Le dataset Food.com contient :
-- **interactions_train** : 698,901 ratings
-- **interactions_test** : 12,455 ratings  
-- **interactions_validation** : 7,023 ratings
-- **PP_users** : 25,076 utilisateurs
-- **PP_recipes** : 178,265 recettes
-- **RAW_interactions** : 1,132,367 interactions brutes
-- **RAW_recipes** : 231,637 recettes détaillées
+### 1. Exploration (00_eda/)
+Notebooks Jupyter pour analyses exploratoires :
+- Statistiques descriptives
+- Visualisations exploratoires
+- Tests d'hypothèses
+- Identification de patterns
 
-> Base DuckDB étendue disponible (581MB) avec 7 tables complètes
+### 2. Développement (10_preprod/)
+Transformation analyses → modules Python :
+- Copie logique métier depuis notebooks
+- Conversion Matplotlib → Plotly
+- Tests unitaires (2 par fonction minimum)
+- Validation PEP8, black, coverage
 
-## 🎨 Interface utilisateur
+### 3. Déploiement (20_prod/)
+Pipeline CI/CD automatisé :
+- Push GitHub → Déclenche CI
+- Tests + validation qualité
+- Déploiement automatique si succès
 
-### Badges environnement intelligents
-- **🔧 PREPROD** : Environnement développement (gris discret)
-- **🚀 PRODUCTION** : Environnement production (gris discret)
-- **🚀 PROD (Docker)** : Conteneur production automatique
-
-### Navigation
-- **Sidebar** : Infos base + métriques + badge environnement
-- **Onglets** : Vue d'ensemble, Notes, Temporel, Utilisateurs, Données brutes
-- **Responsive** : Layout adaptatif wide format
-
-## 📈 Monitoring
-
-### Logs temps réel
-```bash
-# Logs production
-tail -f ~/mangetamain/10_prod/logs/mangetamain_app.log
-
-# Logs preprod  
-tail -f ~/mangetamain/00_preprod/logs/mangetamain_app.log
-
-# Erreurs uniquement
-grep "ERROR" ~/mangetamain/*/logs/*.log
-```
-
-### Métriques dashboard
-- Nombre total interactions analysées
-- Utilisateurs les plus actifs (top 5)
-- Distribution ratings (0-5 étoiles)
-- Moyennes engagement par utilisateur
-
-## 🚀 Accès en production
-
-- **Local** : http://192.168.80.210:8501/8502 (selon environnement)
-- **Docker** : http://localhost:8501 (mange_prod)
-- **Public** : https://mangetamain.lafrance.io/ (reverse proxy HTTPS)
-
-## 🤝 Développement
-
-### Workflow recommandé
-1. **Développer** dans `00_preprod/` (badge PREPROD)
-2. **Tester** avec `uv run streamlit run...`  
-3. **Copier** vers `10_prod/` pour validation
-4. **Déployer** avec Docker production (badge PROD)
-
-### Tests environnements
-```bash
-# Validation badges
-cd ~/mangetamain/00_preprod && uv run python -c "print('✅ PREPROD')"
-cd ~/mangetamain/10_prod && uv run python -c "print('✅ PROD')"
-docker exec mange_prod python -c "print('✅ DOCKER')"
-```
+**Guide complet** : `GUIDE_INTEGRATION_ANALYSES.md`
 
 ## 📚 Documentation
 
-**Architecture évolutive** documentée dans `90_doc/` :
-- **V01-V02** : Setup initial + Docker basique  
-- **V03-V04** : Production + Logs Loguru
-- **V05** : Environnements séparés + Badges ✨
+Documentation Sphinx complète disponible :
 
-**Détails techniques** : Voir `RESUME_PROD_20251001_V05.md`
+```bash
+cd ~/mangetamain/90_doc
+make html
+# Ouvrir build/html/index.html
+```
 
-## 🎯 Prochaines étapes
+**Sections** :
+- Architecture système
+- Guide installation
+- API reference (modules auto-documentés)
+- Configuration S3
+- CI/CD pipeline
+- Standards qualité
+- FAQ
 
-1. **Tests unitaires** : pytest avec couverture >90%
-2. **CI/CD** : Pipeline GitHub Actions preprod→prod  
-3. **Analyses ML** : Clustering utilisateurs, recommandations
-4. **Monitoring** : Métriques Prometheus + Grafana
-5. **Scaling** : Load balancing multi-conteneurs
+## 🛠️ Commandes Essentielles
+
+```bash
+# Développement
+uv run streamlit run src/mangetamain_analytics/main.py
+uv add nouvelle-dependance
+
+# Tests
+uv run pytest tests/unit/ -v
+uv run pytest --cov=src --cov-report=html
+
+# Qualité code
+uv run flake8 src/
+uv run black src/
+uv run mypy src/
+
+# Docker
+docker-compose up -d
+docker-compose logs -f
+docker-compose restart
+
+# Git
+git add .
+git commit -m "Description"
+git push origin main
+gh run list  # Voir status CI/CD
+```
+
+## 🗄️ Stockage S3
+
+Les données parquet sont stockées sur MinIO S3 compatible :
+
+```python
+# Configuration
+from mangetamain_data_utils import load_recipes_clean, load_ratings
+
+# Chargement automatique depuis S3
+recipes_df = load_recipes_clean()
+ratings_df = load_ratings()
+```
+
+**Documentation** : Voir `90_doc/source/s3.rst`
+
+## 🎨 Visualisations
+
+Bibliothèque Plotly avec thème personnalisé :
+- **Graphiques interactifs** (zoom, pan, hover)
+- **Palette de couleurs** cohérente
+- **Responsive** (use_container_width=True)
+- **Export** PNG/SVG intégré
+
+Configuration centralisée : `src/mangetamain_analytics/utils/chart_theme.py`
+
+## 🐳 Docker
+
+```bash
+# Lancer preprod
+cd 30_docker
+docker-compose up -d
+
+# Logs temps réel
+docker-compose logs -f
+
+# Redémarrer
+docker-compose restart
+
+# Arrêter
+docker-compose down
+```
+
+## 🔐 Configuration S3
+
+Credentials stockés dans `96_keys/load_credentials.py` (gitignored).
+
+Structure attendue :
+```python
+def load_s3_credentials():
+    return {
+        'aws_access_key_id': 'votre_key',
+        'aws_secret_access_key': 'votre_secret',
+        'endpoint_url': 'http://s3.example.com',
+        'bucket': 'mangetamain',
+        'region_name': 'us-east-1'
+    }
+```
+
+## 🤝 Contribution
+
+1. Fork le projet
+2. Créer une branche feature (`git checkout -b feature/AmazingFeature`)
+3. Commit changements (`git commit -m 'Add AmazingFeature'`)
+4. Push vers branche (`git push origin feature/AmazingFeature`)
+5. Ouvrir Pull Request
+
+**Standards** :
+- Tests unitaires obligatoires (coverage >= 90%)
+- PEP8 validé avec flake8
+- Code formaté avec black
+- Docstrings Google style
+- Type hints complets
+
+## 📄 License
+
+Ce projet est sous licence privée - voir le fichier LICENSE pour détails.
+
+## 🙏 Remerciements
+
+- Dataset Food.com original
+- Communauté Streamlit
+- Équipe DuckDB
+- Contributors Polars et Plotly
 
 ---
 
-**Mangetamain Analytics V05** - Dashboard Food.com avec environnements intelligents! 🍽️📊  
-*Architecture production • Logs Loguru • Badges automatiques • Docker optimisé*
+**Mangetamain Analytics** - Analyse culinaire intelligente avec pipeline complet 🍽️📊
+*Stack moderne • Tests automatisés • Documentation complète • CI/CD intégré*
