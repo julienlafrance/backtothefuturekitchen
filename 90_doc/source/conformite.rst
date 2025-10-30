@@ -360,37 +360,38 @@ Notifications Discord temps réel :
 * Instructions rollback si échec
 * Historique complet des déploiements
 
-Points Bonus
-------------
+Choix Techniques Avancés
+-------------------------
 
-Base de Données
-^^^^^^^^^^^^^^^
+Base de Données OLAP
+^^^^^^^^^^^^^^^^^^^^
 
-DuckDB - Base OLAP columnar :
+**DuckDB** - Base de données columnar haute performance :
 
-* 10-100x plus rapide que SQLite
-* Zero-copy sur Parquet
-* 581 MB, 7 tables
-* 178K recettes, 1.1M+ interactions
+* **Performance** : 10-100x plus rapide que SQLite sur agrégations
+* **Zero-copy** : Lecture directe Parquet sans import
+* **Volume** : 581 MB, 7 tables
+* **Données** : 178K recettes, 1.1M+ interactions
 
 Runner Self-Hosted
-^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^
 
-Innovation : Déploiement sans VPN
+**Infrastructure autonome** : Déploiement sans dépendance VPN
 
-* Runner GitHub sur VM dataia
-* Déploiement en 30 secondes
-* Gain : 10 minutes manuelles → 30 secondes auto
+* Runner GitHub hébergé sur VM dataia
+* **Déploiement ultra-rapide** : 30-40 secondes
+* **Gain productivité** : 10 min manuelles → 30s automatiques
+* **Disponibilité** : 24/7 sans intervention
 
-Architecture PREPROD/PROD
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Architecture Multi-Environnement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Isolation complète :
+**Isolation complète PREPROD/PROD** :
 
-* Bases de données distinctes
-* Logs séparés (debug PREPROD, errors PROD)
-* Variables d'environnement différenciées
-* Ports distincts (8500 vs 8501)
+* **Bases de données** : Distinctes par environnement
+* **Logs** : Niveau debug (PREPROD), errors only (PROD)
+* **Variables** : Environment-specific configuration
+* **Ports** : 8500 (PREPROD) vs 8501 (PROD)
 
 Résumé Standards
 ----------------
