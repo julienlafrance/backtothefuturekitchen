@@ -209,7 +209,7 @@ Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
   - Architecture, CI/CD, tests
 
 ### Tests et coverage
-- **[README_TESTS.md](README_TESTS.md)** - 📊 Guide complet des tests (118 tests, 93% coverage)
+- **[90_doc/](90_doc/)** - 📊 Section tests (118 tests, 93% coverage)
 
 ## 🏷️ Version
 
