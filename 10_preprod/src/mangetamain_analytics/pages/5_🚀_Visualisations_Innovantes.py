@@ -38,6 +38,10 @@ def load_and_prepare_data():
     """Charge et prépare les données pour visualisations innovantes."""
     df = get_recipes_clean()
 
+    # Convertir Polars vers pandas pour compatibilité avec Altair/Plotly
+    if hasattr(df, 'to_pandas'):
+        df = df.to_pandas()
+
     # Ajouter colonnes calculées si manquantes
     if 'season' not in df.columns and 'submitted' in df.columns:
         df['month'] = pd.to_datetime(df['submitted']).dt.month
