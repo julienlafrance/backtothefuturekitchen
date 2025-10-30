@@ -562,4 +562,145 @@ def test_normality_test():
 ---
 
 **Auteur**: Analyse réalisée le 2025-10-28
-**Statut**: À implémenter
+**Statut**: En cours - Phase 1 complétée
+
+---
+
+## État d'avancement (2025-10-30)
+
+### ✅ Phase 1.1 - ColorTheme (COMPLÉTÉ)
+**Date**: 2025-10-30
+**Fichier**: `src/mangetamain_analytics/utils/color_theme.py` (262 lignes)
+
+**Implémentation**:
+- Classe ColorTheme avec 40+ constantes couleurs typées
+- Méthodes: `to_rgba()`, `get_plotly_theme()`, `get_seasonal_colors()`, `get_seasonal_color()`
+- Validation entrées (ValueError si hex/alpha invalide)
+
+**Tests**:
+- Fichier: `tests/unit/test_color_theme.py` (35 tests)
+- Coverage: 97%
+- Classes de tests: TestColorThemeConstants, TestColorThemeToRgba, TestColorThemePlotlyTheme, TestColorThemeSeasonalColors
+
+**Migration**:
+- 7 fichiers migrés (~129 occurrences)
+- utils/chart_theme.py, main.py, analyse_ratings.py, analyse_trendlines_v2.py, analyse_weekend.py, analyse_seasonality.py, tests/unit/test_chart_theme.py
+- 3 hotfixes production appliqués
+
+**Documentation**:
+- CHANGELOG_DOC.md Version 2.1 créé
+- 8 fichiers RST documentation Sphinx mis à jour
+- Sphinx build validé
+
+**Commits**: 5 commits (8a6a887...128c66a)
+
+---
+
+### ✅ Phase 1.3 - Hiérarchie Exceptions (COMPLÉTÉ)
+**Date**: 2025-10-28
+**Fichier**: `src/mangetamain_analytics/exceptions.py` (3649 octets)
+
+**Implémentation**:
+- 6 classes d'exceptions avec hiérarchie
+- MangetamainError (base)
+- DataLoadError, AnalysisError, ConfigurationError, DatabaseError, ValidationError
+- Messages d'erreur structurés avec contexte
+
+**Classe DataLoader**:
+- Fichier: `src/mangetamain_analytics/data/loaders.py`
+- Utilise les exceptions personnalisées
+- Méthodes: `load_recipes()`, `load_ratings()`
+- Intégré avec cached_loaders.py pour Streamlit
+
+**Tests**: Validés en production (voir tests background bash)
+
+---
+
+### 📋 À FAIRE - Phase 1.2 - AnalysisConfig
+
+**Priorité**: MOYENNE (support pour Phase 2.1)
+**Effort estimé**: 1h
+**Fichier à créer**: `src/mangetamain_analytics/utils/analysis_config.py`
+
+**Design restant identique au plan initial** (voir lignes 99-133)
+
+---
+
+### 📋 À FAIRE - Phase 2.1 - BaseAnalysis
+
+**Priorité**: HAUTE - PLUS GRAND IMPACT
+**Effort estimé**: 3h
+**Fichier à créer**: `src/mangetamain_analytics/analysis/base_analysis.py`
+
+**Impact**: Élimine ~500 lignes de duplication
+
+**Design restant identique au plan initial** (voir lignes 185-305)
+
+---
+
+### 📋 À FAIRE - Phase 2.2 - StatisticalAnalyzer
+
+**Priorité**: MOYENNE
+**Effort estimé**: 2h
+**Fichier à créer**: `src/mangetamain_analytics/analysis/statistical_analyzer.py`
+
+**Design restant identique au plan initial** (voir lignes 307-363)
+
+---
+
+### 📋 À FAIRE - Phase 3.1 - ChartBuilder
+
+**Priorité**: BASSE (optionnel, amélioration lisibilité)
+**Effort estimé**: 2h
+**Fichier à créer**: `src/mangetamain_analytics/visualization/chart_builder.py`
+
+**Design restant identique au plan initial** (voir lignes 367-475)
+
+---
+
+## Progression
+
+| Phase | Statut | Date | Commits |
+|-------|--------|------|---------|
+| Phase 1.1 - ColorTheme | ✅ COMPLÉTÉ | 2025-10-30 | 8a6a887...128c66a |
+| Phase 1.3 - Exceptions + DataLoader | ✅ COMPLÉTÉ | 2025-10-28 | (à identifier) |
+| Phase 1.2 - AnalysisConfig | 📋 À FAIRE | - | - |
+| Phase 2.1 - BaseAnalysis | 📋 À FAIRE | - | - |
+| Phase 2.2 - StatisticalAnalyzer | 📋 À FAIRE | - | - |
+| Phase 3.1 - ChartBuilder | 📋 À FAIRE | - | - |
+
+**Temps écoulé**: ~4h (Phases 1.1 + 1.3)
+**Temps restant estimé**: 6-8h
+
+---
+
+## Impact Académique Actuel
+
+### Avant refactoring
+- **POO**: 3 classes (DatabaseManager, QueryTemplates, LoggerConfig)
+- **Code procédural**: ~7730 lignes
+
+### Après Phases 1.1 + 1.3
+- **POO**: 8 classes
+  - 3 classes existantes
+  - **ColorTheme** (nouvelle)
+  - **6 exceptions** (MangetamainError + 5 sous-classes)
+  - **DataLoader** (nouvelle)
+- **Encapsulation**: ColorTheme centralise 210 lignes constantes
+- **Hiérarchie**: Exceptions avec héritage
+- **Réduction duplication**: -129 occurrences colors.py
+
+### Après complétion Phase 2+3 (estimé)
+- **POO**: 11-12 classes avec hiérarchie complète
+- **Héritage**: BaseAnalysis → analyses concrètes
+- **Polymorphisme**: Abstract methods
+- **Design patterns**: Template Method, Builder, Value Object
+- **Réduction duplication estimée**: -500 lignes
+
+---
+
+**Prochaines étapes recommandées**:
+1. Phase 1.2 - AnalysisConfig (1h)
+2. Phase 2.1 - BaseAnalysis (3h) - Plus grand impact
+3. Phase 2.2 - StatisticalAnalyzer (2h)
+4. Phase 3.1 - ChartBuilder (optionnel, 2h)
