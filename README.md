@@ -213,16 +213,22 @@ Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
 
 ## 🏷️ Version
 
-**Version actuelle** : 2025-10-25
+**Version actuelle** : 2025-10-31
 - ✅ Configuration S3 simplifiée et optimisée
-- ✅ Python 3.13.3 unifié sur tous environnements
+- ✅ **Python 3.13.7 fixé** (résolu corruption cache venv CI/CD)
 - ✅ Performance S3 maximisée (DNAT bypass)
 - ✅ DuckDB avec secrets intégrés
-- ✅ Architecture nettoyée et validée
+- ✅ **Architecture organisée** (dossiers numérotés 00-96)
+  - 70_scripts/ pour scripts shell (deploy, CI checks)
+  - Documentation centralisée dans 90_doc/ (Sphinx)
+  - Racine nettoyée (README.md + projet_mangetamain.pdf)
+- ✅ **Type annotations améliorées** (erreurs mypy réduites de 75 → 43)
 - ✅ **Tests et coverage complets (118 tests, 93% coverage)**
 - ✅ **Pipeline CI/CD complet avec GitHub Actions**
   - Vérification PEP8 automatique (flake8)
-  - Validation des docstrings (pydocstyle)
+  - Validation formatage code (black)
+  - Validation docstrings (pydocstyle)
+  - Type checking (mypy)
   - Tests automatisés sur PR et merge vers main
   - Coverage minimum 90% obligatoire
 - ✅ **Déploiement automatisé (CD)**
@@ -231,9 +237,9 @@ Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
   - CD Prod: déploiement manuel avec confirmation
   - Health checks automatiques sur URLs publiques
   - Notifications Discord temps réel
+- ✅ **Monitoring externe** (UptimeRobot, checks toutes les 5 min)
 
 ---
 
 **Équipe** : Data Analytics Team
-**Dernière mise à jour** : 2025-10-23
-# Test CD workflow
+**Dernière mise à jour** : 2025-10-31
