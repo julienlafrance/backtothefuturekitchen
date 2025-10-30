@@ -63,15 +63,16 @@ Cela permet à `pyproject.toml` d'utiliser le chemin `/app/40_utils` en Docker E
 
 ```
 mangetamain/
-├── 00_eda/           # 📊 Notebooks EDA - Analyses exploratoires qui alimentent l'app Streamlit
-├── 10_preprod/       # Environnement de pré-production
-├── 20_prod/          # Environnement de production  
-├── 30_docker/        # Containers Docker
-├── 50_test/          # Tests et validation S3
-├── 90_doc/           # Documentation
-├── 96_keys/          # Credentials S3 (ignoré par git)
-└── S3_INSTALL.md     # Guide installation S3
-└── S3_USAGE.md       # Guide utilisation S3
+├── 00_eda/           # 📊 Notebooks EDA - Analyses exploratoires
+├── 10_preprod/       # 🚀 Environnement preprod (source de vérité)
+├── 20_prod/          # 📦 Environnement prod (artifact généré)
+├── 30_docker/        # 🐳 Containers Docker
+├── 40_utils/         # 🔧 Utilitaires data (mangetamain_data_utils)
+├── 50_test/          # 🧪 Tests infrastructure S3/DuckDB
+├── 70_scripts/       # 📜 Scripts shell (deploy, CI checks)
+├── 90_doc/           # 📚 Documentation Sphinx
+├── 95_vibecoding/    # 🎨 Vibe coding
+└── 96_keys/          # 🔑 Credentials S3 (ignoré par git)
 ```
 
 ## 🚀 Démarrage Rapide
