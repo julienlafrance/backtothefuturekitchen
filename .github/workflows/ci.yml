@@ -41,7 +41,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: 10_preprod/.venv
-          key: venv-quality-${{ runner.os }}-py3.13-${{ hashFiles('10_preprod/uv.lock') }}
+          key: venv-quality-v2-${{ runner.os }}-py3.13-${{ hashFiles('10_preprod/uv.lock') }}
 
       - name: Install uv
         run: |
@@ -134,7 +134,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: 10_preprod/.venv
-          key: venv-tests-${{ runner.os }}-py3.13-${{ hashFiles('10_preprod/uv.lock') }}
+          key: venv-tests-v2-${{ runner.os }}-py3.13-${{ hashFiles('10_preprod/uv.lock') }}
 
       - name: Install uv
         run: |
@@ -202,7 +202,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: 50_test/.venv
-          key: venv-infra-${{ runner.os }}-py3.13-${{ hashFiles('50_test/pyproject.toml') }}
+          key: venv-infra-v2-${{ runner.os }}-py3.13-${{ hashFiles('50_test/pyproject.toml') }}
 
       - name: Install uv
         run: |
