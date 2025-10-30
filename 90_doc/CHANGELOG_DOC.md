@@ -1,5 +1,156 @@
 # Changelog Documentation Sphinx
 
+## Version 2.3 - Visualisations Innovantes Altair & Plotly Avancé (2025-10-30)
+
+### Résumé
+Création d'une nouvelle page complète de visualisations spectaculaires utilisant **Altair** (grammaire Vega-Lite) et **Plotly avancé** pour offrir des insights uniques avec effet "WHAOH". 7 types de visualisations interactives ajoutées dans une page dédiée.
+
+### Nouveaux Fichiers
+
+**src/mangetamain_analytics/visualization/innovative_charts.py** (506 lignes)
+- Module complet avec 7 fonctions de visualisation innovantes
+- Utilise Altair + Plotly avancé
+- Intégration ColorTheme pour cohérence graphique
+
+**Fonctions créées**:
+1. `create_linked_brushing_dashboard()` - Dashboard Altair avec sélections synchronisées
+   - Scatter plot durée vs note
+   - Histogramme filtré automatiquement
+   - Brush selection interactive
+
+2. `create_calendar_heatmap()` - Heatmap calendrier style GitHub contributions
+   - Activité quotidienne par semaine
+   - Colorscale verte progressive
+   - Vue annuelle complète
+
+3. `create_sunburst_hierarchy()` - Sunburst multi-niveaux interactif
+   - Hiérarchie: Saison → Complexité
+   - Cliquer pour zoomer
+   - Couleurs saisonnières + complexité
+
+4. `create_ridgeline_plot()` - Ridgeline plot style Joy Division
+   - Distribution des notes par année
+   - Altair transform_density
+   - Effet visuel spectaculaire
+
+5. `create_stream_graph()` - Stream graph flux temporels
+   - Évolution catégories recettes
+   - Stacked area animé
+   - Hover mode unifié
+
+6. `create_parallel_coordinates()` - Exploration multi-critères
+   - 5 dimensions simultanées
+   - Filtrage interactif par glisser
+   - Colorscale par note
+
+7. `create_radar_chart_comparison()` - Profils saisonniers comparés
+   - 6 métriques normalisées [0-100]
+   - Superposition 4 saisons
+   - Interprétation visuelle immédiate
+
+**src/mangetamain_analytics/pages/5_🚀_Visualisations_Innovantes.py** (367 lignes)
+- Nouvelle page Streamlit complète
+- 4 tabs thématiques organisant visualisations
+- Filtres globaux (années, échantillonnage)
+- Fonctions helper avec @st.cache_data
+
+**Structure de la page**:
+- **Tab 1: "🔗 Interactif Altair"**
+  - Linked brushing dashboard
+  - Ridgeline plot distributions
+
+- **Tab 2: "📊 Plotly Avancé"**
+  - Calendar heatmap
+  - Sunburst hiérarchique
+
+- **Tab 3: "🌊 Flux Temporels"**
+  - Stream graph avec stats
+
+- **Tab 4: "🎯 Multi-Dimensions"**
+  - Parallel coordinates
+  - Radar chart + interprétation
+
+**Fonctions helper**:
+- `load_and_prepare_data()`: Charge et enrichit données (season, complexity_category, rating)
+- `prepare_temporal_data()`: Agrège par mois + catégorie pour stream graph
+- `prepare_seasonal_profiles()`: Normalise métriques pour radar chart
+
+### Features Techniques
+
+**Altair (Vega-Lite)**:
+- Selection interval avec brush
+- Transform density pour ridgelines
+- Linked brushing cross-filtering
+- Tooltips riches
+
+**Plotly Avancé**:
+- Sunburst avec branchvalues="total"
+- Parcoords avec dimensions dynamiques
+- Scatterpolar pour radar charts
+- Heatmap calendrier custom
+
+**Performance**:
+- @st.cache_data(ttl=3600) sur toutes les fonctions de préparation
+- Échantillonnage configurable (sidebar)
+- Limite 5000 recettes pour parallel coordinates
+- Filtrage données invalides (dropna, clip outliers)
+
+**Intégration Charte Graphique**:
+- ColorTheme.get_seasonal_color() pour couleurs saisons
+- ColorTheme.CHART_COLORS pour palettes
+- ColorTheme.TEXT_PRIMARY pour textes
+- Cohérence visuelle avec pages existantes
+
+### Hotfix Import Paths
+- **Erreur initiale**: Import relatifs (`from utils.color_theme`)
+- **Fix**: Import absolus (`from mangetamain_analytics.utils.color_theme`)
+- **Fichiers corrigés**: innovative_charts.py, 5_🚀_Visualisations_Innovantes.py
+
+### Métriques
+
+**Code**:
+- Nouveau: 873 lignes (506 + 367)
+- Fonctions: 7 visualisations + 3 helpers
+- Dépendances: altair>=5.0.0 (déjà installé)
+
+**Visualisations**:
+- Altair: 2 visualisations (linked brushing, ridgeline)
+- Plotly: 5 visualisations (calendar, sunburst, stream, parallel, radar)
+- Interactives: 7/7 (100%)
+
+**Page Streamlit**:
+- URL: `/pages/5_🚀_Visualisations_Innovantes.py`
+- Tabs: 4 sections thématiques
+- Filtres: 2 (années, sample size)
+- Cache: 3 fonctions @st.cache_data
+
+### Bénéfices
+
+1. **Effet WHAOH**: Visualisations spectaculaires jamais vues dans l'app
+2. **Altair intégré**: Grammaire déclarative pour interactions complexes
+3. **Interactivité maximale**: Brush, zoom, filtrage multi-critères
+4. **Performance optimisée**: Cache + échantillonnage configurables
+5. **Navigation claire**: 4 tabs thématiques + instructions utilisateur
+6. **Pédagogie**: Expander "Interprétation du radar chart"
+7. **Réutilisabilité**: Fonctions modulaires dans innovative_charts.py
+
+### Prochaines Améliorations Possibles
+
+1. Tests unitaires pour innovative_charts.py
+2. Documentation Sphinx pour module visualization
+3. Animations Plotly (frames) pour évolution temporelle
+4. Export visualisations (PNG, SVG, HTML)
+5. Présets de filtres (saisons, années populaires)
+
+---
+
+**Date**: 2025-10-30
+**Auteur**: Visualisations innovantes
+**Statut**: ✅ Ready for testing & deployment
+**Commits**: À venir
+
+---
+
 ## Version 2.2 - Correction Architecture CI/CD et Amélioration Rédaction (2025-10-30)
 
 ### Résumé
