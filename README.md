@@ -77,7 +77,7 @@ mangetamain/
 ## 🚀 Démarrage Rapide
 
 ### 1. Installation S3 (une seule fois)
-[Guide Installation S3](https://htmlpreview.github.io/?https://github.com/julienlafrance/backtothefuturekitchen/blob/main/90_doc/build/html/s3.html#installation) | [Guide Utilisation S3](https://htmlpreview.github.io/?https://github.com/julienlafrance/backtothefuturekitchen/blob/main/90_doc/build/html/s3.html#utilisation-aws-cli)
+[Guide Installation S3](https://julienlafrance.github.io/backtothefuturekitchen/s3.html#installation) | [Guide Utilisation S3](https://julienlafrance.github.io/backtothefuturekitchen/s3.html#utilisation-aws-cli)
 
 ### 2. Lancement PREPROD
 ```bash
@@ -127,7 +127,7 @@ docker-compose -f docker-compose-prod.yml up -d
 - 🏥 **Health checks** - Vérification automatique des URLs
 - 📬 **Discord** - Notifications succès/échec avec instructions rollback
 
-📚 **Documentation complète:** [Pipeline CI/CD](https://htmlpreview.github.io/?https://github.com/julienlafrance/backtothefuturekitchen/blob/main/90_doc/build/html/cicd.html) | [Workflows](https://htmlpreview.github.io/?https://github.com/julienlafrance/backtothefuturekitchen/blob/main/90_doc/build/html/cicd.html#workflows-github-actions)
+📚 **Documentation complète:** [Pipeline CI/CD](https://julienlafrance.github.io/backtothefuturekitchen/cicd.html) | [Workflows](https://julienlafrance.github.io/backtothefuturekitchen/cicd.html#workflows-github-actions)
 
 ### Tests d'infrastructure (50_test/)
 **Test complet S3 + DuckDB**
@@ -162,7 +162,7 @@ uv run pytest tests/unit/ -v --cov=src --cov-report=html
 
 Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
 
-📚 **Documentation complète:** [Tests et Coverage](https://htmlpreview.github.io/?https://github.com/julienlafrance/backtothefuturekitchen/blob/main/90_doc/build/html/tests.html) (118 tests, 93% coverage)
+📚 **Documentation complète:** [Tests et Coverage](https://julienlafrance.github.io/backtothefuturekitchen/tests.html) (118 tests, 93% coverage)
 
 ## 📊 Données
 
@@ -202,12 +202,12 @@ Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
 ## 📚 Documentation
 
 ### Guides Complets
-- [Installation & Configuration](https://htmlpreview.github.io/?https://github.com/julienlafrance/backtothefuturekitchen/blob/main/90_doc/build/html/installation.html)
-- [Guide S3 Garage](https://htmlpreview.github.io/?https://github.com/julienlafrance/backtothefuturekitchen/blob/main/90_doc/build/html/s3.html) - Installation, usage, performance
-- [Architecture Technique](https://htmlpreview.github.io/?https://github.com/julienlafrance/backtothefuturekitchen/blob/main/90_doc/build/html/architecture.html) - Stack, infrastructure, logging
-- [Pipeline CI/CD](https://htmlpreview.github.io/?https://github.com/julienlafrance/backtothefuturekitchen/blob/main/90_doc/build/html/cicd.html) - Workflows, déploiements
-- [Tests & Coverage](https://htmlpreview.github.io/?https://github.com/julienlafrance/backtothefuturekitchen/blob/main/90_doc/build/html/tests.html) - 118 tests, 93% coverage
-- [Quick Start](https://htmlpreview.github.io/?https://github.com/julienlafrance/backtothefuturekitchen/blob/main/90_doc/build/html/quickstart.html) - Démarrage rapide
+- [Installation & Configuration](https://julienlafrance.github.io/backtothefuturekitchen/installation.html)
+- [Guide S3 Garage](https://julienlafrance.github.io/backtothefuturekitchen/s3.html) - Installation, usage, performance
+- [Architecture Technique](https://julienlafrance.github.io/backtothefuturekitchen/architecture.html) - Stack, infrastructure, logging
+- [Pipeline CI/CD](https://julienlafrance.github.io/backtothefuturekitchen/cicd.html) - Workflows, déploiements
+- [Tests & Coverage](https://julienlafrance.github.io/backtothefuturekitchen/tests.html) - 118 tests, 93% coverage
+- [Quick Start](https://julienlafrance.github.io/backtothefuturekitchen/quickstart.html) - Démarrage rapide
 
 ## 🏷️ Version
 
