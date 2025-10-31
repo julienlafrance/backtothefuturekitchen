@@ -249,8 +249,11 @@ Script watcher (``/tmp/watch-ci-SHA.sh``) :
 3. 🔨 Build documentation (``sphinx-build -b html source build/html``)
 4. 📄 Add ``.nojekyll`` file (désactive Jekyll processing)
 5. 🚀 Deploy to GitHub Pages (branche ``gh-pages``)
+6. 📬 Notification Discord (échecs uniquement)
 
 **URL Documentation**: https://julienlafrance.github.io/backtothefuturekitchen/
+
+**Notifications Discord**: Échecs uniquement (comme CI Pipeline)
 
 **Architecture Documentation**:
 
@@ -385,6 +388,7 @@ Webhooks Configurés
 * **CD Preprod**: Tous déploiements + rollbacks
 * **CD Prod**: Tous déploiements + rollbacks
 * **Health Check**: Alertes DOWN uniquement
+* **Documentation**: Échecs uniquement
 
 Format Message Preprod
 ^^^^^^^^^^^^^^^^^^^^^^^

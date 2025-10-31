@@ -45,3 +45,11 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: 90_doc/build/html
           force_orphan: true
+
+      - name: Notify failure on Discord
+        if: failure()
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B | head -1)
+          curl -H "Content-Type: application/json" \
+            -d "{\"content\":\"🚨 **ÉCHEC - Build Documentation**\n❌ Le build Sphinx a échoué\n📝 Commit: \`${{ github.sha }}\`\n💬 ${COMMIT_MSG}\n🌐 Vérifier: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\n👤 Par: ${{ github.actor }}\n🕐 $(date +'%Y-%m-%d %H:%M:%S')\"}" \
+            "${{ secrets.DISCORD_WEBHOOK_URL }}"
