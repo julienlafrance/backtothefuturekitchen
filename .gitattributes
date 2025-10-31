@@ -1,5 +1,5 @@
 # Exclure la documentation Sphinx générée des statistiques GitHub
-90_doc/build/** linguist-generated=true
+90_doc/build/** linguist-vendored=true
 
 # Exclure les fichiers de lock des statistiques
 *.lock linguist-generated=true
