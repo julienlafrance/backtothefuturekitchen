@@ -42,7 +42,7 @@ Tous les environnements applicatifs tournent dans des **containers Docker isolé
 * Image : python:3.13.3-slim
 * Port : 8500 (accessible via 192.168.80.210:8500)
 * Réseau : mangetamain-preprod-network (172.18.0.0/16)
-* Base données : 10_preprod/data/mangetamain.duckdb
+* Stockage : S3 (s3fast.lafrance.io)
 * Logs : 10_preprod/logs/
 * Variables env : APP_ENV=preprod
 * URL externe : https://mangetamain.lafrance.io/ (via reverse proxy)
@@ -53,7 +53,7 @@ Tous les environnements applicatifs tournent dans des **containers Docker isolé
 * Image : python:3.13.3-slim
 * Port : 8501 (accessible via 192.168.80.210:8501)
 * Réseau : mangetamain-prod-network (172.19.0.0/16)
-* Base données : 20_prod/data/mangetamain.duckdb
+* Stockage : S3 (s3fast.lafrance.io)
 * Logs : 20_prod/logs/
 * Variables env : APP_ENV=prod
 * URL externe : https://backtothefuturekitchen.lafrance.io/ (via reverse proxy)
@@ -62,7 +62,7 @@ Tous les environnements applicatifs tournent dans des **containers Docker isolé
 
 **Isolation complète** :
 
-* Bases de données distinctes
+* Stockage S3 partagé (données communes)
 * Logs séparés par environnement
 * Variables d'environnement différenciées
 * Réseaux Docker isolés (172.18 vs 172.19)
@@ -148,7 +148,7 @@ Architecture Réseau et Sécurité
                                │ Reverse Proxy (192.168.0.201)     │
                                │  - HTTPS/TLS termination          │
                                │  - mangetamain.lafrance.io        │
-                               │  - backtothefuturekitchen.l...io  │
+                               │  - backtothefuturekitchen.lafrance.io │
                                │  - s3fast.lafrance.io             │
                                └─────┬──────────────────┬──────────┘
                                      │                  │

@@ -58,8 +58,8 @@ Navigation
    :maxdepth: 2
    :caption: Infrastructure
 
-   s3
    architecture
+   s3
    cicd
    tests
 
