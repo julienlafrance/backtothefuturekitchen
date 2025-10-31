@@ -90,8 +90,14 @@ Le stockage S3-compatible est assuré par **Garage** hébergé sur le serveur h�
 * **Mode réseau** : host (accessible directement sur IP hôte)
 * **Ports** : 3910 (API S3), 3913 (Web S3)
 * **Stockage** : /s3fast (~646 MB utilisés actuellement)
-* **Endpoint public** : http://s3fast.lafrance.io (via reverse proxy)
+
+**Endpoints disponibles** :
+
+* **HTTP** : http://s3fast.lafrance.io (port 3910) - **Privilégié dans le code**
+* **HTTPS** : https://s3fast.lafrance.io (port 443, via reverse proxy)
 * **Endpoint interne VM** : http://192.168.80.202:3910 (accès direct optimisé)
+
+**Choix HTTP** : Le code utilise HTTP pour des raisons de performance (pas de surcharge TLS/SSL) car la communication reste dans le réseau DMZ sécurisé (192.168.80.0/24).
 
 **Configuration accès VM optimisé** :
 

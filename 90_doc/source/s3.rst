@@ -11,13 +11,24 @@ Ce guide couvre la configuration, l'optimisation performance et le dépannage.
 Vue d'ensemble
 --------------
 
-**Endpoint unique**: http://s3fast.lafrance.io
+**Endpoints disponibles**:
+
+* **HTTP**: http://s3fast.lafrance.io (port 3910) - **Privilégié dans le code**
+* **HTTPS**: https://s3fast.lafrance.io (port 443, via reverse proxy)
 
 **Bucket**: mangetamain
 
 **Performance**: 500-917 MB/s (DNAT bypass)
 
 **Région**: garage-fast
+
+**Choix HTTP vs HTTPS**:
+
+Le code utilise l'endpoint HTTP pour des raisons de performance :
+
+* **Gain de rapidité** : Pas de surcharge TLS/SSL lors des transferts de données
+* **Réseau DMZ sécurisé** : La communication reste dans le réseau local isolé (192.168.80.0/24)
+* **HTTPS disponible** : Accessible via reverse proxy pour les accès externes si nécessaire
 
 Installation
 ------------
