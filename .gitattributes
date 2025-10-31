@@ -1,0 +1,12 @@
+# Exclure la documentation Sphinx générée des statistiques GitHub
+90_doc/build/** linguist-generated=true
+
+# Exclure les fichiers de lock des statistiques
+*.lock linguist-generated=true
+uv.lock linguist-generated=true
+
+# Marquer les notebooks Jupyter comme documentation
+*.ipynb linguist-documentation=true
+
+# Forcer Python comme langage principal
+*.py linguist-detectable=true
