@@ -1,0 +1,47 @@
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '90_doc/source/**'
+      - '90_doc/requirements.txt'
+      - '.github/workflows/documentation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.7'
+
+      - name: Install Sphinx dependencies
+        run: |
+          pip install --upgrade pip
+          pip install sphinx sphinx-rtd-theme myst-parser
+
+      - name: Build Sphinx documentation
+        run: |
+          cd 90_doc
+          sphinx-build -b html source build/html
+
+      - name: Add .nojekyll file
+        run: |
+          touch 90_doc/build/html/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: 90_doc/build/html
+          force_orphan: true
