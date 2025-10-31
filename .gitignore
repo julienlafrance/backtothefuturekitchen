@@ -62,10 +62,7 @@ backups/
 logs/
 deploy_*.log
 
-# Sphinx documentation build (exclure fichiers temporaires uniquement)
-90_doc/build/html/.doctrees/
-90_doc/build/html/.buildinfo
-90_doc/build/doctrees/
-90_doc/.venv/
+# Sphinx documentation build (HTML généré par GitHub Actions)
+90_doc/build/
 
 # Force sync
