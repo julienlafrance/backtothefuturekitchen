@@ -8,36 +8,55 @@ Vue d'ensemble de l'architecture technique du projet.
 Infrastructure Déploiement
 ---------------------------
 
-VM Autonome (virsh/KVM)
-^^^^^^^^^^^^^^^^^^^^^^^
+Serveur Hôte IX-IA
+^^^^^^^^^^^^^^^^^^
+
+* **Nom** : IX-IA
+* **OS** : Ubuntu 24.04.3 LTS
+* **CPU** : 8 cores (Intel Core i7-11700K, 16 threads)
+* **RAM** : 125 GB
+* **Disques** : 915 GB (/), 1.7 TB (/home), 7.3 TB (/stock)
+* **Réseau** : Double IP (LAN 192.168.0.202 + DMZ 192.168.80.202)
+* **Virtualisation** : KVM/QEMU via virsh
+
+VM Autonome dataia25-vm-v1 (virsh/KVM)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 * **Technologie** : Machine virtuelle créée avec virsh (KVM/QEMU)
-* **Nom** : dataia
-* **Hébergement** : Serveur physique (réseau VPN interne)
-* **OS** : Linux (distribution basée Debian)
-* **Ressources** : CPU 4 cores, RAM 32 GB, Disk 500 GB
-* **Accès** : SSH uniquement depuis réseau VPN
+* **Nom** : dataia25-vm-v1
+* **Hébergement** : Serveur physique IX-IA (DMZ VLAN 80)
+* **OS** : Ubuntu (Debian-based)
+* **Ressources** : 8 vCPUs (max 12), RAM 32 GB, Disk qcow2 avec virtio
+* **Réseau** : IP DMZ 192.168.80.210/24 (bridge br80 via TAP vnet0)
+* **Partages** : 2x 9p filesystems (kaggle_data, temp)
+* **Accès** : SSH depuis OpenVPN (accès DMZ uniquement)
 
-Containerisation Docker
-^^^^^^^^^^^^^^^^^^^^^^^
+Containerisation Docker sur VM
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Tous les environnements applicatifs tournent dans des **containers Docker isolés** :
+Tous les environnements applicatifs tournent dans des **containers Docker isolés** sur la VM dataia25-vm-v1 :
 
-**Container PREPROD** :
+**Container PREPROD (mange_preprod)** :
 
-* Nom : mangetamain_preprod
-* Port : 8500
+* Nom : mange_preprod
+* Image : python:3.13.3-slim
+* Port : 8500 (accessible via 192.168.80.210:8500)
+* Réseau : mangetamain-preprod-network (172.18.0.0/16)
 * Base données : 10_preprod/data/mangetamain.duckdb
 * Logs : 10_preprod/logs/
 * Variables env : APP_ENV=preprod
+* URL externe : https://mangetamain.lafrance.io/ (via reverse proxy)
 
-**Container PROD** :
+**Container PROD (mange_prod)** :
 
-* Nom : mangetamain_prod
-* Port : 8501
+* Nom : mange_prod
+* Image : python:3.13.3-slim
+* Port : 8501 (accessible via 192.168.80.210:8501)
+* Réseau : mangetamain-prod-network (172.19.0.0/16)
 * Base données : 20_prod/data/mangetamain.duckdb
 * Logs : 20_prod/logs/
 * Variables env : APP_ENV=prod
+* URL externe : https://backtothefuturekitchen.lafrance.io/ (via reverse proxy)
 
 **Orchestration** : Docker Compose (30_docker/)
 
@@ -46,6 +65,7 @@ Tous les environnements applicatifs tournent dans des **containers Docker isolé
 * Bases de données distinctes
 * Logs séparés par environnement
 * Variables d'environnement différenciées
+* Réseaux Docker isolés (172.18 vs 172.19)
 * Pas de partage de volumes entre containers
 
 Runner GitHub Self-Hosted
@@ -60,6 +80,144 @@ Le **runner GitHub self-hosted** installé sur la VM dataia orchestre les déplo
 * **Avantage** : Déploiement automatique sans VPN manuel
 
 **Voir** : :doc:`cicd` pour détails complets du pipeline.
+
+Infrastructure S3 (Garage)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Le stockage S3-compatible est assuré par **Garage** hébergé sur le serveur hôte IX-IA :
+
+* **Container** : garage-fast (dxflrs/garage:v2.1.0)
+* **Mode réseau** : host (accessible directement sur IP hôte)
+* **Ports** : 3910 (API S3), 3913 (Web S3)
+* **Stockage** : /s3fast (~646 MB utilisés actuellement)
+* **Endpoint public** : http://s3fast.lafrance.io (via reverse proxy)
+* **Endpoint interne VM** : http://192.168.80.202:3910 (accès direct optimisé)
+
+**Configuration accès VM optimisé** :
+
+L'accès depuis la VM vers le S3 bypass le reverse proxy pour de meilleures performances :
+
+* Entrée /etc/hosts sur VM : ``192.168.80.202  s3fast.lafrance.io``
+* Accès direct via bridge br80 (même réseau DMZ)
+* Gain de performance significatif (pas de double passage réseau)
+
+Architecture Réseau et Sécurité
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Objectifs de l'architecture** :
+
+* **Sécurité** : Isolation DMZ (VLAN 80) avec hôte IX-IA à double IP
+* **Performance** : Route directe VM → S3 via bridge br80 (bypass proxy)
+
+**Configuration DMZ (VLAN 80)** :
+
+* Interface : enp4s0.80 (VLAN tagué 802.1Q)
+* Bridge : br80 (192.168.80.202/24) sur hôte IX-IA
+* VM connectée via TAP vnet0 sur bridge br80
+* Réseau DMZ : 192.168.80.0/24
+* Gateway DMZ : 192.168.80.1
+
+**Schéma d'architecture réseau complet** :
+
+::
+
+                           Internet (IP publique)
+                                  │
+                                  │
+               ┌──────────────────┴──────────────────┐
+               │                                     │
+               │      Routeur/Firewall Externe       │
+               │                                     │
+               └─────┬────────────────────────┬──────┘
+                     │                        │
+                     │ (OpenVPN)              │ (HTTPS/TLS)
+                     │                        │
+       ┌─────────────▼─────────────┐         │
+       │  OpenVPN (192.168.0.254)  │         │
+       │  Accès: DMZ UNIQUEMENT    │         │
+       │  (192.168.80.0/24)        │         │
+       └───────────────────────────┘         │
+                                             │
+                               ┌─────────────▼──────────────┐
+                               │  Gateway (192.168.0.254)   │
+                               └─────────────┬──────────────┘
+                                             │
+                           Réseau LAN (192.168.0.0/24)
+                                             │
+                               ┌─────────────▼─────────────────────┐
+                               │ Reverse Proxy (192.168.0.201)     │
+                               │  - HTTPS/TLS termination          │
+                               │  - mangetamain.lafrance.io        │
+                               │  - backtothefuturekitchen.l...io  │
+                               │  - s3fast.lafrance.io             │
+                               └─────┬──────────────────┬──────────┘
+                                     │                  │
+                                     │                  │
+    ╔════════════════════════════════▼══════════════════▼══════════════════════╗
+    ║                                                                          ║
+    ║              Serveur Physique IX-IA (192.168.0.202)                     ║
+    ║              Ubuntu 24.04.3 LTS - i7-11700K (8c/16t) - 125GB RAM        ║
+    ║                                                                          ║
+    ║  ┌─────────────────────────────────────────────────────────────────┐    ║
+    ║  │ Interface réseau:                                               │    ║
+    ║  │  • IP LAN: 192.168.0.202                                        │    ║
+    ║  │  • IP DMZ: 192.168.80.202 (sur bridge br80)                     │    ║
+    ║  │  • VLAN 80 tagué sur enp4s0.80                                  │    ║
+    ║  └─────────────────────────────────────────────────────────────────┘    ║
+    ║                                                                          ║
+    ║  ┌──────────────────────────────┐  ┌──────────────────────────────┐    ║
+    ║  │   Docker Garage S3           │  │   Bridge br80 (DMZ VLAN 80)  │    ║
+    ║  │   garage-fast (mode: host)   │  │   192.168.80.202/24          │    ║
+    ║  │                              │  │                              │    ║
+    ║  │   • Port 3910 (API S3)       │  │   ┌──────────────────────┐   │    ║
+    ║  │   • Port 3913 (Web S3)       │  │   │   TAP vnet0          │   │    ║
+    ║  │   • /s3fast (~646MB)         │  │   │   (interface VM)     │   │    ║
+    ║  │                              │  │   └──────────┬───────────┘   │    ║
+    ║  │   Accessible via:            │  │              │               │    ║
+    ║  │   • LAN: 192.168.0.202:3910  │◄─┼──────────────┼──────────┐    │    ║
+    ║  │   • DMZ: 192.168.80.202:3910 │◄─┼──────────────┘          │    │    ║
+    ║  └──────────────────────────────┘  └───────────────────────────┘  │    ║
+    ║                                          │                         │    ║
+    ║  ┌───────────────────────────────────────▼──────────────────────┐ │    ║
+    ║  │                                                               │ │    ║
+    ║  │        VM dataia25-vm-v1 (KVM/QEMU - virsh)                  │ │    ║
+    ║  │        8 vCPUs, 32GB RAM, qcow2 virtio                       │ │    ║
+    ║  │        192.168.80.210/24                                     │ │    ║
+    ║  │                                                               │ │    ║
+    ║  │   /etc/hosts: 192.168.80.202 = s3fast.lafrance.io            │ │    ║
+    ║  │   (Accès S3 LOCAL via bridge br80 - ultra-rapide)◄───────────┘ │    ║
+    ║  │                                                                 │    ║
+    ║  │   ┌───────────────────────────────────────────────┐             │    ║
+    ║  │   │  Docker Containers (sur VM)                   │             │    ║
+    ║  │   │                                               │             │    ║
+    ║  │   │  • mange_preprod (172.18.0.x:8500)            │◄────────────┼────╋─┐
+    ║  │   │    → mangetamain.lafrance.io                  │             │    ║ │
+    ║  │   │                                               │             │    ║ │ Via
+    ║  │   │  • mange_prod (172.19.0.x:8501)               │◄────────────┼────╋─┘ reverse
+    ║  │   │    → backtothefuturekitchen.lafrance.io       │             │    ║   proxy
+    ║  │   │                                               │             │    ║   HTTPS
+    ║  │   └───────────────────────────────────────────────┘             │    ║
+    ║  │                                                                 │    ║
+    ║  │   ┌───────────────────────────────────────────────┐             │    ║
+    ║  │   │  GitHub Actions Runner                        │             │    ║
+    ║  │   │  (Tunneling sortant uniquement)               │─────────────┼────╋──► Internet
+    ║  │   └───────────────────────────────────────────────┘             │    ║
+    ║  │                                                                 │    ║
+    ║  └─────────────────────────────────────────────────────────────────┘    ║
+    ║                                                                          ║
+    ╚══════════════════════════════════════════════════════════════════════════╝
+
+    Note: La VM et le S3 sont sur la MÊME machine physique (IX-IA).
+    Les accès VM → S3 sont ultra-rapides (communication locale via br80).
+
+**Flux réseau** :
+
+* **Flux 1 - Accès VPN** : OpenVPN → DMZ uniquement (isolation sécurité)
+* **Flux 2 - Web PREPROD** : Internet → Reverse Proxy → VM:8500 (mange_preprod)
+* **Flux 3 - Web PROD** : Internet → Reverse Proxy → VM:8501 (mange_prod)
+* **Flux 4 - S3 externe** : Internet → Reverse Proxy → Hôte ixia:3910 (Garage S3)
+* **Flux 5 - S3 interne optimisé** : VM → br80 → ixia:3910 (bypass proxy, performances)
+* **Flux 6 - GitHub Runner** : VM → Internet (tunneling GitHub sortant uniquement)
 
 Monitoring et Surveillance
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
