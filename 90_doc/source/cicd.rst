@@ -108,7 +108,7 @@ Workflows GitHub Actions
 
 **Job 2: Tests Preprod**
 
-* Python 3.13.3 avec uv
+* Python 3.13.7 avec uv
 * Coverage minimum: 90%
 * Commande: ``pytest tests/ -v --cov=src --cov-report=html --cov-fail-under=90``
 * Artefacts: Rapport HTML coverage (30 jours rétention)
@@ -380,7 +380,7 @@ CI échoue mais local fonctionne
 
 **Raisons possibles**:
 
-* Versions Python différentes (CI: 3.13.3, Local: autre)
+* Versions Python différentes (CI: 3.13.7, Local: autre)
 * Fichiers non commités
 * Dépendances manquantes dans pyproject.toml
 

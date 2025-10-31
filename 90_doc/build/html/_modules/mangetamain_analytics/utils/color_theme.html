@@ -245,8 +245,8 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INFO"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INFO</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CHART_COLORS"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CHART_COLORS</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.STEELBLUE_PALETTE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.STEELBLUE_PALETTE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_ORANGE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_ORANGE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_DARK"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_DARK</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.gradient_orange"><code class="docutils literal notranslate"><span class="pre">ColorTheme.gradient_orange()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.gradient_dark"><code class="docutils literal notranslate"><span class="pre">ColorTheme.gradient_dark()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD_BG</span></code></a></li>
@@ -491,6 +491,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#vm-autonome-virsh-kvm">VM Autonome (virsh/KVM)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#containerisation-docker">Containerisation Docker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#runner-github-self-hosted">Runner GitHub Self-Hosted</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../architecture.html#monitoring-et-surveillance">Monitoring et Surveillance</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../architecture.html#stack-technique">Stack Technique</a><ul>
@@ -551,7 +552,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../cicd.html">Pipeline CI/CD</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../cicd.html#infrastructure">Infrastructure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../cicd.html#architecture-pipeline">Architecture Pipeline</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../cicd.html#pipeline-sequentiel-3-phases">Pipeline Séquentiel 3 Phases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../cicd.html#pipeline-parallele-avec-rollback-automatique">Pipeline Parallèle avec Rollback Automatique</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../cicd.html#workflows-github-actions">Workflows GitHub Actions</a><ul>
@@ -719,10 +720,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../conformite.html#alerting">Alerting</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../../conformite.html#points-bonus">Points Bonus</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../../conformite.html#base-de-donnees">Base de Données</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../conformite.html#choix-techniques-avances">Choix Techniques Avancés</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../conformite.html#base-de-donnees-olap">Base de Données OLAP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../../conformite.html#runner-self-hosted">Runner Self-Hosted</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../../conformite.html#architecture-preprod-prod">Architecture PREPROD/PROD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../conformite.html#architecture-multi-environnement">Architecture Multi-Environnement</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../../../conformite.html#resume-standards">Résumé Standards</a></li>
@@ -910,23 +911,27 @@
     <span class="c1"># DÉGRADÉS</span>
     <span class="c1"># ========================================================================</span>
 
+<div class="viewcode-block" id="ColorTheme.gradient_orange">
+<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.gradient_orange">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">GRADIENT_ORANGE</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gradient_orange</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Dégradé orange (PRIMARY → ORANGE_SECONDARY).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;linear-gradient(135deg, </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">PRIMARY</span><span class="si">}</span><span class="s2"> 0%, &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">ORANGE_SECONDARY</span><span class="si">}</span><span class="s2"> 100%)&quot;</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="ColorTheme.gradient_dark">
+<a class="viewcode-back" href="../../../modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.gradient_dark">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">GRADIENT_DARK</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gradient_dark</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Dégradé fond sombre (SIDEBAR → MAIN).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="sa">f</span><span class="s2">&quot;linear-gradient(180deg, </span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">BACKGROUND_SIDEBAR</span><span class="si">}</span><span class="s2"> 0%, &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">cls</span><span class="o">.</span><span class="n">BACKGROUND_MAIN</span><span class="si">}</span><span class="s2"> 100%)&quot;</span>
-        <span class="p">)</span>
+        <span class="p">)</span></div>
+
 
     <span class="c1"># ========================================================================</span>
     <span class="c1"># BADGES ENVIRONNEMENT</span>

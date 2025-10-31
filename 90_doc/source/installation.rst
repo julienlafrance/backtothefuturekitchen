@@ -8,7 +8,7 @@ Installation
 Prérequis
 ---------
 
-* Python 3.13.3
+* Python 3.13.7
 * uv (gestionnaire de paquets)
 * Accès S3 (Garage Storage) - voir :doc:`s3`
 
@@ -254,7 +254,7 @@ Vérifier Python
 .. code-block:: bash
 
    python3 --version
-   # Attendu: Python 3.13.3
+   # Attendu: Python 3.13.7
 
 Le projet nécessite Python 3.13+ pour compatibility avec toutes les dépendances.
 
@@ -266,7 +266,7 @@ Après ``uv sync``, vérifier que l'environnement est activé :
 .. code-block:: bash
 
    uv run python --version
-   # Attendu: Python 3.13.3
+   # Attendu: Python 3.13.7
 
    uv run python -c "import streamlit; print(streamlit.__version__)"
    # Attendu: 1.50.0 ou supérieur

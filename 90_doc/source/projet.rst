@@ -42,7 +42,7 @@ Les notebooks contiennent l'exploration complète (statistiques descriptives, vi
 Stack Technique
 ---------------
 
-* Python 3.13.3
+* Python 3.13.7
 * Streamlit 1.50.0 (interface web)
 * DuckDB 1.4.0 (base OLAP)
 * Polars 1.19.0 (traitement données)

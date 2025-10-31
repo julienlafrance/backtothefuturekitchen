@@ -248,8 +248,8 @@
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INFO"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INFO</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CHART_COLORS"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CHART_COLORS</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.STEELBLUE_PALETTE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.STEELBLUE_PALETTE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_ORANGE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_ORANGE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_DARK"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_DARK</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.gradient_orange"><code class="docutils literal notranslate"><span class="pre">ColorTheme.gradient_orange()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.gradient_dark"><code class="docutils literal notranslate"><span class="pre">ColorTheme.gradient_dark()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD_BG</span></code></a></li>
@@ -494,6 +494,7 @@
 <li class="toctree-l3"><a class="reference internal" href="architecture.html#vm-autonome-virsh-kvm">VM Autonome (virsh/KVM)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="architecture.html#containerisation-docker">Containerisation Docker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="architecture.html#runner-github-self-hosted">Runner GitHub Self-Hosted</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#monitoring-et-surveillance">Monitoring et Surveillance</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="architecture.html#stack-technique">Stack Technique</a><ul>
@@ -722,10 +723,10 @@
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#alerting">Alerting</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="conformite.html#points-bonus">Points Bonus</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="conformite.html#base-de-donnees">Base de Données</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conformite.html#choix-techniques-avances">Choix Techniques Avancés</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#base-de-donnees-olap">Base de Données OLAP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#runner-self-hosted">Runner Self-Hosted</a></li>
-<li class="toctree-l3"><a class="reference internal" href="conformite.html#architecture-preprod-prod">Architecture PREPROD/PROD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#architecture-multi-environnement">Architecture Multi-Environnement</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="conformite.html#resume-standards">Résumé Standards</a></li>
@@ -922,7 +923,7 @@
 </ul>
 <p><strong>Job 2: Tests Preprod</strong></p>
 <ul class="simple">
-<li><p>Python 3.13.3 avec uv</p></li>
+<li><p>Python 3.13.7 avec uv</p></li>
 <li><p>Coverage minimum: 90%</p></li>
 <li><p>Commande: <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">tests/</span> <span class="pre">-v</span> <span class="pre">--cov=src</span> <span class="pre">--cov-report=html</span> <span class="pre">--cov-fail-under=90</span></code></p></li>
 <li><p>Artefacts: Rapport HTML coverage (30 jours rétention)</p></li>
@@ -1027,8 +1028,8 @@ docker-compose<span class="w"> </span>-f<span class="w"> </span>~/mangetamain/30
 <section id="verification-locale-avant-push">
 <h3>Vérification Locale Avant Push<a class="headerlink" href="#verification-locale-avant-push" title="Lien vers cette rubrique"></a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script de vérification local</span>
-./run_ci_checks.sh<span class="w"> </span>preprod<span class="w">   </span><span class="c1"># Teste 10_preprod</span>
-./run_ci_checks.sh<span class="w"> </span>prod<span class="w">      </span><span class="c1"># Teste 20_prod</span>
+./70_scripts/run_ci_checks.sh<span class="w"> </span>preprod<span class="w">   </span><span class="c1"># Teste 10_preprod</span>
+./70_scripts/run_ci_checks.sh<span class="w"> </span>prod<span class="w">      </span><span class="c1"># Teste 20_prod</span>
 </pre></div>
 </div>
 </section>
@@ -1162,7 +1163,7 @@ uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </s
 <h3>CI échoue mais local fonctionne<a class="headerlink" href="#ci-echoue-mais-local-fonctionne" title="Lien vers cette rubrique"></a></h3>
 <p><strong>Raisons possibles</strong>:</p>
 <ul class="simple">
-<li><p>Versions Python différentes (CI: 3.13.3, Local: autre)</p></li>
+<li><p>Versions Python différentes (CI: 3.13.7, Local: autre)</p></li>
 <li><p>Fichiers non commités</p></li>
 <li><p>Dépendances manquantes dans pyproject.toml</p></li>
 </ul>

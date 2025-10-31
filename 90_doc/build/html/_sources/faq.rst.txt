@@ -26,7 +26,7 @@ Télécharger depuis https://www.python.org/downloads/ et installer manuellement
 .. code-block:: bash
 
    python3 --version
-   # Attendu: Python 3.13.3
+   # Attendu: Python 3.13.7
 
 Pourquoi uv et pas pip ?
 ^^^^^^^^^^^^^^^^^^^^^^^^^

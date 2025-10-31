@@ -221,7 +221,7 @@ Données Projet
 Configurations
 ^^^^^^^^^^^^^^
 
-* **Python**: 3.13.3
+* **Python**: 3.13.7
 * **Streamlit**: 1.50.0
 * **Plotly**: 5.24.1
 * **DuckDB**: 1.4.0

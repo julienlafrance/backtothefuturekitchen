@@ -248,8 +248,8 @@
 <li class="toctree-l4"><a class="reference internal" href="utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INFO"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INFO</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CHART_COLORS"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CHART_COLORS</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.STEELBLUE_PALETTE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.STEELBLUE_PALETTE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_ORANGE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_ORANGE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_DARK"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_DARK</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.gradient_orange"><code class="docutils literal notranslate"><span class="pre">ColorTheme.gradient_orange()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.gradient_dark"><code class="docutils literal notranslate"><span class="pre">ColorTheme.gradient_dark()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD_BG</span></code></a></li>
@@ -494,6 +494,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../architecture.html#vm-autonome-virsh-kvm">VM Autonome (virsh/KVM)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../architecture.html#containerisation-docker">Containerisation Docker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../architecture.html#runner-github-self-hosted">Runner GitHub Self-Hosted</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html#monitoring-et-surveillance">Monitoring et Surveillance</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../architecture.html#stack-technique">Stack Technique</a><ul>
@@ -722,10 +723,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../conformite.html#alerting">Alerting</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../conformite.html#points-bonus">Points Bonus</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../conformite.html#base-de-donnees">Base de Données</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../conformite.html#choix-techniques-avances">Choix Techniques Avancés</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../conformite.html#base-de-donnees-olap">Base de Données OLAP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../conformite.html#runner-self-hosted">Runner Self-Hosted</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../conformite.html#architecture-preprod-prod">Architecture PREPROD/PROD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../conformite.html#architecture-multi-environnement">Architecture Multi-Environnement</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../conformite.html#resume-standards">Résumé Standards</a></li>
@@ -852,7 +853,7 @@ mangetamain_data_utils avec gestion appropriée des exceptions.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="mangetamain_analytics.data.loaders.DataLoader.load_recipes">
-<span class="sig-name descname"><span class="pre">load_recipes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mangetamain_analytics/data/loaders.html#DataLoader.load_recipes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mangetamain_analytics.data.loaders.DataLoader.load_recipes" title="Lien vers cette définition"></a></dt>
+<span class="sig-name descname"><span class="pre">load_recipes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(disponible dans Python v3.14)"><span class="pre">Any</span></a></span></span><a class="reference internal" href="../_modules/mangetamain_analytics/data/loaders.html#DataLoader.load_recipes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mangetamain_analytics.data.loaders.DataLoader.load_recipes" title="Lien vers cette définition"></a></dt>
 <dd><p>Charge les recettes depuis S3.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Renvoie<span class="colon">:</span></dt>
@@ -932,13 +933,13 @@ pour améliorer les performances. La logique de chargement et de gestion
 d’erreurs est déléguée à la classe DataLoader.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="mangetamain_analytics.data.cached_loaders.get_recipes_clean">
-<span class="sig-prename descclassname"><span class="pre">mangetamain_analytics.data.cached_loaders.</span></span><span class="sig-name descname"><span class="pre">get_recipes_clean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mangetamain_analytics.data.cached_loaders.get_recipes_clean" title="Lien vers cette définition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">mangetamain_analytics.data.cached_loaders.</span></span><span class="sig-name descname"><span class="pre">get_recipes_clean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(disponible dans Python v3.14)"><span class="pre">Any</span></a></span></span><a class="headerlink" href="#mangetamain_analytics.data.cached_loaders.get_recipes_clean" title="Lien vers cette définition"></a></dt>
 <dd><p>Charge les recettes depuis S3 avec cache (1h).</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="mangetamain_analytics.data.cached_loaders.get_ratings_longterm">
-<span class="sig-prename descclassname"><span class="pre">mangetamain_analytics.data.cached_loaders.</span></span><span class="sig-name descname"><span class="pre">get_ratings_longterm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_interactions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#mangetamain_analytics.data.cached_loaders.get_ratings_longterm" title="Lien vers cette définition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">mangetamain_analytics.data.cached_loaders.</span></span><span class="sig-name descname"><span class="pre">get_ratings_longterm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_interactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(disponible dans Python v3.14)"><span class="pre">Any</span></a></span></span><a class="headerlink" href="#mangetamain_analytics.data.cached_loaders.get_ratings_longterm" title="Lien vers cette définition"></a></dt>
 <dd><p>Charge les ratings pour analyse long-terme depuis S3 avec cache (1h).</p>
 </dd></dl>
 

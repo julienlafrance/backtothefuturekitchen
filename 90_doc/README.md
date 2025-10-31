@@ -60,7 +60,7 @@ start build/html/index.html
 * **Sphinx 8.2.3** : Générateur de documentation
 * **sphinx-rtd-theme 3.0.2** : Thème Read the Docs
 * **myst-parser 4.0.1** : Support Markdown dans Sphinx
-* **Python 3.13.3** : Version Python du projet
+* **Python 3.13.7** : Version Python du projet
 
 ## Documentation Automatique
 

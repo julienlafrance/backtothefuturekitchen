@@ -247,8 +247,8 @@
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.INFO"><code class="docutils literal notranslate"><span class="pre">ColorTheme.INFO</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.CHART_COLORS"><code class="docutils literal notranslate"><span class="pre">ColorTheme.CHART_COLORS</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.STEELBLUE_PALETTE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.STEELBLUE_PALETTE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_ORANGE"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_ORANGE</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.GRADIENT_DARK"><code class="docutils literal notranslate"><span class="pre">ColorTheme.GRADIENT_DARK</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.gradient_orange"><code class="docutils literal notranslate"><span class="pre">ColorTheme.gradient_orange()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.gradient_dark"><code class="docutils literal notranslate"><span class="pre">ColorTheme.gradient_dark()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PREPROD"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PREPROD</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/utils.html#mangetamain_analytics.utils.color_theme.ColorTheme.ENV_PROD_BG"><code class="docutils literal notranslate"><span class="pre">ColorTheme.ENV_PROD_BG</span></code></a></li>
@@ -493,6 +493,7 @@
 <li class="toctree-l3"><a class="reference internal" href="architecture.html#vm-autonome-virsh-kvm">VM Autonome (virsh/KVM)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="architecture.html#containerisation-docker">Containerisation Docker</a></li>
 <li class="toctree-l3"><a class="reference internal" href="architecture.html#runner-github-self-hosted">Runner GitHub Self-Hosted</a></li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html#monitoring-et-surveillance">Monitoring et Surveillance</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="architecture.html#stack-technique">Stack Technique</a><ul>
@@ -721,10 +722,10 @@
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#alerting">Alerting</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="conformite.html#points-bonus">Points Bonus</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="conformite.html#base-de-donnees">Base de Données</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conformite.html#choix-techniques-avances">Choix Techniques Avancés</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#base-de-donnees-olap">Base de Données OLAP</a></li>
 <li class="toctree-l3"><a class="reference internal" href="conformite.html#runner-self-hosted">Runner Self-Hosted</a></li>
-<li class="toctree-l3"><a class="reference internal" href="conformite.html#architecture-preprod-prod">Architecture PREPROD/PROD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html#architecture-multi-environnement">Architecture Multi-Environnement</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="conformite.html#resume-standards">Résumé Standards</a></li>
@@ -1003,7 +1004,7 @@
 <section id="configurations">
 <h3>Configurations<a class="headerlink" href="#configurations" title="Lien vers cette rubrique"></a></h3>
 <ul class="simple">
-<li><p><strong>Python</strong>: 3.13.3</p></li>
+<li><p><strong>Python</strong>: 3.13.7</p></li>
 <li><p><strong>Streamlit</strong>: 1.50.0</p></li>
 <li><p><strong>Plotly</strong>: 5.24.1</p></li>
 <li><p><strong>DuckDB</strong>: 1.4.0</p></li>
