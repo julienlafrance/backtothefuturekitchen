@@ -1,0 +1,2 @@
+# Exclure les rapports HTML générés des statistiques GitHub Linguist
+95_vibecoding/Ydata/archived_reports/*.html linguist-generated=true
