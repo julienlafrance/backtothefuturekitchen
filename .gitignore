@@ -65,5 +65,5 @@ deploy_*.log
 # Sphinx documentation build (HTML généré par GitHub Actions)
 90_doc/build/
 
-# Force sync
-95_vibecoding/Ydata/
+# Vibe coding (exclu du repo)
+95_vibecoding/

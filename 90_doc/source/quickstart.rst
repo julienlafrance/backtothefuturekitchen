@@ -110,7 +110,6 @@ Structure Projet
     ├── 50_test/         # Tests infrastructure
     ├── 70_scripts/      # Scripts shell (deploy, CI checks)
     ├── 90_doc/          # Documentation Sphinx
-    ├── 95_vibecoding/   # Vibe coding
     └── 96_keys/         # Credentials S3 (gitignore)
 
 Imports Courants

@@ -352,7 +352,6 @@ Organisation des Répertoires
     ├── 50_test/                   # Tests infrastructure S3/DuckDB
     ├── 70_scripts/                # Scripts shell (deploy, CI checks)
     ├── 90_doc/                    # Documentation (ce répertoire)
-    ├── 95_vibecoding/             # Vibe coding
     ├── 96_keys/                   # Credentials S3 (ignoré par git)
     └── .github/workflows/         # CI/CD
 
