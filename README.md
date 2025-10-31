@@ -8,7 +8,7 @@
 
 ## 📋 Vue d'ensemble
 
-Plateforme d'analytics culinaires basée sur un système de recommandations de recettes avec données Food.com. Architecture moderne Python 3.13.3 + Streamlit + DuckDB + S3 Storage.
+Plateforme d'analytics culinaires basée sur un système de recommandations de recettes avec données Food.com. Architecture moderne Python 3.13.7 + Streamlit + DuckDB + S3 Storage.
 
 ## 🎯 Configuration S3 Simplifiée (2025-10-09)
 
@@ -19,7 +19,7 @@ Plateforme d'analytics culinaires basée sur un système de recommandations de r
 🔑 Credentials        : 96_keys/credentials
 🦆 DuckDB + S3        : garage_s3.duckdb (secret intégré)
 ⚡ Performance        : 500+ MB/s (DNAT bypass)
-🐍 Python cohérent    : 3.13.3 partout
+🐍 Python cohérent    : 3.13.7 partout
 ```
 
 ### Usage
@@ -77,7 +77,7 @@ mangetamain/
 ## 🚀 Démarrage Rapide
 
 ### 1. Installation S3 (une seule fois)
-Voir la documentation dans [90_doc/](90_doc/) (section S3)
+[Guide Installation S3](90_doc/build/html/s3.html#installation) | [Guide Utilisation S3](90_doc/build/html/s3.html#utilisation-aws-cli)
 
 ### 2. Lancement PREPROD
 ```bash
@@ -127,7 +127,7 @@ docker-compose -f docker-compose-prod.yml up -d
 - 🏥 **Health checks** - Vérification automatique des URLs
 - 📬 **Discord** - Notifications succès/échec avec instructions rollback
 
-📚 **Documentation complète:** Voir [90_doc/](90_doc/) (section CI/CD)
+📚 **Documentation complète:** [Pipeline CI/CD](90_doc/build/html/cicd.html) | [Workflows](90_doc/build/html/cicd.html#workflows-github-actions)
 
 ### Tests d'infrastructure (50_test/)
 **Test complet S3 + DuckDB**
@@ -162,7 +162,7 @@ uv run pytest tests/unit/ -v --cov=src --cov-report=html
 
 Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
 
-📚 **Documentation complète:** Voir [README_TESTS.md](README_TESTS.md)
+📚 **Documentation complète:** [Tests et Coverage](90_doc/build/html/tests.html) (118 tests, 93% coverage)
 
 ## 📊 Données
 
@@ -201,14 +201,13 @@ Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
 
 ## 📚 Documentation
 
-### Configuration et utilisation
-- **[90_doc/](90_doc/)** - Documentation technique complète (Sphinx)
-  - Guide installation S3
-  - Guide utilisation S3
-  - Architecture, CI/CD, tests
-
-### Tests et coverage
-- **[90_doc/](90_doc/)** - 📊 Section tests (118 tests, 93% coverage)
+### Guides Complets
+- [Installation & Configuration](90_doc/build/html/installation.html)
+- [Guide S3 Garage](90_doc/build/html/s3.html) - Installation, usage, performance
+- [Architecture Technique](90_doc/build/html/architecture.html) - Stack, infrastructure, logging
+- [Pipeline CI/CD](90_doc/build/html/cicd.html) - Workflows, déploiements
+- [Tests & Coverage](90_doc/build/html/tests.html) - 118 tests, 93% coverage
+- [Quick Start](90_doc/build/html/quickstart.html) - Démarrage rapide
 
 ## 🏷️ Version
 
