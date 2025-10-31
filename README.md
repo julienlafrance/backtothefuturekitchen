@@ -208,44 +208,9 @@ Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
 - [Installation & Configuration](https://julienlafrance.github.io/backtothefuturekitchen/installation.html)
 - [Guide S3 Garage](https://julienlafrance.github.io/backtothefuturekitchen/s3.html) - Installation, usage, performance
 - [Architecture Technique](https://julienlafrance.github.io/backtothefuturekitchen/architecture.html) - Stack, infrastructure, logging
-- [Pipeline CI/CD](https://julienlafrance.github.io/backtothefuturekitchen/cicd.html) - Workflows, déploiements
+- [Pipeline CI/CD](https://julienlafrance.github.io/backtothefuturekitchen/cicd.html) - Workflows, déploiements, documentation
 - [Tests & Coverage](https://julienlafrance.github.io/backtothefuturekitchen/tests.html) - 118 tests, 93% coverage
 - [Quick Start](https://julienlafrance.github.io/backtothefuturekitchen/quickstart.html) - Démarrage rapide
-
-### Workflow Documentation
-
-**Mise à jour automatique via GitHub Actions :**
-
-```bash
-cd 90_doc/source
-# Modifier les fichiers .rst
-vim installation.rst
-
-# Build local pour tester (optionnel)
-cd ..
-make html
-firefox build/html/index.html
-
-# Commit et push
-git add source/
-git commit -m "Doc: mise à jour installation"
-git push
-
-# → GitHub Actions build automatiquement
-# → Doc publiée en 2-3 minutes sur GitHub Pages
-```
-
-**Architecture Documentation :**
-```
-90_doc/
-├── source/         # Fichiers .rst (trackés dans Git)
-│   ├── conf.py     # Configuration Sphinx
-│   └── *.rst       # Pages documentation
-├── build/          # HTML généré (ignoré par Git)
-└── Makefile        # Commandes Sphinx
-```
-
-**Workflow isolé :** Le build de documentation est complètement indépendant du CI/CD preprod/prod. Un échec de build doc n'impacte jamais les déploiements.
 
 ## 🏷️ Version
 

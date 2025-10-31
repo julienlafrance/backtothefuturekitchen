@@ -222,6 +222,83 @@ Script watcher (``/tmp/watch-ci-SHA.sh``) :
 
 **Notifications Discord**: Alertes si service down
 
+5. Documentation Build
+^^^^^^^^^^^^^^^^^^^^^^
+
+**Fichier**: ``.github/workflows/documentation.yml``
+
+**Déclencheurs**:
+
+.. code-block:: yaml
+
+   on:
+     push:
+       branches: [main]
+       paths:
+         - '90_doc/source/**'
+         - '90_doc/requirements.txt'
+         - '.github/workflows/documentation.yml'
+     workflow_dispatch:
+
+**Principe**: Workflow complètement **isolé du CI/CD preprod/prod**. Un échec de build doc n'impacte jamais les déploiements applicatifs.
+
+**Workflow**:
+
+1. 📦 Setup Python 3.13.7
+2. 📥 Install Sphinx dependencies (sphinx, sphinx-rtd-theme, myst-parser)
+3. 🔨 Build documentation (``sphinx-build -b html source build/html``)
+4. 📄 Add ``.nojekyll`` file (désactive Jekyll processing)
+5. 🚀 Deploy to GitHub Pages (branche ``gh-pages``)
+
+**URL Documentation**: https://julienlafrance.github.io/backtothefuturekitchen/
+
+**Architecture Documentation**:
+
+.. code-block:: text
+
+   90_doc/
+   ├── source/         # Fichiers .rst (trackés dans Git)
+   │   ├── conf.py     # Configuration Sphinx
+   │   └── *.rst       # Pages documentation
+   ├── build/          # HTML généré (ignoré par Git)
+   └── Makefile        # Commandes Sphinx
+
+**Workflow de mise à jour**:
+
+.. code-block:: bash
+
+   cd 90_doc/source
+   # Modifier les fichiers .rst
+   vim installation.rst
+
+   # Build local pour tester (optionnel)
+   cd ..
+   make html
+   firefox build/html/index.html
+
+   # Commit et push
+   git add source/
+   git commit -m "Doc: mise à jour installation"
+   git push
+
+   # → GitHub Actions build automatiquement
+   # → Doc publiée en 2-3 minutes sur GitHub Pages
+
+**Points clés**:
+
+* 💾 HTML retiré du repo main (38 MB économisés)
+* ⚡ Build automatique sur push vers main
+* 🌐 Déploiement sur branche ``gh-pages`` séparée
+* 🔒 **Workflow isolé**: échec doc ≠ impact preprod/prod
+* 📝 Seuls les fichiers ``.rst`` sont trackés dans Git
+
+**Avantages GitHub Pages vs HTML tracké**:
+
+* Statistiques GitHub correctes (Python au lieu de HTML)
+* Repo plus léger (-38 MB)
+* URL professionnelle et stable
+* Pas de pollution de l'historique Git avec HTML généré
+
 Commandes Pratiques
 -------------------
 
