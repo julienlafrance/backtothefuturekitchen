@@ -202,7 +202,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: 50_test/.venv
-          key: venv-infra-v3-${{ runner.os }}-py3.13.7-${{ hashFiles('50_test/pyproject.toml') }}
+          key: venv-infra-v4-${{ runner.os }}-py3.13.7-${{ hashFiles('50_test/pyproject.toml') }}
 
       - name: Install uv
         run: |

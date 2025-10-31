@@ -2,6 +2,7 @@
 name = "50-test"
 version = "0.1.0"
 description = "Tests S3 parquet files accessibility"
+license = {text = "MIT"}
 requires-python = ">=3.13.7,<3.14"
 dependencies = [
     "boto3>=1.40.48",
