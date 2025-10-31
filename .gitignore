@@ -66,3 +66,4 @@ deploy_*.log
 90_doc/build/
 
 # Force sync
+95_vibecoding/Ydata/
