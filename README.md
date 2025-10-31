@@ -3,7 +3,6 @@
 [![CI Pipeline - Quality & Tests](https://github.com/julienlafrance/backtothefuturekitchen/actions/workflows/ci.yml/badge.svg)](https://github.com/julienlafrance/backtothefuturekitchen/actions/workflows/ci.yml)
 ![Tests](https://img.shields.io/badge/tests-118_total-success)
 ![Coverage](https://img.shields.io/badge/coverage-93%25-brightgreen)
-![10_preprod](https://img.shields.io/badge/10__preprod-93%25-brightgreen)
 ![Python](https://img.shields.io/badge/python-3.13.7-blue)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
