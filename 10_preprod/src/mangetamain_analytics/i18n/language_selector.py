@@ -10,24 +10,24 @@ def init_language() -> Language:
     """Initialize language in session state.
 
     Checks URL query parameters for ?lang=en or ?lang=fr
-    If no parameter is provided, defaults to French.
+    If no parameter is provided, defaults to English.
 
     Returns:
-        Current language (defaults to French)
+        Current language (defaults to English)
     """
     if "language" not in st.session_state:
         # Check for language query parameter
         try:
             query_params = st.query_params
-            lang_param = query_params.get("lang", "fr")
+            lang_param = query_params.get("lang", "en")
             # Validate parameter
             if lang_param in ["en", "fr"]:
                 st.session_state.language = lang_param
             else:
-                st.session_state.language = "fr"
+                st.session_state.language = "en"
         except Exception:
             # Fallback if query_params not available
-            st.session_state.language = "fr"
+            st.session_state.language = "en"
     return st.session_state.language
 
 
@@ -68,7 +68,7 @@ def render_language_selector() -> None:
         "🇬🇧 English": "en",
     }
 
-    current_lang = st.session_state.get("language", "fr")
+    current_lang = st.session_state.get("language", "en")
 
     selected = st.sidebar.selectbox(
         "Language / Langue",
@@ -90,4 +90,4 @@ def get_current_language() -> Language:
     Returns:
         Current language code ('fr' or 'en')
     """
-    return st.session_state.get("language", "fr")
+    return st.session_state.get("language", "en")
