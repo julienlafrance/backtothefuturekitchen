@@ -82,7 +82,7 @@ mangetamain/
 ### 🚀 Quick Start
 
 #### 1. S3 Installation (one time only)
-[S3 Installation Guide](https://julienlafrance.github.io/backtothefuturekitchen/s3.html#installation) | [S3 Usage Guide](https://julienlafrance.github.io/backtothefuturekitchen/s3.html#utilisation-aws-cli)
+[S3 Installation Guide](https://julienlafrance.github.io/backtothefuturekitchen/en/s3.html#installation) | [S3 Usage Guide](https://julienlafrance.github.io/backtothefuturekitchen/en/s3.html#utilisation-aws-cli)
 
 #### 2. Launch PREPROD
 ```bash
@@ -132,7 +132,7 @@ docker-compose -f docker-compose-prod.yml up -d
 - 🏥 **Health checks** - Automatic URL verification
 - 📬 **Discord** - Success/failure notifications with rollback instructions
 
-📚 **Complete documentation:** [CI/CD Pipeline](https://julienlafrance.github.io/backtothefuturekitchen/cicd.html) | [Workflows](https://julienlafrance.github.io/backtothefuturekitchen/cicd.html#workflows-github-actions)
+📚 **Complete documentation:** [CI/CD Pipeline](https://julienlafrance.github.io/backtothefuturekitchen/en/cicd.html) | [Workflows](https://julienlafrance.github.io/backtothefuturekitchen/en/cicd.html#workflows-github-actions)
 
 #### Infrastructure Tests (50_test/)
 **Complete S3 + DuckDB Test**
@@ -167,7 +167,7 @@ uv run pytest tests/unit/ -v --cov=src --cov-report=html
 
 Testing 20_prod would be redundant. **Strategy**: test source before build.
 
-📚 **Complete documentation:** [Tests and Coverage](https://julienlafrance.github.io/backtothefuturekitchen/tests.html) (118 tests, 93% coverage)
+📚 **Complete documentation:** [Tests and Coverage](https://julienlafrance.github.io/backtothefuturekitchen/en/tests.html) (118 tests, 93% coverage)
 
 ### 📊 Data
 
@@ -210,12 +210,12 @@ Testing 20_prod would be redundant. **Strategy**: test source before build.
 🌐 **https://julienlafrance.github.io/backtothefuturekitchen/**
 
 #### Complete Guides
-- [Installation & Configuration](https://julienlafrance.github.io/backtothefuturekitchen/installation.html)
-- [S3 Garage Guide](https://julienlafrance.github.io/backtothefuturekitchen/s3.html) - Installation, usage, performance
-- [Technical Architecture](https://julienlafrance.github.io/backtothefuturekitchen/architecture.html) - Stack, infrastructure, logging
-- [CI/CD Pipeline](https://julienlafrance.github.io/backtothefuturekitchen/cicd.html) - Workflows, deployments, documentation
-- [Tests & Coverage](https://julienlafrance.github.io/backtothefuturekitchen/tests.html) - 118 tests, 93% coverage
-- [Quick Start](https://julienlafrance.github.io/backtothefuturekitchen/quickstart.html) - Quick start guide
+- [Installation & Configuration](https://julienlafrance.github.io/backtothefuturekitchen/en/installation.html)
+- [S3 Garage Guide](https://julienlafrance.github.io/backtothefuturekitchen/en/s3.html) - Installation, usage, performance
+- [Technical Architecture](https://julienlafrance.github.io/backtothefuturekitchen/en/architecture.html) - Stack, infrastructure, logging
+- [CI/CD Pipeline](https://julienlafrance.github.io/backtothefuturekitchen/en/cicd.html) - Workflows, deployments, documentation
+- [Tests & Coverage](https://julienlafrance.github.io/backtothefuturekitchen/en/tests.html) - 118 tests, 93% coverage
+- [Quick Start](https://julienlafrance.github.io/backtothefuturekitchen/en/quickstart.html) - Quick start guide
 
 ### 🏷️ Version
 
@@ -335,7 +335,7 @@ mangetamain/
 ### 🚀 Démarrage Rapide
 
 #### 1. Installation S3 (une seule fois)
-[Guide Installation S3](https://julienlafrance.github.io/backtothefuturekitchen/s3.html#installation) | [Guide Utilisation S3](https://julienlafrance.github.io/backtothefuturekitchen/s3.html#utilisation-aws-cli)
+[Guide Installation S3](https://julienlafrance.github.io/backtothefuturekitchen/fr/s3.html#installation) | [Guide Utilisation S3](https://julienlafrance.github.io/backtothefuturekitchen/fr/s3.html#utilisation-aws-cli)
 
 #### 2. Lancement PREPROD
 ```bash
@@ -385,7 +385,7 @@ docker-compose -f docker-compose-prod.yml up -d
 - 🏥 **Health checks** - Vérification automatique des URLs
 - 📬 **Discord** - Notifications succès/échec avec instructions rollback
 
-📚 **Documentation complète:** [Pipeline CI/CD](https://julienlafrance.github.io/backtothefuturekitchen/cicd.html) | [Workflows](https://julienlafrance.github.io/backtothefuturekitchen/cicd.html#workflows-github-actions)
+📚 **Documentation complète:** [Pipeline CI/CD](https://julienlafrance.github.io/backtothefuturekitchen/fr/cicd.html) | [Workflows](https://julienlafrance.github.io/backtothefuturekitchen/fr/cicd.html#workflows-github-actions)
 
 #### Tests d'infrastructure (50_test/)
 **Test complet S3 + DuckDB**
@@ -420,7 +420,7 @@ uv run pytest tests/unit/ -v --cov=src --cov-report=html
 
 Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
 
-📚 **Documentation complète:** [Tests et Coverage](https://julienlafrance.github.io/backtothefuturekitchen/tests.html) (118 tests, 93% coverage)
+📚 **Documentation complète:** [Tests et Coverage](https://julienlafrance.github.io/backtothefuturekitchen/fr/tests.html) (118 tests, 93% coverage)
 
 ### 📊 Données
 
@@ -463,12 +463,12 @@ Tester 20_prod serait redondant. **Stratégie** : tester le source avant build.
 🌐 **https://julienlafrance.github.io/backtothefuturekitchen/**
 
 #### Guides Complets
-- [Installation & Configuration](https://julienlafrance.github.io/backtothefuturekitchen/installation.html)
-- [Guide S3 Garage](https://julienlafrance.github.io/backtothefuturekitchen/s3.html) - Installation, usage, performance
-- [Architecture Technique](https://julienlafrance.github.io/backtothefuturekitchen/architecture.html) - Stack, infrastructure, logging
-- [Pipeline CI/CD](https://julienlafrance.github.io/backtothefuturekitchen/cicd.html) - Workflows, déploiements, documentation
-- [Tests & Coverage](https://julienlafrance.github.io/backtothefuturekitchen/tests.html) - 118 tests, 93% coverage
-- [Quick Start](https://julienlafrance.github.io/backtothefuturekitchen/quickstart.html) - Démarrage rapide
+- [Installation & Configuration](https://julienlafrance.github.io/backtothefuturekitchen/fr/installation.html)
+- [Guide S3 Garage](https://julienlafrance.github.io/backtothefuturekitchen/fr/s3.html) - Installation, usage, performance
+- [Architecture Technique](https://julienlafrance.github.io/backtothefuturekitchen/fr/architecture.html) - Stack, infrastructure, logging
+- [Pipeline CI/CD](https://julienlafrance.github.io/backtothefuturekitchen/fr/cicd.html) - Workflows, déploiements, documentation
+- [Tests & Coverage](https://julienlafrance.github.io/backtothefuturekitchen/fr/tests.html) - 118 tests, 93% coverage
+- [Quick Start](https://julienlafrance.github.io/backtothefuturekitchen/fr/quickstart.html) - Démarrage rapide
 
 ### 🏷️ Version
 
