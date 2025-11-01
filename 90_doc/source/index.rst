@@ -1,84 +1,41 @@
-Documentation Mangetamain Analytics
+Mangetamain Analytics Documentation
 ====================================
 
-Application web d'analyse de données culinaires basée sur le dataset Food.com (2.3M interactions, 1999-2018).
+.. image:: https://img.shields.io/badge/language-EN%20%7C%20FR-blue
+   :alt: Languages
 
-Environnements Déployés
------------------------
+Welcome to the Mangetamain Analytics documentation. This documentation is available in two languages:
 
-* PREPROD : https://mangetamain.lafrance.io/
-* PRODUCTION : https://backtothefuturekitchen.lafrance.io/
-
-Dataset
--------
-
-* 178,265 recettes
-* 1.1M+ ratings utilisateurs
-* 25,076 contributeurs
-* Période 1999-2018
-
-Métriques Projet
-----------------
-
-* Tests : 118 tests, 93% coverage
-* Documentation : Sphinx auto-générée, docstrings Google style
-* CI/CD : Pipeline automatisé GitHub Actions
-* Type hinting : Complet sur toutes fonctions
-
-Navigation
-----------
+Language Selection / Sélection de la langue
+--------------------------------------------
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Le Projet
+   :maxdepth: 1
+   :caption: Choose your language / Choisissez votre langue
 
-   projet
-   quickstart
-   installation
+   🇬🇧 English Documentation <en/index>
+   🇫🇷 Documentation Française <fr/index>
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Application Streamlit
+Quick Links
+-----------
 
-   application
-   usage
+**English:**
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Documentation Code
+* `Installation Guide <en/installation.html>`_
+* `Quick Start <en/quickstart.html>`_
+* `API Reference <en/modules/index.html>`_
 
-   modules/index
-   modules/utils
-   modules/visualization
-   modules/data
-   modules/exceptions
-   modules/infrastructure
+**Français:**
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Infrastructure
+* `Guide d'Installation <fr/installation.html>`_
+* `Démarrage Rapide <fr/quickstart.html>`_
+* `Référence API <fr/modules/index.html>`_
 
-   architecture
-   s3
-   cicd
-   tests
+Project Information
+-------------------
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Standards Qualité
-
-   conformite
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Référence
-
-   faq
-   glossaire
-
-Indices
-=======
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+* **Project**: Mangetamain Analytics - Back to the Future Kitchen
+* **Version**: 2.0.0
+* **GitHub**: https://github.com/julienlafrance/backtothefuturekitchen
+* **PREPROD**: https://mangetamain.lafrance.io/
+* **PRODUCTION**: https://backtothefuturekitchen.lafrance.io/

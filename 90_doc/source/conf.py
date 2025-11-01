@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.abspath('../../10_preprod/src'))
 project = 'Mangetamain Analytics'
 copyright = '2025, Mangetamain Team'
 author = 'Mangetamain Team'
-release = '1.0.0'
+release = '2.0.0'
 
 # -- General configuration ---------------------------------------------------
 extensions = [

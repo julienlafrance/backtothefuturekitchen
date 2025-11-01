@@ -26,6 +26,7 @@ from plotly.subplots import make_subplots
 from data.cached_loaders import get_recipes_clean as load_recipes_clean
 from utils import chart_theme
 from utils.color_theme import ColorTheme
+from utils.i18n_helper import t
 
 
 def analyse_weekend_volume() -> None:
@@ -123,7 +124,7 @@ def analyse_weekend_volume() -> None:
     with col2:
         st.metric("Week-end (moy/jour)", f"{weekend_rpd:,.0f}")
     with col3:
-        st.metric("Différence", f"+{diff_pct:.1f}%", delta="Semaine > Week-end")
+        st.metric(t("difference"), f"+{diff_pct:.1f}%", delta=t("weekday_gt_weekend", category="weekend"))
     with col4:
         st.metric(f"Jour max: {max_day['jour']}", f"{max_day['n_recipes']:,}")
 
@@ -139,7 +140,7 @@ def analyse_weekend_volume() -> None:
         subplot_titles=(
             "Volume moyen par jour (pondéré)",
             "Distribution des 7 jours",
-            "Écart à la moyenne globale (%)",
+            t("deviation_from_average"),
         ),
         specs=[[{"type": "bar"}, {"type": "bar"}, {"type": "bar"}]],
     )
@@ -156,7 +157,7 @@ def analyse_weekend_volume() -> None:
             text=[f"{val:,.0f}/jour" for val in recipes_week_period["recipes_per_day"]],
             textposition="outside",
             textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
-            name="Volume pondéré",
+            name=t("legend_weighted_volume", category="trends"),
             showlegend=False,
         ),
         row=1,
@@ -219,7 +220,7 @@ def analyse_weekend_volume() -> None:
             text=[f"{val:+.1f}%" for val in recipes_per_day["deviation_pct"]],
             textposition="outside",
             textfont=dict(size=11, color=ColorTheme.TEXT_PRIMARY),
-            name="Écart (%)",
+            name=t("legend_deviation_pct", category="trends"),
             showlegend=False,
         ),
         row=1,
@@ -233,9 +234,9 @@ def analyse_weekend_volume() -> None:
     # Axes
     fig.update_yaxes(title_text="Recettes/jour", row=1, col=1)
     fig.update_yaxes(title_text="Nombre de recettes", row=1, col=2)
-    fig.update_yaxes(title_text="Écart (%)", row=1, col=3)
+    fig.update_yaxes(title_text=t("legend_deviation_pct", category="trends"), row=1, col=3)
 
-    fig.update_xaxes(title_text="Période", row=1, col=1)
+    fig.update_xaxes(title_text=t("axis_period"), row=1, col=1)
     fig.update_xaxes(title_text="Jour de la semaine", row=1, col=2)
     fig.update_xaxes(title_text="Jour de la semaine", row=1, col=3)
 
@@ -246,21 +247,7 @@ def analyse_weekend_volume() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # 📝 INTERPRÉTATION
-    st.info(
-        f"""
-    💡 **Interprétation statistique**
-
-    Le **test Chi-2 pondéré** révèle une **différence statistiquement très significative**
-    (p < 0.001) entre les volumes Weekday et Weekend. **Les recettes sont massivement publiées en semaine** :
-    en moyenne **{weekday_rpd:,.0f} recettes/jour en Weekday** contre seulement **{weekend_rpd:,.0f} recettes/jour en Weekend**,
-    soit **{diff_pct:+.0f}% le week-end**.
-
-    Le **test d'uniformité des 7 jours** confirme une **forte variabilité inter-jours**.
-    Le **lundi est le jour le plus actif** (+45% au-dessus de la moyenne), suivi du **mardi** (+29%) et du **mercredi** (+13%).
-    À l'inverse, le **samedi est le jour le moins actif** (-49%), suivi du **dimanche** (-36%).
-    Les utilisateurs publient principalement **en début de semaine**.
-    """
-    )
+    st.info(t('volume_interpretation', category='weekend'))
 
 
 def analyse_weekend_duree() -> None:
@@ -329,11 +316,11 @@ def analyse_weekend_duree() -> None:
 
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.metric("Semaine (moyenne)", f"{wd_row['mean_minutes']:.1f} min")
+        st.metric(t("weekday_average"), f"{wd_row['mean_minutes']:.1f} min")
     with col2:
-        st.metric("Week-end (moyenne)", f"{we_row['mean_minutes']:.1f} min")
+        st.metric(t("weekend_average"), f"{we_row['mean_minutes']:.1f} min")
     with col3:
-        st.metric("Différence", f"{diff_abs:+.1f} min", delta=f"{diff_pct:+.2f}%")
+        st.metric(t("difference"), f"{diff_abs:+.1f} min", delta=f"{diff_pct:+.2f}%")
     with col4:
         st.metric("IQR Semaine", f"{wd_row['IQR']:.0f} min")
 
@@ -342,8 +329,8 @@ def analyse_weekend_duree() -> None:
         rows=1,
         cols=2,
         subplot_titles=(
-            "Durée des recettes par période",
-            "Distribution des durées (boxplot)",
+            t("duree_recettes_periode"),
+            t("distribution_durees_boxplot"),
         ),
         specs=[[{"type": "bar"}, {"type": "box"}]],
     )
@@ -360,7 +347,7 @@ def analyse_weekend_duree() -> None:
             text=[f"{val:.1f} m" for val in minutes_by_period["mean_minutes"]],
             textposition="outside",
             textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
-            name="Moyenne",
+            name=t("label_average"),
             showlegend=True,
         ),
         row=1,
@@ -375,7 +362,7 @@ def analyse_weekend_duree() -> None:
             mode="lines+markers",
             line=dict(color=ColorTheme.TEXT_PRIMARY, width=2, dash="dash"),
             marker=dict(size=8, color=ColorTheme.TEXT_PRIMARY, symbol="circle"),
-            name="Médiane",
+            name=t("label_median"),
         ),
         row=1,
         col=1,
@@ -444,10 +431,10 @@ def analyse_weekend_duree() -> None:
         )
 
     # Axes
-    fig.update_yaxes(title_text="Minutes", row=1, col=1)
-    fig.update_yaxes(title_text="Minutes", row=1, col=2)
-    fig.update_xaxes(title_text="Période", row=1, col=1)
-    fig.update_xaxes(title_text="Période", row=1, col=2)
+    fig.update_yaxes(title_text=t("axis_minutes"), row=1, col=1)
+    fig.update_yaxes(title_text=t("axis_minutes"), row=1, col=2)
+    fig.update_xaxes(title_text=t("axis_period"), row=1, col=1)
+    fig.update_xaxes(title_text=t("axis_period"), row=1, col=2)
 
     # Appliquer thème
     chart_theme.apply_subplot_theme(fig, num_rows=1, num_cols=2)
@@ -456,16 +443,7 @@ def analyse_weekend_duree() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # 📝 INTERPRÉTATION
-    st.info(
-        f"""
-    💡 **Interprétation statistique**
-
-    Le **test t de Student** ne révèle **aucune différence significative**
-    entre les durées Weekday et Weekend. Les **moyennes sont quasi identiques**
-    ({wd_row['mean_minutes']:.1f} vs {we_row['mean_minutes']:.1f} min, différence {diff_pct:+.2f}%).
-    La durée des recettes publiées reste **constante indépendamment de la période**, sans effet week-end observable.
-    """
-    )
+    st.info(t('duration_interpretation', category='weekend'))
 
 
 def analyse_weekend_complexite() -> None:
@@ -533,13 +511,13 @@ def analyse_weekend_complexite() -> None:
     col1, col2, col3 = st.columns(3)
     with col1:
         st.metric(
-            "Complexité Semaine",
+            t("complexity_weekday", category="weekend"),
             f"{wd_row['mean_complexity']:.2f}",
             delta=f"{wd_row['mean_steps']:.1f} steps",
         )
     with col2:
         st.metric(
-            "Complexité Week-end",
+            t("complexity_weekend", category="weekend"),
             f"{we_row['mean_complexity']:.2f}",
             delta=f"{we_row['mean_steps']:.1f} steps",
         )
@@ -548,16 +526,16 @@ def analyse_weekend_complexite() -> None:
             (we_row["mean_complexity"] - wd_row["mean_complexity"])
             / wd_row["mean_complexity"]
         ) * 100
-        st.metric("Différence", f"{diff_pct:+.2f}%")
+        st.metric(t("difference"), f"{diff_pct:+.2f}%")
 
     # 🎨 VISUALISATION (3 panels)
     fig = make_subplots(
         rows=1,
         cols=3,
         subplot_titles=(
-            "Score de complexité",
-            "Nombre d'étapes",
-            "Nombre d'ingrédients",
+            t("score_complexite"),
+            t("nombre_etapes"),
+            t("nombre_ingredients"),
         ),
         specs=[[{"type": "bar"}, {"type": "bar"}, {"type": "bar"}]],
     )
@@ -574,7 +552,7 @@ def analyse_weekend_complexite() -> None:
             text=[f"{val:.2f}" for val in complexity_by_period["mean_complexity"]],
             textposition="outside",
             textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
-            name="Moyenne",
+            name=t("label_average"),
             showlegend=False,
         ),
         row=1,
@@ -588,7 +566,7 @@ def analyse_weekend_complexite() -> None:
             mode="lines+markers",
             line=dict(color=ColorTheme.TEXT_PRIMARY, width=2, dash="dash"),
             marker=dict(size=8, color=ColorTheme.TEXT_PRIMARY, symbol="square"),
-            name="Médiane",
+            name=t("label_median"),
         ),
         row=1,
         col=1,
@@ -606,7 +584,7 @@ def analyse_weekend_complexite() -> None:
             text=[f"{val:.1f}" for val in complexity_by_period["mean_steps"]],
             textposition="outside",
             textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
-            name="Moyenne",
+            name=t("label_average"),
             showlegend=False,
         ),
         row=1,
@@ -620,7 +598,7 @@ def analyse_weekend_complexite() -> None:
             mode="lines+markers",
             line=dict(color=ColorTheme.TEXT_PRIMARY, width=2, dash="dash"),
             marker=dict(size=8, color=ColorTheme.TEXT_PRIMARY, symbol="square"),
-            name="Médiane",
+            name=t("label_median"),
         ),
         row=1,
         col=2,
@@ -638,7 +616,7 @@ def analyse_weekend_complexite() -> None:
             text=[f"{val:.1f}" for val in complexity_by_period["mean_ingredients"]],
             textposition="outside",
             textfont=dict(size=12, color=ColorTheme.TEXT_PRIMARY),
-            name="Moyenne",
+            name=t("label_average"),
             showlegend=False,
         ),
         row=1,
@@ -652,7 +630,7 @@ def analyse_weekend_complexite() -> None:
             mode="lines+markers",
             line=dict(color=ColorTheme.TEXT_PRIMARY, width=2, dash="dash"),
             marker=dict(size=8, color=ColorTheme.TEXT_PRIMARY, symbol="square"),
-            name="Médiane",
+            name=t("label_median"),
         ),
         row=1,
         col=3,
@@ -660,12 +638,12 @@ def analyse_weekend_complexite() -> None:
 
     # Axes
     fig.update_yaxes(title_text="Complexity Score", row=1, col=1)
-    fig.update_yaxes(title_text="Nombre d'étapes", row=1, col=2)
-    fig.update_yaxes(title_text="Nombre d'ingrédients", row=1, col=3)
+    fig.update_yaxes(title_text=t("nombre_etapes"), row=1, col=2)
+    fig.update_yaxes(title_text=t("nombre_ingredients"), row=1, col=3)
 
-    fig.update_xaxes(title_text="Période", row=1, col=1)
-    fig.update_xaxes(title_text="Période", row=1, col=2)
-    fig.update_xaxes(title_text="Période", row=1, col=3)
+    fig.update_xaxes(title_text=t("axis_period"), row=1, col=1)
+    fig.update_xaxes(title_text=t("axis_period"), row=1, col=2)
+    fig.update_xaxes(title_text=t("axis_period"), row=1, col=3)
 
     # Appliquer thème
     chart_theme.apply_subplot_theme(fig, num_rows=1, num_cols=3)
@@ -674,18 +652,7 @@ def analyse_weekend_complexite() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # 📝 INTERPRÉTATION
-    st.info(
-        f"""
-    💡 **Interprétation statistique**
-
-    Le **test t de Student** ne révèle **aucune différence significative**
-    de complexité entre Weekday et Weekend. Les **scores de complexité sont quasi identiques**
-    ({wd_row['mean_complexity']:.2f} vs {we_row['mean_complexity']:.2f}, différence {diff_pct:+.2f}%),
-    ainsi que le **nombre d'étapes** ({wd_row['mean_steps']:.1f} vs {we_row['mean_steps']:.1f})
-    et d'**ingrédients** ({wd_row['mean_ingredients']:.1f} vs {we_row['mean_ingredients']:.1f}).
-    La complexité des recettes publiées reste **constante indépendamment de la période**, sans effet week-end observable.
-    """
-    )
+    st.info(t('complexity_interpretation', category='weekend'))
 
 
 def analyse_weekend_nutrition() -> None:
@@ -737,9 +704,9 @@ def analyse_weekend_nutrition() -> None:
     # Tests statistiques
     nutrients_list = [
         ("Calories", "calories", "mean_calories", 0),
-        ("Protéines (%)", "protein_pct", "mean_protein", 1),
-        ("Lipides (%)", "total_fat_pct", "mean_fat", 1),
-        ("Graisses sat. (%)", "sat_fat_pct", "mean_sat_fat", 1),
+        (t("proteines_pct"), "protein_pct", "mean_protein", 1),
+        ( t("lipides_pct"), "total_fat_pct", "mean_fat", 1),
+        ( t("graisses_sat_pct"), "sat_fat_pct", "mean_sat_fat", 1),
         ("Sucres (%)", "sugar_pct", "mean_sugar", 1),
         ("Sodium (%)", "sodium_pct", "mean_sodium", 1),
     ]
@@ -786,12 +753,12 @@ def analyse_weekend_nutrition() -> None:
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.metric("Nutriments analysés", "6")
+        st.metric(t("nutrients_analyzed", category="common"), "6")
     with col2:
-        st.metric("Différences significatives", f"{signif_count}")
+        st.metric(t("significant_differences", category="common"), f"{signif_count}")
     with col3:
         st.metric(
-            f"Max écart: {max_diff['nutrient']}",
+            t("max_gap", category="weekend").format(nutrient=max_diff['nutrient']),
             f"{max_diff['diff_pct']:+.1f}%",
             delta="p<0.05" if max_diff["significant"] else "NS",
         )
@@ -842,7 +809,7 @@ def analyse_weekend_nutrition() -> None:
 
     # Mise en page
     fig.update_xaxes(
-        title_text="Différence Weekend vs Weekday (%)",
+        title_text=t("legend_weekend_diff", category="trends"),
         title_font=dict(size=13, color=ColorTheme.TEXT_PRIMARY),
     )
 
@@ -862,15 +829,7 @@ def analyse_weekend_nutrition() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # 📝 INTERPRÉTATION
-    st.info(
-        f"""
-    💡 **Interprétation statistique**
-
-    Les **tests t de Student** révèlent des **profils nutritionnels globalement similaires**
-    entre Weekday et Weekend.
-    {'Une seule différence significative émerge: les **protéines** (p < 0.01), avec des recettes publiées légèrement plus protéinées en semaine (environ -3% le week-end).' if signif_count > 0 else 'Aucune différence significative détectée.'}
-    """
-    )
+    st.info(t('nutrition_interpretation', category='weekend'))
 
 
 def analyse_weekend_ingredients() -> None:
@@ -964,9 +923,9 @@ def analyse_weekend_ingredients() -> None:
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.metric("Ingrédients totaux", f"{total_ingredients:,}")
+        st.metric(t("total_ingredients", category="common"), f"{total_ingredients:,}")
     with col2:
-        st.metric("Ingrédients variables", f"{filtered_ingredients}")
+        st.metric(t("variable_ingredients", category="common"), f"{filtered_ingredients}")
     with col3:
         pct_filtered = (filtered_ingredients / total_ingredients) * 100
         st.metric("% variables", f"{pct_filtered:.1f}%")
@@ -1028,23 +987,7 @@ def analyse_weekend_ingredients() -> None:
         st.plotly_chart(fig, use_container_width=True)
 
         # 📝 INTERPRÉTATION
-        st.info(
-            f"""
-    💡 **Interprétation statistique**
-
-    Sur les ~{total_ingredients:,} ingrédients analysés, un **filtrage strict** a été appliqué
-    pour ne conserver que les ingrédients avec:
-    - Fréquence ≥ {FREQ_THRESHOLD}% (ingrédients courants)
-    - Différence absolue ≥ {ABS_DIFF_THRESHOLD} points de pourcentage
-    - Significativité statistique (p < 0.05)
-
-    Les tests **Chi-2** identifient {filtered_ingredients} ingrédients avec variations significatives selon le moment posté
-    (weekday vs weekend). **Week-end**: légère hausse pour `ground cinnamon`, `canola oil`.
-    **Semaine**: légère hausse pour `mozzarella cheese`, `boneless skinless chicken breasts`, `honey`.
-
-    **Les écarts restent faibles (<0.4pp) et l'interprétation est sujette à débat.**
-    """
-        )
+        st.info(t('ingredients_interpretation', category='weekend'))
     else:
         st.warning(
             "⚠️ Aucun ingrédient ne satisfait les critères de filtrage (freq ≥1%, |diff| ≥0.2pp, p<0.05)"
@@ -1196,26 +1139,7 @@ def analyse_weekend_tags() -> None:
         st.plotly_chart(fig, use_container_width=True)
 
         # 📝 INTERPRÉTATION
-        st.info(
-            f"""
-    💡 **Interprétation statistique**
-
-    Sur les ~{total_tags:,} tags analysés, un **filtrage strict** a été appliqué
-    pour ne conserver que les tags avec:
-    - Fréquence ≥ {FREQ_THRESHOLD}% (tags significatifs)
-    - Différence absolue ≥ {ABS_DIFF_THRESHOLD} points de pourcentage
-    - Significativité statistique (p < 0.05)
-
-    Ce filtrage a permis d'identifier **les tags dont l'usage révèle des thématiques vraiment différentes**
-    entre périodes.
-
-    Les **tests Chi-2** révèlent des différences significatives sur {filtered_tags} tags.
-    **Week-end (+)**: `vegetarian`, `christmas`, `from-scratch`, `breakfast`, `eggs`.
-    **Semaine (−)**: `one-dish-meal`, `beginner-cook`, `mexican`.
-
-    **Les écarts restent faibles (<0.5pp) et l'interprétation est sujette à débat.**
-    """
-        )
+        st.info(t('tags_interpretation', category='weekend'))
     else:
         st.warning(
             "⚠️ Aucun tag ne satisfait les critères de filtrage (freq ≥1%, |diff| ≥0.2pp, p<0.05)"
@@ -1229,39 +1153,33 @@ def render_weekend_analysis() -> None:
     Format: Page continue affichant toutes les analyses d'un coup (comme Tendances).
     """
     st.markdown(
-        '<h1 style="margin-top: 0; padding-top: 0;">📆 Analyses Effet Jour/Week-end (1999-2018)</h1>',
+        f'<h1 style="margin-top: 0; padding-top: 0;">📆 {t("main_title", category="weekend")}</h1>',
         unsafe_allow_html=True,
     )
 
-    st.markdown(
-        """
-        Cette section présente les analyses de l'**effet week-end** sur les recettes publiées sur Food.com (1999-2018).
-
-        Les analyses comparent les caractéristiques des recettes **Weekday** (Lundi-Vendredi) vs. **Weekend** (Samedi-Dimanche).
-        """
-    )
+    st.markdown(t("main_description", category="weekend"))
 
     # Affichage de toutes les analyses en continu (comme page Tendances)
 
-    st.subheader("📊 Volume de recettes (Weekday vs Weekend)")
+    st.subheader(f"📊 {t('volume_title', category='weekend')}")
     analyse_weekend_volume()
     st.markdown("---")
 
-    st.subheader("⏱️ Durée de préparation")
+    st.subheader(f"⏱️ {t('duration_title', category='weekend')}")
     analyse_weekend_duree()
     st.markdown("---")
 
-    st.subheader("🔧 Complexité (score, étapes, ingrédients)")
+    st.subheader(f"🔧 {t('complexity_title', category='weekend')}")
     analyse_weekend_complexite()
     st.markdown("---")
 
-    st.subheader("🥗 Profil nutritionnel")
+    st.subheader(f"🥗 {t('nutrition_title', category='weekend')}")
     analyse_weekend_nutrition()
     st.markdown("---")
 
-    st.subheader("🥘 Ingrédients les plus variables")
+    st.subheader(f"🥘 {t('ingredients_title', category='weekend')}")
     analyse_weekend_ingredients()
     st.markdown("---")
 
-    st.subheader("🏷️ Tags les plus variables")
+    st.subheader(f"🏷️ {t('tags_title', category='weekend')}")
     analyse_weekend_tags()
