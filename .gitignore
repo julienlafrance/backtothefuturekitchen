@@ -66,4 +66,5 @@ deploy_*.log
 90_doc/build/
 
 # Vibe coding (exclu du repo)
-95_vibecoding/
+*vibecoding/
+*VibeCoding/

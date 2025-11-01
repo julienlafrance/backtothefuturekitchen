@@ -35,7 +35,7 @@ Project Information
 -------------------
 
 * **Project**: Mangetamain Analytics - Back to the Future Kitchen
-* **Version**: 1.0.0
+* **Version**: 2.0.0
 * **GitHub**: https://github.com/julienlafrance/backtothefuturekitchen
 * **PREPROD**: https://mangetamain.lafrance.io/
 * **PRODUCTION**: https://backtothefuturekitchen.lafrance.io/
