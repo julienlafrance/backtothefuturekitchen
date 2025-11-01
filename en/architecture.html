@@ -1,0 +1,1215 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Technical Architecture &mdash; Documentation Mangetamain Analytics 2.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d93b9cb1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Garage S3 Storage" href="s3.html" />
+    <link rel="prev" title="Infrastructure Modules" href="modules/infrastructure.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Mangetamain Analytics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Choose your language / Choisissez votre langue</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Mangetamain Analytics Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#deployed-environments">Deployed Environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#project-metrics">Project Metrics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#navigation">Navigation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="projet.html">The Project</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#development-process">Development Process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#eda-application-mapping">EDA → Application Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#technical-stack">Technical Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#environments">Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#applied-standards">Applied Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#minute-installation">2-Minute Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#essential-commands">Essential Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#cheat-sheet">Cheat Sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#quick-troubleshooting">Quick Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#typical-workflow">Typical Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#key-metrics">Key Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#resources">Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#local-installation">Local Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#installation-with-docker">Installation with Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#tests">Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#main-dependencies">Main Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#installation-verification">Installation Verification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="application.html">Streamlit Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="application.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#structure">Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#the-4-analyses">The 4 Analyses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#data-loading">Data Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#application-architecture">Application Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#available-analysis-modules">Available Analysis Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#application-navigation">Application Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#customization-and-api">Customization and API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/index.html">Code Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/index.html#organization">Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/index.html#available-modules">Available Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/index.html#conventions">Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-color-theme">utils.color_theme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/data.html#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/data.html#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#dataloaderror-class">DataLoadError Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#other-exceptions">Other Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/infrastructure.html">Infrastructure Modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#configuration-and-logging">Configuration and Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#database-management">Database Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#data-exploration-utilities">Data Exploration Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#infrastructure-tests">Infrastructure Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Technical Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#deployment-infrastructure">Deployment Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#technical-stack">Technical Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#project-structure">Project Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#environments">Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#database">Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests-and-quality">Tests and Quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logging">Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#security">Security</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html">Garage S3 Storage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#credentials-configuration">Credentials Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#aws-cli-usage">AWS CLI Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#python-boto3-usage">Python boto3 Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#duckdb-usage">DuckDB Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#polars-usage">Polars Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#performance-tests">Performance Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#bucket-structure">Bucket Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#infrastructure-tests">Infrastructure Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#performance-benchmarks">Performance Benchmarks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html">CI/CD Pipeline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#pipeline-architecture">Pipeline Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#github-actions-workflows">GitHub Actions Workflows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#practical-commands">Practical Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#self-hosted-runner">Self-Hosted Runner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#discord-notifications">Discord Notifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#required-configuration">Required Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#metrics">Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#concrete-workflow-examples">Concrete Workflow Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html">Tests and Coverage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#current-status">Current Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#quick-commands">Quick Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#detailed-coverage">Detailed Coverage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#id1">Infrastructure Tests (50_test)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#test-strategy">Test Strategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#test-patterns">Test Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#useful-pytest-commands">Useful Pytest Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#historical-progress">Historical Progress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html">Quality Standards</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#project-management">Project Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#programming">Programming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#tests-and-quality">Tests and Quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#advanced-technical-choices">Advanced Technical Choices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#standards-summary">Standards Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html">FAQ - Frequently Asked Questions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#installation-and-configuration">Installation and Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#data-and-performance">Data and Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#development">Development</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#tests-and-ci-cd">Tests and CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#docker">Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#deployment">Deployment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#common-errors">Common Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="glossaire.html">Glossary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#technical-terms">Technical Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#project-terms">Project Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#analytics-terms">Analytics Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#infrastructure-terms">Infrastructure Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#acronyms">Acronyms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#common-commands">Common Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#key-values">Key Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#indices">Indices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fr/index.html">Documentation Mangetamain Analytics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../fr/index.html#environnements-deployes">Environnements Déployés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fr/index.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fr/index.html#metriques-projet">Métriques Projet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fr/index.html#navigation">Navigation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../fr/projet.html">Le Projet</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/projet.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/projet.html#processus-de-developpement">Processus de Développement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/projet.html#correspondance-eda-application">Correspondance EDA → Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/projet.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/projet.html#environnements">Environnements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/projet.html#standards-appliques">Standards Appliqués</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/quickstart.html">Guide Démarrage Rapide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#installation-en-2-minutes">Installation en 2 Minutes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#commandes-essentielles">Commandes Essentielles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#cheat-sheet">Cheat Sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#troubleshooting-rapide">Troubleshooting Rapide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#flux-de-travail-typique">Flux de Travail Typique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#metriques-cles">Métriques Clés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#ressources">Ressources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/installation.html">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#prerequis">Prérequis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#installation-locale">Installation Locale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#installation-avec-docker">Installation avec Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#tests">Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#dependances-principales">Dépendances Principales</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#verification-de-l-installation">Vérification de l’Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/application.html">Application Streamlit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/application.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/application.html#structure">Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/application.html#les-4-analyses">Les 4 Analyses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/application.html#chargement-des-donnees">Chargement des Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/application.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/application.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/usage.html">Utilisation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/usage.html#architecture-de-l-application">Architecture de l’Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/usage.html#modules-d-analyse-disponibles">Modules d’Analyse Disponibles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/usage.html#navigation-dans-l-application">Navigation dans l’Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/usage.html#personnalisation-et-api">Personnalisation et API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/modules/index.html">Documentation Code</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/index.html#organisation">Organisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/index.html#modules-disponibles">Modules Disponibles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/index.html#conventions">Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/modules/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/utils.html#utils-color-theme">utils.color_theme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/modules/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/data.html#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/data.html#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/exceptions.html#classe-dataloaderror">Classe DataLoadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/exceptions.html#autres-exceptions">Autres Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/modules/infrastructure.html">Modules Infrastructure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/infrastructure.html#configuration-et-logging">Configuration et Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/infrastructure.html#gestion-base-de-donnees">Gestion Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/infrastructure.html#utilitaires-exploration-donnees">Utilitaires Exploration Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/infrastructure.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/infrastructure.html#voir-also">Voir Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/architecture.html">Architecture Technique</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#infrastructure-deploiement">Infrastructure Déploiement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#structure-du-projet">Structure du Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#environnements">Environnements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#base-de-donnees">Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#tests-et-qualite">Tests et Qualité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#logging">Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#securite">Sécurité</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/s3.html">Stockage S3 Garage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#configuration-credentials">Configuration Credentials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#utilisation-aws-cli">Utilisation AWS CLI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#utilisation-python-boto3">Utilisation Python boto3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#utilisation-duckdb">Utilisation DuckDB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#utilisation-polars">Utilisation Polars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#tests-performance">Tests Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#structure-bucket">Structure Bucket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#depannage">Dépannage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#bonnes-pratiques">Bonnes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#benchmarks-performance">Benchmarks Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/cicd.html">Pipeline CI/CD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#architecture-pipeline">Architecture Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#workflows-github-actions">Workflows GitHub Actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#commandes-pratiques">Commandes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#runner-self-hosted">Runner Self-Hosted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#notifications-discord">Notifications Discord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#depannage">Dépannage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#configuration-requise">Configuration Requise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#metriques">Métriques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#exemples-workflows-concrets">Exemples Workflows Concrets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/tests.html">Tests et Coverage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#etat-actuel">État Actuel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#commandes-rapides">Commandes Rapides</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#coverage-detaille">Coverage Détaillé</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#id1">Tests Infrastructure (50_test)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#strategie-de-test">Stratégie de Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#patterns-de-test">Patterns de Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#resolution-de-problemes">Résolution de Problèmes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#commandes-pytest-utiles">Commandes Pytest Utiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#bonnes-pratiques">Bonnes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#progression-historique">Progression Historique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/conformite.html">Standards Qualité</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/conformite.html#gestion-de-projet">Gestion de Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/conformite.html#programmation">Programmation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/conformite.html#tests-et-qualite">Tests et Qualité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/conformite.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/conformite.html#choix-techniques-avances">Choix Techniques Avancés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/conformite.html#resume-standards">Résumé Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/faq.html">FAQ - Questions Fréquentes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#installation-et-configuration">Installation et Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#donnees-et-performance">Données et Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#developpement">Développement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#tests-et-ci-cd">Tests et CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#docker">Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#deploiement">Déploiement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#erreurs-courantes">Erreurs Courantes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/glossaire.html">Glossaire</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#termes-techniques">Termes Techniques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#termes-projet">Termes Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#termes-analytics">Termes Analytics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#termes-infrastructure">Termes Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#acronymes">Acronymes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#commandes-courantes">Commandes Courantes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#valeurs-cles">Valeurs Clés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../fr/index.html#indices">Indices</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mangetamain Analytics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Mangetamain Analytics Documentation</a></li>
+      <li class="breadcrumb-item active">Technical Architecture</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/en/architecture.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="technical-architecture">
+<h1>Technical Architecture<a class="headerlink" href="#technical-architecture" title="Lien vers cette rubrique"></a></h1>
+<p>Overview of the project’s technical architecture.</p>
+<p><strong>Terms and acronyms</strong>: see <a class="reference internal" href="glossaire.html"><span class="doc">Glossary</span></a></p>
+<section id="deployment-infrastructure">
+<h2>Deployment Infrastructure<a class="headerlink" href="#deployment-infrastructure" title="Lien vers cette rubrique"></a></h2>
+<section id="ix-ia-host-server">
+<h3>IX-IA Host Server<a class="headerlink" href="#ix-ia-host-server" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>Name</strong>: IX-IA</p></li>
+<li><p><strong>OS</strong>: Ubuntu 24.04.3 LTS</p></li>
+<li><p><strong>CPU</strong>: 8 cores (Intel Core i7-11700K, 16 threads)</p></li>
+<li><p><strong>RAM</strong>: 125 GB</p></li>
+<li><p><strong>Disks</strong>: 915 GB (/), 1.7 TB (/home), 7.3 TB (/stock)</p></li>
+<li><p><strong>Network</strong>: Dual IP (LAN 192.168.0.202 + DMZ 192.168.80.202)</p></li>
+<li><p><strong>Virtualization</strong>: KVM/QEMU via virsh</p></li>
+</ul>
+</section>
+<section id="standalone-vm-dataia25-vm-v1-virsh-kvm">
+<h3>Standalone VM dataia25-vm-v1 (virsh/KVM)<a class="headerlink" href="#standalone-vm-dataia25-vm-v1-virsh-kvm" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>Technology</strong>: Virtual machine created with virsh (KVM/QEMU)</p></li>
+<li><p><strong>Name</strong>: dataia25-vm-v1</p></li>
+<li><p><strong>Hosting</strong>: Physical server IX-IA (DMZ VLAN 80)</p></li>
+<li><p><strong>OS</strong>: Ubuntu (Debian-based)</p></li>
+<li><p><strong>Resources</strong>: 8 vCPUs (max 12), RAM 32 GB, Disk qcow2 with virtio</p></li>
+<li><p><strong>Network</strong>: DMZ IP 192.168.80.210/24 (bridge br80 via TAP vnet0)</p></li>
+<li><p><strong>Shares</strong>: 2x 9p filesystems (kaggle_data, temp)</p></li>
+<li><p><strong>Access</strong>: SSH from OpenVPN (DMZ access only)</p></li>
+</ul>
+</section>
+<section id="docker-containerization-on-vm">
+<h3>Docker Containerization on VM<a class="headerlink" href="#docker-containerization-on-vm" title="Lien vers cette rubrique"></a></h3>
+<p>All application environments run in <strong>isolated Docker containers</strong> on the dataia25-vm-v1 VM:</p>
+<p><strong>PREPROD Container (mange_preprod)</strong>:</p>
+<ul class="simple">
+<li><p>Name: mange_preprod</p></li>
+<li><p>Image: python:3.13.3-slim</p></li>
+<li><p>Port: 8500 (accessible via 192.168.80.210:8500)</p></li>
+<li><p>Network: mangetamain-preprod-network (172.18.0.0/16)</p></li>
+<li><p>Storage: S3 (s3fast.lafrance.io)</p></li>
+<li><p>Logs: 10_preprod/logs/</p></li>
+<li><p>Env variables: APP_ENV=preprod</p></li>
+<li><p>External URL: <a class="reference external" href="https://mangetamain.lafrance.io/">https://mangetamain.lafrance.io/</a> (via reverse proxy)</p></li>
+</ul>
+<p><strong>PROD Container (mange_prod)</strong>:</p>
+<ul class="simple">
+<li><p>Name: mange_prod</p></li>
+<li><p>Image: python:3.13.3-slim</p></li>
+<li><p>Port: 8501 (accessible via 192.168.80.210:8501)</p></li>
+<li><p>Network: mangetamain-prod-network (172.19.0.0/16)</p></li>
+<li><p>Storage: S3 (s3fast.lafrance.io)</p></li>
+<li><p>Logs: 20_prod/logs/</p></li>
+<li><p>Env variables: APP_ENV=prod</p></li>
+<li><p>External URL: <a class="reference external" href="https://backtothefuturekitchen.lafrance.io/">https://backtothefuturekitchen.lafrance.io/</a> (via reverse proxy)</p></li>
+</ul>
+<p><strong>Orchestration</strong>: Docker Compose (30_docker/)</p>
+<p><strong>Complete isolation</strong>:</p>
+<ul class="simple">
+<li><p>Shared S3 storage (common data)</p></li>
+<li><p>Separate logs per environment</p></li>
+<li><p>Differentiated environment variables</p></li>
+<li><p>Isolated Docker networks (172.18 vs 172.19)</p></li>
+<li><p>No volume sharing between containers</p></li>
+</ul>
+</section>
+<section id="github-self-hosted-runner">
+<h3>GitHub Self-Hosted Runner<a class="headerlink" href="#github-self-hosted-runner" title="Lien vers cette rubrique"></a></h3>
+<p>The <strong>GitHub self-hosted runner</strong> installed on the dataia VM orchestrates deployments:</p>
+<ul class="simple">
+<li><p>Listens to GitHub events (push, workflow_dispatch)</p></li>
+<li><p>Executes CI/CD workflows (.github/workflows/)</p></li>
+<li><p>Direct access to containers for deployment</p></li>
+<li><p>Executes git reset + docker-compose restart</p></li>
+<li><p><strong>Advantage</strong>: Automatic deployment without manual VPN</p></li>
+</ul>
+<p><strong>See</strong>: <a class="reference internal" href="cicd.html"><span class="doc">CI/CD Pipeline</span></a> for complete pipeline details.</p>
+</section>
+<section id="s3-infrastructure-garage">
+<h3>S3 Infrastructure (Garage)<a class="headerlink" href="#s3-infrastructure-garage" title="Lien vers cette rubrique"></a></h3>
+<p>S3-compatible storage is provided by <strong>Garage</strong> hosted on the IX-IA host server:</p>
+<ul class="simple">
+<li><p><strong>Container</strong>: garage-fast (dxflrs/garage:v2.1.0)</p></li>
+<li><p><strong>Network mode</strong>: host (accessible directly on host IP)</p></li>
+<li><p><strong>Ports</strong>: 3910 (S3 API), 3913 (S3 Web)</p></li>
+<li><p><strong>Storage</strong>: /s3fast (~646 MB currently used)</p></li>
+</ul>
+<p><strong>Available endpoints</strong>:</p>
+<ul class="simple">
+<li><p><strong>HTTP</strong>: <a class="reference external" href="http://s3fast.lafrance.io">http://s3fast.lafrance.io</a> (port 3910) - <strong>Preferred in code</strong></p></li>
+<li><p><strong>HTTPS</strong>: <a class="reference external" href="https://s3fast.lafrance.io">https://s3fast.lafrance.io</a> (port 443, via reverse proxy)</p></li>
+<li><p><strong>Internal VM endpoint</strong>: <a class="reference external" href="http://192.168.80.202:3910">http://192.168.80.202:3910</a> (optimized direct access)</p></li>
+</ul>
+<p><strong>HTTP choice</strong>: The code uses HTTP for performance reasons (no TLS/SSL overhead) because communication remains within the secured DMZ network (192.168.80.0/24).</p>
+<p><strong>Optimized VM access configuration</strong>:</p>
+<p>Access from the VM to S3 bypasses the reverse proxy for better performance:</p>
+<ul class="simple">
+<li><p>Entry in /etc/hosts on VM: <code class="docutils literal notranslate"><span class="pre">192.168.80.202</span>&#160; <span class="pre">s3fast.lafrance.io</span></code></p></li>
+<li><p>Direct access via br80 bridge (same DMZ network)</p></li>
+<li><p>Significant performance gain (no double network hop)</p></li>
+</ul>
+</section>
+<section id="network-and-security-architecture">
+<h3>Network and Security Architecture<a class="headerlink" href="#network-and-security-architecture" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Architecture objectives</strong>:</p>
+<ul class="simple">
+<li><p><strong>Security</strong>: DMZ isolation (VLAN 80) with dual-IP IX-IA host</p></li>
+<li><p><strong>Performance</strong>: Direct VM → S3 route via br80 bridge (proxy bypass)</p></li>
+</ul>
+<p><strong>DMZ Configuration (VLAN 80)</strong>:</p>
+<ul class="simple">
+<li><p>Interface: enp4s0.80 (802.1Q tagged VLAN)</p></li>
+<li><p>Bridge: br80 (192.168.80.202/24) on IX-IA host</p></li>
+<li><p>VM connected via TAP vnet0 on br80 bridge</p></li>
+<li><p>DMZ Network: 192.168.80.0/24</p></li>
+<li><p>DMZ Gateway: 192.168.80.1</p></li>
+</ul>
+<p><strong>Complete network architecture diagram</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                       Internet (Public IP)
+                              │
+                              │
+           ┌──────────────────┴──────────────────┐
+           │                                     │
+           │      External Router/Firewall       │
+           │                                     │
+           └─────┬────────────────────────┬──────┘
+                 │                        │
+                 │ (OpenVPN)              │ (HTTPS/TLS)
+                 │                        │
+   ┌─────────────▼─────────────┐         │
+   │  OpenVPN (192.168.0.254)  │         │
+   │  Access: DMZ ONLY         │         │
+   │  (192.168.80.0/24)        │         │
+   └───────────────────────────┘         │
+                                         │
+                           ┌─────────────▼──────────────┐
+                           │  Gateway (192.168.0.254)   │
+                           └─────────────┬──────────────┘
+                                         │
+                       LAN Network (192.168.0.0/24)
+                                         │
+                           ┌─────────────▼─────────────────────┐
+                           │ Reverse Proxy (192.168.0.201)     │
+                           │  - HTTPS/TLS termination          │
+                           │  - mangetamain.lafrance.io        │
+                           │  - backtothefuturekitchen.lafrance.io │
+                           │  - s3fast.lafrance.io             │
+                           └─────┬──────────────────┬──────────┘
+                                 │                  │
+                                 │                  │
+╔════════════════════════════════▼══════════════════▼══════════════════════╗
+║                                                                          ║
+║              Physical Server IX-IA (192.168.0.202)                      ║
+║              Ubuntu 24.04.3 LTS - i7-11700K (8c/16t) - 125GB RAM        ║
+║                                                                          ║
+║  ┌─────────────────────────────────────────────────────────────────┐    ║
+║  │ Network interface:                                              │    ║
+║  │  • LAN IP: 192.168.0.202                                        │    ║
+║  │  • DMZ IP: 192.168.80.202 (on bridge br80)                      │    ║
+║  │  • VLAN 80 tagged on enp4s0.80                                  │    ║
+║  └─────────────────────────────────────────────────────────────────┘    ║
+║                                                                          ║
+║  ┌──────────────────────────────┐  ┌──────────────────────────────┐    ║
+║  │   Docker Garage S3           │  │   Bridge br80 (DMZ VLAN 80)  │    ║
+║  │   garage-fast (mode: host)   │  │   192.168.80.202/24          │    ║
+║  │                              │  │                              │    ║
+║  │   • Port 3910 (S3 API)       │  │   ┌──────────────────────┐   │    ║
+║  │   • Port 3913 (S3 Web)       │  │   │   TAP vnet0          │   │    ║
+║  │   • /s3fast (~646MB)         │  │   │   (VM interface)     │   │    ║
+║  │                              │  │   └──────────┬───────────┘   │    ║
+║  │   Accessible via:            │  │              │               │    ║
+║  │   • LAN: 192.168.0.202:3910  │◄─┼──────────────┼──────────┐    │    ║
+║  │   • DMZ: 192.168.80.202:3910 │◄─┼──────────────┘          │    │    ║
+║  └──────────────────────────────┘  └───────────────────────────┘  │    ║
+║                                          │                         │    ║
+║  ┌───────────────────────────────────────▼──────────────────────┐ │    ║
+║  │                                                               │ │    ║
+║  │        VM dataia25-vm-v1 (KVM/QEMU - virsh)                  │ │    ║
+║  │        8 vCPUs, 32GB RAM, qcow2 virtio                       │ │    ║
+║  │        192.168.80.210/24                                     │ │    ║
+║  │                                                               │ │    ║
+║  │   /etc/hosts: 192.168.80.202 = s3fast.lafrance.io            │ │    ║
+║  │   (LOCAL S3 access via bridge br80 - ultra-fast)◄────────────┘ │    ║
+║  │                                                                 │    ║
+║  │   ┌───────────────────────────────────────────────┐             │    ║
+║  │   │  Docker Containers (on VM)                    │             │    ║
+║  │   │                                               │             │    ║
+║  │   │  • mange_preprod (172.18.0.x:8500)            │◄────────────┼────╋─┐
+║  │   │    → mangetamain.lafrance.io                  │             │    ║ │
+║  │   │                                               │             │    ║ │ Via
+║  │   │  • mange_prod (172.19.0.x:8501)               │◄────────────┼────╋─┘ reverse
+║  │   │    → backtothefuturekitchen.lafrance.io       │             │    ║   proxy
+║  │   │                                               │             │    ║   HTTPS
+║  │   └───────────────────────────────────────────────┘             │    ║
+║  │                                                                 │    ║
+║  │   ┌───────────────────────────────────────────────┐             │    ║
+║  │   │  GitHub Actions Runner                        │             │    ║
+║  │   │  (Outbound tunneling only)                    │─────────────┼────╋──► Internet
+║  │   └───────────────────────────────────────────────┘             │    ║
+║  │                                                                 │    ║
+║  └─────────────────────────────────────────────────────────────────┘    ║
+║                                                                          ║
+╚══════════════════════════════════════════════════════════════════════════╝
+
+Note: The VM and S3 are on the SAME physical machine (IX-IA).
+VM → S3 access is ultra-fast (local communication via br80).
+</pre></div>
+</div>
+<p><strong>Network flows</strong>:</p>
+<ul class="simple">
+<li><p><strong>Flow 1 - VPN Access</strong>: OpenVPN → DMZ only (security isolation)</p></li>
+<li><p><strong>Flow 2 - PREPROD Web</strong>: Internet → Reverse Proxy → VM:8500 (mange_preprod)</p></li>
+<li><p><strong>Flow 3 - PROD Web</strong>: Internet → Reverse Proxy → VM:8501 (mange_prod)</p></li>
+<li><p><strong>Flow 4 - External S3</strong>: Internet → Reverse Proxy → Host ixia:3910 (Garage S3)</p></li>
+<li><p><strong>Flow 5 - Optimized internal S3</strong>: VM → br80 → ixia:3910 (proxy bypass, performance)</p></li>
+<li><p><strong>Flow 6 - GitHub Runner</strong>: VM → Internet (outbound GitHub tunneling only)</p></li>
+</ul>
+</section>
+<section id="monitoring-and-surveillance">
+<h3>Monitoring and Surveillance<a class="headerlink" href="#monitoring-and-surveillance" title="Lien vers cette rubrique"></a></h3>
+<p>External environment monitoring with <strong>UptimeRobot</strong>:</p>
+<p><strong>Service</strong>: UptimeRobot (free plan, 50 monitors)</p>
+<p><strong>Monitored URLs</strong>:</p>
+<ul class="simple">
+<li><p>PREPROD: <a class="reference external" href="https://mangetamain.lafrance.io/">https://mangetamain.lafrance.io/</a> (port 8500)</p></li>
+<li><p>PRODUCTION: <a class="reference external" href="https://backtothefuturekitchen.lafrance.io/">https://backtothefuturekitchen.lafrance.io/</a> (port 8501)</p></li>
+</ul>
+<p><strong>Configuration</strong>:</p>
+<ul class="simple">
+<li><p>Check interval: every 5 minutes</p></li>
+<li><p>Timeout: 30 seconds</p></li>
+<li><p>Protocol: HTTPS (via reverse proxy)</p></li>
+</ul>
+<p><strong>Detection</strong>:</p>
+<ul class="simple">
+<li><p>Unreachable server (no network response)</p></li>
+<li><p>Streamlit backend down (reverse proxy 502/503 error)</p></li>
+<li><p>Timeouts exceeding 30 seconds</p></li>
+<li><p>HTTP errors (4xx/5xx status codes)</p></li>
+</ul>
+<p><strong>Alerts</strong>:</p>
+<ul class="simple">
+<li><p>Automatic email on detected outage</p></li>
+<li><p>Discord webhook for real-time notifications</p></li>
+<li><p>UptimeRobot dashboard with uptime history</p></li>
+</ul>
+<p><strong>External monitoring advantages</strong>:</p>
+<ul class="simple">
+<li><p>Reliable detection (external to monitored server)</p></li>
+<li><p>High frequency (5 min vs former GitHub checks 1h)</p></li>
+<li><p>No dependency on self-hosted runner</p></li>
+<li><p>Automatic uptime statistics and SLA</p></li>
+</ul>
+</section>
+</section>
+<section id="technical-stack">
+<h2>Technical Stack<a class="headerlink" href="#technical-stack" title="Lien vers cette rubrique"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Category</p></th>
+<th class="head"><p>Technologies</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>Backend</strong></p></td>
+<td><p>DuckDB 1.4.0 (columnar OLAP database)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Frontend</strong></p></td>
+<td><p>Streamlit 1.50.0 + Plotly 5.24.1</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Data Science</strong></p></td>
+<td><p>Pandas 2.2.3, NumPy 2.2.6, Polars 1.19.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Logging</strong></p></td>
+<td><p>Loguru 0.7.3 (automatic rotation)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Package Manager</strong></p></td>
+<td><p>uv 0.8.22 (ultrafast pip replacement)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Tests</strong></p></td>
+<td><p>pytest 8.5.0, pytest-cov 6.0.0</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>CI/CD</strong></p></td>
+<td><p>GitHub Actions + self-hosted runner</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Deployment</strong></p></td>
+<td><p>Docker Compose, dataia VM (VPN)</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Monitoring</strong></p></td>
+<td><p>UptimeRobot (external monitoring every 5 min)</p></td>
+</tr>
+</tbody>
+</table>
+<section id="key-technologies-details">
+<h3>Key Technologies Details<a class="headerlink" href="#key-technologies-details" title="Lien vers cette rubrique"></a></h3>
+<p><strong>DuckDB</strong></p>
+<p>High-performance columnar OLAP database:</p>
+<ul class="simple">
+<li><p>10-100x faster than SQLite for analytics</p></li>
+<li><p>Zero-copy on Parquet files</p></li>
+<li><p>Complete standard SQL</p></li>
+<li><p>Native Pandas/Polars integration</p></li>
+<li><p>Single 581 MB file (7 tables)</p></li>
+</ul>
+<p><strong>Streamlit</strong></p>
+<p>Interactive Python web framework:</p>
+<ul class="simple">
+<li><p>Reactive widgets (sliders, selectbox, etc.)</p></li>
+<li><p>Built-in cache (&#64;st.cache_data)</p></li>
+<li><p>Automatic code reload</p></li>
+<li><p>Simple deployment (Docker)</p></li>
+</ul>
+<p><strong>Plotly</strong></p>
+<p>Interactive visualization library:</p>
+<ul class="simple">
+<li><p>Interactive charts (zoom, pan, hover)</p></li>
+<li><p>Synchronized subplots</p></li>
+<li><p>Customizable theme</p></li>
+<li><p>PNG/SVG export</p></li>
+</ul>
+</section>
+<section id="development-tools">
+<h3>Development Tools<a class="headerlink" href="#development-tools" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>uv 0.8.22</strong>: Modern package manager</p></li>
+<li><p><strong>pytest 8.5.0</strong>: Unit testing</p></li>
+<li><p><strong>pytest-cov 6.0.0</strong>: Test coverage</p></li>
+<li><p><strong>flake8</strong>: PEP8 verification</p></li>
+<li><p><strong>black</strong>: Automatic code formatting</p></li>
+<li><p><strong>pydocstyle</strong>: Docstring validation</p></li>
+</ul>
+</section>
+</section>
+<section id="project-structure">
+<h2>Project Structure<a class="headerlink" href="#project-structure" title="Lien vers cette rubrique"></a></h2>
+<section id="directory-organization">
+<h3>Directory Organization<a class="headerlink" href="#directory-organization" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>~/mangetamain/
+├── 00_eda/                    # Jupyter exploration notebooks
+├── 10_preprod/                # PREPROD application (source of truth)
+│   ├── src/
+│   │   └── mangetamain_analytics/
+│   │       ├── main.py
+│   │       ├── utils/
+│   │       ├── visualization/
+│   │       ├── data/
+│   │       └── assets/
+│   ├── tests/
+│   └── pyproject.toml
+├── 20_prod/                   # PRODUCTION application (artifact)
+├── 30_docker/                 # Docker Compose
+├── 40_utils/                  # Data utilities (mangetamain_data_utils)
+├── 50_test/                   # Infrastructure tests S3/DuckDB
+├── 70_scripts/                # Shell scripts (deploy, CI checks)
+├── 90_doc/                    # Documentation (this directory)
+├── 96_keys/                   # S3 credentials (ignored by git)
+└── .github/workflows/         # CI/CD
+</pre></div>
+</div>
+</section>
+<section id="application-modules">
+<h3>Application Modules<a class="headerlink" href="#application-modules" title="Lien vers cette rubrique"></a></h3>
+<p><strong>utils Module</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">color_theme.py</span></code>: ColorTheme OOP class for « Back to the Kitchen » visual theme</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chart_theme.py</span></code>: Plotly theme application functions</p></li>
+</ul>
+<p><strong>visualization Module</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">analyse_trendlines_v2.py</span></code>: Time trend analysis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">analyse_seasonality.py</span></code>: Seasonal pattern analysis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">analyse_weekend.py</span></code>: Day/weekend effect analysis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">analyse_ratings.py</span></code>: User rating analysis</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">custom_charts.py</span></code>: Reusable charts</p></li>
+</ul>
+<p><strong>data Module</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cached_loaders.py</span></code>: Data loading with Streamlit cache</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">loaders.py</span></code>: DataLoader class for data loading with error handling</p></li>
+</ul>
+<p><strong>exceptions Module</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">exceptions.py</span></code>: Custom exception hierarchy (5 classes)</p></li>
+</ul>
+</section>
+</section>
+<section id="ci-cd-pipeline">
+<h2>CI/CD Pipeline<a class="headerlink" href="#ci-cd-pipeline" title="Lien vers cette rubrique"></a></h2>
+<section id="sequential-architecture">
+<h3>Sequential Architecture<a class="headerlink" href="#sequential-architecture" title="Lien vers cette rubrique"></a></h3>
+<p>The CI/CD pipeline is organized in 3 phases:</p>
+<ol class="arabic simple">
+<li><p><strong>CI - Quality &amp; Tests</strong> (automatic on push)</p>
+<ul class="simple">
+<li><p>PEP8 verification (flake8)</p></li>
+<li><p>Docstring validation (pydocstyle)</p></li>
+<li><p>Unit tests (pytest)</p></li>
+<li><p>Coverage &gt;= 90%</p></li>
+</ul>
+</li>
+<li><p><strong>CD Preprod</strong> (automatic after successful CI)</p>
+<ul class="simple">
+<li><p>Deployment to <a class="reference external" href="https://mangetamain.lafrance.io/">https://mangetamain.lafrance.io/</a></p></li>
+<li><p>Docker container restart</p></li>
+<li><p>Automatic health checks</p></li>
+</ul>
+</li>
+<li><p><strong>CD Production</strong> (manual with confirmation)</p>
+<ul class="simple">
+<li><p>Automatic backup</p></li>
+<li><p>Deployment to <a class="reference external" href="https://backtothefuturekitchen.lafrance.io/">https://backtothefuturekitchen.lafrance.io/</a></p></li>
+<li><p>Health checks with retry</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="github-actions-workflows">
+<h3>GitHub Actions Workflows<a class="headerlink" href="#github-actions-workflows" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yml</span></code>: Complete CI pipeline</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.github/workflows/cd-preprod.yml</span></code>: PREPROD deployment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.github/workflows/cd-prod.yml</span></code>: PRODUCTION deployment</p></li>
+</ul>
+</section>
+<section id="self-hosted-runner">
+<h3>Self-Hosted Runner<a class="headerlink" href="#self-hosted-runner" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p>Location: dataia VM (VPN network)</p></li>
+<li><p>Advantage: Deployment without manual VPN connection</p></li>
+<li><p>Notifications: Real-time Discord webhooks</p></li>
+</ul>
+</section>
+</section>
+<section id="environments">
+<h2>Environments<a class="headerlink" href="#environments" title="Lien vers cette rubrique"></a></h2>
+<section id="preprod">
+<h3>PREPROD<a class="headerlink" href="#preprod" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>URL</strong>: <a class="reference external" href="https://mangetamain.lafrance.io/">https://mangetamain.lafrance.io/</a></p></li>
+<li><p><strong>Port</strong>: 8500</p></li>
+<li><p><strong>Usage</strong>: Development and testing</p></li>
+<li><p><strong>Deployment</strong>: Automatic on push to main</p></li>
+</ul>
+</section>
+<section id="production">
+<h3>PRODUCTION<a class="headerlink" href="#production" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>URL</strong>: <a class="reference external" href="https://backtothefuturekitchen.lafrance.io/">https://backtothefuturekitchen.lafrance.io/</a></p></li>
+<li><p><strong>Port</strong>: 8501</p></li>
+<li><p><strong>Usage</strong>: Stable application</p></li>
+<li><p><strong>Deployment</strong>: Manual with confirmation</p></li>
+</ul>
+</section>
+<section id="differences">
+<h3>Differences<a class="headerlink" href="#differences" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p>Distinct databases</p></li>
+<li><p>Separate logs</p></li>
+<li><p>Differentiated environment variables</p></li>
+<li><p>Auto-detected visual badges</p></li>
+</ul>
+</section>
+</section>
+<section id="database">
+<h2>Database<a class="headerlink" href="#database" title="Lien vers cette rubrique"></a></h2>
+<section id="duckdb">
+<h3>DuckDB<a class="headerlink" href="#duckdb" title="Lien vers cette rubrique"></a></h3>
+<p>File: <code class="docutils literal notranslate"><span class="pre">mangetamain.duckdb</span></code> (581 MB)</p>
+<p><strong>Main tables:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">recipes</span></code>: 178,265 recipes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interactions</span></code>: 1.1M+ user interactions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">users</span></code>: 25,076 users</p></li>
+<li><p>Derived tables for analysis</p></li>
+</ul>
+<p><strong>DuckDB advantages:</strong></p>
+<ul class="simple">
+<li><p>Columnar OLAP (10-100x faster than SQLite)</p></li>
+<li><p>Zero-copy on Parquet files</p></li>
+<li><p>Complete standard SQL</p></li>
+<li><p>Native Pandas/Polars integration</p></li>
+</ul>
+</section>
+<section id="s3-storage">
+<h3>S3 Storage<a class="headerlink" href="#s3-storage" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>Endpoint</strong>: s3fast.lafrance.io</p></li>
+<li><p><strong>Bucket</strong>: mangetamain</p></li>
+<li><p><strong>Credentials</strong>: File 96_keys/credentials</p></li>
+<li><p><strong>Performance</strong>: 500-917 MB/s</p></li>
+</ul>
+</section>
+<section id="data-loading">
+<h3>Data Loading<a class="headerlink" href="#data-loading" title="Lien vers cette rubrique"></a></h3>
+<p>Data is automatically loaded from S3 at startup via the <code class="docutils literal notranslate"><span class="pre">data.cached_loaders</span></code> module with Streamlit cache (TTL 1h).</p>
+</section>
+</section>
+<section id="tests-and-quality">
+<h2>Tests and Quality<a class="headerlink" href="#tests-and-quality" title="Lien vers cette rubrique"></a></h2>
+<section id="metrics">
+<h3>Metrics<a class="headerlink" href="#metrics" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>Coverage</strong>: 93% (target 90%)</p></li>
+<li><p><strong>Unit tests</strong>: 118 tests</p></li>
+<li><p><strong>PEP8 compliance</strong>: 100%</p></li>
+<li><p><strong>Docstrings</strong>: Google style</p></li>
+</ul>
+</section>
+<section id="test-types">
+<h3>Test Types<a class="headerlink" href="#test-types" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>Unit tests</strong>: 10_preprod/tests/unit/ (83 tests)</p></li>
+<li><p><strong>Infrastructure tests</strong>: 50_test/ (35 tests S3/DuckDB/SQL)</p></li>
+</ul>
+</section>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">.flake8</span></code>: PEP8 configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">.pydocstyle</span></code>: Docstring configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>: pytest and coverage configuration</p></li>
+</ul>
+</section>
+</section>
+<section id="logging">
+<h2>Logging<a class="headerlink" href="#logging" title="Lien vers cette rubrique"></a></h2>
+<section id="loguru-architecture">
+<h3>Loguru Architecture<a class="headerlink" href="#loguru-architecture" title="Lien vers cette rubrique"></a></h3>
+<p>The logging system uses <strong>Loguru 0.7.3</strong> with automatic environment separation.</p>
+<p><strong>Key features:</strong></p>
+<ul class="simple">
+<li><p>Automatic environment detection (prod/preprod/local)</p></li>
+<li><p>3 separate files: debug.log, errors.log, user_interactions.log</p></li>
+<li><p>Automatic rotation (10 MB debug, 5 MB errors, 1 day user_interactions)</p></li>
+<li><p>Automatic compression (.zip)</p></li>
+<li><p>Thread-safe for Streamlit (<code class="docutils literal notranslate"><span class="pre">enqueue=True</span></code>)</p></li>
+<li><p>Complete backtrace for errors</p></li>
+<li><p>EnvironmentDetector module with cache</p></li>
+</ul>
+</section>
+<section id="id1">
+<h3>Configuration<a class="headerlink" href="#id1" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Module</strong>: <code class="docutils literal notranslate"><span class="pre">utils_logger.py</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">utils_logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">LoggerConfig</span><span class="p">,</span> <span class="n">log_user_action</span><span class="p">,</span> <span class="n">log_error</span><span class="p">,</span> <span class="n">log_performance</span>
+
+<span class="c1"># Automatic configuration at startup</span>
+<span class="n">log_config</span> <span class="o">=</span> <span class="n">LoggerConfig</span><span class="p">()</span>  <span class="c1"># Detects env automatically</span>
+<span class="n">log_config</span><span class="o">.</span><span class="n">setup_logger</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Configured handlers</strong>:</p>
+<ol class="arabic simple">
+<li><p><strong>Console</strong>: PREPROD/LOCAL (colorized DEBUG), PROD (non-colorized WARNING)</p></li>
+<li><p><strong>Debug</strong>: {env}_debug.log - All levels ≥ DEBUG (10 MB, 7d, zip)</p></li>
+<li><p><strong>Errors</strong>: {env}_errors.log - ERROR and CRITICAL (5 MB, 7d preprod / 30d prod, zip, backtrace)</p></li>
+<li><p><strong>User Interactions</strong>: {env}_user_interactions.log - User actions (1 day, 90d preprod / 30d prod, zip)</p></li>
+</ol>
+<p><strong>Utility functions</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Errors with context</span>
+<span class="n">log_error</span><span class="p">(</span><span class="n">exception</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s2">&quot;data_loading&quot;</span><span class="p">)</span>
+
+<span class="c1"># User actions</span>
+<span class="n">log_user_action</span><span class="p">(</span><span class="s2">&quot;filter_change&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;2024&quot;</span><span class="p">},</span> <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;anonymous&quot;</span><span class="p">)</span>
+
+<span class="c1"># Performance metrics</span>
+<span class="n">log_performance</span><span class="p">(</span><span class="s2">&quot;load_ratings&quot;</span><span class="p">,</span> <span class="mf">1.234</span><span class="p">,</span> <span class="n">records</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="environment-detection">
+<h3>Environment Detection<a class="headerlink" href="#environment-detection" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Module</strong>: <code class="docutils literal notranslate"><span class="pre">src/mangetamain_analytics/utils/environment.py</span></code></p>
+<p>Detection is done automatically via the <code class="docutils literal notranslate"><span class="pre">EnvironmentDetector</span></code> class:</p>
+<ol class="arabic simple">
+<li><p><strong>Environment variable</strong> <code class="docutils literal notranslate"><span class="pre">APP_ENV</span></code> (case-insensitive, priority)</p></li>
+<li><p><strong>Automatic path</strong>: detection via <code class="docutils literal notranslate"><span class="pre">10_preprod/</span></code> or <code class="docutils literal notranslate"><span class="pre">20_prod/</span></code> in path</p></li>
+<li><p><strong>Fallback</strong>: <code class="docutils literal notranslate"><span class="pre">LOCAL</span></code> if neither</p></li>
+</ol>
+<p><strong>Characteristics</strong>:</p>
+<ul class="simple">
+<li><p>Result caching (performance)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">reset_cache()</span></code> method for unit tests</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_name()</span></code> method returning uppercase string</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mangetamain_analytics.utils.environment</span><span class="w"> </span><span class="kn">import</span> <span class="n">Environment</span><span class="p">,</span> <span class="n">EnvironmentDetector</span>
+
+<span class="c1"># Automatic detection with cache</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">EnvironmentDetector</span><span class="o">.</span><span class="n">detect</span><span class="p">()</span>  <span class="c1"># Returns Environment.PREPROD|PROD|LOCAL</span>
+
+<span class="c1"># Environment name (uppercase string)</span>
+<span class="n">env_name</span> <span class="o">=</span> <span class="n">EnvironmentDetector</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>  <span class="c1"># Returns &quot;PREPROD&quot;|&quot;PROD&quot;|&quot;LOCAL&quot;</span>
+
+<span class="c1"># Reset cache (tests only)</span>
+<span class="n">EnvironmentDetector</span><span class="o">.</span><span class="n">reset_cache</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="log-structure">
+<h3>Log Structure<a class="headerlink" href="#log-structure" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>10_preprod/logs/
+├── preprod_debug.log              # All levels ≥ DEBUG
+├── preprod_errors.log             # ERROR, CRITICAL (7d)
+├── preprod_user_interactions.log  # User actions (90d)
+└── .gitkeep
+
+20_prod/logs/
+├── prod_debug.log                 # All levels ≥ DEBUG
+├── prod_errors.log                # ERROR, CRITICAL (30d)
+├── prod_user_interactions.log     # User actions (30d)
+└── .gitkeep
+</pre></div>
+</div>
+<p><strong>Rotation:</strong></p>
+<ul class="simple">
+<li><p>Debug logs: 10 MB max, 7 days retention</p></li>
+<li><p>Error logs: 5 MB max, 7d (preprod) / 30d (prod) retention</p></li>
+<li><p>User interactions: 1 day, 90d (preprod) / 30d (prod) retention</p></li>
+<li><p>Automatic compression to .zip</p></li>
+</ul>
+</section>
+<section id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Basic logging</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Application started&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;S3 not accessible&quot;</span><span class="p">)</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to load data&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>With utility functions</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">utils_logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_error</span><span class="p">,</span> <span class="n">log_user_action</span><span class="p">,</span> <span class="n">log_performance</span>
+
+<span class="c1"># Errors with context</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">load_from_s3</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">log_error</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s2">&quot;data_loading&quot;</span><span class="p">)</span>
+
+<span class="c1"># User actions (for analytics)</span>
+<span class="n">log_user_action</span><span class="p">(</span>
+    <span class="n">action</span><span class="o">=</span><span class="s2">&quot;filter_applied&quot;</span><span class="p">,</span>
+    <span class="n">details</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="s2">&quot;year&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;2024&quot;</span><span class="p">},</span>
+    <span class="n">user_id</span><span class="o">=</span><span class="s2">&quot;anonymous&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Performance metrics</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">expensive_computation</span><span class="p">()</span>
+<span class="n">duration</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+<span class="n">log_performance</span><span class="p">(</span><span class="s2">&quot;expensive_computation&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">records</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="docker-configuration">
+<h3>Docker Configuration<a class="headerlink" href="#docker-configuration" title="Lien vers cette rubrique"></a></h3>
+<p>Docker Compose files explicitly define the environment:</p>
+<p><strong>docker-compose-preprod.yml:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mangetamain_preprod</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">APP_ENV=preprod</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../10_preprod/logs:/app/logs</span>
+</pre></div>
+</div>
+<p><strong>docker-compose-prod.yml:</strong></p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">mangetamain_prod</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">APP_ENV=prod</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">../20_prod/logs:/app/logs</span>
+</pre></div>
+</div>
+</section>
+<section id="advantages">
+<h3>Advantages<a class="headerlink" href="#advantages" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p>✅ <strong>Prod/Preprod/Local separation</strong>: Distinct logs automatically per environment</p></li>
+<li><p>✅ <strong>Thread-safe</strong>: Compatible with Streamlit multithread (<code class="docutils literal notranslate"><span class="pre">enqueue=True</span></code>)</p></li>
+<li><p>✅ <strong>Automatic rotation</strong>: No huge logs (size and time)</p></li>
+<li><p>✅ <strong>Compression</strong>: Disk space savings (.zip)</p></li>
+<li><p>✅ <strong>Auto detection</strong>: <code class="docutils literal notranslate"><span class="pre">EnvironmentDetector</span></code> with cache</p></li>
+<li><p>✅ <strong>Complete backtrace</strong>: Simplified debugging for errors (<code class="docutils literal notranslate"><span class="pre">backtrace=True</span></code>, <code class="docutils literal notranslate"><span class="pre">diagnose=True</span></code>)</p></li>
+<li><p>✅ <strong>User tracking</strong>: Dedicated <code class="docutils literal notranslate"><span class="pre">user_interactions.log</span></code> file</p></li>
+<li><p>✅ <strong>Utility functions</strong>: <code class="docutils literal notranslate"><span class="pre">log_error()</span></code>, <code class="docutils literal notranslate"><span class="pre">log_user_action()</span></code>, <code class="docutils literal notranslate"><span class="pre">log_performance()</span></code></p></li>
+<li><p>✅ <strong>Differentiated retention</strong>: 7d preprod, 30d prod for errors</p></li>
+</ul>
+</section>
+</section>
+<section id="performance">
+<h2>Performance<a class="headerlink" href="#performance" title="Lien vers cette rubrique"></a></h2>
+<section id="optimizations">
+<h3>Optimizations<a class="headerlink" href="#optimizations" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>Streamlit cache</strong>: <code class="docutils literal notranslate"><span class="pre">&#64;st.cache_data</span></code> (TTL 1h)</p></li>
+<li><p><strong>Columnar DuckDB</strong>: Optimized analytical queries</p></li>
+<li><p><strong>Polars</strong>: High-performance data processing</p></li>
+<li><p><strong>S3 DNAT bypass</strong>: 500-917 MB/s</p></li>
+</ul>
+</section>
+<section id="loading-times">
+<h3>Loading Times<a class="headerlink" href="#loading-times" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p>First load: 5-10 seconds (from S3)</p></li>
+<li><p>Subsequent loads: &lt;0.1 second (memory cache)</p></li>
+<li><p>Gain: 50-100x on repeated navigations</p></li>
+</ul>
+</section>
+</section>
+<section id="security">
+<h2>Security<a class="headerlink" href="#security" title="Lien vers cette rubrique"></a></h2>
+<section id="best-practices">
+<h3>Best Practices<a class="headerlink" href="#best-practices" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p>S3 credentials not committed (96_keys/ in .gitignore)</p></li>
+<li><p>Encrypted GitHub secrets</p></li>
+<li><p>Runner isolated on VPN</p></li>
+<li><p>User input validation</p></li>
+<li><p>Custom exception handling</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="modules/infrastructure.html" class="btn btn-neutral float-left" title="Infrastructure Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="s3.html" class="btn btn-neutral float-right" title="Garage S3 Storage" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, Mangetamain Team.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1242 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CI/CD Pipeline &mdash; Documentation Mangetamain Analytics 2.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d93b9cb1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Tests and Coverage" href="tests.html" />
+    <link rel="prev" title="Garage S3 Storage" href="s3.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Mangetamain Analytics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Choose your language / Choisissez votre langue</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Mangetamain Analytics Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#deployed-environments">Deployed Environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#project-metrics">Project Metrics</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#navigation">Navigation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="projet.html">The Project</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#development-process">Development Process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#eda-application-mapping">EDA → Application Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#technical-stack">Technical Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#environments">Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#applied-standards">Applied Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#minute-installation">2-Minute Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#essential-commands">Essential Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#cheat-sheet">Cheat Sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#quick-troubleshooting">Quick Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#typical-workflow">Typical Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#key-metrics">Key Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#resources">Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#local-installation">Local Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#installation-with-docker">Installation with Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#tests">Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#main-dependencies">Main Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#installation-verification">Installation Verification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="application.html">Streamlit Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="application.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#structure">Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#the-4-analyses">The 4 Analyses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#data-loading">Data Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#application-architecture">Application Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#available-analysis-modules">Available Analysis Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#application-navigation">Application Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#customization-and-api">Customization and API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/index.html">Code Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/index.html#organization">Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/index.html#available-modules">Available Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/index.html#conventions">Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-color-theme">utils.color_theme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/data.html#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/data.html#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#dataloaderror-class">DataLoadError Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#other-exceptions">Other Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/infrastructure.html">Infrastructure Modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#configuration-and-logging">Configuration and Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#database-management">Database Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#data-exploration-utilities">Data Exploration Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#infrastructure-tests">Infrastructure Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html">Technical Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#deployment-infrastructure">Deployment Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#technical-stack">Technical Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#project-structure">Project Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#environments">Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#database">Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#tests-and-quality">Tests and Quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#logging">Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#security">Security</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html">Garage S3 Storage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#credentials-configuration">Credentials Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#aws-cli-usage">AWS CLI Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#python-boto3-usage">Python boto3 Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#duckdb-usage">DuckDB Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#polars-usage">Polars Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#performance-tests">Performance Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#bucket-structure">Bucket Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#infrastructure-tests">Infrastructure Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#performance-benchmarks">Performance Benchmarks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CI/CD Pipeline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#infrastructure">Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pipeline-architecture">Pipeline Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#github-actions-workflows">GitHub Actions Workflows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#practical-commands">Practical Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#self-hosted-runner">Self-Hosted Runner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#discord-notifications">Discord Notifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#required-configuration">Required Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#metrics">Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#concrete-workflow-examples">Concrete Workflow Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html">Tests and Coverage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#current-status">Current Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#quick-commands">Quick Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#detailed-coverage">Detailed Coverage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#id1">Infrastructure Tests (50_test)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#test-strategy">Test Strategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#test-patterns">Test Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#useful-pytest-commands">Useful Pytest Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#historical-progress">Historical Progress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html">Quality Standards</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#project-management">Project Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#programming">Programming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#tests-and-quality">Tests and Quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#advanced-technical-choices">Advanced Technical Choices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#standards-summary">Standards Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html">FAQ - Frequently Asked Questions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#installation-and-configuration">Installation and Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#data-and-performance">Data and Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#development">Development</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#tests-and-ci-cd">Tests and CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#docker">Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#deployment">Deployment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#common-errors">Common Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="glossaire.html">Glossary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#technical-terms">Technical Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#project-terms">Project Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#analytics-terms">Analytics Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#infrastructure-terms">Infrastructure Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#acronyms">Acronyms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#common-commands">Common Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#key-values">Key Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#indices">Indices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fr/index.html">Documentation Mangetamain Analytics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../fr/index.html#environnements-deployes">Environnements Déployés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fr/index.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fr/index.html#metriques-projet">Métriques Projet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fr/index.html#navigation">Navigation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../fr/projet.html">Le Projet</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/projet.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/projet.html#processus-de-developpement">Processus de Développement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/projet.html#correspondance-eda-application">Correspondance EDA → Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/projet.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/projet.html#environnements">Environnements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/projet.html#standards-appliques">Standards Appliqués</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/quickstart.html">Guide Démarrage Rapide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#installation-en-2-minutes">Installation en 2 Minutes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#commandes-essentielles">Commandes Essentielles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#cheat-sheet">Cheat Sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#troubleshooting-rapide">Troubleshooting Rapide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#flux-de-travail-typique">Flux de Travail Typique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#metriques-cles">Métriques Clés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/quickstart.html#ressources">Ressources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/installation.html">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#prerequis">Prérequis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#installation-locale">Installation Locale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#installation-avec-docker">Installation avec Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#tests">Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#dependances-principales">Dépendances Principales</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#verification-de-l-installation">Vérification de l’Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/installation.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/application.html">Application Streamlit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/application.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/application.html#structure">Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/application.html#les-4-analyses">Les 4 Analyses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/application.html#chargement-des-donnees">Chargement des Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/application.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/application.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/usage.html">Utilisation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/usage.html#architecture-de-l-application">Architecture de l’Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/usage.html#modules-d-analyse-disponibles">Modules d’Analyse Disponibles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/usage.html#navigation-dans-l-application">Navigation dans l’Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/usage.html#personnalisation-et-api">Personnalisation et API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/modules/index.html">Documentation Code</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/index.html#organisation">Organisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/index.html#modules-disponibles">Modules Disponibles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/index.html#conventions">Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/modules/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/utils.html#utils-color-theme">utils.color_theme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/modules/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/data.html#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/data.html#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/exceptions.html#classe-dataloaderror">Classe DataLoadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/exceptions.html#autres-exceptions">Autres Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/modules/infrastructure.html">Modules Infrastructure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/infrastructure.html#configuration-et-logging">Configuration et Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/infrastructure.html#gestion-base-de-donnees">Gestion Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/infrastructure.html#utilitaires-exploration-donnees">Utilitaires Exploration Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/infrastructure.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/modules/infrastructure.html#voir-also">Voir Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/architecture.html">Architecture Technique</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#infrastructure-deploiement">Infrastructure Déploiement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#structure-du-projet">Structure du Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#environnements">Environnements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#base-de-donnees">Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#tests-et-qualite">Tests et Qualité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#logging">Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/architecture.html#securite">Sécurité</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/s3.html">Stockage S3 Garage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#configuration-credentials">Configuration Credentials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#utilisation-aws-cli">Utilisation AWS CLI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#utilisation-python-boto3">Utilisation Python boto3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#utilisation-duckdb">Utilisation DuckDB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#utilisation-polars">Utilisation Polars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#tests-performance">Tests Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#structure-bucket">Structure Bucket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#depannage">Dépannage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#bonnes-pratiques">Bonnes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#benchmarks-performance">Benchmarks Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/s3.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/cicd.html">Pipeline CI/CD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#architecture-pipeline">Architecture Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#workflows-github-actions">Workflows GitHub Actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#commandes-pratiques">Commandes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#runner-self-hosted">Runner Self-Hosted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#notifications-discord">Notifications Discord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#depannage">Dépannage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#configuration-requise">Configuration Requise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#metriques">Métriques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#exemples-workflows-concrets">Exemples Workflows Concrets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/cicd.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/tests.html">Tests et Coverage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#etat-actuel">État Actuel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#commandes-rapides">Commandes Rapides</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#coverage-detaille">Coverage Détaillé</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#id1">Tests Infrastructure (50_test)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#strategie-de-test">Stratégie de Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#patterns-de-test">Patterns de Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#resolution-de-problemes">Résolution de Problèmes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#commandes-pytest-utiles">Commandes Pytest Utiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#bonnes-pratiques">Bonnes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#progression-historique">Progression Historique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/tests.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/conformite.html">Standards Qualité</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/conformite.html#gestion-de-projet">Gestion de Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/conformite.html#programmation">Programmation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/conformite.html#tests-et-qualite">Tests et Qualité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/conformite.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/conformite.html#choix-techniques-avances">Choix Techniques Avancés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/conformite.html#resume-standards">Résumé Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/faq.html">FAQ - Questions Fréquentes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#installation-et-configuration">Installation et Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#donnees-et-performance">Données et Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#developpement">Développement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#tests-et-ci-cd">Tests et CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#docker">Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#deploiement">Déploiement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#erreurs-courantes">Erreurs Courantes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/faq.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../fr/glossaire.html">Glossaire</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#termes-techniques">Termes Techniques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#termes-projet">Termes Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#termes-analytics">Termes Analytics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#termes-infrastructure">Termes Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#acronymes">Acronymes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#commandes-courantes">Commandes Courantes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#valeurs-cles">Valeurs Clés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../fr/glossaire.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../fr/index.html#indices">Indices</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mangetamain Analytics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Mangetamain Analytics Documentation</a></li>
+      <li class="breadcrumb-item active">CI/CD Pipeline</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/en/cicd.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ci-cd-pipeline">
+<h1>CI/CD Pipeline<a class="headerlink" href="#ci-cd-pipeline" title="Lien vers cette rubrique"></a></h1>
+<p>The CI/CD pipeline automates quality validation, testing and application deployment.</p>
+<p><strong>CI/CD</strong>: Continuous Integration / Continuous Deployment (<a class="reference internal" href="glossaire.html"><span class="doc">Glossary</span></a>).</p>
+<p><strong>Practical workflows</strong>: see end of page for concrete examples.</p>
+<section id="infrastructure">
+<h2>Infrastructure<a class="headerlink" href="#infrastructure" title="Lien vers cette rubrique"></a></h2>
+<p>The CI/CD pipeline relies on the infrastructure described in <a class="reference internal" href="architecture.html"><span class="doc">Technical Architecture</span></a>:</p>
+<ul class="simple">
+<li><p><strong>Standalone VM</strong> dataia (virsh/KVM) hosting the entire stack</p></li>
+<li><p><strong>2 isolated Docker containers</strong>: preprod (port 8500) and prod (port 8501)</p></li>
+<li><p><strong>GitHub self-hosted runner</strong> orchestrating automatic deployments</p></li>
+</ul>
+<p>This architecture enables deployment without manual VPN connection. The runner executes <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">SHA</span></code> + <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">restart</span></code> directly on the VM.</p>
+</section>
+<section id="pipeline-architecture">
+<h2>Pipeline Architecture<a class="headerlink" href="#pipeline-architecture" title="Lien vers cette rubrique"></a></h2>
+<section id="parallel-pipeline-with-automatic-rollback">
+<h3>Parallel Pipeline with Automatic Rollback<a class="headerlink" href="#parallel-pipeline-with-automatic-rollback" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Push to main
+     │
+     ├──────────────────────────────────────┐
+     │                                       │
+     ▼                                       ▼
+┌─────────────────────────────────┐  ┌──────────────────────────────────┐
+│  1. CI Pipeline                 │  │  2. CD Preprod                   │
+│  (GitHub-hosted runners)        │  │  (Self-hosted runner)            │
+│                                 │  │                                  │
+│  - PEP8, Black, Docstrings      │  │  ⚡ DEPLOY FIRST (~40s)          │
+│  - Unit tests                   │  │  - Save rollback point           │
+│  - Coverage ≥90%                │  │  - git reset --hard SHA          │
+│  - Infrastructure tests         │  │  - docker-compose restart        │
+│                                 │  │  - Health check                  │
+│  Duration: ~2-3 minutes         │  │  - Launch CI watcher script      │
+└────────────┬────────────────────┘  │                                  │
+             │                       │  🔍 WATCH CI IN BACKGROUND       │
+             │                       │  - Poll CI status (5 min max)    │
+             │                       │                                  │
+             ├───────────────────────┤                                  │
+             │                       │                                  │
+             ▼                       ▼                                  │
+        ✅ CI SUCCESS          ❌ CI FAILURE                           │
+             │                       │                                  │
+             │                       ▼                                  │
+             │              🔄 AUTOMATIC ROLLBACK                      │
+             │              - git reset --hard last-validated-sha      │
+             │              - docker-compose restart                   │
+             │              - Discord notification with CI logs        │
+             │                                                          │
+             ▼                                                          │
+        Mark SHA validated                                             │
+        Success notification                                           │
+└──────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────┐
+│  3. CD Production - Manual with confirmation            │
+│     (Self-hosted runner on dataia VM)                   │
+│     - Automatic backup before deploy                    │
+│     - git reset --hard validated SHA                    │
+│     - docker-compose restart                            │
+│     - Health checks (3 attempts)                        │
+│     - Discord notifications                             │
+│     - URL: https://backtothefuturekitchen.lafrance.io/  │
+└─────────────────────────────────────────────────────────┘
+</pre></div>
+</div>
+<p><strong>Key advantages</strong>:</p>
+<ul class="simple">
+<li><p>⚡ <strong>Ultra-fast deployment</strong>: 40s instead of 3-5 min (no CI wait)</p></li>
+<li><p>🔒 <strong>Guaranteed security</strong>: Automatic rollback if CI fails</p></li>
+<li><p>🎯 <strong>Traceability</strong>: Each deployment corresponds exactly to tested SHA</p></li>
+<li><p>🔄 <strong>Runner freed</strong>: Self-hosted runner available immediately</p></li>
+</ul>
+</section>
+</section>
+<section id="github-actions-workflows">
+<h2>GitHub Actions Workflows<a class="headerlink" href="#github-actions-workflows" title="Lien vers cette rubrique"></a></h2>
+<section id="ci-pipeline">
+<h3>1. CI Pipeline<a class="headerlink" href="#ci-pipeline" title="Lien vers cette rubrique"></a></h3>
+<p><strong>File</strong>: <code class="docutils literal notranslate"><span class="pre">.github/workflows/ci.yml</span></code></p>
+<p><strong>Triggers</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">main</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">main</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p><strong>Executed jobs</strong>:</p>
+<p><strong>Job 1: Quality Checks</strong></p>
+<ul class="simple">
+<li><p>PEP8 compliance (flake8) - max 88 characters per line</p></li>
+<li><p>Code formatting (black)</p></li>
+<li><p>Docstring validation (pydocstyle) - Google style</p></li>
+<li><p>Type checking (mypy) - optional, warning mode</p></li>
+</ul>
+<p><strong>Job 2: Preprod Tests</strong></p>
+<ul class="simple">
+<li><p>Python 3.13.7 with uv</p></li>
+<li><p>Minimum coverage: 90%</p></li>
+<li><p>Command: <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">tests/</span> <span class="pre">-v</span> <span class="pre">--cov=src</span> <span class="pre">--cov-report=html</span> <span class="pre">--cov-fail-under=90</span></code></p></li>
+<li><p>Artifacts: HTML coverage report (30 days retention)</p></li>
+</ul>
+<p><strong>Job 3: Infrastructure Tests</strong></p>
+<ul class="simple">
+<li><p>S3, DuckDB, SQL tests (50_test/)</p></li>
+<li><p>Mode: continue-on-error (requires credentials)</p></li>
+</ul>
+<p><strong>Job 4: Summary</strong></p>
+<ul class="simple">
+<li><p>Final summary of all jobs</p></li>
+</ul>
+</section>
+<section id="cd-preprod">
+<h3>2. CD Preprod<a class="headerlink" href="#cd-preprod" title="Lien vers cette rubrique"></a></h3>
+<p><strong>File</strong>: <code class="docutils literal notranslate"><span class="pre">.github/workflows/cd-preprod.yml</span></code></p>
+<p><strong>Innovative architecture</strong>: Deploy First, Test in Parallel</p>
+<p><strong>Principle</strong>: Deploy immediately without waiting for CI, then automatic rollback if tests fail.</p>
+<p><strong>Advantages</strong>:</p>
+<ul class="simple">
+<li><p>⚡ Ultra-fast deployment (~40 seconds instead of 3-5 minutes)</p></li>
+<li><p>🔄 Self-hosted runner freed immediately</p></li>
+<li><p>🛡️ Security guaranteed by automatic rollback</p></li>
+<li><p>🎯 Each deployment corresponds exactly to tested SHA</p></li>
+</ul>
+<p><strong>Phase 1: Immediate Deployment (~40s)</strong></p>
+<ol class="arabic simple">
+<li><p>💾 Save rollback point (<code class="docutils literal notranslate"><span class="pre">/var/app-state/last-validated-sha.txt</span></code>)</p></li>
+<li><p>📢 Discord notification - Deployment started</p></li>
+<li><p>📥 Fetch commits - <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">fetch</span> <span class="pre">origin</span> <span class="pre">main</span></code></p></li>
+<li><p>🔄 Deploy exact SHA - <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">reset</span> <span class="pre">--hard</span> <span class="pre">${{</span> <span class="pre">github.sha</span> <span class="pre">}}</span></code></p></li>
+<li><p>🐳 Restart container - <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">-f</span> <span class="pre">docker-compose-preprod.yml</span> <span class="pre">restart</span></code></p></li>
+<li><p>🔍 Quick health check - 3 attempts on <a class="reference external" href="https://mangetamain.lafrance.io/">https://mangetamain.lafrance.io/</a></p></li>
+<li><p>👀 Launch watcher - Background script monitoring CI</p></li>
+<li><p>✅ Discord notification - Deployment complete, CI in progress</p></li>
+</ol>
+<p><strong>Phase 2: Background CI Monitoring</strong></p>
+<p>Watcher script (<code class="docutils literal notranslate"><span class="pre">/tmp/watch-ci-SHA.sh</span></code>):</p>
+<ol class="arabic simple">
+<li><p>⏳ Wait 30s - Wait for CI startup</p></li>
+<li><p>🔍 Poll CI status - Check every 10s for 5 minutes max</p></li>
+<li><p><strong>If CI succeeds</strong> ✅: Mark SHA validated, success notification</p></li>
+<li><p><strong>If CI fails</strong> ❌: Automatic rollback to last validated SHA, notification with details</p></li>
+</ol>
+<p><strong>Watcher logs</strong>: <code class="docutils literal notranslate"><span class="pre">/tmp/ci-watcher-SHA.log</span></code></p>
+<p><strong>Why ``git reset –hard SHA`` instead of ``git pull``?</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># ❌ WRONG: git pull (takes latest commit from main)</span>
+git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>main
+
+<span class="c1"># ✅ CORRECT: reset to exact SHA that triggered this workflow</span>
+git<span class="w"> </span>fetch<span class="w"> </span>origin<span class="w"> </span>main
+git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>acfdb42...<span class="w">  </span><span class="c1"># Precise SHA</span>
+</pre></div>
+</div>
+<p><strong>Guarantee</strong>: Deployed code = code tested by CI ✅</p>
+</section>
+<section id="cd-production">
+<h3>3. CD Production<a class="headerlink" href="#cd-production" title="Lien vers cette rubrique"></a></h3>
+<p><strong>File</strong>: <code class="docutils literal notranslate"><span class="pre">.github/workflows/cd-prod.yml</span></code></p>
+<p><strong>Trigger</strong>: Manual only (<code class="docutils literal notranslate"><span class="pre">workflow_dispatch</span></code>)</p>
+<p><strong>Mandatory confirmation</strong>: Type « DEPLOY » to validate</p>
+<p><strong>Workflow</strong>:</p>
+<ol class="arabic simple">
+<li><p>📋 User confirmation - « DEPLOY » input required</p></li>
+<li><p>📊 Environment status - Displays PREPROD vs PROD SHA</p></li>
+<li><p>💾 Automatic backup - Save before deployment</p></li>
+<li><p>📢 Discord notification - PROD deployment started</p></li>
+<li><p>🔄 Deploy <code class="docutils literal notranslate"><span class="pre">deploy_preprod_to_prod.sh</span></code></p></li>
+<li><p>🐳 Restart container - <code class="docutils literal notranslate"><span class="pre">docker-compose</span> <span class="pre">-f</span> <span class="pre">docker-compose-prod.yml</span> <span class="pre">restart</span></code></p></li>
+<li><p>🔍 Health checks - 5 attempts with retry</p></li>
+<li><p>✅ Discord notification - Success or failure with rollback instructions</p></li>
+</ol>
+<p><strong>Manual rollback if needed</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>dataia
+<span class="nb">cd</span><span class="w"> </span>~/mangetamain/20_prod
+git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>PREVIOUS_SHA
+docker-compose<span class="w"> </span>-f<span class="w"> </span>~/mangetamain/30_docker/docker-compose-prod.yml<span class="w"> </span>restart
+</pre></div>
+</div>
+</section>
+<section id="health-check-monitoring">
+<h3>4. Health Check Monitoring<a class="headerlink" href="#health-check-monitoring" title="Lien vers cette rubrique"></a></h3>
+<p><strong>File</strong>: <code class="docutils literal notranslate"><span class="pre">.github/workflows/health-check.yml</span></code></p>
+<p><strong>Frequency</strong>: Every hour (cron: <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">*</span> <span class="pre">*</span> <span class="pre">*</span> <span class="pre">*</span></code>)</p>
+<p><strong>Verifications</strong>:</p>
+<ul class="simple">
+<li><p>PREPROD: <a class="reference external" href="https://mangetamain.lafrance.io/">https://mangetamain.lafrance.io/</a></p></li>
+<li><p>PROD: <a class="reference external" href="https://backtothefuturekitchen.lafrance.io/">https://backtothefuturekitchen.lafrance.io/</a></p></li>
+</ul>
+<p><strong>Performed checks</strong>:</p>
+<ol class="arabic simple">
+<li><p>HTTP status 200</p></li>
+<li><p>Valid HTML content (presence of « Mangetamain »)</p></li>
+<li><p>Timeout: 10 seconds</p></li>
+</ol>
+<p><strong>Discord notifications</strong>: Alerts if service down</p>
+</section>
+<section id="documentation-build">
+<h3>5. Documentation Build<a class="headerlink" href="#documentation-build" title="Lien vers cette rubrique"></a></h3>
+<p><strong>File</strong>: <code class="docutils literal notranslate"><span class="pre">.github/workflows/documentation.yml</span></code></p>
+<p><strong>Triggers</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">main</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">paths</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;90_doc/source/**&#39;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;90_doc/requirements.txt&#39;</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;.github/workflows/documentation.yml&#39;</span>
+<span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span>
+</pre></div>
+</div>
+<p><strong>Principle</strong>: Workflow completely <strong>isolated from preprod/prod CI/CD</strong>. A doc build failure never impacts application deployments.</p>
+<p><strong>Workflow</strong>:</p>
+<ol class="arabic simple">
+<li><p>📦 Setup Python 3.13.7</p></li>
+<li><p>📥 Install Sphinx dependencies (sphinx, sphinx-rtd-theme, myst-parser)</p></li>
+<li><p>🔨 Build documentation (<code class="docutils literal notranslate"><span class="pre">sphinx-build</span> <span class="pre">-b</span> <span class="pre">html</span> <span class="pre">source</span> <span class="pre">build/html</span></code>)</p></li>
+<li><p>📄 Add <code class="docutils literal notranslate"><span class="pre">.nojekyll</span></code> file (disables Jekyll processing)</p></li>
+<li><p>🚀 Deploy to GitHub Pages (<code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch)</p></li>
+<li><p>📬 Discord notification (failures only)</p></li>
+</ol>
+<p><strong>Documentation URL</strong>: <a class="reference external" href="https://julienlafrance.github.io/backtothefuturekitchen/">https://julienlafrance.github.io/backtothefuturekitchen/</a></p>
+<p><strong>Discord notifications</strong>: Failures only (like CI Pipeline)</p>
+<p><strong>Documentation architecture</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>90_doc/
+├── source/         # .rst files (tracked in Git)
+│   ├── conf.py     # Sphinx configuration
+│   └── *.rst       # Documentation pages
+├── build/          # Generated HTML (ignored by Git)
+└── Makefile        # Sphinx commands
+</pre></div>
+</div>
+<p><strong>Update workflow</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>90_doc/source
+<span class="c1"># Modify .rst files</span>
+vim<span class="w"> </span>installation.rst
+
+<span class="c1"># Local build to test (optional)</span>
+<span class="nb">cd</span><span class="w"> </span>..
+make<span class="w"> </span>html
+firefox<span class="w"> </span>build/html/index.html
+
+<span class="c1"># Commit and push</span>
+git<span class="w"> </span>add<span class="w"> </span>source/
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Doc: update installation&quot;</span>
+git<span class="w"> </span>push
+
+<span class="c1"># → GitHub Actions builds automatically</span>
+<span class="c1"># → Doc published in 2-3 minutes on GitHub Pages</span>
+</pre></div>
+</div>
+<p><strong>Key points</strong>:</p>
+<ul class="simple">
+<li><p>💾 HTML removed from main repo (38 MB saved)</p></li>
+<li><p>⚡ Automatic build on push to main</p></li>
+<li><p>🌐 Deployment on separate <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> branch</p></li>
+<li><p>🔒 <strong>Isolated workflow</strong>: doc failure ≠ preprod/prod impact</p></li>
+<li><p>📝 Only <code class="docutils literal notranslate"><span class="pre">.rst</span></code> files are tracked in Git</p></li>
+</ul>
+<p><strong>GitHub Pages vs tracked HTML advantages</strong>:</p>
+<ul class="simple">
+<li><p>Correct GitHub statistics (Python instead of HTML)</p></li>
+<li><p>Lighter repo (-38 MB)</p></li>
+<li><p>Professional and stable URL</p></li>
+<li><p>No Git history pollution with generated HTML</p></li>
+</ul>
+</section>
+</section>
+<section id="practical-commands">
+<h2>Practical Commands<a class="headerlink" href="#practical-commands" title="Lien vers cette rubrique"></a></h2>
+<section id="local-verification-before-push">
+<h3>Local Verification Before Push<a class="headerlink" href="#local-verification-before-push" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Local verification script</span>
+./70_scripts/run_ci_checks.sh<span class="w"> </span>preprod<span class="w">   </span><span class="c1"># Test 10_preprod</span>
+./70_scripts/run_ci_checks.sh<span class="w"> </span>prod<span class="w">      </span><span class="c1"># Test 20_prod</span>
+</pre></div>
+</div>
+</section>
+<section id="manual-workflow-trigger">
+<h3>Manual Workflow Trigger<a class="headerlink" href="#manual-workflow-trigger" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Via GitHub CLI</span>
+
+<span class="c1"># CD Preprod (discouraged, normally automatic)</span>
+gh<span class="w"> </span>workflow<span class="w"> </span>run<span class="w"> </span>cd-preprod.yml
+
+<span class="c1"># CD Production</span>
+gh<span class="w"> </span>workflow<span class="w"> </span>run<span class="w"> </span>cd-prod.yml
+
+<span class="c1"># Health Check</span>
+gh<span class="w"> </span>workflow<span class="w"> </span>run<span class="w"> </span>health-check.yml
+</pre></div>
+</div>
+</section>
+<section id="check-ci-cd-status">
+<h3>Check CI/CD Status<a class="headerlink" href="#check-ci-cd-status" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># List recent runs</span>
+gh<span class="w"> </span>run<span class="w"> </span>list<span class="w"> </span>--limit<span class="w"> </span><span class="m">10</span>
+
+<span class="c1"># View logs of specific run</span>
+gh<span class="w"> </span>run<span class="w"> </span>view<span class="w"> </span>RUN_ID<span class="w"> </span>--log
+
+<span class="c1"># Watch run in real-time</span>
+gh<span class="w"> </span>run<span class="w"> </span>watch<span class="w"> </span>RUN_ID
+</pre></div>
+</div>
+</section>
+<section id="check-preprod-watcher-logs">
+<h3>Check PREPROD Watcher Logs<a class="headerlink" href="#check-preprod-watcher-logs" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>dataia
+ls<span class="w"> </span>-lh<span class="w"> </span>/tmp/ci-watcher-*.log
+tail<span class="w"> </span>-f<span class="w"> </span>/tmp/ci-watcher-LATEST.log
+</pre></div>
+</div>
+</section>
+</section>
+<section id="self-hosted-runner">
+<h2>Self-Hosted Runner<a class="headerlink" href="#self-hosted-runner" title="Lien vers cette rubrique"></a></h2>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Location</strong>: dataia VM (VPN network)</p>
+<p><strong>Advantage</strong>: Deployment without manual VPN connection</p>
+<p><strong>Labels</strong>: <code class="docutils literal notranslate"><span class="pre">self-hosted</span></code>, <code class="docutils literal notranslate"><span class="pre">Linux</span></code>, <code class="docutils literal notranslate"><span class="pre">X64</span></code></p>
+<p><strong>Services</strong>: GitHub Actions Runner service</p>
+</section>
+<section id="check-runner-status">
+<h3>Check Runner Status<a class="headerlink" href="#check-runner-status" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>dataia
+sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>actions.runner.*
+
+<span class="c1"># Runner logs</span>
+journalctl<span class="w"> </span>-u<span class="w"> </span>actions.runner.*<span class="w"> </span>-f
+</pre></div>
+</div>
+</section>
+</section>
+<section id="discord-notifications">
+<h2>Discord Notifications<a class="headerlink" href="#discord-notifications" title="Lien vers cette rubrique"></a></h2>
+<section id="configured-webhooks">
+<h3>Configured Webhooks<a class="headerlink" href="#configured-webhooks" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>CI Pipeline</strong>: Failures only</p></li>
+<li><p><strong>CD Preprod</strong>: All deployments + rollbacks</p></li>
+<li><p><strong>CD Prod</strong>: All deployments + rollbacks</p></li>
+<li><p><strong>Health Check</strong>: DOWN alerts only</p></li>
+<li><p><strong>Documentation</strong>: Failures only</p></li>
+</ul>
+</section>
+<section id="preprod-message-format">
+<h3>Preprod Message Format<a class="headerlink" href="#preprod-message-format" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>🚀 PREPROD - Deployment started
+SHA: acfdb42
+Author: @user
+Message: Fix bug analysis
+
+⏳ CI verification in progress...
+</pre></div>
+</div>
+</section>
+<section id="prod-message-format">
+<h3>Prod Message Format<a class="headerlink" href="#prod-message-format" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>🎯 PRODUCTION - Deployment successful ✅
+SHA: acfdb42
+PREPROD ✅ → PROD ✅
+URL: https://backtothefuturekitchen.lafrance.io/
+</pre></div>
+</div>
+</section>
+</section>
+<section id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Lien vers cette rubrique"></a></h2>
+<section id="error-flake8-not-found">
+<h3>Error: flake8 not found<a class="headerlink" href="#error-flake8-not-found" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Solution</strong>: Install dev dependencies</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/mangetamain/10_preprod
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;.[dev]&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="error-coverage-90">
+<h3>Error: Coverage &lt; 90%<a class="headerlink" href="#error-coverage-90" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Solution</strong>: Add tests or exclude non-testable code</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># In code to exclude</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>  <span class="c1"># pragma: no cover</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Application&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="error-missing-docstring">
+<h3>Error: Missing docstring<a class="headerlink" href="#error-missing-docstring" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Solution</strong>: Add Google-style docstrings</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">my_function</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Brief description of the function.</span>
+
+<span class="sd">    Detailed description if needed.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        param: Description</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Description</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+<section id="ci-fails-but-local-works">
+<h3>CI fails but local works<a class="headerlink" href="#ci-fails-but-local-works" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Possible reasons</strong>:</p>
+<ul class="simple">
+<li><p>Different Python versions (CI: 3.13.7, Local: other)</p></li>
+<li><p>Uncommitted files</p></li>
+<li><p>Missing dependencies in pyproject.toml</p></li>
+</ul>
+<p><strong>Solution</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check untracked files</span>
+git<span class="w"> </span>status
+
+<span class="c1"># Update dependencies</span>
+git<span class="w"> </span>add<span class="w"> </span>pyproject.toml
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;fix: update dependencies&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="cd-preprod-blocked">
+<h3>CD Preprod Blocked<a class="headerlink" href="#cd-preprod-blocked" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Cause</strong>: CI failed, automatic rollback performed</p>
+<p><strong>Solution</strong>: Fix errors reported by CI, then push fix</p>
+</section>
+<section id="manual-production-rollback">
+<h3>Manual Production Rollback<a class="headerlink" href="#manual-production-rollback" title="Lien vers cette rubrique"></a></h3>
+<p><strong>If PROD deployment failed</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>dataia
+<span class="nb">cd</span><span class="w"> </span>~/mangetamain/20_prod
+
+<span class="c1"># Find last validated SHA</span>
+git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>-5
+
+<span class="c1"># Rollback</span>
+git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>PREVIOUS_SHA
+docker-compose<span class="w"> </span>-f<span class="w"> </span>~/mangetamain/30_docker/docker-compose-prod.yml<span class="w"> </span>restart
+
+<span class="c1"># Verify</span>
+curl<span class="w"> </span>https://backtothefuturekitchen.lafrance.io/
+</pre></div>
+</div>
+</section>
+</section>
+<section id="required-configuration">
+<h2>Required Configuration<a class="headerlink" href="#required-configuration" title="Lien vers cette rubrique"></a></h2>
+<section id="github-secrets">
+<h3>GitHub Secrets<a class="headerlink" href="#github-secrets" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DISCORD_WEBHOOK_URL</span></code>: Discord webhook for notifications</p></li>
+</ul>
+</section>
+<section id="environment-variables">
+<h3>Environment Variables<a class="headerlink" href="#environment-variables" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">GITHUB_TOKEN</span></code>: Automatic GitHub Actions token (provided)</p></li>
+</ul>
+</section>
+<section id="runner-labels">
+<h3>Runner Labels<a class="headerlink" href="#runner-labels" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">self-hosted</span></code>: Runner on dataia VM</p></li>
+</ul>
+</section>
+</section>
+<section id="metrics">
+<h2>Metrics<a class="headerlink" href="#metrics" title="Lien vers cette rubrique"></a></h2>
+<section id="pipeline-performance">
+<h3>Pipeline Performance<a class="headerlink" href="#pipeline-performance" title="Lien vers cette rubrique"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Phase</p></th>
+<th class="head"><p>Duration</p></th>
+<th class="head"><p>Runner</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CI Quality</p></td>
+<td><p>~2 minutes</p></td>
+<td><p>GitHub-hosted</p></td>
+</tr>
+<tr class="row-odd"><td><p>CI Tests</p></td>
+<td><p>~2 minutes</p></td>
+<td><p>GitHub-hosted</p></td>
+</tr>
+<tr class="row-even"><td><p>CD Preprod</p></td>
+<td><p>~40 seconds</p></td>
+<td><p>Self-hosted</p></td>
+</tr>
+<tr class="row-odd"><td><p>CD Prod</p></td>
+<td><p>~1 minute</p></td>
+<td><p>Self-hosted</p></td>
+</tr>
+<tr class="row-even"><td><p>Health Check</p></td>
+<td><p>~7 seconds</p></td>
+<td><p>Self-hosted</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="reliability">
+<h3>Reliability<a class="headerlink" href="#reliability" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>PREPROD Uptime</strong>: ~99.5%</p></li>
+<li><p><strong>PROD Uptime</strong>: ~99.9%</p></li>
+<li><p><strong>Automatic rollbacks</strong>: 100% success</p></li>
+<li><p><strong>False positive health checks</strong>: &lt;1%</p></li>
+</ul>
+</section>
+</section>
+<section id="concrete-workflow-examples">
+<h2>Concrete Workflow Examples<a class="headerlink" href="#concrete-workflow-examples" title="Lien vers cette rubrique"></a></h2>
+<section id="feature-development">
+<h3>Feature Development<a class="headerlink" href="#feature-development" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Scenario</strong>: Add new seasonal analysis</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Create branch</span>
+git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>feature/analyse-mensuelle
+
+<span class="c1"># 2. Develop</span>
+<span class="c1"># Modify src/visualization/analyse_mensuelle.py</span>
+<span class="c1"># Add tests in tests/unit/test_analyse_mensuelle.py</span>
+
+<span class="c1"># 3. Check locally</span>
+uv<span class="w"> </span>run<span class="w"> </span>flake8<span class="w"> </span>src/<span class="w"> </span>tests/
+uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/unit/<span class="w"> </span>--cov<span class="o">=</span>src<span class="w"> </span>--cov-fail-under<span class="o">=</span><span class="m">90</span>
+
+<span class="c1"># 4. Commit and push</span>
+git<span class="w"> </span>add<span class="w"> </span>.
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Add monthly analysis with tests&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>feature/analyse-mensuelle
+
+<span class="c1"># 5. Create PR</span>
+gh<span class="w"> </span>pr<span class="w"> </span>create<span class="w"> </span>--title<span class="w"> </span><span class="s2">&quot;Monthly analysis&quot;</span><span class="w"> </span>--body<span class="w"> </span><span class="s2">&quot;New analysis by month&quot;</span>
+
+<span class="c1"># → CI runs automatically on branch</span>
+<span class="c1"># → If tests pass → Merge to main possible</span>
+<span class="c1"># → After merge → CD PREPROD runs automatically</span>
+</pre></div>
+</div>
+<p><strong>Timeline</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Push branch → CI (2min) → PR review → Merge → CD PREPROD (40s) → App live
+                ↓
+            Tests OK/KO
+                ↓
+            Blocks merge if KO
+</pre></div>
+</div>
+</section>
+<section id="production-hotfix">
+<h3>Production Hotfix<a class="headerlink" href="#production-hotfix" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Scenario</strong>: Critical bug in production requires immediate fix</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. Identify problematic commit</span>
+gh<span class="w"> </span>run<span class="w"> </span>list<span class="w"> </span>--limit<span class="w"> </span><span class="m">10</span>
+<span class="c1"># Find last successful PROD deploy</span>
+
+<span class="c1"># 2. Create hotfix branch</span>
+git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>hotfix/fix-rating-bug
+
+<span class="c1"># 3. Quick fix + test</span>
+<span class="c1"># Modify src/visualization/analyse_ratings.py</span>
+<span class="c1"># Add regression test</span>
+
+<span class="c1"># 4. Push and quick merge</span>
+git<span class="w"> </span>add<span class="w"> </span>.<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Fix critical ratings bug&quot;</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>hotfix/fix-rating-bug
+gh<span class="w"> </span>pr<span class="w"> </span>create<span class="w"> </span>--title<span class="w"> </span><span class="s2">&quot;[HOTFIX] Fix ratings&quot;</span><span class="w"> </span>--body<span class="w"> </span><span class="s2">&quot;Fix 5-star ratings bug&quot;</span>
+
+<span class="c1"># 5. After merge → Wait for CD PREPROD (auto)</span>
+
+<span class="c1"># 6. Verify PREPROD OK then manual PROD deploy</span>
+gh<span class="w"> </span>workflow<span class="w"> </span>run<span class="w"> </span>cd-prod.yml
+<span class="c1"># Type &quot;DEPLOY&quot; in confirmation</span>
+</pre></div>
+</div>
+<p><strong>Total duration</strong>: ~5-10 minutes (CI + CD PREPROD + check + CD PROD)</p>
+</section>
+<section id="rollback-after-error">
+<h3>Rollback After Error<a class="headerlink" href="#rollback-after-error" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Scenario</strong>: PROD deployment breaks app, need immediate rollback</p>
+<p><strong>Option 1 - Rollback via Git</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># On dataia VM</span>
+ssh<span class="w"> </span>dataia
+<span class="nb">cd</span><span class="w"> </span>~/mangetamain/20_prod
+
+<span class="c1"># Identify stable commit</span>
+git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>-10
+<span class="c1"># Ex: abc1234 Stable version before bug</span>
+
+<span class="c1"># Rollback</span>
+git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>abc1234
+
+<span class="c1"># Restart</span>
+<span class="nb">cd</span><span class="w"> </span>../30_docker
+docker-compose<span class="w"> </span>-f<span class="w"> </span>docker-compose-prod.yml<span class="w"> </span>restart
+</pre></div>
+</div>
+<p><strong>Duration</strong>: ~1 minute</p>
+<p><strong>Option 2 - Rollback via Re-deploy</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Locally, return to stable commit</span>
+git<span class="w"> </span>revert<span class="w"> </span>HEAD<span class="w">  </span><span class="c1"># Or git reset --hard &lt;stable-sha&gt;</span>
+git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main
+
+<span class="c1"># CI/CD PREPROD runs</span>
+<span class="c1"># Verify PREPROD OK</span>
+
+<span class="c1"># Deploy PROD</span>
+gh<span class="w"> </span>workflow<span class="w"> </span>run<span class="w"> </span>cd-prod.yml<span class="w">  </span><span class="c1"># Type DEPLOY</span>
+</pre></div>
+</div>
+<p><strong>Duration</strong>: ~5 minutes (safer, goes through CI/CD)</p>
+</section>
+<section id="deployment-monitoring">
+<h3>Deployment Monitoring<a class="headerlink" href="#deployment-monitoring" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Monitor in real-time</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 1: gh CLI</span>
+gh<span class="w"> </span>run<span class="w"> </span>watch
+
+<span class="c1"># Option 2: SSH + Docker logs</span>
+ssh<span class="w"> </span>dataia<span class="w"> </span><span class="s2">&quot;docker-compose -f 30_docker/docker-compose-preprod.yml logs -f --tail=50&quot;</span>
+
+<span class="c1"># Option 3: Discord webhook</span>
+<span class="c1"># Automatic notifications in #deployments channel</span>
+</pre></div>
+</div>
+<p><strong>Check health</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># PREPROD</span>
+curl<span class="w"> </span>-s<span class="w"> </span>https://mangetamain.lafrance.io/_stcore/health<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+
+<span class="c1"># PROD</span>
+curl<span class="w"> </span>-s<span class="w"> </span>https://backtothefuturekitchen.lafrance.io/_stcore/health<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+</pre></div>
+</div>
+<p><strong>Expected response</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ok&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;uptime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">12345.67</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Lien vers cette rubrique"></a></h2>
+<section id="commits">
+<h3>Commits<a class="headerlink" href="#commits" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Message format</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>&lt;type&gt;: &lt;short description&gt;
+
+&lt;optional detailed description&gt;
+
+Types: feat, fix, docs, test, refactor, perf, ci
+</pre></div>
+</div>
+<p><strong>Examples</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Feature</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: add season filter in trends analysis&quot;</span>
+
+<span class="c1"># Bugfix</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;fix: correct ratings average calculation&quot;</span>
+
+<span class="c1"># Tests</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;test: add weekend analysis tests (coverage +5%)&quot;</span>
+
+<span class="c1"># Documentation</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;docs: enrich visualization API with examples&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="pull-requests">
+<h3>Pull Requests<a class="headerlink" href="#pull-requests" title="Lien vers cette rubrique"></a></h3>
+<p><strong>PR Template</strong>:</p>
+<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span><span class="gu">## Description</span>
+Brief description of the change
+
+<span class="gu">## Changes</span>
+<span class="k">- [ ]</span> Add feature X
+<span class="k">- [ ]</span> Tests coverage ≥ 90%
+<span class="k">- [ ]</span> Documentation updated
+
+<span class="gu">## Tests</span>
+<span class="sb">```bash</span>
+pytest<span class="w"> </span>tests/unit/test_new_feature.py<span class="w"> </span>-v
+<span class="sb">```</span>
+
+<span class="gu">## Screenshots (if UI)</span>
+![<span class="nt">Before</span>](<span class="na">url</span>) ![<span class="nt">After</span>](<span class="na">url</span>)
+</pre></div>
+</div>
+<p><strong>Review checklist</strong>:</p>
+<ul class="simple">
+<li><p>Code follows PEP8 (flake8 passes)</p></li>
+<li><p>Tests added (coverage ≥ 90%)</p></li>
+<li><p>Documentation updated</p></li>
+<li><p>No committed credentials</p></li>
+<li><p>Branch up to date with main</p></li>
+</ul>
+</section>
+<section id="ci-cd">
+<h3>CI/CD<a class="headerlink" href="#ci-cd" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Avoid CI failures</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Before each push, run locally</span>
+uv<span class="w"> </span>run<span class="w"> </span>flake8<span class="w"> </span>src/<span class="w"> </span>tests/
+uv<span class="w"> </span>run<span class="w"> </span>black<span class="w"> </span>--check<span class="w"> </span>src/<span class="w"> </span>tests/
+uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/unit/<span class="w"> </span>--cov<span class="o">=</span>src<span class="w"> </span>--cov-fail-under<span class="o">=</span><span class="m">90</span>
+
+<span class="c1"># Pre-push hook script (.git/hooks/pre-push)</span>
+<span class="c1">#!/bin/bash</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Running pre-push checks...&quot;</span>
+uv<span class="w"> </span>run<span class="w"> </span>flake8<span class="w"> </span>src/<span class="w"> </span>tests/<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/unit/<span class="w"> </span>--cov<span class="o">=</span>src<span class="w"> </span>--cov-fail-under<span class="o">=</span><span class="m">90</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;✓ All checks passed&quot;</span>
+</pre></div>
+</div>
+<p><strong>Optimize CI</strong>:</p>
+<ul class="simple">
+<li><p>Use uv cache for dependencies</p></li>
+<li><p>Parallelize independent tests</p></li>
+<li><p>Skip CI if [skip ci] in commit message (docs only)</p></li>
+</ul>
+</section>
+<section id="deployment">
+<h3>Deployment<a class="headerlink" href="#deployment" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Checklist before PROD deploy</strong>:</p>
+<ol class="arabic simple">
+<li><p>✅ PREPROD works correctly</p></li>
+<li><p>✅ Manual tests performed on PREPROD</p></li>
+<li><p>✅ No errors in PREPROD logs</p></li>
+<li><p>✅ Acceptable performance (load time &lt; 10s)</p></li>
+<li><p>✅ Automatic backup performed (verified)</p></li>
+</ol>
+<p><strong>Optimal timing</strong>:</p>
+<ul class="simple">
+<li><p><strong>Avoid</strong>: Friday evening, just before weekend</p></li>
+<li><p><strong>Prefer</strong>: Tuesday-Thursday morning (time to monitor)</p></li>
+</ul>
+<p><strong>Communication</strong>:</p>
+<ul class="simple">
+<li><p>Announce maintenance if downtime &gt; 1 minute</p></li>
+<li><p>Automatic Discord notifications</p></li>
+</ul>
+</section>
+</section>
+<section id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="tests.html"><span class="doc">Tests and Coverage</span></a> - Unit tests and coverage</p></li>
+<li><p><a class="reference internal" href="conformite.html"><span class="doc">Quality Standards</span></a> - Academic compliance</p></li>
+<li><p><a class="reference internal" href="architecture.html"><span class="doc">Technical Architecture</span></a> - Complete technical architecture</p></li>
+<li><p><a class="reference internal" href="quickstart.html"><span class="doc">Quick Start Guide</span></a> - Essential Git/CI/CD commands</p></li>
+<li><p><a class="reference internal" href="faq.html"><span class="doc">FAQ - Frequently Asked Questions</span></a> - CI/CD FAQ and troubleshooting</p></li>
+<li><p>README_CI_CD.md (root) - Complete detailed documentation (982 lines)</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="s3.html" class="btn btn-neutral float-left" title="Garage S3 Storage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="tests.html" class="btn btn-neutral float-right" title="Tests and Coverage" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, Mangetamain Team.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

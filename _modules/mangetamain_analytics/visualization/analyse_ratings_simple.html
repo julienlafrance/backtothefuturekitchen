@@ -1,0 +1,786 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mangetamain_analytics.visualization.analyse_ratings_simple &mdash; Documentation Mangetamain Analytics 2.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=d93b9cb1"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/translations.js?v=e6b791cb"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Mangetamain Analytics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Choose your language / Choisissez votre langue</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../en/index.html">Mangetamain Analytics Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../en/index.html#deployed-environments">Deployed Environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../en/index.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../en/index.html#project-metrics">Project Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../en/index.html#navigation">Navigation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/projet.html">The Project</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/projet.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/projet.html#development-process">Development Process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/projet.html#eda-application-mapping">EDA → Application Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/projet.html#technical-stack">Technical Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/projet.html#environments">Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/projet.html#applied-standards">Applied Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/quickstart.html#minute-installation">2-Minute Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/quickstart.html#essential-commands">Essential Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/quickstart.html#cheat-sheet">Cheat Sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/quickstart.html#quick-troubleshooting">Quick Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/quickstart.html#typical-workflow">Typical Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/quickstart.html#key-metrics">Key Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/quickstart.html#resources">Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/installation.html">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/installation.html#local-installation">Local Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/installation.html#installation-with-docker">Installation with Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/installation.html#tests">Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/installation.html#main-dependencies">Main Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/installation.html#installation-verification">Installation Verification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/installation.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/application.html">Streamlit Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/application.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/application.html#structure">Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/application.html#the-4-analyses">The 4 Analyses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/application.html#data-loading">Data Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/application.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/application.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/usage.html">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/usage.html#application-architecture">Application Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/usage.html#available-analysis-modules">Available Analysis Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/usage.html#application-navigation">Application Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/usage.html#customization-and-api">Customization and API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/modules/index.html">Code Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/index.html#organization">Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/index.html#available-modules">Available Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/index.html#conventions">Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/modules/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/utils.html#utils-color-theme">utils.color_theme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/modules/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/data.html#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/data.html#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/exceptions.html#dataloaderror-class">DataLoadError Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/exceptions.html#other-exceptions">Other Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/modules/infrastructure.html">Infrastructure Modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/infrastructure.html#configuration-and-logging">Configuration and Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/infrastructure.html#database-management">Database Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/infrastructure.html#data-exploration-utilities">Data Exploration Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/infrastructure.html#infrastructure-tests">Infrastructure Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/modules/infrastructure.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/architecture.html">Technical Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/architecture.html#deployment-infrastructure">Deployment Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/architecture.html#technical-stack">Technical Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/architecture.html#project-structure">Project Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/architecture.html#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/architecture.html#environments">Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/architecture.html#database">Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/architecture.html#tests-and-quality">Tests and Quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/architecture.html#logging">Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/architecture.html#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/architecture.html#security">Security</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/s3.html">Garage S3 Storage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#credentials-configuration">Credentials Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#aws-cli-usage">AWS CLI Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#python-boto3-usage">Python boto3 Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#duckdb-usage">DuckDB Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#polars-usage">Polars Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#performance-tests">Performance Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#bucket-structure">Bucket Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#infrastructure-tests">Infrastructure Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#performance-benchmarks">Performance Benchmarks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/s3.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/cicd.html">CI/CD Pipeline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/cicd.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/cicd.html#pipeline-architecture">Pipeline Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/cicd.html#github-actions-workflows">GitHub Actions Workflows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/cicd.html#practical-commands">Practical Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/cicd.html#self-hosted-runner">Self-Hosted Runner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/cicd.html#discord-notifications">Discord Notifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/cicd.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/cicd.html#required-configuration">Required Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/cicd.html#metrics">Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/cicd.html#concrete-workflow-examples">Concrete Workflow Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/cicd.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/cicd.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/tests.html">Tests and Coverage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/tests.html#current-status">Current Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/tests.html#quick-commands">Quick Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/tests.html#detailed-coverage">Detailed Coverage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/tests.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/tests.html#id1">Infrastructure Tests (50_test)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/tests.html#test-strategy">Test Strategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/tests.html#test-patterns">Test Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/tests.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/tests.html#useful-pytest-commands">Useful Pytest Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/tests.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/tests.html#historical-progress">Historical Progress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/tests.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/conformite.html">Quality Standards</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/conformite.html#project-management">Project Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/conformite.html#programming">Programming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/conformite.html#tests-and-quality">Tests and Quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/conformite.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/conformite.html#advanced-technical-choices">Advanced Technical Choices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/conformite.html#standards-summary">Standards Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/faq.html">FAQ - Frequently Asked Questions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/faq.html#installation-and-configuration">Installation and Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/faq.html#data-and-performance">Data and Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/faq.html#development">Development</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/faq.html#tests-and-ci-cd">Tests and CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/faq.html#docker">Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/faq.html#deployment">Deployment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/faq.html#common-errors">Common Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/faq.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../en/glossaire.html">Glossary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/glossaire.html#technical-terms">Technical Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/glossaire.html#project-terms">Project Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/glossaire.html#analytics-terms">Analytics Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/glossaire.html#infrastructure-terms">Infrastructure Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/glossaire.html#acronyms">Acronyms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/glossaire.html#common-commands">Common Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/glossaire.html#key-values">Key Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../en/glossaire.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../en/index.html#indices">Indices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fr/index.html">Documentation Mangetamain Analytics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../fr/index.html#environnements-deployes">Environnements Déployés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../fr/index.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../fr/index.html#metriques-projet">Métriques Projet</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../fr/index.html#navigation">Navigation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/projet.html">Le Projet</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/projet.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/projet.html#processus-de-developpement">Processus de Développement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/projet.html#correspondance-eda-application">Correspondance EDA → Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/projet.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/projet.html#environnements">Environnements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/projet.html#standards-appliques">Standards Appliqués</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/quickstart.html">Guide Démarrage Rapide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/quickstart.html#installation-en-2-minutes">Installation en 2 Minutes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/quickstart.html#commandes-essentielles">Commandes Essentielles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/quickstart.html#cheat-sheet">Cheat Sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/quickstart.html#troubleshooting-rapide">Troubleshooting Rapide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/quickstart.html#flux-de-travail-typique">Flux de Travail Typique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/quickstart.html#metriques-cles">Métriques Clés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/quickstart.html#ressources">Ressources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/installation.html">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/installation.html#prerequis">Prérequis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/installation.html#installation-locale">Installation Locale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/installation.html#installation-avec-docker">Installation avec Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/installation.html#tests">Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/installation.html#dependances-principales">Dépendances Principales</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/installation.html#verification-de-l-installation">Vérification de l’Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/installation.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/application.html">Application Streamlit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/application.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/application.html#structure">Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/application.html#les-4-analyses">Les 4 Analyses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/application.html#chargement-des-donnees">Chargement des Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/application.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/application.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/usage.html">Utilisation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/usage.html#architecture-de-l-application">Architecture de l’Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/usage.html#modules-d-analyse-disponibles">Modules d’Analyse Disponibles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/usage.html#navigation-dans-l-application">Navigation dans l’Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/usage.html#personnalisation-et-api">Personnalisation et API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/modules/index.html">Documentation Code</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/index.html#organisation">Organisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/index.html#modules-disponibles">Modules Disponibles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/index.html#conventions">Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/modules/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/utils.html#utils-color-theme">utils.color_theme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/modules/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/data.html#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/data.html#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/exceptions.html#classe-dataloaderror">Classe DataLoadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/exceptions.html#autres-exceptions">Autres Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/modules/infrastructure.html">Modules Infrastructure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/infrastructure.html#configuration-et-logging">Configuration et Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/infrastructure.html#gestion-base-de-donnees">Gestion Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/infrastructure.html#utilitaires-exploration-donnees">Utilitaires Exploration Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/infrastructure.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/modules/infrastructure.html#voir-also">Voir Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/architecture.html">Architecture Technique</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/architecture.html#infrastructure-deploiement">Infrastructure Déploiement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/architecture.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/architecture.html#structure-du-projet">Structure du Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/architecture.html#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/architecture.html#environnements">Environnements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/architecture.html#base-de-donnees">Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/architecture.html#tests-et-qualite">Tests et Qualité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/architecture.html#logging">Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/architecture.html#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/architecture.html#securite">Sécurité</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/s3.html">Stockage S3 Garage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#configuration-credentials">Configuration Credentials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#utilisation-aws-cli">Utilisation AWS CLI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#utilisation-python-boto3">Utilisation Python boto3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#utilisation-duckdb">Utilisation DuckDB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#utilisation-polars">Utilisation Polars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#tests-performance">Tests Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#structure-bucket">Structure Bucket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#depannage">Dépannage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#bonnes-pratiques">Bonnes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#benchmarks-performance">Benchmarks Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/s3.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/cicd.html">Pipeline CI/CD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/cicd.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/cicd.html#architecture-pipeline">Architecture Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/cicd.html#workflows-github-actions">Workflows GitHub Actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/cicd.html#commandes-pratiques">Commandes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/cicd.html#runner-self-hosted">Runner Self-Hosted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/cicd.html#notifications-discord">Notifications Discord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/cicd.html#depannage">Dépannage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/cicd.html#configuration-requise">Configuration Requise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/cicd.html#metriques">Métriques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/cicd.html#exemples-workflows-concrets">Exemples Workflows Concrets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/cicd.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/cicd.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/tests.html">Tests et Coverage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/tests.html#etat-actuel">État Actuel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/tests.html#commandes-rapides">Commandes Rapides</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/tests.html#coverage-detaille">Coverage Détaillé</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/tests.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/tests.html#id1">Tests Infrastructure (50_test)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/tests.html#strategie-de-test">Stratégie de Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/tests.html#patterns-de-test">Patterns de Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/tests.html#resolution-de-problemes">Résolution de Problèmes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/tests.html#commandes-pytest-utiles">Commandes Pytest Utiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/tests.html#bonnes-pratiques">Bonnes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/tests.html#progression-historique">Progression Historique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/tests.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/conformite.html">Standards Qualité</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/conformite.html#gestion-de-projet">Gestion de Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/conformite.html#programmation">Programmation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/conformite.html#tests-et-qualite">Tests et Qualité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/conformite.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/conformite.html#choix-techniques-avances">Choix Techniques Avancés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/conformite.html#resume-standards">Résumé Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/faq.html">FAQ - Questions Fréquentes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/faq.html#installation-et-configuration">Installation et Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/faq.html#donnees-et-performance">Données et Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/faq.html#developpement">Développement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/faq.html#tests-et-ci-cd">Tests et CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/faq.html#docker">Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/faq.html#deploiement">Déploiement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/faq.html#erreurs-courantes">Erreurs Courantes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/faq.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../fr/glossaire.html">Glossaire</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/glossaire.html#termes-techniques">Termes Techniques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/glossaire.html#termes-projet">Termes Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/glossaire.html#termes-analytics">Termes Analytics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/glossaire.html#termes-infrastructure">Termes Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/glossaire.html#acronymes">Acronymes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/glossaire.html#commandes-courantes">Commandes Courantes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/glossaire.html#valeurs-cles">Valeurs Clés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../fr/glossaire.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fr/index.html#indices">Indices</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Mangetamain Analytics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Code du module</a></li>
+      <li class="breadcrumb-item active">mangetamain_analytics.visualization.analyse_ratings_simple</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Code source de mangetamain_analytics.visualization.analyse_ratings_simple</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># &lt;MÉTADONNÉES&gt;</span>
+<span class="c1"># Nom: analyse_ratings_simple.py</span>
+<span class="c1"># Description: Analyse simple de la distribution des notes des utilisateurs</span>
+<span class="c1"># Auteur: Exemple</span>
+<span class="c1"># Date: 2024-10-22</span>
+<span class="c1"># Version: 1.0</span>
+<span class="c1"># Catégorie: Analyse exploratoire</span>
+<span class="c1"># &lt;/MÉTADONNÉES&gt;</span>
+
+<span class="c1"># &lt;IMPORTS&gt;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">duckdb</span>
+
+<span class="c1"># Imports conditionnels pour Streamlit</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">streamlit</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
+
+    <span class="n">STREAMLIT_AVAILABLE</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="n">STREAMLIT_AVAILABLE</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># Fallback pour matplotlib si pas de plotly</span>
+    <span class="k">try</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+        <span class="n">MATPLOTLIB_AVAILABLE</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">MATPLOTLIB_AVAILABLE</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="c1"># &lt;/IMPORTS&gt;</span>
+
+
+<div class="viewcode-block" id="setup_s3_connection">
+<a class="viewcode-back" href="../../../fr/modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.setup_s3_connection">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_s3_connection</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configure la connexion S3 pour DuckDB&quot;&quot;&quot;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;INSTALL httpfs; LOAD httpfs;&quot;</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SET s3_region=&#39;garage-fast&#39;&quot;</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SET s3_endpoint=&#39;s3fast.lafrance.io&#39;&quot;</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SET s3_use_ssl=false&quot;</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SET s3_url_style=&#39;path&#39;&quot;</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SET s3_access_key_id=&#39;GK4febbfbbce789dbbe85f1bad&#39;&quot;</span><span class="p">)</span>
+    <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+        <span class="s2">&quot;SET s3_secret_access_key=&#39;50e63b5146a4298f2f79a7e0fe5d5b602b4ef26434c6c5c72d017b85d2d61321&#39;&quot;</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">conn</span></div>
+
+
+
+<div class="viewcode-block" id="get_ratings_data">
+<a class="viewcode-back" href="../../../fr/modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.get_ratings_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ratings_data</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Récupère les données depuis le Parquet S3&quot;&quot;&quot;</span>
+    <span class="c1"># &lt;REQUÊTE_SQL&gt;</span>
+    <span class="n">conn</span> <span class="o">=</span> <span class="n">setup_s3_connection</span><span class="p">()</span>
+
+    <span class="n">ratings_data</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        SELECT</span>
+<span class="sd">            rating,</span>
+<span class="sd">            COUNT(*) as count</span>
+<span class="sd">        FROM &#39;s3://mangetamain/interactions_sample.parquet&#39;</span>
+<span class="sd">        WHERE rating IS NOT NULL</span>
+<span class="sd">        GROUP BY rating</span>
+<span class="sd">        ORDER BY rating</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="p">)</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">()</span>
+    <span class="c1"># &lt;/REQUÊTE_SQL&gt;</span>
+
+    <span class="k">return</span> <span class="n">ratings_data</span></div>
+
+
+
+<div class="viewcode-block" id="process_data">
+<a class="viewcode-back" href="../../../fr/modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.process_data">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">process_data</span><span class="p">(</span><span class="n">ratings_data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Traite les données pour l&#39;analyse&quot;&quot;&quot;</span>
+    <span class="c1"># &lt;TRAITEMENT&gt;</span>
+    <span class="k">if</span> <span class="n">ratings_data</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ratings_data</span><span class="p">,</span> <span class="p">{}</span>
+
+    <span class="n">total</span> <span class="o">=</span> <span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;percentage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="n">total</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+
+    <span class="c1"># Statistiques</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;total&quot;</span><span class="p">:</span> <span class="n">total</span><span class="p">,</span>
+        <span class="s2">&quot;avg_rating&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">total</span><span class="p">,</span>
+        <span class="s2">&quot;mode_rating&quot;</span><span class="p">:</span> <span class="n">ratings_data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">idxmax</span><span class="p">(),</span> <span class="s2">&quot;rating&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;pct_5_stars&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">ratings_data</span><span class="p">[</span><span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">5</span><span class="p">][</span><span class="s2">&quot;percentage&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="mi">5</span> <span class="ow">in</span> <span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+            <span class="k">else</span> <span class="mi">0</span>
+        <span class="p">),</span>
+    <span class="p">}</span>
+    <span class="c1"># &lt;/TRAITEMENT&gt;</span>
+
+    <span class="k">return</span> <span class="n">ratings_data</span><span class="p">,</span> <span class="n">stats</span></div>
+
+
+
+<div class="viewcode-block" id="create_plots_streamlit">
+<a class="viewcode-back" href="../../../fr/modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.create_plots_streamlit">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_plots_streamlit</span><span class="p">(</span><span class="n">ratings_data</span><span class="p">,</span> <span class="n">stats</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Crée les graphiques pour Streamlit&quot;&quot;&quot;</span>
+    <span class="c1"># &lt;GRAPHIQUE_PRINCIPAL&gt;</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
+        <span class="n">ratings_data</span><span class="p">,</span>
+        <span class="n">x</span><span class="o">=</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Distribution des Notes (0-5 étoiles)&quot;</span><span class="p">,</span>
+        <span class="n">labels</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="s2">&quot;Nombre d&#39;évaluations&quot;</span><span class="p">,</span> <span class="s2">&quot;rating&quot;</span><span class="p">:</span> <span class="s2">&quot;Note&quot;</span><span class="p">},</span>
+        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span>
+        <span class="n">color_continuous_scale</span><span class="o">=</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+        <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Note&quot;</span><span class="p">,</span> <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Nombre d&#39;évaluations&quot;</span><span class="p">,</span> <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+
+    <span class="n">st</span><span class="o">.</span><span class="n">plotly_chart</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">use_container_width</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># &lt;/GRAPHIQUE_PRINCIPAL&gt;</span>
+
+    <span class="c1"># &lt;GRAPHIQUES_SECONDAIRES&gt;</span>
+    <span class="n">fig_pie</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span>
+        <span class="n">ratings_data</span><span class="p">,</span>
+        <span class="n">values</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">,</span>
+        <span class="n">names</span><span class="o">=</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span>
+        <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Répartition des Notes (Pourcentages)&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">plotly_chart</span><span class="p">(</span><span class="n">fig_pie</span><span class="p">,</span> <span class="n">use_container_width</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+    <span class="c1"># &lt;/GRAPHIQUES_SECONDAIRES&gt;</span>
+
+
+<div class="viewcode-block" id="create_plots_matplotlib">
+<a class="viewcode-back" href="../../../fr/modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.create_plots_matplotlib">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_plots_matplotlib</span><span class="p">(</span><span class="n">ratings_data</span><span class="p">,</span> <span class="n">stats</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Crée les graphiques avec matplotlib (mode standalone)&quot;&quot;&quot;</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+    <span class="c1"># Graphique en barres</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
+        <span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">],</span> <span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;skyblue&quot;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s2">&quot;navy&quot;</span>
+    <span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Note&quot;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Nombre d&#39;évaluations&quot;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Distribution des Notes&quot;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Graphique en camembert</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">],</span> <span class="n">labels</span><span class="o">=</span><span class="n">ratings_data</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">],</span> <span class="n">autopct</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%1.1f%%</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Répartition des Notes (%)&quot;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;/tmp/ratings_analysis.png&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;📊 Graphique sauvé : /tmp/ratings_analysis.png&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="print_stats">
+<a class="viewcode-back" href="../../../fr/modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.print_stats">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">print_stats</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Affiche les statistiques en mode console&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;📊 STATISTIQUES&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total évaluations    : </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Note moyenne         : </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;avg_rating&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> ⭐&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Note la plus fréquente : </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;mode_rating&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> ⭐&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;% de 5 étoiles       : </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;pct_5_stars&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="print_interpretation">
+<a class="viewcode-back" href="../../../fr/modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.print_interpretation">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">print_interpretation</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Affiche l&#39;interprétation&quot;&quot;&quot;</span>
+    <span class="c1"># &lt;INTERPRÉTATION&gt;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🔍 ANALYSE&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Observations principales :&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Biais positif très fort : majorité de 5 étoiles&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Polarisation : notes basses très rares&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Distribution asymétrique vers le haut&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Implications :&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Utilisateurs notent surtout les recettes aimées&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Système de notation volontaire = biais de sélection&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;- Normalisation nécessaire pour analyses prédictives&quot;</span><span class="p">)</span></div>
+
+    <span class="c1"># &lt;/INTERPRÉTATION&gt;</span>
+
+
+<div class="viewcode-block" id="render_analysis">
+<a class="viewcode-back" href="../../../fr/modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.render_analysis">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">render_analysis</span><span class="p">(</span><span class="n">conn</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fonction principale pour Streamlit</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        conn: Connexion DuckDB (ignorée, on utilise S3 directement)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># &lt;TITRE&gt;</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">subheader</span><span class="p">(</span><span class="s2">&quot;⭐ Distribution des Notes - Analyse Simple&quot;</span><span class="p">)</span>
+    <span class="c1"># &lt;/TITRE&gt;</span>
+
+    <span class="c1"># &lt;DESCRIPTION&gt;</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cette analyse examine la répartition des notes données par les utilisateurs aux recettes.</span>
+
+<span class="sd">    **Contexte :** Dataset Food.com avec 50k interactions échantillonnées depuis S3</span>
+<span class="sd">    **Objectif :** Identifier les patterns de notation et les biais utilisateurs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="p">)</span>
+    <span class="c1"># &lt;/DESCRIPTION&gt;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ratings_data</span> <span class="o">=</span> <span class="n">get_ratings_data</span><span class="p">()</span>
+        <span class="n">ratings_data</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">process_data</span><span class="p">(</span><span class="n">ratings_data</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ratings_data</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+            <span class="n">create_plots_streamlit</span><span class="p">(</span><span class="n">ratings_data</span><span class="p">,</span> <span class="n">stats</span><span class="p">)</span>
+
+            <span class="c1"># &lt;STATISTIQUES&gt;</span>
+            <span class="n">col1</span><span class="p">,</span> <span class="n">col2</span><span class="p">,</span> <span class="n">col3</span><span class="p">,</span> <span class="n">col4</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">columns</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">col1</span><span class="p">:</span>
+                <span class="n">st</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="s2">&quot;Total évaluations&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">col2</span><span class="p">:</span>
+                <span class="n">st</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="s2">&quot;Note moyenne&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;avg_rating&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> ⭐&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">col3</span><span class="p">:</span>
+                <span class="n">st</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="s2">&quot;Note la plus fréquente&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;mode_rating&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> ⭐&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="n">col4</span><span class="p">:</span>
+                <span class="n">st</span><span class="o">.</span><span class="n">metric</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">% d</span><span class="s2">e 5 étoiles&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">&#39;pct_5_stars&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+            <span class="c1"># &lt;/STATISTIQUES&gt;</span>
+
+            <span class="c1"># &lt;DONNÉES_BRUTES&gt;</span>
+            <span class="k">with</span> <span class="n">st</span><span class="o">.</span><span class="n">expander</span><span class="p">(</span><span class="s2">&quot;Détails des données&quot;</span><span class="p">):</span>
+                <span class="n">st</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;**Table de distribution :**&quot;</span><span class="p">)</span>
+                <span class="n">display_df</span> <span class="o">=</span> <span class="n">ratings_data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">display_df</span><span class="p">[</span><span class="s2">&quot;percentage&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">display_df</span><span class="p">[</span><span class="s2">&quot;percentage&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+                <span class="n">st</span><span class="o">.</span><span class="n">dataframe</span><span class="p">(</span><span class="n">display_df</span><span class="p">)</span>
+            <span class="c1"># &lt;/DONNÉES_BRUTES&gt;</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">st</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur dans l&#39;analyse : </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../../fr/modules/visualization.html#mangetamain_analytics.visualization.analyse_ratings_simple.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fonction principale pour exécution standalone&quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;🚀 Analyse des Ratings - Mode Standalone&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;📡 Connexion à S3 et récupération des données...&quot;</span><span class="p">)</span>
+        <span class="n">ratings_data</span> <span class="o">=</span> <span class="n">get_ratings_data</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;✅ </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ratings_data</span><span class="p">)</span><span class="si">}</span><span class="s2"> niveaux de notes récupérés&quot;</span><span class="p">)</span>
+
+        <span class="n">ratings_data</span><span class="p">,</span> <span class="n">stats</span> <span class="o">=</span> <span class="n">process_data</span><span class="p">(</span><span class="n">ratings_data</span><span class="p">)</span>
+
+        <span class="c1"># Affichage des données</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">📊 DONNÉES&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">ratings_data</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+        <span class="c1"># Statistiques</span>
+        <span class="n">print_stats</span><span class="p">(</span><span class="n">stats</span><span class="p">)</span>
+
+        <span class="c1"># Interprétation</span>
+        <span class="n">print_interpretation</span><span class="p">()</span>
+
+        <span class="c1"># Graphiques si matplotlib disponible</span>
+        <span class="k">if</span> <span class="n">MATPLOTLIB_AVAILABLE</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">📈 Génération des graphiques...&quot;</span><span class="p">)</span>
+            <span class="n">create_plots_matplotlib</span><span class="p">(</span><span class="n">ratings_data</span><span class="p">,</span> <span class="n">stats</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">⚠️  Matplotlib non disponible - pas de graphiques&quot;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;❌ Erreur : </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># &lt;MODULE_INFO&gt;</span>
+<span class="n">MODULE_INFO</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Analyse Distribution des Notes&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Distribution des ratings avec données Parquet sur S3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="s2">&quot;Analyse exploratoire&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;author&quot;</span><span class="p">:</span> <span class="s2">&quot;Exemple&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tags&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ratings&quot;</span><span class="p">,</span> <span class="s2">&quot;distribution&quot;</span><span class="p">,</span> <span class="s2">&quot;s3&quot;</span><span class="p">,</span> <span class="s2">&quot;parquet&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;data_sources&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;interactions_sample.parquet&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;created_date&quot;</span><span class="p">:</span> <span class="s2">&quot;2024-10-22&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;last_modified&quot;</span><span class="p">:</span> <span class="s2">&quot;2024-10-22&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="c1"># &lt;/MODULE_INFO&gt;</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, Mangetamain Team.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

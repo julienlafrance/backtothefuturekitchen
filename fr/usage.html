@@ -1,0 +1,632 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Utilisation &mdash; Documentation Mangetamain Analytics 2.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d93b9cb1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Documentation Code" href="modules/index.html" />
+    <link rel="prev" title="Application Streamlit" href="application.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Mangetamain Analytics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Choose your language / Choisissez votre langue</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../en/index.html">Mangetamain Analytics Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../en/index.html#deployed-environments">Deployed Environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../en/index.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../en/index.html#project-metrics">Project Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../en/index.html#navigation">Navigation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../en/projet.html">The Project</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/projet.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/projet.html#development-process">Development Process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/projet.html#eda-application-mapping">EDA → Application Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/projet.html#technical-stack">Technical Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/projet.html#environments">Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/projet.html#applied-standards">Applied Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#minute-installation">2-Minute Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#essential-commands">Essential Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#cheat-sheet">Cheat Sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#quick-troubleshooting">Quick Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#typical-workflow">Typical Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#key-metrics">Key Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#resources">Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/installation.html">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#local-installation">Local Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#installation-with-docker">Installation with Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#tests">Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#main-dependencies">Main Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#installation-verification">Installation Verification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/application.html">Streamlit Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/application.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/application.html#structure">Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/application.html#the-4-analyses">The 4 Analyses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/application.html#data-loading">Data Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/application.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/application.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/usage.html">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/usage.html#application-architecture">Application Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/usage.html#available-analysis-modules">Available Analysis Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/usage.html#application-navigation">Application Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/usage.html#customization-and-api">Customization and API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/modules/index.html">Code Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/index.html#organization">Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/index.html#available-modules">Available Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/index.html#conventions">Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/modules/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/utils.html#utils-color-theme">utils.color_theme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/modules/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/data.html#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/data.html#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/exceptions.html#dataloaderror-class">DataLoadError Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/exceptions.html#other-exceptions">Other Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/modules/infrastructure.html">Infrastructure Modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/infrastructure.html#configuration-and-logging">Configuration and Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/infrastructure.html#database-management">Database Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/infrastructure.html#data-exploration-utilities">Data Exploration Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/infrastructure.html#infrastructure-tests">Infrastructure Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/infrastructure.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/architecture.html">Technical Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#deployment-infrastructure">Deployment Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#technical-stack">Technical Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#project-structure">Project Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#environments">Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#database">Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#tests-and-quality">Tests and Quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#logging">Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#security">Security</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/s3.html">Garage S3 Storage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#credentials-configuration">Credentials Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#aws-cli-usage">AWS CLI Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#python-boto3-usage">Python boto3 Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#duckdb-usage">DuckDB Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#polars-usage">Polars Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#performance-tests">Performance Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#bucket-structure">Bucket Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#infrastructure-tests">Infrastructure Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#performance-benchmarks">Performance Benchmarks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/cicd.html">CI/CD Pipeline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#pipeline-architecture">Pipeline Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#github-actions-workflows">GitHub Actions Workflows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#practical-commands">Practical Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#self-hosted-runner">Self-Hosted Runner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#discord-notifications">Discord Notifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#required-configuration">Required Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#metrics">Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#concrete-workflow-examples">Concrete Workflow Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/tests.html">Tests and Coverage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#current-status">Current Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#quick-commands">Quick Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#detailed-coverage">Detailed Coverage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#id1">Infrastructure Tests (50_test)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#test-strategy">Test Strategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#test-patterns">Test Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#useful-pytest-commands">Useful Pytest Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#historical-progress">Historical Progress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/conformite.html">Quality Standards</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/conformite.html#project-management">Project Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/conformite.html#programming">Programming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/conformite.html#tests-and-quality">Tests and Quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/conformite.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/conformite.html#advanced-technical-choices">Advanced Technical Choices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/conformite.html#standards-summary">Standards Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/faq.html">FAQ - Frequently Asked Questions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#installation-and-configuration">Installation and Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#data-and-performance">Data and Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#development">Development</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#tests-and-ci-cd">Tests and CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#docker">Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#deployment">Deployment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#common-errors">Common Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/glossaire.html">Glossary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#technical-terms">Technical Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#project-terms">Project Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#analytics-terms">Analytics Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#infrastructure-terms">Infrastructure Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#acronyms">Acronyms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#common-commands">Common Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#key-values">Key Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../en/index.html#indices">Indices</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation Mangetamain Analytics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#environnements-deployes">Environnements Déployés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#metriques-projet">Métriques Projet</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#navigation">Navigation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="projet.html">Le Projet</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#processus-de-developpement">Processus de Développement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#correspondance-eda-application">Correspondance EDA → Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#environnements">Environnements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#standards-appliques">Standards Appliqués</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html">Guide Démarrage Rapide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#installation-en-2-minutes">Installation en 2 Minutes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#commandes-essentielles">Commandes Essentielles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#cheat-sheet">Cheat Sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#troubleshooting-rapide">Troubleshooting Rapide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#flux-de-travail-typique">Flux de Travail Typique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#metriques-cles">Métriques Clés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#ressources">Ressources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#prerequis">Prérequis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#installation-locale">Installation Locale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#installation-avec-docker">Installation avec Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#tests">Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#dependances-principales">Dépendances Principales</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#verification-de-l-installation">Vérification de l’Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="application.html">Application Streamlit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="application.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#structure">Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#les-4-analyses">Les 4 Analyses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#chargement-des-donnees">Chargement des Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Utilisation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#architecture-de-l-application">Architecture de l’Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modules-d-analyse-disponibles">Modules d’Analyse Disponibles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#navigation-dans-l-application">Navigation dans l’Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#personnalisation-et-api">Personnalisation et API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/index.html">Documentation Code</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/index.html#organisation">Organisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/index.html#modules-disponibles">Modules Disponibles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/index.html#conventions">Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-color-theme">utils.color_theme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/data.html#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/data.html#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#classe-dataloaderror">Classe DataLoadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#autres-exceptions">Autres Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/infrastructure.html">Modules Infrastructure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#configuration-et-logging">Configuration et Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#gestion-base-de-donnees">Gestion Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#utilitaires-exploration-donnees">Utilitaires Exploration Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#voir-also">Voir Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html">Architecture Technique</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#infrastructure-deploiement">Infrastructure Déploiement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#structure-du-projet">Structure du Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#environnements">Environnements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#base-de-donnees">Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#tests-et-qualite">Tests et Qualité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#logging">Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#securite">Sécurité</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="s3.html">Stockage S3 Garage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#configuration-credentials">Configuration Credentials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#utilisation-aws-cli">Utilisation AWS CLI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#utilisation-python-boto3">Utilisation Python boto3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#utilisation-duckdb">Utilisation DuckDB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#utilisation-polars">Utilisation Polars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#tests-performance">Tests Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#structure-bucket">Structure Bucket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#depannage">Dépannage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#bonnes-pratiques">Bonnes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#benchmarks-performance">Benchmarks Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="s3.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html">Pipeline CI/CD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#architecture-pipeline">Architecture Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#workflows-github-actions">Workflows GitHub Actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#commandes-pratiques">Commandes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#runner-self-hosted">Runner Self-Hosted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#notifications-discord">Notifications Discord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#depannage">Dépannage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#configuration-requise">Configuration Requise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#metriques">Métriques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#exemples-workflows-concrets">Exemples Workflows Concrets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html">Tests et Coverage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#etat-actuel">État Actuel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#commandes-rapides">Commandes Rapides</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#coverage-detaille">Coverage Détaillé</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#id1">Tests Infrastructure (50_test)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#strategie-de-test">Stratégie de Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#patterns-de-test">Patterns de Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#resolution-de-problemes">Résolution de Problèmes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#commandes-pytest-utiles">Commandes Pytest Utiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#bonnes-pratiques">Bonnes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#progression-historique">Progression Historique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html">Standards Qualité</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#gestion-de-projet">Gestion de Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#programmation">Programmation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#tests-et-qualite">Tests et Qualité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#choix-techniques-avances">Choix Techniques Avancés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#resume-standards">Résumé Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html">FAQ - Questions Fréquentes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#installation-et-configuration">Installation et Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#donnees-et-performance">Données et Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#developpement">Développement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#tests-et-ci-cd">Tests et CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#docker">Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#deploiement">Déploiement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#erreurs-courantes">Erreurs Courantes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="glossaire.html">Glossaire</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#termes-techniques">Termes Techniques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#termes-projet">Termes Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#termes-analytics">Termes Analytics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#termes-infrastructure">Termes Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#acronymes">Acronymes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#commandes-courantes">Commandes Courantes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#valeurs-cles">Valeurs Clés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#indices">Indices</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mangetamain Analytics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Documentation Mangetamain Analytics</a></li>
+      <li class="breadcrumb-item active">Utilisation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/fr/usage.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="utilisation">
+<h1>Utilisation<a class="headerlink" href="#utilisation" title="Lien vers cette rubrique"></a></h1>
+<p>Guide d’utilisation de l’application Mangetamain Analytics.</p>
+<p><strong>Documentation code</strong> : voir <a class="reference internal" href="modules/index.html"><span class="doc">Documentation Code</span></a> pour référence détaillée.</p>
+<p><strong>Exemples code</strong> : voir <a class="reference internal" href="modules/utils.html"><span class="doc">Module utils</span></a> (couleurs, thème) et <a class="reference internal" href="modules/data.html"><span class="doc">Module data</span></a> (chargement données).</p>
+<section id="architecture-de-l-application">
+<h2>Architecture de l’Application<a class="headerlink" href="#architecture-de-l-application" title="Lien vers cette rubrique"></a></h2>
+<p>L’application Mangetamain Analytics est organisée en modules :</p>
+<ul class="simple">
+<li><p><strong>utils/</strong> : Fonctions utilitaires (couleurs, thème graphique)</p></li>
+<li><p><strong>visualization/</strong> : Modules d’analyse et visualisation</p></li>
+<li><p><strong>data/</strong> : Chargement et cache des données</p></li>
+</ul>
+</section>
+<section id="modules-d-analyse-disponibles">
+<h2>Modules d’Analyse Disponibles<a class="headerlink" href="#modules-d-analyse-disponibles" title="Lien vers cette rubrique"></a></h2>
+<section id="analyse-des-tendances">
+<h3>1. Analyse des Tendances<a class="headerlink" href="#analyse-des-tendances" title="Lien vers cette rubrique"></a></h3>
+<p>Module : <code class="docutils literal notranslate"><span class="pre">visualization.analyse_trendlines_v2</span></code></p>
+<p>Analyse l’évolution des recettes de 1999 à 2018 :</p>
+<ul class="simple">
+<li><p>Volume d’interactions (croissance exponentielle)</p></li>
+<li><p>Durée de préparation (réduction -15% en 20 ans)</p></li>
+<li><p>Complexité des recettes (score +12%)</p></li>
+<li><p>Nombre d’ingrédients (stable ~9 ingrédients)</p></li>
+<li><p>Profils nutritionnels (calories -8%)</p></li>
+<li><p>Tags populaires (shift vers healthy/vegan)</p></li>
+</ul>
+<p><strong>Insights clés</strong>:</p>
+<ul class="simple">
+<li><p><strong>Boom 2008-2018</strong>: +350% volume interactions</p></li>
+<li><p><strong>Simplification</strong>: Recettes plus rapides (-15% temps)</p></li>
+<li><p><strong>Santé</strong>: Réduction calories, hausse tags végétariens</p></li>
+</ul>
+<p><strong>Visualisations</strong>:</p>
+<ul class="simple">
+<li><p>Graphiques temporels interactifs avec zoom</p></li>
+<li><p>Tendances avec régression linéaire (R² affichés)</p></li>
+<li><p>Subplots synchronisés (6 graphiques)</p></li>
+<li><p>Annotations insights majeurs</p></li>
+</ul>
+</section>
+<section id="analyse-saisonniere">
+<h3>2. Analyse Saisonnière<a class="headerlink" href="#analyse-saisonniere" title="Lien vers cette rubrique"></a></h3>
+<p>Module : <code class="docutils literal notranslate"><span class="pre">visualization.analyse_seasonality</span></code></p>
+<p>Identifie les patterns saisonniers :</p>
+<ul class="simple">
+<li><p>Recettes par saison (automne +18% vs été)</p></li>
+<li><p>Variations mensuelles nutritionnelles</p></li>
+<li><p>Pics saisonniers d’activité</p></li>
+<li><p>Distribution catégories par saison</p></li>
+</ul>
+<p><strong>Insights clés</strong>:</p>
+<ul class="simple">
+<li><p><strong>Hiver</strong>: Pics calories (+12%), recettes réconfort</p></li>
+<li><p><strong>Été</strong>: Recettes légères, salades, BBQ</p></li>
+<li><p><strong>Décembre</strong>: Pic absolu (+45% vs moyenne)</p></li>
+<li><p><strong>Patterns stables</strong>: Reproduction annuelle</p></li>
+</ul>
+<p><strong>Visualisations</strong>:</p>
+<ul class="simple">
+<li><p>Histogrammes saisonniers avec palette thématique</p></li>
+<li><p>Heatmaps mensuelles (12 mois × métriques)</p></li>
+<li><p>Graphiques de distribution nutritionnelle</p></li>
+<li><p>Codage couleur saisons (orange/bleu/vert/rouge)</p></li>
+</ul>
+</section>
+<section id="analyse-weekend">
+<h3>3. Analyse Weekend<a class="headerlink" href="#analyse-weekend" title="Lien vers cette rubrique"></a></h3>
+<p>Module : <code class="docutils literal notranslate"><span class="pre">visualization.analyse_weekend</span></code></p>
+<p>Étudie l’impact du rythme hebdomadaire :</p>
+<ul class="simple">
+<li><p>Comparaison jours ouvrés vs weekend</p></li>
+<li><p>Variations de complexité selon disponibilité</p></li>
+<li><p>Impact sur types de recettes</p></li>
+</ul>
+<p><strong>Insights clés</strong>:</p>
+<ul class="simple">
+<li><p><strong>Lundi = champion</strong>: +45% publications vs moyenne</p></li>
+<li><p><strong>Samedi = creux</strong>: -49% publications</p></li>
+<li><p><strong>Durée/complexité</strong>: Aucune différence significative</p></li>
+<li><p><strong>Conclusion</strong>: Moment publication ≠ type recette</p></li>
+<li><p><strong>Effet psychologique</strong>: Planification début semaine</p></li>
+</ul>
+<p><strong>Visualisations</strong>:</p>
+<ul class="simple">
+<li><p>3 panels comparatifs (volume, distribution, écarts)</p></li>
+<li><p>Tests statistiques Chi-2 (p-values affichées)</p></li>
+<li><p>Barres bicolores semaine/weekend</p></li>
+<li><p>Écarts à la moyenne en %</p></li>
+</ul>
+</section>
+<section id="analyse-des-ratings">
+<h3>4. Analyse des Ratings<a class="headerlink" href="#analyse-des-ratings" title="Lien vers cette rubrique"></a></h3>
+<p>Module : <code class="docutils literal notranslate"><span class="pre">visualization.analyse_ratings</span></code></p>
+<p>Étudie les notes utilisateurs :</p>
+<ul class="simple">
+<li><p>Distribution des notes (0-5 étoiles)</p></li>
+<li><p>Statistiques agrégées (moyenne 4.63/5)</p></li>
+<li><p>Corrélations avec caractéristiques recettes</p></li>
+<li><p>Analyse des outliers</p></li>
+</ul>
+<p><strong>Insights clés</strong>:</p>
+<ul class="simple">
+<li><p><strong>Biais positif massif</strong>: 78% notes = 5 étoiles</p></li>
+<li><p><strong>Moyenne: 4.63/5</strong> (distribution asymétrique)</p></li>
+<li><p><strong>Notes basses rares</strong>: &lt;2% notes ≤ 2 étoiles</p></li>
+<li><p><strong>Corrélations faibles</strong>: Complexité/temps ≠ note</p></li>
+<li><p><strong>Effet auto-sélection</strong>: Utilisateurs satisfaits notent</p></li>
+</ul>
+<p><strong>Visualisations</strong>:</p>
+<ul class="simple">
+<li><p>Histogrammes interactifs (hover détails)</p></li>
+<li><p>Distribution avec courbe densité</p></li>
+<li><p>Métriques satisfaction (moyenne, médiane, mode)</p></li>
+<li><p>Boxplots par tranche rating</p></li>
+</ul>
+</section>
+</section>
+<section id="navigation-dans-l-application">
+<h2>Navigation dans l’Application<a class="headerlink" href="#navigation-dans-l-application" title="Lien vers cette rubrique"></a></h2>
+<section id="sidebar">
+<h3>Sidebar<a class="headerlink" href="#sidebar" title="Lien vers cette rubrique"></a></h3>
+<p>Le menu sidebar permet de :</p>
+<ul class="simple">
+<li><p>Sélectionner l’analyse à afficher</p></li>
+<li><p>Visualiser les badges environnement (PREPROD/PROD)</p></li>
+<li><p>Vérifier le statut S3</p></li>
+</ul>
+</section>
+<section id="widgets-interactifs">
+<h3>Widgets Interactifs<a class="headerlink" href="#widgets-interactifs" title="Lien vers cette rubrique"></a></h3>
+<p>Chaque analyse propose des widgets :</p>
+<ul class="simple">
+<li><p>Sélecteurs temporels (plages de dates, mois, années)</p></li>
+<li><p>Filtres (catégories, tags, plages nutritionnelles)</p></li>
+<li><p>Sélecteurs de métriques</p></li>
+</ul>
+</section>
+</section>
+<section id="personnalisation-et-api">
+<h2>Personnalisation et API<a class="headerlink" href="#personnalisation-et-api" title="Lien vers cette rubrique"></a></h2>
+<p><strong>Charte graphique et couleurs</strong> : voir <a class="reference internal" href="modules/utils.html"><span class="doc">Module utils</span></a> pour exemples complets (<code class="docutils literal notranslate"><span class="pre">chart_theme</span></code>, <code class="docutils literal notranslate"><span class="pre">colors</span></code>).</p>
+<p><strong>Chargement et cache données</strong> : voir <a class="reference internal" href="modules/data.html"><span class="doc">Module data</span></a> pour détails cache Streamlit (TTL 3600s) et fonctions <code class="docutils literal notranslate"><span class="pre">get_recipes_clean()</span></code>, <code class="docutils literal notranslate"><span class="pre">get_ratings_longterm()</span></code>.</p>
+<p><strong>URLs des environnements</strong> : voir <a class="reference internal" href="glossaire.html"><span class="doc">Glossaire</span></a> pour PREPROD/PRODUCTION.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="application.html" class="btn btn-neutral float-left" title="Application Streamlit" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="modules/index.html" class="btn btn-neutral float-right" title="Documentation Code" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, Mangetamain Team.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

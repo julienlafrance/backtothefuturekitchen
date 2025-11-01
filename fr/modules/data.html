@@ -1,0 +1,802 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module data &mdash; Documentation Mangetamain Analytics 2.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d93b9cb1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/translations.js?v=e6b791cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Recherche" href="../../search.html" />
+    <link rel="next" title="Module exceptions" href="exceptions.html" />
+    <link rel="prev" title="Module visualization" href="visualization.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Mangetamain Analytics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Choose your language / Choisissez votre langue</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../en/index.html">Mangetamain Analytics Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../en/index.html#deployed-environments">Deployed Environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../en/index.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../en/index.html#project-metrics">Project Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../en/index.html#navigation">Navigation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../en/projet.html">The Project</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/projet.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/projet.html#development-process">Development Process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/projet.html#eda-application-mapping">EDA → Application Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/projet.html#technical-stack">Technical Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/projet.html#environments">Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/projet.html#applied-standards">Applied Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/quickstart.html#minute-installation">2-Minute Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/quickstart.html#essential-commands">Essential Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/quickstart.html#cheat-sheet">Cheat Sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/quickstart.html#quick-troubleshooting">Quick Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/quickstart.html#typical-workflow">Typical Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/quickstart.html#key-metrics">Key Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/quickstart.html#resources">Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/installation.html">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/installation.html#local-installation">Local Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/installation.html#installation-with-docker">Installation with Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/installation.html#tests">Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/installation.html#main-dependencies">Main Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/installation.html#installation-verification">Installation Verification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/installation.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/application.html">Streamlit Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/application.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/application.html#structure">Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/application.html#the-4-analyses">The 4 Analyses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/application.html#data-loading">Data Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/application.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/application.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/usage.html">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/usage.html#application-architecture">Application Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/usage.html#available-analysis-modules">Available Analysis Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/usage.html#application-navigation">Application Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/usage.html#customization-and-api">Customization and API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/modules/index.html">Code Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/index.html#organization">Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/index.html#available-modules">Available Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/index.html#conventions">Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/modules/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/utils.html#utils-color-theme">utils.color_theme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/modules/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/data.html#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/data.html#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/exceptions.html#dataloaderror-class">DataLoadError Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/exceptions.html#other-exceptions">Other Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/modules/infrastructure.html">Infrastructure Modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/infrastructure.html#configuration-and-logging">Configuration and Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/infrastructure.html#database-management">Database Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/infrastructure.html#data-exploration-utilities">Data Exploration Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/infrastructure.html#infrastructure-tests">Infrastructure Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/modules/infrastructure.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/architecture.html">Technical Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/architecture.html#deployment-infrastructure">Deployment Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/architecture.html#technical-stack">Technical Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/architecture.html#project-structure">Project Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/architecture.html#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/architecture.html#environments">Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/architecture.html#database">Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/architecture.html#tests-and-quality">Tests and Quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/architecture.html#logging">Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/architecture.html#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/architecture.html#security">Security</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/s3.html">Garage S3 Storage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#credentials-configuration">Credentials Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#aws-cli-usage">AWS CLI Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#python-boto3-usage">Python boto3 Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#duckdb-usage">DuckDB Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#polars-usage">Polars Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#performance-tests">Performance Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#bucket-structure">Bucket Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#infrastructure-tests">Infrastructure Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#performance-benchmarks">Performance Benchmarks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/s3.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/cicd.html">CI/CD Pipeline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/cicd.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/cicd.html#pipeline-architecture">Pipeline Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/cicd.html#github-actions-workflows">GitHub Actions Workflows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/cicd.html#practical-commands">Practical Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/cicd.html#self-hosted-runner">Self-Hosted Runner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/cicd.html#discord-notifications">Discord Notifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/cicd.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/cicd.html#required-configuration">Required Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/cicd.html#metrics">Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/cicd.html#concrete-workflow-examples">Concrete Workflow Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/cicd.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/cicd.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/tests.html">Tests and Coverage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/tests.html#current-status">Current Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/tests.html#quick-commands">Quick Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/tests.html#detailed-coverage">Detailed Coverage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/tests.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/tests.html#id1">Infrastructure Tests (50_test)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/tests.html#test-strategy">Test Strategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/tests.html#test-patterns">Test Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/tests.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/tests.html#useful-pytest-commands">Useful Pytest Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/tests.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/tests.html#historical-progress">Historical Progress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/tests.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/conformite.html">Quality Standards</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/conformite.html#project-management">Project Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/conformite.html#programming">Programming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/conformite.html#tests-and-quality">Tests and Quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/conformite.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/conformite.html#advanced-technical-choices">Advanced Technical Choices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/conformite.html#standards-summary">Standards Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/faq.html">FAQ - Frequently Asked Questions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/faq.html#installation-and-configuration">Installation and Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/faq.html#data-and-performance">Data and Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/faq.html#development">Development</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/faq.html#tests-and-ci-cd">Tests and CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/faq.html#docker">Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/faq.html#deployment">Deployment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/faq.html#common-errors">Common Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/faq.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../en/glossaire.html">Glossary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../en/glossaire.html#technical-terms">Technical Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/glossaire.html#project-terms">Project Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/glossaire.html#analytics-terms">Analytics Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/glossaire.html#infrastructure-terms">Infrastructure Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/glossaire.html#acronyms">Acronyms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/glossaire.html#common-commands">Common Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/glossaire.html#key-values">Key Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../en/glossaire.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../en/index.html#indices">Indices</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Documentation Mangetamain Analytics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#environnements-deployes">Environnements Déployés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#metriques-projet">Métriques Projet</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#navigation">Navigation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../projet.html">Le Projet</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../projet.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../projet.html#processus-de-developpement">Processus de Développement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../projet.html#correspondance-eda-application">Correspondance EDA → Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../projet.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../projet.html#environnements">Environnements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../projet.html#standards-appliques">Standards Appliqués</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../quickstart.html">Guide Démarrage Rapide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../quickstart.html#installation-en-2-minutes">Installation en 2 Minutes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../quickstart.html#commandes-essentielles">Commandes Essentielles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../quickstart.html#cheat-sheet">Cheat Sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../quickstart.html#troubleshooting-rapide">Troubleshooting Rapide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../quickstart.html#flux-de-travail-typique">Flux de Travail Typique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../quickstart.html#metriques-cles">Métriques Clés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../quickstart.html#ressources">Ressources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../installation.html#prerequis">Prérequis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../installation.html#installation-locale">Installation Locale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../installation.html#installation-avec-docker">Installation avec Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../installation.html#tests">Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../installation.html#dependances-principales">Dépendances Principales</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../installation.html#verification-de-l-installation">Vérification de l’Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../installation.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../application.html">Application Streamlit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../application.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../application.html#structure">Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../application.html#les-4-analyses">Les 4 Analyses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../application.html#chargement-des-donnees">Chargement des Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../application.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../application.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../usage.html">Utilisation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../usage.html#architecture-de-l-application">Architecture de l’Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../usage.html#modules-d-analyse-disponibles">Modules d’Analyse Disponibles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../usage.html#navigation-dans-l-application">Navigation dans l’Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../usage.html#personnalisation-et-api">Personnalisation et API</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Documentation Code</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="index.html#organisation">Organisation</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html#modules-disponibles">Modules Disponibles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="index.html#conventions">Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#utils-color-theme">utils.color_theme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exceptions.html#classe-dataloaderror">Classe DataLoadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exceptions.html#autres-exceptions">Autres Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="infrastructure.html">Modules Infrastructure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="infrastructure.html#configuration-et-logging">Configuration et Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="infrastructure.html#gestion-base-de-donnees">Gestion Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="infrastructure.html#utilitaires-exploration-donnees">Utilitaires Exploration Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="infrastructure.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="infrastructure.html#voir-also">Voir Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../architecture.html">Architecture Technique</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../architecture.html#infrastructure-deploiement">Infrastructure Déploiement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../architecture.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../architecture.html#structure-du-projet">Structure du Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../architecture.html#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../architecture.html#environnements">Environnements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../architecture.html#base-de-donnees">Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../architecture.html#tests-et-qualite">Tests et Qualité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../architecture.html#logging">Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../architecture.html#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../architecture.html#securite">Sécurité</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../s3.html">Stockage S3 Garage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#configuration-credentials">Configuration Credentials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#utilisation-aws-cli">Utilisation AWS CLI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#utilisation-python-boto3">Utilisation Python boto3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#utilisation-duckdb">Utilisation DuckDB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#utilisation-polars">Utilisation Polars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#tests-performance">Tests Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#structure-bucket">Structure Bucket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#depannage">Dépannage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#bonnes-pratiques">Bonnes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#benchmarks-performance">Benchmarks Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../s3.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../cicd.html">Pipeline CI/CD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../cicd.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cicd.html#architecture-pipeline">Architecture Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cicd.html#workflows-github-actions">Workflows GitHub Actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cicd.html#commandes-pratiques">Commandes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cicd.html#runner-self-hosted">Runner Self-Hosted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cicd.html#notifications-discord">Notifications Discord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cicd.html#depannage">Dépannage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cicd.html#configuration-requise">Configuration Requise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cicd.html#metriques">Métriques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cicd.html#exemples-workflows-concrets">Exemples Workflows Concrets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cicd.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cicd.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../tests.html">Tests et Coverage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../tests.html#etat-actuel">État Actuel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tests.html#commandes-rapides">Commandes Rapides</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tests.html#coverage-detaille">Coverage Détaillé</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tests.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tests.html#id1">Tests Infrastructure (50_test)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tests.html#strategie-de-test">Stratégie de Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tests.html#patterns-de-test">Patterns de Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tests.html#resolution-de-problemes">Résolution de Problèmes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tests.html#commandes-pytest-utiles">Commandes Pytest Utiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tests.html#bonnes-pratiques">Bonnes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tests.html#progression-historique">Progression Historique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tests.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../conformite.html">Standards Qualité</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../conformite.html#gestion-de-projet">Gestion de Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../conformite.html#programmation">Programmation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../conformite.html#tests-et-qualite">Tests et Qualité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../conformite.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../conformite.html#choix-techniques-avances">Choix Techniques Avancés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../conformite.html#resume-standards">Résumé Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../faq.html">FAQ - Questions Fréquentes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../faq.html#installation-et-configuration">Installation et Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../faq.html#donnees-et-performance">Données et Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../faq.html#developpement">Développement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../faq.html#tests-et-ci-cd">Tests et CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../faq.html#docker">Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../faq.html#deploiement">Déploiement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../faq.html#erreurs-courantes">Erreurs Courantes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../faq.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../glossaire.html">Glossaire</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../glossaire.html#termes-techniques">Termes Techniques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../glossaire.html#termes-projet">Termes Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../glossaire.html#termes-analytics">Termes Analytics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../glossaire.html#termes-infrastructure">Termes Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../glossaire.html#acronymes">Acronymes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../glossaire.html#commandes-courantes">Commandes Courantes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../glossaire.html#valeurs-cles">Valeurs Clés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../glossaire.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html#indices">Indices</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Mangetamain Analytics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Documentation Mangetamain Analytics</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Documentation Code</a></li>
+      <li class="breadcrumb-item active">Module data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/fr/modules/data.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-data">
+<h1>Module data<a class="headerlink" href="#module-data" title="Lien vers cette rubrique"></a></h1>
+<p>Chargement et cache des données depuis S3 Parquet avec Streamlit &#64;st.cache_data (TTL 3600s).</p>
+<p><strong>Données</strong> : 178K recettes + 1.1M ratings (~450 MB Parquet) → voir <a class="reference internal" href="../glossaire.html"><span class="doc">Glossaire</span></a> pour détails.</p>
+<section id="data-loaders">
+<h2>data.loaders<a class="headerlink" href="#data-loaders" title="Lien vers cette rubrique"></a></h2>
+<p>Classe DataLoader pour chargement de données avec gestion d’erreurs robuste.</p>
+<p id="module-mangetamain_analytics.data.loaders">Classes pour le chargement de données avec gestion d’erreurs.</p>
+<p>Ce module contient les classes pour charger les données depuis S3/DuckDB
+avec une gestion robuste des exceptions personnalisées.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="mangetamain_analytics.data.loaders.DataLoader">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mangetamain_analytics.data.loaders.</span></span><span class="sig-name descname"><span class="pre">DataLoader</span></span><a class="reference internal" href="../../_modules/mangetamain_analytics/data/loaders.html#DataLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mangetamain_analytics.data.loaders.DataLoader" title="Lien vers cette définition"></a></dt>
+<dd><p>Bases : <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(disponible dans Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Classe pour charger les données avec gestion d’erreurs robuste.</p>
+<p>Cette classe encapsule la logique de chargement de données depuis
+mangetamain_data_utils avec gestion appropriée des exceptions.</p>
+<div class="admonition-exemples admonition">
+<p class="admonition-title">Exemples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">recipes</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_recipes</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ratings</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_ratings</span><span class="p">(</span><span class="n">min_interactions</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="mangetamain_analytics.data.loaders.DataLoader.load_recipes">
+<span class="sig-name descname"><span class="pre">load_recipes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(disponible dans Python v3.14)"><span class="pre">Any</span></a></span></span><a class="reference internal" href="../../_modules/mangetamain_analytics/data/loaders.html#DataLoader.load_recipes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mangetamain_analytics.data.loaders.DataLoader.load_recipes" title="Lien vers cette définition"></a></dt>
+<dd><p>Charge les recettes depuis S3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Renvoie<span class="colon">:</span></dt>
+<dd class="field-odd"><p>DataFrame Polars avec les recettes</p>
+</dd>
+<dt class="field-even">Lève<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>DataLoadError</strong> – Si le module est introuvable ou si le chargement échoue</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mangetamain_analytics.data.loaders.DataLoader.load_ratings">
+<span class="sig-name descname"><span class="pre">load_ratings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_interactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(disponible dans Python v3.14)"><span class="pre">Any</span></a></span></span><a class="reference internal" href="../../_modules/mangetamain_analytics/data/loaders.html#DataLoader.load_ratings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mangetamain_analytics.data.loaders.DataLoader.load_ratings" title="Lien vers cette définition"></a></dt>
+<dd><p>Charge les ratings pour analyse long-terme depuis S3.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Paramètres<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>min_interactions</strong> – Nombre minimum d’interactions requises</p></li>
+<li><p><strong>return_metadata</strong> – Si True, retourne (data, metadata)</p></li>
+<li><p><strong>verbose</strong> – Mode verbeux</p></li>
+</ul>
+</dd>
+<dt class="field-even">Renvoie<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame Polars avec les ratings (ou tuple si return_metadata=True)</p>
+</dd>
+<dt class="field-odd">Lève<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>DataLoadError</strong> – Si le module est introuvable ou si le chargement échoue</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<section id="classe-dataloader">
+<h3>Classe DataLoader<a class="headerlink" href="#classe-dataloader" title="Lien vers cette rubrique"></a></h3>
+<p>Encapsule la logique de chargement depuis mangetamain_data_utils avec exceptions personnalisées.</p>
+<p><strong>Méthodes</strong> :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">load_recipes()</span></code> : Charge recettes depuis S3 Parquet</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">load_ratings(min_interactions,</span> <span class="pre">return_metadata,</span> <span class="pre">verbose)</span></code> : Charge ratings pour analyse long-terme</p></li>
+</ul>
+<p><strong>Exceptions levées</strong> :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DataLoadError</span></code> : Si module introuvable ou chargement S3 échoue</p></li>
+</ul>
+<p><strong>Exemple</strong> :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">mangetamain_analytics.data.loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mangetamain_analytics.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoadError</span>
+
+<span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">()</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">recipes</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">load_recipes</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Chargé </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">recipes</span><span class="p">)</span><span class="si">}</span><span class="s2"> recettes&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">DataLoadError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Erreur: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">source</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">detail</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="relation-avec-cached-loaders">
+<h3>Relation avec cached_loaders<a class="headerlink" href="#relation-avec-cached-loaders" title="Lien vers cette rubrique"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">cached_loaders</span></code> utilise DataLoader en interne :</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DataLoader</span></code> : Logique métier + gestion erreurs (testable)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cached_loaders</span></code> : Wrapping avec <code class="docutils literal notranslate"><span class="pre">&#64;st.cache_data</span></code> (cache Streamlit)</p></li>
+</ol>
+<p>Cette séparation permet de tester DataLoader sans mocker Streamlit.</p>
+</section>
+</section>
+<section id="data-cached-loaders">
+<h2>data.cached_loaders<a class="headerlink" href="#data-cached-loaders" title="Lien vers cette rubrique"></a></h2>
+<p>Fonctions de chargement des données avec cache Streamlit.</p>
+<p id="module-mangetamain_analytics.data.cached_loaders">Module pour charger les données avec cache Streamlit.</p>
+<p>Ce module wrapper les fonctions de chargement avec le décorateur &#64;st.cache_data
+pour améliorer les performances. La logique de chargement et de gestion
+d’erreurs est déléguée à la classe DataLoader.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="mangetamain_analytics.data.cached_loaders.get_recipes_clean">
+<span class="sig-prename descclassname"><span class="pre">mangetamain_analytics.data.cached_loaders.</span></span><span class="sig-name descname"><span class="pre">get_recipes_clean</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(disponible dans Python v3.14)"><span class="pre">Any</span></a></span></span><a class="headerlink" href="#mangetamain_analytics.data.cached_loaders.get_recipes_clean" title="Lien vers cette définition"></a></dt>
+<dd><p>Charge les recettes depuis S3 avec cache (1h).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="mangetamain_analytics.data.cached_loaders.get_ratings_longterm">
+<span class="sig-prename descclassname"><span class="pre">mangetamain_analytics.data.cached_loaders.</span></span><span class="sig-name descname"><span class="pre">get_ratings_longterm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_interactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(disponible dans Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(disponible dans Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(disponible dans Python v3.14)"><span class="pre">Any</span></a></span></span><a class="headerlink" href="#mangetamain_analytics.data.cached_loaders.get_ratings_longterm" title="Lien vers cette définition"></a></dt>
+<dd><p>Charge les ratings pour analyse long-terme depuis S3 avec cache (1h).</p>
+</dd></dl>
+
+<section id="fonctions-principales">
+<h3>Fonctions Principales<a class="headerlink" href="#fonctions-principales" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_recipes_clean()</span></code> : Charge les recettes depuis S3 Parquet</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_ratings_longterm()</span></code> : Charge les ratings pour analyse long-terme</p></li>
+</ul>
+</section>
+<section id="schema-des-donnees">
+<h3>Schéma des Données<a class="headerlink" href="#schema-des-donnees" title="Lien vers cette rubrique"></a></h3>
+<p><strong>get_recipes_clean() retourne</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> : Identifiant unique recette (int)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code> : Nom de la recette (str)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">minutes</span></code> : Temps de préparation en minutes (int)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">submitted</span></code> : Date soumission (date)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">year</span></code> : Année soumission (int)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_ingredients</span></code> : Nombre d’ingrédients (int)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">complexity_score</span></code> : Score complexité 0-10 (float)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">calories</span></code>, <code class="docutils literal notranslate"><span class="pre">protein</span></code>, <code class="docutils literal notranslate"><span class="pre">fat</span></code>, <code class="docutils literal notranslate"><span class="pre">sodium</span></code> : Infos nutritionnelles (float)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tags</span></code> : Liste tags recette (list[str])</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">day_of_week</span></code> : Jour semaine (0=Lundi, 6=Dimanche)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">season</span></code> : Saison (Automne, Hiver, Printemps, Été)</p></li>
+</ul>
+<p><strong>Taille</strong>: 178,265 recettes, ~250 MB Parquet compressé</p>
+<p><strong>get_ratings_longterm() retourne</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user_id</span></code> : Identifiant utilisateur (int)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">recipe_id</span></code> : Identifiant recette (int)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">date</span></code> : Date du rating (date)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rating</span></code> : Note 0-5 étoiles (int)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">review</span></code> : Texte commentaire optionnel (str)</p></li>
+</ul>
+<p><strong>Taille</strong>: 1.1M+ ratings, ~180 MB Parquet compressé</p>
+</section>
+<section id="options-avancees">
+<h3>Options Avancées<a class="headerlink" href="#options-avancees" title="Lien vers cette rubrique"></a></h3>
+<p><strong>get_ratings_longterm() accepte</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">min_interactions</span></code> (int, défaut 100) : Filtrer recettes avec minimum interactions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">return_metadata</span></code> (bool, défaut False) : Retourner tuple (data, metadata)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">verbose</span></code> (bool, défaut False) : Afficher logs détaillés chargement</p></li>
+</ul>
+<p>Metadata contient:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">total_ratings</span></code> : Nombre total ratings</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">total_users</span></code> : Nombre utilisateurs uniques</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">total_recipes</span></code> : Nombre recettes notées</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">date_range</span></code> : Plage temporelle (min, max)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">load_time_ms</span></code> : Temps chargement en millisecondes</p></li>
+</ul>
+</section>
+<section id="mecanisme-de-cache">
+<h3>Mécanisme de Cache<a class="headerlink" href="#mecanisme-de-cache" title="Lien vers cette rubrique"></a></h3>
+<p>Les fonctions utilisent le décorateur <code class="docutils literal notranslate"><span class="pre">&#64;st.cache_data</span></code> avec :</p>
+<ul class="simple">
+<li><p><strong>TTL</strong> : 3600 secondes (1 heure)</p></li>
+<li><p><strong>Spinner</strong> : Message de chargement visible</p></li>
+<li><p><strong>Lazy imports</strong> : Compatibilité tests locaux</p></li>
+</ul>
+</section>
+<section id="exemples-d-utilisation">
+<h3>Exemples d’Utilisation<a class="headerlink" href="#exemples-d-utilisation" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Chargement basique :</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">data.cached_loaders</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_recipes_clean</span><span class="p">,</span> <span class="n">get_ratings_longterm</span>
+
+<span class="c1"># Chargé une seule fois par heure depuis S3</span>
+<span class="n">recipes</span> <span class="o">=</span> <span class="n">get_recipes_clean</span><span class="p">()</span>  <span class="c1"># DataFrame 178K recettes</span>
+<span class="n">ratings</span> <span class="o">=</span> <span class="n">get_ratings_longterm</span><span class="p">()</span>  <span class="c1"># DataFrame 1.1M+ ratings</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">recipes</span><span class="p">)</span><span class="si">}</span><span class="s2"> recipes, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ratings</span><span class="p">)</span><span class="si">}</span><span class="s2"> ratings&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Avec options avancées :</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Filtrer recettes populaires + metadata</span>
+<span class="n">ratings</span><span class="p">,</span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">get_ratings_longterm</span><span class="p">(</span>
+    <span class="n">min_interactions</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>  <span class="c1"># Minimum 100 ratings</span>
+    <span class="n">return_metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total users: </span><span class="si">{</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;total_users&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Date range: </span><span class="si">{</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;date_range&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Load time: </span><span class="si">{</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;load_time_ms&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> ms&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Analyser les données :</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="c1"># Filtrer recettes par année</span>
+<span class="n">recipes_2018</span> <span class="o">=</span> <span class="n">recipes</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;year&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2018</span><span class="p">)</span>
+
+<span class="c1"># Recettes rapides (&lt; 30 min)</span>
+<span class="n">quick_recipes</span> <span class="o">=</span> <span class="n">recipes</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;minutes&#39;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">)</span>
+
+<span class="c1"># Recettes par saison</span>
+<span class="n">winter_recipes</span> <span class="o">=</span> <span class="n">recipes</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;season&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Hiver&#39;</span><span class="p">)</span>
+
+<span class="c1"># Top recettes notées</span>
+<span class="n">top_ratings</span> <span class="o">=</span> <span class="n">ratings</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Joindre recettes et ratings :</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Join pour analyse combinée</span>
+<span class="n">recipes_with_ratings</span> <span class="o">=</span> <span class="n">recipes</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">ratings</span><span class="p">,</span>
+    <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span>
+    <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;recipe_id&#39;</span><span class="p">,</span>
+    <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># Calculer moyenne rating par recette</span>
+<span class="n">avg_ratings</span> <span class="o">=</span> <span class="n">recipes_with_ratings</span><span class="o">.</span><span class="n">group_by</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;avg_rating&#39;</span><span class="p">),</span>
+    <span class="n">pl</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s1">&#39;rating&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s1">&#39;num_ratings&#39;</span><span class="p">)</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p><strong>Gestion du cache :</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">streamlit</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+
+<span class="c1"># Forcer rechargement programmatique</span>
+<span class="n">st</span><span class="o">.</span><span class="n">cache_data</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+<span class="c1"># Recharger données fraîches</span>
+<span class="n">recipes</span> <span class="o">=</span> <span class="n">get_recipes_clean</span><span class="p">()</span>
+
+<span class="c1"># Afficher info cache</span>
+<span class="n">st</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cache TTL: 1 heure. Dernière maj: </span><span class="si">{</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="performance">
+<h3>Performance<a class="headerlink" href="#performance" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p>Premier chargement : 5-10 secondes (depuis S3 Parquet)</p></li>
+<li><p>Chargements suivants : &lt;0.1 seconde (cache mémoire Streamlit)</p></li>
+<li><p>Gain : 50-100x sur navigations répétées</p></li>
+</ul>
+<p>Pour forcer le rechargement :</p>
+<ol class="arabic simple">
+<li><p>Menu Streamlit → « Clear cache »</p></li>
+<li><p>Recharger la page</p></li>
+</ol>
+</section>
+<section id="optimisation-memoire">
+<h3>Optimisation Mémoire<a class="headerlink" href="#optimisation-memoire" title="Lien vers cette rubrique"></a></h3>
+<p>Les données sont chargées en <strong>Polars</strong> (format columnar) pour:</p>
+<ul class="simple">
+<li><p>Empreinte mémoire réduite vs Pandas</p></li>
+<li><p>Performance filtres/agrégations 5-10x plus rapide</p></li>
+<li><p>Lazy evaluation pour transformations complexes</p></li>
+</ul>
+<p>Conversion Pandas si nécessaire:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">recipes_pd</span> <span class="o">=</span> <span class="n">recipes</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>  <span class="c1"># Polars → Pandas</span>
+</pre></div>
+</div>
+</section>
+<section id="troubleshooting">
+<h3>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Erreur: « No S3 credentials »</strong></p>
+<p>Solution: Vérifier fichier <code class="docutils literal notranslate"><span class="pre">96_keys/credentials</span></code> existe avec format INI valide.</p>
+<p><strong>Voir</strong>: <span class="xref std std-doc">/s3</span> pour configuration S3 complète.</p>
+<p><strong>Erreur: « Cache data too large »</strong></p>
+<p>Si l’app consomme trop de mémoire:</p>
+<ol class="arabic simple">
+<li><p>Réduire TTL cache dans code: <code class="docutils literal notranslate"><span class="pre">&#64;st.cache_data(ttl=1800)</span></code> (30 min)</p></li>
+<li><p>Filtrer données avant mise en cache</p></li>
+<li><p>Augmenter RAM serveur (actuel: 32 GB dataia)</p></li>
+</ol>
+<p><strong>Chargement lent (&gt; 30 secondes)</strong></p>
+<p>Causes possibles:</p>
+<ol class="arabic simple">
+<li><p>Connexion S3 lente → Vérifier DNAT bypass (<span class="xref std std-doc">/s3</span>)</p></li>
+<li><p>Premier chargement normal (création cache)</p></li>
+<li><p>Cache expiré → Rechargé toutes les heures</p></li>
+</ol>
+<p><strong>Colonnes manquantes dans DataFrame</strong></p>
+<p>Certaines colonnes sont calculées:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">season</span></code> : Dérivé de <code class="docutils literal notranslate"><span class="pre">submitted</span></code> (mois → saison)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">day_of_week</span></code> : Dérivé de <code class="docutils literal notranslate"><span class="pre">submitted</span></code> (0-6)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">complexity_score</span></code> : Calculé depuis <code class="docutils literal notranslate"><span class="pre">n_steps</span></code>, <code class="docutils literal notranslate"><span class="pre">n_ingredients</span></code></p></li>
+</ul>
+<p>Si absentes: vérifier version Parquet S3 est à jour.</p>
+</section>
+<section id="source-des-donnees">
+<h3>Source des Données<a class="headerlink" href="#source-des-donnees" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>Dataset original</strong>: Food.com (Kaggle)</p></li>
+<li><p><strong>Période</strong>: 1999-2018 (20 ans)</p></li>
+<li><p><strong>Preprocessing</strong>: Nettoyage, enrichissement, feature engineering</p></li>
+<li><p><strong>Format</strong>: Parquet compressé Snappy</p></li>
+<li><p><strong>Stockage</strong>: S3 Garage (s3fast.lafrance.io)</p></li>
+<li><p><strong>Total</strong>: ~450 MB compressé, ~2.5 GB décompressé</p></li>
+</ul>
+<p><strong>Voir</strong>: Documentation projet EDA (<code class="docutils literal notranslate"><span class="pre">00_eda/</span></code>) pour détails preprocessing.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="visualization.html" class="btn btn-neutral float-left" title="Module visualization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="exceptions.html" class="btn btn-neutral float-right" title="Module exceptions" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, Mangetamain Team.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

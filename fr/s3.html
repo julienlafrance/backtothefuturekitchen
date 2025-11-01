@@ -1,0 +1,1149 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="fr" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stockage S3 Garage &mdash; Documentation Mangetamain Analytics 2.0.0</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d93b9cb1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/translations.js?v=e6b791cb"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Recherche" href="../search.html" />
+    <link rel="next" title="Pipeline CI/CD" href="cicd.html" />
+    <link rel="prev" title="Architecture Technique" href="architecture.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Mangetamain Analytics
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Rechercher docs" aria-label="Rechercher docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Choose your language / Choisissez votre langue</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../en/index.html">Mangetamain Analytics Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../en/index.html#deployed-environments">Deployed Environments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../en/index.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../en/index.html#project-metrics">Project Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../en/index.html#navigation">Navigation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../en/projet.html">The Project</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/projet.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/projet.html#development-process">Development Process</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/projet.html#eda-application-mapping">EDA → Application Mapping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/projet.html#technical-stack">Technical Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/projet.html#environments">Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/projet.html#applied-standards">Applied Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/quickstart.html">Quick Start Guide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#minute-installation">2-Minute Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#essential-commands">Essential Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#cheat-sheet">Cheat Sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#quick-troubleshooting">Quick Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#typical-workflow">Typical Workflow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#key-metrics">Key Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/quickstart.html#resources">Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/installation.html">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#prerequisites">Prerequisites</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#local-installation">Local Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#installation-with-docker">Installation with Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#tests">Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#main-dependencies">Main Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#installation-verification">Installation Verification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/installation.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/application.html">Streamlit Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/application.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/application.html#structure">Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/application.html#the-4-analyses">The 4 Analyses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/application.html#data-loading">Data Loading</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/application.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/application.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/usage.html">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/usage.html#application-architecture">Application Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/usage.html#available-analysis-modules">Available Analysis Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/usage.html#application-navigation">Application Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/usage.html#customization-and-api">Customization and API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/modules/index.html">Code Documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/index.html#organization">Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/index.html#available-modules">Available Modules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/index.html#conventions">Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/modules/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/utils.html#utils-color-theme">utils.color_theme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/modules/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/data.html#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/data.html#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/exceptions.html#dataloaderror-class">DataLoadError Class</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/exceptions.html#other-exceptions">Other Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/modules/infrastructure.html">Infrastructure Modules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/infrastructure.html#configuration-and-logging">Configuration and Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/infrastructure.html#database-management">Database Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/infrastructure.html#data-exploration-utilities">Data Exploration Utilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/infrastructure.html#infrastructure-tests">Infrastructure Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/modules/infrastructure.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/architecture.html">Technical Architecture</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#deployment-infrastructure">Deployment Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#technical-stack">Technical Stack</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#project-structure">Project Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#environments">Environments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#database">Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#tests-and-quality">Tests and Quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#logging">Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/architecture.html#security">Security</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/s3.html">Garage S3 Storage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#overview">Overview</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#credentials-configuration">Credentials Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#aws-cli-usage">AWS CLI Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#python-boto3-usage">Python boto3 Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#duckdb-usage">DuckDB Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#polars-usage">Polars Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#performance-tests">Performance Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#bucket-structure">Bucket Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#infrastructure-tests">Infrastructure Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#performance-benchmarks">Performance Benchmarks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/s3.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/cicd.html">CI/CD Pipeline</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#pipeline-architecture">Pipeline Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#github-actions-workflows">GitHub Actions Workflows</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#practical-commands">Practical Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#self-hosted-runner">Self-Hosted Runner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#discord-notifications">Discord Notifications</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#required-configuration">Required Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#metrics">Metrics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#concrete-workflow-examples">Concrete Workflow Examples</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/cicd.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/tests.html">Tests and Coverage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#current-status">Current Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#quick-commands">Quick Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#detailed-coverage">Detailed Coverage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#id1">Infrastructure Tests (50_test)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#test-strategy">Test Strategy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#test-patterns">Test Patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#useful-pytest-commands">Useful Pytest Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#historical-progress">Historical Progress</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/tests.html#see-also">See Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/conformite.html">Quality Standards</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/conformite.html#project-management">Project Management</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/conformite.html#programming">Programming</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/conformite.html#tests-and-quality">Tests and Quality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/conformite.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/conformite.html#advanced-technical-choices">Advanced Technical Choices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/conformite.html#standards-summary">Standards Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/faq.html">FAQ - Frequently Asked Questions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#installation-and-configuration">Installation and Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#data-and-performance">Data and Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#development">Development</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#tests-and-ci-cd">Tests and CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#docker">Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#deployment">Deployment</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#common-errors">Common Errors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/faq.html#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../en/glossaire.html">Glossary</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#technical-terms">Technical Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#project-terms">Project Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#analytics-terms">Analytics Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#infrastructure-terms">Infrastructure Terms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#acronyms">Acronyms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#common-commands">Common Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#key-values">Key Values</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../en/glossaire.html#see-also">See Also</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../en/index.html#indices">Indices</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Documentation Mangetamain Analytics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index.html#environnements-deployes">Environnements Déployés</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#metriques-projet">Métriques Projet</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#navigation">Navigation</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="projet.html">Le Projet</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#processus-de-developpement">Processus de Développement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#correspondance-eda-application">Correspondance EDA → Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#environnements">Environnements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="projet.html#standards-appliques">Standards Appliqués</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html">Guide Démarrage Rapide</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#installation-en-2-minutes">Installation en 2 Minutes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#commandes-essentielles">Commandes Essentielles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#cheat-sheet">Cheat Sheet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#troubleshooting-rapide">Troubleshooting Rapide</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#flux-de-travail-typique">Flux de Travail Typique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#metriques-cles">Métriques Clés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#ressources">Ressources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#prerequis">Prérequis</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#installation-locale">Installation Locale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#installation-avec-docker">Installation avec Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#tests">Tests</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#dependances-principales">Dépendances Principales</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#verification-de-l-installation">Vérification de l’Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#troubleshooting">Troubleshooting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="installation.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="application.html">Application Streamlit</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="application.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#structure">Structure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#les-4-analyses">Les 4 Analyses</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#chargement-des-donnees">Chargement des Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#navigation">Navigation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="application.html#performance">Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html">Utilisation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#architecture-de-l-application">Architecture de l’Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#modules-d-analyse-disponibles">Modules d’Analyse Disponibles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#navigation-dans-l-application">Navigation dans l’Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#personnalisation-et-api">Personnalisation et API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/index.html">Documentation Code</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/index.html#organisation">Organisation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/index.html#modules-disponibles">Modules Disponibles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/index.html#conventions">Conventions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/utils.html">Module utils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-color-theme">utils.color_theme</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/utils.html#utils-chart-theme">utils.chart_theme</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/visualization.html">Module visualization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-trendlines-v2">visualization.analyse_trendlines_v2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-seasonality">visualization.analyse_seasonality</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-weekend">visualization.analyse_weekend</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-ratings">visualization.analyse_ratings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-ratings-simple">visualization.analyse_ratings_simple</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-analyse-trendlines">visualization.analyse_trendlines</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-custom-charts">visualization.custom_charts</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/visualization.html#visualization-plotly-config">visualization.plotly_config</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/data.html">Module data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/data.html#data-loaders">data.loaders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/data.html#data-cached-loaders">data.cached_loaders</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/exceptions.html">Module exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#architecture">Architecture</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#classe-dataloaderror">Classe DataLoadError</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#autres-exceptions">Autres Exceptions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/exceptions.html#tests">Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="modules/infrastructure.html">Modules Infrastructure</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#configuration-et-logging">Configuration et Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#gestion-base-de-donnees">Gestion Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#utilitaires-exploration-donnees">Utilitaires Exploration Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/infrastructure.html#voir-also">Voir Also</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="architecture.html">Architecture Technique</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#infrastructure-deploiement">Infrastructure Déploiement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#stack-technique">Stack Technique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#structure-du-projet">Structure du Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#ci-cd-pipeline">CI/CD Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#environnements">Environnements</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#base-de-donnees">Base de Données</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#tests-et-qualite">Tests et Qualité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#logging">Logging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#performance">Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="architecture.html#securite">Sécurité</a></li>
+</ul>
+</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Stockage S3 Garage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vue-d-ensemble">Vue d’ensemble</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-credentials">Configuration Credentials</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utilisation-aws-cli">Utilisation AWS CLI</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utilisation-python-boto3">Utilisation Python boto3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utilisation-duckdb">Utilisation DuckDB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#utilisation-polars">Utilisation Polars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests-performance">Tests Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#structure-bucket">Structure Bucket</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tests-infrastructure">Tests Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#depannage">Dépannage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bonnes-pratiques">Bonnes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#benchmarks-performance">Benchmarks Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cicd.html">Pipeline CI/CD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#infrastructure">Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#architecture-pipeline">Architecture Pipeline</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#workflows-github-actions">Workflows GitHub Actions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#commandes-pratiques">Commandes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#runner-self-hosted">Runner Self-Hosted</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#notifications-discord">Notifications Discord</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#depannage">Dépannage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#configuration-requise">Configuration Requise</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#metriques">Métriques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#exemples-workflows-concrets">Exemples Workflows Concrets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#best-practices">Best Practices</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cicd.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html">Tests et Coverage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#etat-actuel">État Actuel</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#commandes-rapides">Commandes Rapides</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#coverage-detaille">Coverage Détaillé</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#configuration">Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#id1">Tests Infrastructure (50_test)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#strategie-de-test">Stratégie de Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#patterns-de-test">Patterns de Test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#resolution-de-problemes">Résolution de Problèmes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#commandes-pytest-utiles">Commandes Pytest Utiles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#bonnes-pratiques">Bonnes Pratiques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#progression-historique">Progression Historique</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="conformite.html">Standards Qualité</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#gestion-de-projet">Gestion de Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#programmation">Programmation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#tests-et-qualite">Tests et Qualité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#ci-cd">CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#choix-techniques-avances">Choix Techniques Avancés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="conformite.html#resume-standards">Résumé Standards</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="faq.html">FAQ - Questions Fréquentes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#installation-et-configuration">Installation et Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#donnees-et-performance">Données et Performance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#developpement">Développement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#tests-et-ci-cd">Tests et CI/CD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#docker">Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#deploiement">Déploiement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#erreurs-courantes">Erreurs Courantes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="faq.html#ressources-supplementaires">Ressources Supplémentaires</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="glossaire.html">Glossaire</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#termes-techniques">Termes Techniques</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#termes-projet">Termes Projet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#termes-analytics">Termes Analytics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#termes-infrastructure">Termes Infrastructure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#acronymes">Acronymes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#commandes-courantes">Commandes Courantes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#valeurs-cles">Valeurs Clés</a></li>
+<li class="toctree-l4"><a class="reference internal" href="glossaire.html#voir-aussi">Voir Aussi</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="index.html#indices">Indices</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Mangetamain Analytics</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Documentation Mangetamain Analytics</a></li>
+      <li class="breadcrumb-item active">Stockage S3 Garage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/fr/s3.rst.txt" rel="nofollow"> Afficher la source de la page</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="stockage-s3-garage">
+<h1>Stockage S3 Garage<a class="headerlink" href="#stockage-s3-garage" title="Lien vers cette rubrique"></a></h1>
+<p>Configuration et utilisation du stockage S3 Garage haute performance.</p>
+<p><strong>S3 Garage</strong> est une implémentation self-hosted du protocole Amazon S3 (<a class="reference internal" href="glossaire.html"><span class="doc">Glossaire</span></a>).
+Ce guide couvre la configuration, l’optimisation performance et le dépannage.</p>
+<p><strong>Pour débuter rapidement</strong>, voir <a class="reference internal" href="quickstart.html"><span class="doc">Guide Démarrage Rapide</span></a>.</p>
+<section id="vue-d-ensemble">
+<h2>Vue d’ensemble<a class="headerlink" href="#vue-d-ensemble" title="Lien vers cette rubrique"></a></h2>
+<p><strong>Endpoints disponibles</strong>:</p>
+<ul class="simple">
+<li><p><strong>HTTP</strong>: <a class="reference external" href="http://s3fast.lafrance.io">http://s3fast.lafrance.io</a> (port 3910) - <strong>Privilégié dans le code</strong></p></li>
+<li><p><strong>HTTPS</strong>: <a class="reference external" href="https://s3fast.lafrance.io">https://s3fast.lafrance.io</a> (port 443, via reverse proxy)</p></li>
+</ul>
+<p><strong>Bucket</strong>: mangetamain</p>
+<p><strong>Performance</strong>: 500-917 MB/s (DNAT bypass)</p>
+<p><strong>Région</strong>: garage-fast</p>
+<p><strong>Choix HTTP vs HTTPS</strong>:</p>
+<p>Le code utilise l’endpoint HTTP pour des raisons de performance :</p>
+<ul class="simple">
+<li><p><strong>Gain de rapidité</strong> : Pas de surcharge TLS/SSL lors des transferts de données</p></li>
+<li><p><strong>Réseau DMZ sécurisé</strong> : La communication reste dans le réseau local isolé (192.168.80.0/24)</p></li>
+<li><p><strong>HTTPS disponible</strong> : Accessible via reverse proxy pour les accès externes si nécessaire</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Lien vers cette rubrique"></a></h2>
+<section id="configuration-dns-locale">
+<h3>Configuration DNS Locale<a class="headerlink" href="#configuration-dns-locale" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;192.168.80.202  s3fast.lafrance.io&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/hosts
+</pre></div>
+</div>
+</section>
+<section id="installation-iptables-persistent">
+<h3>Installation iptables-persistent<a class="headerlink" href="#installation-iptables-persistent" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>iptables-persistent<span class="w"> </span>-y
+</pre></div>
+</div>
+</section>
+<section id="regle-iptables-dnat">
+<h3>Règle iptables DNAT<a class="headerlink" href="#regle-iptables-dnat" title="Lien vers cette rubrique"></a></h3>
+<p>Bypass du reverse proxy pour performance maximale:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-A<span class="w"> </span>OUTPUT<span class="w"> </span>-p<span class="w"> </span>tcp<span class="w"> </span>-d<span class="w"> </span><span class="m">192</span>.168.80.202<span class="w"> </span>--dport<span class="w"> </span><span class="m">80</span><span class="w"> </span>-j<span class="w"> </span>DNAT<span class="w"> </span>--to-destination<span class="w"> </span><span class="m">192</span>.168.80.202:3910
+</pre></div>
+</div>
+</section>
+<section id="sauvegarde-permanente">
+<h3>Sauvegarde Permanente<a class="headerlink" href="#sauvegarde-permanente" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>netfilter-persistent<span class="w"> </span>save
+</pre></div>
+</div>
+</section>
+<section id="verification-installation">
+<h3>Vérification Installation<a class="headerlink" href="#verification-installation" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># DNS</span>
+getent<span class="w"> </span>hosts<span class="w"> </span>s3fast.lafrance.io
+<span class="c1"># Doit afficher: 192.168.80.202  s3fast.lafrance.io</span>
+
+<span class="c1"># iptables</span>
+sudo<span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-L<span class="w"> </span>OUTPUT<span class="w"> </span>-n<span class="w"> </span>-v<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">3910</span>
+<span class="c1"># Doit afficher la règle DNAT</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="configuration-credentials">
+<h2>Configuration Credentials<a class="headerlink" href="#configuration-credentials" title="Lien vers cette rubrique"></a></h2>
+<section id="structure-96-keys">
+<h3>Structure 96_keys/<a class="headerlink" href="#structure-96-keys" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>96_keys/
+├── credentials          # Profil s3fast
+├── aws_config           # Config AWS CLI
+└── garage_s3.duckdb     # Base DuckDB avec secret S3
+</pre></div>
+</div>
+</section>
+<section id="fichier-credentials">
+<h3>Fichier credentials<a class="headerlink" href="#fichier-credentials" title="Lien vers cette rubrique"></a></h3>
+<p>Format ConfigParser:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[s3fast]</span>
+<span class="na">aws_access_key_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">GK4feb...</span>
+<span class="na">aws_secret_access_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">50e63b...</span>
+<span class="na">endpoint_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">http://s3fast.lafrance.io</span>
+<span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">garage-fast</span>
+<span class="na">bucket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">mangetamain</span>
+</pre></div>
+</div>
+</section>
+<section id="fichier-aws-config">
+<h3>Fichier aws_config<a class="headerlink" href="#fichier-aws-config" title="Lien vers cette rubrique"></a></h3>
+<p>Format AWS CLI:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[profile s3fast]</span>
+<span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">garage-fast</span>
+<span class="na">s3</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="na">endpoint_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">http://s3fast.lafrance.io</span>
+</pre></div>
+</div>
+</section>
+<section id="base-duckdb-avec-secret">
+<h3>Base DuckDB avec Secret<a class="headerlink" href="#base-duckdb-avec-secret" title="Lien vers cette rubrique"></a></h3>
+<p>Créer une fois:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/mangetamain/96_keys
+duckdb<span class="w"> </span>garage_s3.duckdb
+</pre></div>
+</div>
+<p>Dans DuckDB:</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALL</span><span class="w"> </span><span class="n">httpfs</span><span class="p">;</span>
+<span class="k">LOAD</span><span class="w"> </span><span class="n">httpfs</span><span class="p">;</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="n">SECRET</span><span class="w"> </span><span class="n">s3fast</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">TYPE</span><span class="w"> </span><span class="n">s3</span><span class="p">,</span>
+<span class="w">    </span><span class="n">KEY_ID</span><span class="w"> </span><span class="s1">&#39;votre_access_key_id&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">SECRET</span><span class="w"> </span><span class="s1">&#39;votre_secret_access_key&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ENDPOINT</span><span class="w"> </span><span class="s1">&#39;s3fast.lafrance.io&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">REGION</span><span class="w"> </span><span class="s1">&#39;garage-fast&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">URL_STYLE</span><span class="w"> </span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">USE_SSL</span><span class="w"> </span><span class="k">false</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="utilisation-aws-cli">
+<h2>Utilisation AWS CLI<a class="headerlink" href="#utilisation-aws-cli" title="Lien vers cette rubrique"></a></h2>
+<section id="liste-fichiers">
+<h3>Liste Fichiers<a class="headerlink" href="#liste-fichiers" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws<span class="w"> </span>s3<span class="w"> </span>ls<span class="w"> </span>s3://mangetamain/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--endpoint-url<span class="w"> </span>http://s3fast.lafrance.io<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--region<span class="w"> </span>garage-fast
+</pre></div>
+</div>
+</section>
+<section id="download">
+<h3>Download<a class="headerlink" href="#download" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>s3://mangetamain/PP_recipes.csv<span class="w"> </span>/tmp/recipes.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--endpoint-url<span class="w"> </span>http://s3fast.lafrance.io<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--region<span class="w"> </span>garage-fast
+</pre></div>
+</div>
+</section>
+<section id="upload">
+<h3>Upload<a class="headerlink" href="#upload" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>/tmp/results.csv<span class="w"> </span>s3://mangetamain/results/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--endpoint-url<span class="w"> </span>http://s3fast.lafrance.io<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--region<span class="w"> </span>garage-fast
+</pre></div>
+</div>
+</section>
+</section>
+<section id="utilisation-python-boto3">
+<h2>Utilisation Python boto3<a class="headerlink" href="#utilisation-python-boto3" title="Lien vers cette rubrique"></a></h2>
+<section id="chargement-credentials">
+<h3>Chargement Credentials<a class="headerlink" href="#chargement-credentials" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">boto3</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">configparser</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigParser</span>
+
+<span class="c1"># Charger credentials depuis 96_keys/</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;../96_keys/credentials&#39;</span><span class="p">)</span>
+
+<span class="n">s3</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span>
+    <span class="s1">&#39;s3&#39;</span><span class="p">,</span>
+    <span class="n">endpoint_url</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;s3fast&#39;</span><span class="p">][</span><span class="s1">&#39;endpoint_url&#39;</span><span class="p">],</span>
+    <span class="n">aws_access_key_id</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;s3fast&#39;</span><span class="p">][</span><span class="s1">&#39;aws_access_key_id&#39;</span><span class="p">],</span>
+    <span class="n">aws_secret_access_key</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;s3fast&#39;</span><span class="p">][</span><span class="s1">&#39;aws_secret_access_key&#39;</span><span class="p">],</span>
+    <span class="n">region_name</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;s3fast&#39;</span><span class="p">][</span><span class="s1">&#39;region&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="liste-objets">
+<h3>Liste Objets<a class="headerlink" href="#liste-objets" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Liste fichiers avec tailles</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">s3</span><span class="o">.</span><span class="n">list_objects_v2</span><span class="p">(</span><span class="n">Bucket</span><span class="o">=</span><span class="s1">&#39;mangetamain&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;Contents&#39;</span><span class="p">,</span> <span class="p">[]):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;Key&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">obj</span><span class="p">[</span><span class="s1">&#39;Size&#39;</span><span class="p">]</span><span class="o">/</span><span class="mf">1e6</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> MB&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="download-fichier">
+<h3>Download Fichier<a class="headerlink" href="#download-fichier" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s3</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="s1">&#39;mangetamain&#39;</span><span class="p">,</span> <span class="s1">&#39;PP_recipes.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;/tmp/recipes.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="upload-fichier">
+<h3>Upload Fichier<a class="headerlink" href="#upload-fichier" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s3</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s1">&#39;/tmp/results.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;mangetamain&#39;</span><span class="p">,</span> <span class="s1">&#39;results/analysis.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="utilisation-duckdb">
+<h2>Utilisation DuckDB<a class="headerlink" href="#utilisation-duckdb" title="Lien vers cette rubrique"></a></h2>
+<section id="requetes-sql-sur-s3">
+<h3>Requêtes SQL sur S3<a class="headerlink" href="#requetes-sql-sur-s3" title="Lien vers cette rubrique"></a></h3>
+<p>En CLI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Requête simple</span>
+duckdb<span class="w"> </span>~/mangetamain/96_keys/garage_s3.duckdb<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-c<span class="w"> </span><span class="s2">&quot;SELECT COUNT(*) FROM &#39;s3://mangetamain/PP_recipes.csv&#39;&quot;</span>
+
+<span class="c1"># Analyse avec GROUP BY</span>
+duckdb<span class="w"> </span>~/mangetamain/96_keys/garage_s3.duckdb<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">SELECT calorie_level, COUNT(*) as total</span>
+<span class="s2">FROM &#39;s3://mangetamain/PP_recipes.csv&#39;</span>
+<span class="s2">GROUP BY calorie_level</span>
+<span class="s2">ORDER BY total DESC&quot;</span>
+</pre></div>
+</div>
+<p>En Python:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">duckdb</span>
+
+<span class="c1"># Connexion à la base avec secret</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">duckdb</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;~/mangetamain/96_keys/garage_s3.duckdb&#39;</span><span class="p">)</span>
+
+<span class="c1"># Requête SQL directe sur S3</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT *</span>
+<span class="s2">    FROM &#39;s3://mangetamain/PP_recipes.csv&#39;</span>
+<span class="s2">    LIMIT 1000</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">fetchdf</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="parquet-sur-s3">
+<h3>Parquet sur S3<a class="headerlink" href="#parquet-sur-s3" title="Lien vers cette rubrique"></a></h3>
+<p>DuckDB optimisé pour Parquet:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Lecture Parquet depuis S3 (zero-copy)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    SELECT AVG(calories) as mean_calories</span>
+<span class="s2">    FROM &#39;s3://mangetamain/RAW_recipes_clean.parquet&#39;</span>
+<span class="s2">    WHERE year &gt;= 2010</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="utilisation-polars">
+<h2>Utilisation Polars<a class="headerlink" href="#utilisation-polars" title="Lien vers cette rubrique"></a></h2>
+<section id="lecture-directe-s3">
+<h3>Lecture Directe S3<a class="headerlink" href="#lecture-directe-s3" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">configparser</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigParser</span>
+
+<span class="c1"># Charger credentials</span>
+<span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>
+<span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;../96_keys/credentials&#39;</span><span class="p">)</span>
+
+<span class="c1"># Configuration storage options</span>
+<span class="n">storage_options</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;aws_endpoint_url&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;s3fast&#39;</span><span class="p">][</span><span class="s1">&#39;endpoint_url&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;aws_access_key_id&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;s3fast&#39;</span><span class="p">][</span><span class="s1">&#39;aws_access_key_id&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;aws_secret_access_key&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;s3fast&#39;</span><span class="p">][</span><span class="s1">&#39;aws_secret_access_key&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;aws_region&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;s3fast&#39;</span><span class="p">][</span><span class="s1">&#39;region&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="c1"># Lecture CSV depuis S3</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="s1">&#39;s3://mangetamain/PP_recipes.csv&#39;</span><span class="p">,</span>
+    <span class="n">storage_options</span><span class="o">=</span><span class="n">storage_options</span>
+<span class="p">)</span>
+
+<span class="c1"># Lecture Parquet depuis S3</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span>
+    <span class="s1">&#39;s3://mangetamain/RAW_recipes_clean.parquet&#39;</span><span class="p">,</span>
+    <span class="n">storage_options</span><span class="o">=</span><span class="n">storage_options</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="tests-performance">
+<h2>Tests Performance<a class="headerlink" href="#tests-performance" title="Lien vers cette rubrique"></a></h2>
+<section id="benchmark-download">
+<h3>Benchmark Download<a class="headerlink" href="#benchmark-download" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test avec fichier volumineux</span>
+<span class="nb">time</span><span class="w"> </span>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>s3://mangetamain/large_file.parquet<span class="w"> </span>/tmp/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--endpoint-url<span class="w"> </span>http://s3fast.lafrance.io<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--region<span class="w"> </span>garage-fast
+</pre></div>
+</div>
+<p><strong>Résultats attendus</strong>:</p>
+<ul class="simple">
+<li><p><strong>Avec DNAT bypass</strong>: 500-917 MB/s</p></li>
+<li><p><strong>Sans bypass</strong> (reverse proxy): 50-100 MB/s</p></li>
+<li><p><strong>Gain</strong>: 5-10x plus rapide</p></li>
+</ul>
+</section>
+<section id="verification-dnat-actif">
+<h3>Vérification DNAT Actif<a class="headerlink" href="#verification-dnat-actif" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Vérifier iptables rule</span>
+sudo<span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-L<span class="w"> </span>OUTPUT<span class="w"> </span>-n<span class="w"> </span>-v<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">3910</span>
+
+<span class="c1"># Test connexion directe port 3910</span>
+curl<span class="w"> </span>-I<span class="w"> </span>http://192.168.80.202:3910/mangetamain/
+
+<span class="c1"># Doit retourner HTTP 200 ou XML erreur S3</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="structure-bucket">
+<h2>Structure Bucket<a class="headerlink" href="#structure-bucket" title="Lien vers cette rubrique"></a></h2>
+<section id="organisation-fichiers">
+<h3>Organisation Fichiers<a class="headerlink" href="#organisation-fichiers" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>s3://mangetamain/
+├── RAW_recipes.csv
+├── RAW_recipes_clean.parquet
+├── RAW_interactions.csv
+├── RAW_interactions_clean.parquet
+├── PP_recipes.csv
+├── PP_users.csv
+├── PP_ratings.parquet
+├── interactions_train.csv
+├── interactions_test.csv
+└── interactions_validation.csv
+</pre></div>
+</div>
+</section>
+<section id="tailles-fichiers">
+<h3>Tailles Fichiers<a class="headerlink" href="#tailles-fichiers" title="Lien vers cette rubrique"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Fichier</p></th>
+<th class="head"><p>Taille</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>RAW_recipes.csv</p></td>
+<td><p>~50 MB</p></td>
+</tr>
+<tr class="row-odd"><td><p>RAW_recipes_clean.parquet</p></td>
+<td><p>~25 MB</p></td>
+</tr>
+<tr class="row-even"><td><p>RAW_interactions.csv</p></td>
+<td><p>~200 MB</p></td>
+</tr>
+<tr class="row-odd"><td><p>RAW_interactions_clean.parquet</p></td>
+<td><p>~80 MB</p></td>
+</tr>
+<tr class="row-even"><td><p>PP_recipes.csv</p></td>
+<td><p>~30 MB</p></td>
+</tr>
+<tr class="row-odd"><td><p>PP_ratings.parquet</p></td>
+<td><p>~60 MB</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="tests-infrastructure">
+<h2>Tests Infrastructure<a class="headerlink" href="#tests-infrastructure" title="Lien vers cette rubrique"></a></h2>
+<section id="tests-automatiques-50-test">
+<h3>Tests Automatiques (50_test/)<a class="headerlink" href="#tests-automatiques-50-test" title="Lien vers cette rubrique"></a></h3>
+<p><strong>S3_duckdb_test.py</strong> (14 tests):</p>
+<ul class="simple">
+<li><p>Environnement système (AWS CLI, credentials)</p></li>
+<li><p>Connexion S3 avec boto3</p></li>
+<li><p>Performance download (&gt;5 MB/s)</p></li>
+<li><p>DuckDB + S3 intégration</p></li>
+<li><p>Tests Docker (optionnels)</p></li>
+</ul>
+<p><strong>test_s3_parquet_files.py</strong> (5 tests):</p>
+<ul class="simple">
+<li><p>Scanne automatiquement le code</p></li>
+<li><p>Trouve les références aux fichiers parquet</p></li>
+<li><p>Teste l’accessibilité S3</p></li>
+</ul>
+</section>
+<section id="lancer-tests-s3">
+<h3>Lancer Tests S3<a class="headerlink" href="#lancer-tests-s3" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/mangetamain/50_test
+pytest<span class="w"> </span>S3_duckdb_test.py<span class="w"> </span>-v
+</pre></div>
+</div>
+</section>
+</section>
+<section id="depannage">
+<h2>Dépannage<a class="headerlink" href="#depannage" title="Lien vers cette rubrique"></a></h2>
+<section id="erreur-cannot-connect-to-s3">
+<h3>Erreur: Cannot connect to S3<a class="headerlink" href="#erreur-cannot-connect-to-s3" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Causes possibles</strong>:</p>
+<ol class="arabic simple">
+<li><p>DNS non configuré</p></li>
+<li><p>Règle iptables manquante</p></li>
+<li><p>Credentials invalides</p></li>
+</ol>
+<p><strong>Solution</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Vérifier DNS</span>
+getent<span class="w"> </span>hosts<span class="w"> </span>s3fast.lafrance.io
+
+<span class="c1"># Vérifier iptables</span>
+sudo<span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-L<span class="w"> </span>OUTPUT<span class="w"> </span>-n<span class="w"> </span>-v<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">3910</span>
+
+<span class="c1"># Tester credentials</span>
+aws<span class="w"> </span>s3<span class="w"> </span>ls<span class="w"> </span>s3://mangetamain/<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--endpoint-url<span class="w"> </span>http://s3fast.lafrance.io<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--region<span class="w"> </span>garage-fast
+</pre></div>
+</div>
+</section>
+<section id="erreur-slow-download-speed">
+<h3>Erreur: Slow Download Speed<a class="headerlink" href="#erreur-slow-download-speed" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Cause</strong>: DNAT bypass non actif, trafic passe par reverse proxy</p>
+<p><strong>Solution</strong>: Vérifier règle iptables</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-L<span class="w"> </span>OUTPUT<span class="w"> </span>-n<span class="w"> </span>-v<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">3910</span>
+
+<span class="c1"># Si absent, recréer règle</span>
+sudo<span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-A<span class="w"> </span>OUTPUT<span class="w"> </span>-p<span class="w"> </span>tcp<span class="w"> </span>-d<span class="w"> </span><span class="m">192</span>.168.80.202<span class="w"> </span>--dport<span class="w"> </span><span class="m">80</span><span class="w"> </span>-j<span class="w"> </span>DNAT<span class="w"> </span>--to-destination<span class="w"> </span><span class="m">192</span>.168.80.202:3910
+sudo<span class="w"> </span>netfilter-persistent<span class="w"> </span>save
+</pre></div>
+</div>
+</section>
+<section id="erreur-duckdb-secret-not-found">
+<h3>Erreur: DuckDB Secret Not Found<a class="headerlink" href="#erreur-duckdb-secret-not-found" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Cause</strong>: Secret S3 non créé dans base DuckDB</p>
+<p><strong>Solution</strong>: Recréer le secret</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>duckdb<span class="w"> </span>~/mangetamain/96_keys/garage_s3.duckdb
+</pre></div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DROP</span><span class="w"> </span><span class="n">SECRET</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="n">s3fast</span><span class="p">;</span>
+
+<span class="k">CREATE</span><span class="w"> </span><span class="n">SECRET</span><span class="w"> </span><span class="n">s3fast</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="k">TYPE</span><span class="w"> </span><span class="n">s3</span><span class="p">,</span>
+<span class="w">    </span><span class="n">KEY_ID</span><span class="w"> </span><span class="s1">&#39;your_key_id&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">SECRET</span><span class="w"> </span><span class="s1">&#39;your_secret&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">ENDPOINT</span><span class="w"> </span><span class="s1">&#39;s3fast.lafrance.io&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">REGION</span><span class="w"> </span><span class="s1">&#39;garage-fast&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">URL_STYLE</span><span class="w"> </span><span class="s1">&#39;path&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">USE_SSL</span><span class="w"> </span><span class="k">false</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="bonnes-pratiques">
+<h2>Bonnes Pratiques<a class="headerlink" href="#bonnes-pratiques" title="Lien vers cette rubrique"></a></h2>
+<section id="securite-credentials">
+<h3>Sécurité Credentials<a class="headerlink" href="#securite-credentials" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p><strong>JAMAIS</strong> commiter 96_keys/ (dans .gitignore)</p></li>
+<li><p>Partager credentials via canal sécurisé uniquement</p></li>
+<li><p>Rotation régulière des clés</p></li>
+</ul>
+</section>
+<section id="performance">
+<h3>Performance<a class="headerlink" href="#performance" title="Lien vers cette rubrique"></a></h3>
+<ul class="simple">
+<li><p>Privilégier Parquet sur CSV (2-3x plus rapide)</p></li>
+<li><p>Utiliser DuckDB pour requêtes SQL (zero-copy)</p></li>
+<li><p>Activer DNAT bypass (10x plus rapide)</p></li>
+<li><p>Cache local pour fichiers fréquemment accédés</p></li>
+</ul>
+</section>
+<section id="cache-streamlit">
+<h3>Cache Streamlit<a class="headerlink" href="#cache-streamlit" title="Lien vers cette rubrique"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">streamlit</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+
+<span class="nd">@st</span><span class="o">.</span><span class="n">cache_data</span><span class="p">(</span><span class="n">ttl</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>  <span class="c1"># Cache 1h</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_data_from_s3</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Charge données S3 avec cache.&quot;&quot;&quot;</span>
+    <span class="c1"># Lecture S3 coûteuse une seule fois</span>
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="benchmarks-performance">
+<h2>Benchmarks Performance<a class="headerlink" href="#benchmarks-performance" title="Lien vers cette rubrique"></a></h2>
+<section id="comparaison-configurations">
+<h3>Comparaison Configurations<a class="headerlink" href="#comparaison-configurations" title="Lien vers cette rubrique"></a></h3>
+<p>Tests effectués avec <code class="docutils literal notranslate"><span class="pre">recipes_clean.parquet</span></code> (250 MB) :</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Configuration</p></th>
+<th class="head"><p>Vitesse</p></th>
+<th class="head"><p>Temps (250 MB)</p></th>
+<th class="head"><p>Gain</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Sans DNAT (via reverse proxy)</p></td>
+<td><p>50-100 MB/s</p></td>
+<td><p>2.5-5 secondes</p></td>
+<td><p>Baseline</p></td>
+</tr>
+<tr class="row-odd"><td><p>DNAT bypass (direct port 3910)</p></td>
+<td><p>500-917 MB/s</p></td>
+<td><p>0.27-0.5 sec</p></td>
+<td><p><strong>10x</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>DNAT + lecture locale SSD</p></td>
+<td><p>2-3 GB/s</p></td>
+<td><p>0.08-0.12 sec</p></td>
+<td><p>40x</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Recommandation</strong> : DNAT bypass obligatoire pour performance acceptable.</p>
+</section>
+<section id="test-de-performance">
+<h3>Test de Performance<a class="headerlink" href="#test-de-performance" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Script benchmark</strong> :</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1"># test_s3_speed.sh</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;=== Test sans DNAT ===&quot;</span>
+<span class="c1"># Désactiver DNAT temporairement</span>
+sudo<span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-D<span class="w"> </span>OUTPUT<span class="w"> </span>-p<span class="w"> </span>tcp<span class="w"> </span>-d<span class="w"> </span><span class="m">192</span>.168.80.202<span class="w"> </span>--dport<span class="w"> </span><span class="m">80</span><span class="w"> </span><span class="se">\\</span>
+<span class="w">     </span>-j<span class="w"> </span>DNAT<span class="w"> </span>--to-destination<span class="w"> </span><span class="m">192</span>.168.80.202:3910<span class="w"> </span><span class="m">2</span>&gt;/dev/null
+
+<span class="nb">time</span><span class="w"> </span>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>s3://mangetamain/recipes_clean.parquet<span class="w"> </span>/tmp/test1.parquet<span class="w"> </span>--profile<span class="w"> </span>s3fast
+rm<span class="w"> </span>/tmp/test1.parquet
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;=== Test avec DNAT ===&quot;</span>
+<span class="c1"># Réactiver DNAT</span>
+sudo<span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-A<span class="w"> </span>OUTPUT<span class="w"> </span>-p<span class="w"> </span>tcp<span class="w"> </span>-d<span class="w"> </span><span class="m">192</span>.168.80.202<span class="w"> </span>--dport<span class="w"> </span><span class="m">80</span><span class="w"> </span><span class="se">\\</span>
+<span class="w">     </span>-j<span class="w"> </span>DNAT<span class="w"> </span>--to-destination<span class="w"> </span><span class="m">192</span>.168.80.202:3910
+
+<span class="nb">time</span><span class="w"> </span>aws<span class="w"> </span>s3<span class="w"> </span>cp<span class="w"> </span>s3://mangetamain/recipes_clean.parquet<span class="w"> </span>/tmp/test2.parquet<span class="w"> </span>--profile<span class="w"> </span>s3fast
+rm<span class="w"> </span>/tmp/test2.parquet
+</pre></div>
+</div>
+<p><strong>Résultats attendus</strong> :</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Sans DNAT: real 0m4.520s (55 MB/s)
+Avec DNAT: real 0m0.380s (658 MB/s)
+
+Gain: 11.9x plus rapide
+</pre></div>
+</div>
+</section>
+<section id="optimisation-lecture-parquet">
+<h3>Optimisation Lecture Parquet<a class="headerlink" href="#optimisation-lecture-parquet" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Comparaison formats</strong> :</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Format</p></th>
+<th class="head"><p>Taille</p></th>
+<th class="head"><p>Temps lecture</p></th>
+<th class="head"><p>Vitesse</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CSV (non compressé)</p></td>
+<td><p>1.2 GB</p></td>
+<td><p>12-15 secondes</p></td>
+<td><p>80-100 MB/s</p></td>
+</tr>
+<tr class="row-odd"><td><p>CSV (gzip)</p></td>
+<td><p>320 MB</p></td>
+<td><p>8-10 secondes</p></td>
+<td><p>32-40 MB/s</p></td>
+</tr>
+<tr class="row-even"><td><p>Parquet (Snappy)</p></td>
+<td><p>250 MB</p></td>
+<td><p>0.3-0.5 sec</p></td>
+<td><p><strong>500-833 MB/s</strong></p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pourquoi Parquet est optimal</strong> :</p>
+<ul class="simple">
+<li><p>Compression Snappy intégrée (ratio ~5:1)</p></li>
+<li><p>Format columnar (lecture sélective)</p></li>
+<li><p>Metadata intégré (pas besoin parser)</p></li>
+<li><p>Zero-copy avec DuckDB/Polars</p></li>
+</ul>
+<p><strong>Lecture optimale avec Polars</strong> :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">polars</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pl</span>
+
+<span class="c1"># Lecture Parquet optimisée</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span>
+    <span class="s2">&quot;s3://mangetamain/recipes_clean.parquet&quot;</span><span class="p">,</span>
+    <span class="n">use_pyarrow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>        <span class="c1"># Moteur Arrow (plus rapide)</span>
+    <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">],</span>   <span class="c1"># Lecture sélective (columnar)</span>
+    <span class="n">n_rows</span><span class="o">=</span><span class="mi">1000</span>              <span class="c1"># Limite pour preview</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="monitoring-performance">
+<h3>Monitoring Performance<a class="headerlink" href="#monitoring-performance" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Mesurer temps chargement</strong> :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">loguru</span><span class="w"> </span><span class="kn">import</span> <span class="n">logger</span>
+
+<span class="nd">@st</span><span class="o">.</span><span class="n">cache_data</span><span class="p">(</span><span class="n">ttl</span><span class="o">=</span><span class="mi">3600</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_with_timing</span><span class="p">():</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;s3://mangetamain/recipes_clean.parquet&quot;</span><span class="p">)</span>
+
+    <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;S3 load: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows in </span><span class="si">{</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">/</span><span class="n">elapsed</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2"> rows/s)&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+</div>
+<p><strong>Logs attendus</strong> :</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>2025-10-27 15:23:45 | INFO | S3 load: 178265 rows in 0.42s (424441 rows/s)
+</pre></div>
+</div>
+</section>
+<section id="depannage-performance">
+<h3>Dépannage Performance<a class="headerlink" href="#depannage-performance" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Vitesse &lt; 100 MB/s</strong> :</p>
+<ol class="arabic simple">
+<li><p><strong>Vérifier DNAT actif</strong> :</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>iptables<span class="w"> </span>-t<span class="w"> </span>nat<span class="w"> </span>-L<span class="w"> </span>OUTPUT<span class="w"> </span>-n<span class="w"> </span>-v<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">3910</span>
+<span class="c1"># Doit afficher règle DNAT</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p><strong>Tester connexion directe</strong> :</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>http://192.168.80.202:3910/mangetamain/recipes_clean.parquet
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p><strong>Vérifier latence réseau</strong> :</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ping<span class="w"> </span>-c<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="m">192</span>.168.80.202
+<span class="c1"># RTT doit être &lt; 1ms (réseau local)</span>
+</pre></div>
+</div>
+<p><strong>Vitesse fluctuante</strong> :</p>
+<ul class="simple">
+<li><p><strong>Cause</strong> : Charge serveur Garage</p></li>
+<li><p><strong>Solution</strong> : Répéter mesures sur 5-10 essais</p></li>
+<li><p><strong>Variance normale</strong> : ±20%</p></li>
+</ul>
+<p><strong>Premier chargement lent</strong> :</p>
+<ul class="simple">
+<li><p><strong>Cause</strong> : Cold start Garage (cache serveur)</p></li>
+<li><p><strong>Normal</strong> : 2-3x plus lent que suivants</p></li>
+<li><p><strong>Solution</strong> : Pre-warm avec <code class="docutils literal notranslate"><span class="pre">aws</span> <span class="pre">s3</span> <span class="pre">ls</span></code></p></li>
+</ul>
+</section>
+<section id="limites-et-quotas">
+<h3>Limites et Quotas<a class="headerlink" href="#limites-et-quotas" title="Lien vers cette rubrique"></a></h3>
+<p><strong>Garage S3 (installation actuelle)</strong> :</p>
+<ul class="simple">
+<li><p><strong>Bande passante</strong> : ~1 Gbps (125 MB/s théorique)</p></li>
+<li><p><strong>IOPS</strong> : Illimité (SSD serveur)</p></li>
+<li><p><strong>Connexions simultanées</strong> : 100+ (suffisant)</p></li>
+<li><p><strong>Taille bucket</strong> : ~5 GB utilisés / 1 TB disponible</p></li>
+</ul>
+<p><strong>Pas de quotas AWS</strong> : Installation self-hosted, pas de limites AWS.</p>
+</section>
+</section>
+<section id="voir-aussi">
+<h2>Voir Aussi<a class="headerlink" href="#voir-aussi" title="Lien vers cette rubrique"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="installation.html"><span class="doc">Installation</span></a> - Installation complète du projet</p></li>
+<li><p><a class="reference internal" href="tests.html"><span class="doc">Tests et Coverage</span></a> - Tests infrastructure S3 (50_test/)</p></li>
+<li><p><span class="xref std std-doc">api/data</span> - Module data.cached_loaders avec schémas</p></li>
+<li><p><span class="xref std std-doc">api/infrastructure</span> - Tests S3 automatisés</p></li>
+<li><p><a class="reference internal" href="quickstart.html"><span class="doc">Guide Démarrage Rapide</span></a> - Commandes S3 essentielles</p></li>
+<li><p>S3_INSTALL.md (racine) - Documentation détaillée installation</p></li>
+<li><p>S3_USAGE.md (racine) - Guide d’utilisation complet</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pied de page">
+        <a href="architecture.html" class="btn btn-neutral float-left" title="Architecture Technique" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Précédent</a>
+        <a href="cicd.html" class="btn btn-neutral float-right" title="Pipeline CI/CD" accesskey="n" rel="next">Suivant <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Droits d'auteur 2025, Mangetamain Team.</p>
+  </div>
+
+  Compilé avec <a href="https://www.sphinx-doc.org/">Sphinx</a> en utilisant un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">thème</a>
+    fourni par <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
