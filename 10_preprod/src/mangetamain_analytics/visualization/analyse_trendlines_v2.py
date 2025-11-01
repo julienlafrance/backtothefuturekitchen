@@ -17,6 +17,8 @@ import matplotlib.colors as mcolors
 from data.cached_loaders import get_recipes_clean as load_recipes_clean
 from utils import chart_theme
 from utils.color_theme import ColorTheme
+from utils.i18n_helper import t
+from i18n import get_current_language
 
 warnings.filterwarnings("ignore")
 
@@ -65,7 +67,7 @@ def analyse_trendline_volume() -> None:
         # Filtre années
         all_years = sorted(df["year"].unique().to_list())
         year_range = st.slider(
-            "📅 Plage d'années",
+            t("year_range"),
             min_value=int(all_years[0]),
             max_value=int(all_years[-1]),
             value=(int(all_years[0]), int(all_years[-1])),
@@ -74,11 +76,11 @@ def analyse_trendline_volume() -> None:
     with col2:
         # Choix couleur barres (utilise maintenant la charte)
         bar_color = chart_theme.get_bar_color()
-        st.markdown("")  # Colonne vide (espace pour futurs contrôles)
+        st.markdown("")  # Empty column
 
     with col3:
         # Afficher valeurs
-        show_values = st.checkbox("🔢 Afficher valeurs", value=True)
+        show_values = st.checkbox(t("show_values"), value=True)
 
     # ========================================
     # FILTRAGE DES DONNÉES
@@ -100,11 +102,11 @@ def analyse_trendline_volume() -> None:
     # Stats en bannière
     col_a, col_b, col_c = st.columns(3)
     with col_a:
-        st.metric("📊 Années", len(recipes_per_year))
+        st.metric(t("years"), len(recipes_per_year))
     with col_b:
         st.metric("🍳 Total recettes", f"{data.sum():,}")
     with col_c:
-        st.metric("📈 Moyenne/an", f"{data.mean():.0f}")
+        st.metric(t("average_per_year"), f"{data.mean():.0f}")
 
     # ========================================
     # GRAPHIQUE
@@ -167,7 +169,7 @@ def analyse_trendline_volume() -> None:
             line=dict(
                 color=chart_theme.get_reference_line_color(), width=2, dash="dash"
             ),
-            name="Ligne théorique",
+            name=t("theoretical_line"),
             hoverinfo="skip",
         ),
         row=1,
@@ -175,10 +177,10 @@ def analyse_trendline_volume() -> None:
     )
 
     # THÈME : Mise en forme axes avec titres personnalisés
-    fig.update_xaxes(title_text="Année", row=1, col=1)
+    fig.update_xaxes(title_text=t("axis_year", category="trends"), row=1, col=1)
     fig.update_yaxes(title_text="Nombre de recettes", row=1, col=1)
-    fig.update_xaxes(title_text="Quantiles théoriques (loi normale)", row=1, col=2)
-    fig.update_yaxes(title_text="Quantiles observés", row=1, col=2)
+    fig.update_xaxes(title_text=t("axis_theoretical_quantiles", category="trends"), row=1, col=2)
+    fig.update_yaxes(title_text=t("axis_observed_quantiles", category="trends"), row=1, col=2)
 
     # Application du thème global
     chart_theme.apply_subplot_theme(fig, num_rows=1, num_cols=2)
@@ -196,7 +198,7 @@ def analyse_trendline_volume() -> None:
     # STATISTIQUES DÉTAILLÉES (EXPANDER)
     # ========================================
 
-    with st.expander("📊 Statistiques détaillées"):
+    with st.expander(t("detailed_statistics")):
         col1, col2, col3, col4 = st.columns(4)
 
         with col1:
@@ -204,39 +206,29 @@ def analyse_trendline_volume() -> None:
             st.metric("Q1", f"{np.percentile(data, 25):,.0f}")
 
         with col2:
-            st.metric("Médiane", f"{np.median(data):,.0f}")
-            st.metric("Moyenne", f"{data.mean():,.0f}")
+            st.metric(t("label_median"), f"{np.median(data):,.0f}")
+            st.metric(t("label_average"), f"{data.mean():,.0f}")
 
         with col3:
             st.metric("Q3", f"{np.percentile(data, 75):,.0f}")
             st.metric("Max", f"{data.max():,}")
 
         with col4:
-            st.metric("Écart-type", f"{data.std():.0f}")
+            st.metric(t("std_dev"), f"{data.std():.0f}")
             st.metric("Coef. variation", f"{(data.std()/data.mean()*100):.1f}%")
 
         st.divider()
-        st.write(f"**R² (test normalité):** {r**2:.4f}")
+        st.write(t("trends.stats_label_r2_normality").format(value=f"{r**2:.4f}"))
 
         if r**2 > 0.95:
             st.success("✅ Distribution proche de la normale")
         elif r**2 > 0.90:
-            st.warning("⚠️ Distribution légèrement éloignée de la normale")
+            st.warning(t("distribution_slightly_non_normal", category="trends"))
         else:
             st.error("❌ Distribution non normale")
 
     # Interprétation
-    st.info(
-        """
-        💡 **Interprétation statistique**
-
-        Nous observons une **forte augmentation du nombre de recettes postées jusqu'en 2007**,
-        année du **pic d'activité**, suivie d'une **chute marquée** les années suivantes.
-        Les **tests de normalité** et les **Q-Q plots** montrent que la distribution du
-        **nombre de recettes par an** **n'est pas parfaitement normale**, avec des **écarts visibles**
-        par rapport à la **loi normale théorique**.
-        """
-    )
+    st.info(t('volume_interpretation', category='trends'))
 
 
 # ============================================================================
@@ -264,7 +256,7 @@ def analyse_trendline_duree() -> None:
         # Filtre années
         all_years = sorted(df["year"].unique().to_list())
         year_range = st.slider(
-            "📅 Plage d'années",
+            t("year_range"),
             min_value=int(all_years[0]),
             max_value=int(all_years[-1]),
             value=(int(all_years[0]), int(all_years[-1])),
@@ -274,13 +266,13 @@ def analyse_trendline_duree() -> None:
     with col2:
         # Option bulles
         show_bubbles = st.checkbox(
-            "⭕ Afficher les bulles proportionnelles", value=True
+            t("show_proportional_bubbles"), value=True
         )
 
     with col3:
         # Quantiles personnalisables
         quantile_choice = st.selectbox(
-            "📊 Intervalle de dispersion",
+            t("dispersion_interval"),
             [
                 "Q25-Q75 (IQR classique)",
                 "Q10-Q90 (Large)",
@@ -337,12 +329,12 @@ def analyse_trendline_duree() -> None:
     metrics_config = {
         "mean_minutes": {
             "color": color_mean,
-            "label": "Moyenne",
+            "label": t("label_average"),
             "ylabel": "minutes/an",
         },
         "median_minutes": {
             "color": color_median,
-            "label": "Médiane",
+            "label": t("label_median"),
             "ylabel": "minutes/an",
         },
     }
@@ -376,22 +368,22 @@ def analyse_trendline_duree() -> None:
 
     with col_a:
         st.metric(
-            "⏱️ Moyenne actuelle", f"{minutes_by_year['mean_minutes'].iloc[-1]:.1f} min"
+            t("current_average"), f"{minutes_by_year['mean_minutes'].iloc[-1]:.1f} min"
         )
 
     with col_b:
         st.metric(
-            "📊 Médiane actuelle",
+            t("current_median"),
             f"{minutes_by_year['median_minutes'].iloc[-1]:.1f} min",
         )
 
     with col_c:
         trend_mean = regressions["mean_minutes"]["slope"]
-        st.metric("📉 Pente Moyenne", f"{trend_mean:+.4f} min/an")
+        st.metric(t("average_slope"), f"{trend_mean:+.4f} min/an")
 
     with col_d:
         trend_median = regressions["median_minutes"]["slope"]
-        st.metric("📉 Pente Médiane", f"{trend_median:+.4f} min/an")
+        st.metric(t("median_slope"), f"{trend_median:+.4f} min/an")
 
     with col_e:
         # Dispersion actuelle (écart interquantile)
@@ -399,7 +391,7 @@ def analyse_trendline_duree() -> None:
             minutes_by_year["q_high"].iloc[-1] - minutes_by_year["q_low"].iloc[-1]
         )
         st.metric(
-            "📏 Dispersion actuelle",
+            t("current_dispersion"),
             f"{dispersion_actuelle:.1f} min",
             help=f"Écart entre Q{int(q_high*100)} et Q{int(q_low*100)}",
         )
@@ -446,7 +438,7 @@ def analyse_trendline_duree() -> None:
             x=minutes_by_year["year"],
             y=minutes_by_year["mean_minutes"],
             mode="lines",
-            name="Moyenne (observée)",
+            name=t("average_observed"),
             line=dict(color=color_mean, width=2),
             opacity=0.8,
             hovertemplate="<b>Année %{x}</b><br>Moyenne: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
@@ -461,7 +453,7 @@ def analyse_trendline_duree() -> None:
                 x=minutes_by_year["year"],
                 y=minutes_by_year["mean_minutes"],
                 mode="markers",
-                name="Volume (moyenne)",
+                name=t("volume_average"),
                 marker=dict(
                     color=color_mean,
                     size=sizes,
@@ -483,7 +475,7 @@ def analyse_trendline_duree() -> None:
             name=f"Régression Moyenne (R²={regressions['mean_minutes']['r2']:.3f})",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=2.5, dash="dash"),
             opacity=0.8,
-            hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>",
+            hovertemplate=t("hover_year_regression", category="trends"),
         )
     )
 
@@ -493,7 +485,7 @@ def analyse_trendline_duree() -> None:
             x=minutes_by_year["year"],
             y=minutes_by_year["median_minutes"],
             mode="lines",
-            name="Médiane (observée)",
+            name=t("median_observed"),
             line=dict(color=color_median, width=2),
             opacity=0.8,
             hovertemplate="<b>Année %{x}</b><br>Médiane: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
@@ -508,7 +500,7 @@ def analyse_trendline_duree() -> None:
                 x=minutes_by_year["year"],
                 y=minutes_by_year["median_minutes"],
                 mode="markers",
-                name="Volume (médiane)",
+                name=t("volume_median"),
                 marker=dict(
                     color=color_median,
                     size=sizes,
@@ -530,7 +522,7 @@ def analyse_trendline_duree() -> None:
             name=f"Régression Médiane (R²={regressions['median_minutes']['r2']:.3f})",
             line=dict(color=ColorTheme.CHART_COLORS[3], width=2.5, dash="dash"),
             opacity=0.8,
-            hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>",
+            hovertemplate=t("hover_year_regression", category="trends"),
         )
     )
 
@@ -538,10 +530,11 @@ def analyse_trendline_duree() -> None:
     # MISE EN FORME AVEC THÈME "BACK TO THE KITCHEN"
     # ========================================
 
+    unit_year = "min/year" if get_current_language() == "en" else "min/an"
     title_text = (
-        f"Évolution de la durée (minutes)<br>"
-        f"<sub>Moyenne: {regressions['mean_minutes']['slope']:+.4f} min/an | "
-        f"Médiane: {regressions['median_minutes']['slope']:+.4f} min/an</sub>"
+        f"{t('duration_evolution_title', category='trends')}<br>"
+        f"<sub>{t('label_average', category='common')}: {regressions['mean_minutes']['slope']:+.4f} {unit_year} | "
+        f"{t('label_median', category='common')}: {regressions['median_minutes']['slope']:+.4f} {unit_year}</sub>"
     )
 
     # Application du thème dark
@@ -549,8 +542,8 @@ def analyse_trendline_duree() -> None:
 
     fig.update_layout(
         title=dict(text=title_text, font=dict(size=16), x=0.5, xanchor="center"),
-        xaxis_title="Année",
-        yaxis_title="Minutes",
+        xaxis_title=t("axis_year", category="common"),
+        yaxis_title=t("axis_minutes", category="common"),
         height=650,
         hovermode="closest",
     )
@@ -563,70 +556,54 @@ def analyse_trendline_duree() -> None:
     # ========================================
 
     st.info(
-        f"""
-    💡 **Zone bleue ({label_quantile})** : Représente la dispersion des durées de recettes.
-
-    - **Zone large** → Grande variété de durées (recettes courtes ET longues)
-    - **Zone étroite** → Durées homogènes (recettes similaires)
-    - **Changement de largeur** → Évolution de la diversité des recettes au fil du temps
-
-    📊 Dispersion actuelle : **{dispersion_actuelle:.1f} minutes** d'écart entre Q{int(q_low*100)} et Q{int(q_high*100)}
-    """
+        t("info_blue_zone", category="trends").format(
+            quantile=label_quantile,
+            dispersion=dispersion_actuelle,
+            q_low=int(q_low*100),
+            q_high=int(q_high*100)
+        )
     )
 
     # ========================================
     # INTERPRÉTATION (IDENTIQUE À L'ORIGINAL)
     # ========================================
 
-    st.markdown("### 📊 Interprétation")
+    st.markdown(t("interpretation_title"))
 
     st.write(
-        f"""
-    L'analyse de la durée moyenne de préparation montre une **tendance globale à la baisse**
-    depuis la création du site. En moyenne, le temps de préparation diminue d'environ
-    **{regressions['mean_minutes']['slope']:.2f} min/an**, tandis que la médiane recule de
-    **{regressions['median_minutes']['slope']:.2f} min/an**, ce qui traduit une légère
-    **simplification des recettes** au fil du temps.
-    """
+        t("trends_main_interpretation_down", category="trends").format(
+            slope_mean=regressions['mean_minutes']['slope'],
+            slope_median=regressions['median_minutes']['slope']
+        )
     )
 
     # ========================================
     # STATISTIQUES DÉTAILLÉES
     # ========================================
 
-    with st.expander("📊 Statistiques détaillées des régressions"):
+    with st.expander(t("detailed_regression_stats")):
         col1, col2 = st.columns(2)
 
         with col1:
-            st.markdown("### 📈 Moyenne")
-            st.write(f"**Pente:** {regressions['mean_minutes']['slope']:.6f} min/an")
-            st.write(f"**Intercept:** {regressions['mean_minutes']['intercept']:.2f}")
-            st.write(f"**R² pondéré:** {regressions['mean_minutes']['r2']:.4f}")
-            st.write(f"**p-value:** {regressions['mean_minutes']['p_value']:.4e}")
+            st.markdown(t("stats_section_mean", category="trends"))
+            st.write(t("stats_label_slope", category="trends").format(value=f"{regressions['mean_minutes']['slope']:.6f}"))
+            st.write(t("stats_label_intercept", category="trends").format(value=f"{regressions['mean_minutes']['intercept']:.2f}"))
+            st.write(t("trends.stats_label_r2_weighted").format(value=f"{regressions['mean_minutes']['r2']:.4f}"))
+            st.write(t("stats_label_pvalue", category="trends").format(value=f"{regressions['mean_minutes']['p_value']:.4e}"))
 
         with col2:
-            st.markdown("### 📊 Médiane")
-            st.write(f"**Pente:** {regressions['median_minutes']['slope']:.6f} min/an")
-            st.write(f"**Intercept:** {regressions['median_minutes']['intercept']:.2f}")
-            st.write(f"**R² pondéré:** {regressions['median_minutes']['r2']:.4f}")
-            st.write(f"**p-value:** {regressions['median_minutes']['p_value']:.4e}")
+            st.markdown(t("stats_section_median", category="trends"))
+            st.write(t("stats_label_slope", category="trends").format(value=f"{regressions['median_minutes']['slope']:.6f}"))
+            st.write(t("stats_label_intercept", category="trends").format(value=f"{regressions['median_minutes']['intercept']:.2f}"))
+            st.write(t("trends.stats_label_r2_weighted").format(value=f"{regressions['median_minutes']['r2']:.4f}"))
+            st.write(t("stats_label_pvalue", category="trends").format(value=f"{regressions['median_minutes']['p_value']:.4e}"))
 
     # ========================================
     # TABLEAU DES DONNÉES
     # ========================================
 
     # Interprétation
-    st.info(
-        """
-        💡 **Interprétation statistique**
-
-        **L'analyse de la durée moyenne de préparation** montre une **tendance globale à la baisse**
-        depuis la création du site.
-
-        En moyenne, le **temps de préparation diminue d'environ −0.46 min par an**, tandis que la **médiane recule de −0.26 min par an**,
-        ce qui traduit une **légère simplification des recettes** au fil du temps.
-        """
-    )
+    st.info(t('duration_interpretation', category='trends'))
 
 
 def analyse_trendline_duree_old_intervals() -> None:
@@ -648,7 +625,7 @@ def analyse_trendline_duree_old_intervals() -> None:
         # Filtre années
         all_years = sorted(df["year"].unique().to_list())
         year_range = st.slider(
-            "📅 Plage d'années",
+            t("year_range"),
             min_value=int(all_years[0]),
             max_value=int(all_years[-1]),
             value=(int(all_years[0]), int(all_years[-1])),
@@ -658,8 +635,8 @@ def analyse_trendline_duree_old_intervals() -> None:
     with col2:
         # Choix métrique
         metric_choice = st.selectbox(
-            "📊 Métrique à analyser",
-            options=["Moyenne", "Médiane"],
+            t("metric_to_analyze"),
+            options=[t("label_average"), t("label_median")],
             index=0,
             key="select_duree_metric",
         )
@@ -684,7 +661,7 @@ def analyse_trendline_duree_old_intervals() -> None:
     )
 
     # Agrégation par année
-    if metric_choice == "Moyenne":
+    if metric_choice == t("label_average"):
         metric_col = "prep_time_mean"
         df_yearly = (
             df_filtered.group_by("year")
@@ -790,7 +767,7 @@ def analyse_trendline_duree_old_intervals() -> None:
             fill="tonexty",
             fillcolor="rgba(255, 165, 0, 0.1)",
             line=dict(width=0),
-            name=f"Intervalle de prédiction {confidence_level}% (individuel)",
+            name=t("legend_prediction_interval", category="trends").format(level=confidence_level),
             hoverinfo="skip",
         )
     )
@@ -802,7 +779,7 @@ def analyse_trendline_duree_old_intervals() -> None:
             y=pred_lower,
             mode="lines",
             line=dict(color="orange", width=2, dash="dot"),
-            name="Borne inf. prédiction",
+            name=t("legend_lower_bound_prediction", category="trends"),
             hovertemplate="<b>%{x}</b><br>Borne inf: %{y:.1f} min<extra></extra>",
         )
     )
@@ -813,7 +790,7 @@ def analyse_trendline_duree_old_intervals() -> None:
             y=pred_upper,
             mode="lines",
             line=dict(color="orange", width=2, dash="dot"),
-            name="Borne sup. prédiction",
+            name=t("legend_upper_bound_prediction", category="trends"),
             hovertemplate="<b>%{x}</b><br>Borne sup: %{y:.1f} min<extra></extra>",
         )
     )
@@ -838,7 +815,7 @@ def analyse_trendline_duree_old_intervals() -> None:
             fill="tonexty",
             fillcolor="rgba(0, 128, 0, 0.15)",
             line=dict(width=0),
-            name=f"Intervalle de confiance {confidence_level}% (moyenne)",
+            name=t("legend_confidence_interval", category="trends").format(level=confidence_level),
             hoverinfo="skip",
         )
     )
@@ -873,7 +850,7 @@ def analyse_trendline_duree_old_intervals() -> None:
             y=y_pred,
             mode="lines",
             line=dict(color="red", width=3),
-            name="Régression WLS",
+            name=t("wls_regression"),
             hovertemplate="<b>%{x}</b><br>Prédiction: %{y:.1f} min<extra></extra>",
         )
     )
@@ -885,7 +862,7 @@ def analyse_trendline_duree_old_intervals() -> None:
             y=y,
             mode="markers",
             marker=dict(color="darkblue", size=10, line=dict(color="white", width=1)),
-            name="Données observées",
+            name=t("observed_data"),
             hovertemplate="<b>%{x}</b><br>Valeur: %{y:.1f} min<extra></extra>",
         )
     )
@@ -946,7 +923,7 @@ def analyse_trendline_duree_old_intervals() -> None:
 
     with col_c:
         r_squared = wls_result.rsquared
-        st.metric("R² pondéré", f"{r_squared:.3f}", "Qualité du modèle")
+        st.metric(t("weighted_r2"), f"{r_squared:.3f}", "Qualité du modèle")
 
     with col_d:
         p_value = wls_result.pvalues[1]
@@ -961,7 +938,7 @@ def analyse_trendline_duree_old_intervals() -> None:
         st.markdown(
             """
         **Intervalle de confiance (vert)** 🟢
-        - Incertitude sur la **position moyenne** de la droite de régression
+        t("uncertainty_mean_position", category="trends")
         - "Où se trouve la vraie moyenne de la population ?"
         - Plus étroit car basé sur une moyenne d'observations
 
@@ -977,20 +954,20 @@ def analyse_trendline_duree_old_intervals() -> None:
         """
         )
 
-    with st.expander("📊 Statistiques détaillées de la régression"):
-        st.markdown("**Équation du modèle WLS :**")
+    with st.expander(t("detailed_regression_stat")):
+        st.markdown(t("wls_model_equation"))
         intercept = wls_result.params[0]
         st.latex(
             rf"\text{{Durée}} = {intercept:.2f} + {slope:.2f} \times \text{{Année}}"
         )
 
-        st.markdown("**Coefficients :**")
-        st.write(f"- Ordonnée à l'origine : {intercept:.2f} minutes")
-        st.write(f"- Pente : {slope:.2f} minutes/an")
-        st.write(f"- R² pondéré : {r_squared:.4f}")
-        st.write(f"- p-value (pente) : {p_value:.4e}")
+        st.markdown(t("coefficients_header"))
+        st.write(t("regression_detail_intercept", category="trends").format(value=f"{intercept:.2f}"))
+        st.write(t("regression_detail_slope", category="trends").format(value=f"{slope:.2f}"))
+        st.write(t("trends.regression_detail_r2").format(value=f"{r_squared:.4f}"))
+        st.write(t("regression_detail_pvalue", category="trends").format(value=f"{p_value:.4e}"))
 
-        st.markdown("**Résumé complet du modèle :**")
+        st.markdown(t("model_summary_header"))
         st.text(wls_result.summary())
 
 
@@ -1013,7 +990,7 @@ def analyse_trendline_duree_old() -> None:
         # Filtre années
         all_years = sorted(df["year"].unique().to_list())
         year_range = st.slider(
-            "📅 Plage d'années",
+            t("year_range"),
             min_value=int(all_years[0]),
             max_value=int(all_years[-1]),
             value=(int(all_years[0]), int(all_years[-1])),
@@ -1097,12 +1074,12 @@ def analyse_trendline_duree_old() -> None:
 
     with col_a:
         st.metric(
-            "⏱️ Moyenne actuelle", f"{minutes_by_year['mean_minutes'].iloc[-1]:.1f} min"
+            t("current_average"), f"{minutes_by_year['mean_minutes'].iloc[-1]:.1f} min"
         )
 
     with col_b:
         st.metric(
-            "📊 Médiane actuelle",
+            t("current_median"),
             f"{minutes_by_year['median_minutes'].iloc[-1]:.1f} min",
         )
 
@@ -1111,16 +1088,16 @@ def analyse_trendline_duree_old() -> None:
         st.metric(
             "📉 Tendance Moyenne",
             f"{trend_mean:+.3f} min/an",
-            delta=f"{trend_mean * len(minutes_by_year):.1f} min sur période",
+            delta=t("delta_over_period", category="trends").format(value=trend_mean * len(minutes_by_year)),
             delta_color="inverse",
         )
 
     with col_d:
         trend_median = regressions["median_minutes"]["slope"]
         st.metric(
-            "📉 Tendance Médiane",
+            t("trend_median_label", category="trends"),
             f"{trend_median:+.3f} min/an",
-            delta=f"{trend_median * len(minutes_by_year):.1f} min sur période",
+            delta=t("delta_over_period", category="trends").format(value=trend_median * len(minutes_by_year)),
             delta_color="inverse",
         )
 
@@ -1166,7 +1143,7 @@ def analyse_trendline_duree_old() -> None:
             x=minutes_by_year["year"],
             y=minutes_by_year["mean_minutes"],
             mode="lines",
-            name="Moyenne (observée)",
+            name=t("average_observed"),
             line=dict(color=color_mean, width=2.5),
             hovertemplate="<b>Année %{x}</b><br>Moyenne: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
             customdata=minutes_by_year["n_recipes"],
@@ -1180,7 +1157,7 @@ def analyse_trendline_duree_old() -> None:
                 x=minutes_by_year["year"],
                 y=minutes_by_year["mean_minutes"],
                 mode="markers",
-                name="Moyenne (bulles)",
+                name=t("average_bubbles"),
                 marker=dict(
                     color=color_mean,
                     size=sizes,
@@ -1200,7 +1177,7 @@ def analyse_trendline_duree_old() -> None:
             mode="lines",
             name=f"Régression Moyenne (R²={regressions['mean_minutes']['r2']:.3f})",
             line=dict(color="darkblue", width=2.5, dash="dash"),
-            hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>",
+            hovertemplate=t("hover_year_regression", category="trends"),
         )
     )
 
@@ -1210,7 +1187,7 @@ def analyse_trendline_duree_old() -> None:
             x=minutes_by_year["year"],
             y=minutes_by_year["median_minutes"],
             mode="lines",
-            name="Médiane (observée)",
+            name=t("median_observed"),
             line=dict(color=color_median, width=2),
             hovertemplate="<b>Année %{x}</b><br>Médiane: %{y:.1f} min<br>Recettes: %{customdata:,}<extra></extra>",
             customdata=minutes_by_year["n_recipes"],
@@ -1224,7 +1201,7 @@ def analyse_trendline_duree_old() -> None:
                 x=minutes_by_year["year"],
                 y=minutes_by_year["median_minutes"],
                 mode="markers",
-                name="Médiane (bulles)",
+                name=t("median_bubbles"),
                 marker=dict(
                     color=color_median,
                     size=sizes,
@@ -1244,7 +1221,7 @@ def analyse_trendline_duree_old() -> None:
             mode="lines",
             name=f"Régression Médiane (R²={regressions['median_minutes']['r2']:.3f})",
             line=dict(color="darkred", width=2.5, dash="dash"),
-            hovertemplate="<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>",
+            hovertemplate=t("hover_year_regression", category="trends"),
         )
     )
 
@@ -1302,15 +1279,15 @@ def analyse_trendline_duree_old() -> None:
     # STATISTIQUES DÉTAILLÉES
     # ========================================
 
-    with st.expander("📊 Statistiques détaillées des régressions"):
+    with st.expander(t("detailed_regression_stats")):
         col1, col2 = st.columns(2)
 
         with col1:
-            st.markdown("### 📈 Moyenne")
-            st.write(f"**Pente:** {regressions['mean_minutes']['slope']:.6f} min/an")
-            st.write(f"**Intercept:** {regressions['mean_minutes']['intercept']:.2f}")
-            st.write(f"**R² pondéré:** {regressions['mean_minutes']['r2']:.4f}")
-            st.write(f"**p-value:** {regressions['mean_minutes']['p_value']:.4e}")
+            st.markdown(t("stats_section_mean", category="trends"))
+            st.write(t("stats_label_slope", category="trends").format(value=f"{regressions['mean_minutes']['slope']:.6f}"))
+            st.write(t("stats_label_intercept", category="trends").format(value=f"{regressions['mean_minutes']['intercept']:.2f}"))
+            st.write(t("trends.stats_label_r2_weighted").format(value=f"{regressions['mean_minutes']['r2']:.4f}"))
+            st.write(t("stats_label_pvalue", category="trends").format(value=f"{regressions['mean_minutes']['p_value']:.4e}"))
 
             if regressions["mean_minutes"]["p_value"] < 0.001:
                 st.success("✅ Tendance hautement significative (p < 0.001)")
@@ -1331,11 +1308,11 @@ def analyse_trendline_duree_old() -> None:
             )
 
         with col2:
-            st.markdown("### 📊 Médiane")
-            st.write(f"**Pente:** {regressions['median_minutes']['slope']:.6f} min/an")
-            st.write(f"**Intercept:** {regressions['median_minutes']['intercept']:.2f}")
-            st.write(f"**R² pondéré:** {regressions['median_minutes']['r2']:.4f}")
-            st.write(f"**p-value:** {regressions['median_minutes']['p_value']:.4e}")
+            st.markdown(t("stats_section_median", category="trends"))
+            st.write(t("stats_label_slope", category="trends").format(value=f"{regressions['median_minutes']['slope']:.6f}"))
+            st.write(t("stats_label_intercept", category="trends").format(value=f"{regressions['median_minutes']['intercept']:.2f}"))
+            st.write(t("trends.stats_label_r2_weighted").format(value=f"{regressions['median_minutes']['r2']:.4f}"))
+            st.write(t("stats_label_pvalue", category="trends").format(value=f"{regressions['median_minutes']['p_value']:.4e}"))
 
             if regressions["median_minutes"]["p_value"] < 0.001:
                 st.success("✅ Tendance hautement significative (p < 0.001)")
@@ -1356,27 +1333,23 @@ def analyse_trendline_duree_old() -> None:
             )
 
         st.divider()
-        st.markdown("### 🔍 Interprétation")
+        st.markdown(t("interpretation_section", category="trends"))
 
         if regressions["mean_minutes"]["slope"] < 0:
             st.write(
                 f"""
-            L'analyse de la durée moyenne de préparation montre une **tendance globale à la baisse**
-            depuis la création du site. En moyenne, le temps de préparation diminue d'environ
-            **{regressions['mean_minutes']['slope']:.2f} min/an**, tandis que la médiane recule de
-            **{regressions['median_minutes']['slope']:.2f} min/an**, ce qui traduit une légère
-            **simplification des recettes** au fil du temps.
+            {t("trends_main_interpretation_down", category="trends").format(
+                slope_mean=regressions['mean_minutes']['slope'],
+                slope_median=regressions['median_minutes']['slope']
+            )}
             """
             )
         else:
             st.write(
-                f"""
-            L'analyse de la durée moyenne de préparation montre une **tendance à la hausse**.
-            En moyenne, le temps de préparation augmente d'environ
-            **{regressions['mean_minutes']['slope']:+.2f} min/an**, tandis que la médiane progresse de
-            **{regressions['median_minutes']['slope']:+.2f} min/an**, ce qui pourrait indiquer une
-            **complexification des recettes** au fil du temps.
-            """
+                t("trends_main_interpretation_up", category="trends").format(
+                    slope_mean=regressions['mean_minutes']['slope'],
+                    slope_median=regressions['median_minutes']['slope']
+                )
             )
 
     # ========================================
@@ -1429,8 +1402,8 @@ def analyse_trendline_complexite() -> None:
         },
         "mean_ingredients": {
             "color": ColorTheme.CHART_COLORS[2],  # Orange foncé
-            "title": "Nombre d'ingrédients",
-            "ylabel": "Nombre d'ingrédients",
+            "title": t("axis_ingredients_count", category="trends"),
+            "ylabel": t("axis_ingredients_count", category="trends"),
             "show_std": False,
         },
     }
@@ -1512,7 +1485,7 @@ def analyse_trendline_complexite() -> None:
                 x=complexity_by_year["year"],
                 y=complexity_by_year[metric_col],
                 mode="lines+markers",
-                name="Tendance observée",
+                name=t("observed_trend"),
                 line=dict(color=config["color"], width=2),
                 marker=dict(size=sizes, color=config["color"], opacity=0.6),
                 showlegend=(idx == 1),
@@ -1537,7 +1510,7 @@ def analyse_trendline_complexite() -> None:
 
         # Axes
         fig.update_xaxes(
-            title_text="Année",
+            title_text=t("axis_year", category="trends"),
             row=1,
             col=idx,
         )
@@ -1558,18 +1531,19 @@ def analyse_trendline_complexite() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # Interprétation
-    st.info(
-        f"""
-    💡 **Interprétation statistique**
+    complexity_interpretation = t("complexity_regression_interpretation", category="trends").format(
+        slope=regressions['mean_complexity']['slope'],
+        r2=regressions['mean_complexity']['r2'],
+        pvalue=regressions['mean_complexity']['p_value']
+    )
 
-    La **régression linéaire pondérée** met en évidence une **tendance significative à la hausse**
-    du **score moyen de complexité** (pente = **{regressions['mean_complexity']['slope']:+.4f}**,
-    R² = **{regressions['mean_complexity']['r2']:.2f}**, p = **{regressions['mean_complexity']['p_value']:.2e}**).
+    # Add details
+    complexity_interpretation += f"""
     Cette évolution indique une **augmentation progressive de la complexité des recettes** au fil du temps,
     suggérant des **préparations de plus en plus élaborées**. La tendance est **cohérente** avec l'augmentation
-    du **nombre d'étapes** et du **nombre d'ingrédients**, confirmant une **complexification globale** des recettes publiées.
-    """
-    )
+    du **nombre d'étapes** et du **nombre d'ingrédients**, confirmant une **complexification globale** des recettes publiées."""
+
+    st.info(complexity_interpretation)
 
 
 # ============================================================================
@@ -1614,7 +1588,7 @@ def analyse_trendline_nutrition() -> None:
         },
         "mean_fat": {
             "color": ColorTheme.CHART_COLORS[2],
-            "title": "Lipides (%)",
+            "title": t("lipides_pct"),
             "ylabel": "Fat %",
         },
         "mean_protein": {
@@ -1670,7 +1644,7 @@ def analyse_trendline_nutrition() -> None:
                 x=nutrition_by_year["year"],
                 y=nutrition_by_year[metric_col],
                 mode="lines+markers",
-                name="Tendance observée",
+                name=t("observed_trend"),
                 line=dict(color=config["color"], width=2),
                 marker=dict(size=sizes, color=config["color"], opacity=0.6),
                 showlegend=(row == 1 and col == 1),
@@ -1695,7 +1669,7 @@ def analyse_trendline_nutrition() -> None:
 
         # Axes
         fig.update_xaxes(
-            title_text="Année" if row == 2 else None,
+            title_text=t("axis_year", category="trends") if row == 2 else None,
             row=row,
             col=col,
         )
@@ -1716,19 +1690,7 @@ def analyse_trendline_nutrition() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # Interprétation
-    st.info(
-        """
-    💡 **Interprétation statistique**
-
-    Les **régressions linéaires pondérées** montrent une **tendance significative à la baisse**
-    des valeurs **nutritionnelles moyennes** au fil du temps. Les **calories**, **glucides**, **lipides** et **protéines**
-    présentent toutes des **pentes négatives**, avec des **R² pondérés entre 0.39 et 0.56**, indiquant une
-    **bonne part de variance expliquée** et une **diminution mesurable** des apports nutritionnels moyens par recette.
-    Cette évolution traduit une **orientation progressive vers des recettes plus légères**, moins riches en **calories**
-    et en **macronutriments**, reflétant probablement une **adaptation aux tendances alimentaires modernes**
-    (recherche de plats plus équilibrés et moins énergétiques).
-    """
-    )
+    st.info(t('nutrition_interpretation', category='trends'))
 
 
 # ============================================================================
@@ -1823,12 +1785,12 @@ def analyse_trendline_ingredients(top_n=10) -> None:
         rows=3,
         cols=2,
         subplot_titles=(
-            f"Top {TOP_N} ingrédients les plus fréquents",
-            "Évolution de la diversité des ingrédients",
-            f"Top {TOP_N} hausses ({min_year}→{max_year})",
-            f"Top {TOP_N} baisses ({min_year}→{max_year})",
-            f"Évolution : Top {N_VARIATIONS} hausses",
-            f"Évolution : Top {N_VARIATIONS} baisses",
+            t("ingredients_most_frequent", category="trends").format(n=TOP_N),
+            t("ingredients_diversity_evolution", category="trends"),
+            t("ingredients_top_increases_short", category="trends").format(n=TOP_N, min_year=min_year, max_year=max_year),
+            t("ingredients_top_decreases_short", category="trends").format(n=TOP_N, min_year=min_year, max_year=max_year),
+            t("ingredients_top_increases", category="trends").format(n=N_VARIATIONS),
+            t("ingredients_top_decreases", category="trends").format(n=N_VARIATIONS),
         ),
         specs=[
             [{"type": "bar"}, {"type": "scatter"}],
@@ -1952,24 +1914,24 @@ def analyse_trendline_ingredients(top_n=10) -> None:
         )
 
     # Axes
-    fig.update_xaxes(title_text="Occurrences totales", row=1, col=1)
+    fig.update_xaxes(title_text=t("axis_total_occurrences", category="trends"), row=1, col=1)
     fig.update_yaxes(row=1, col=1)
 
-    fig.update_xaxes(title_text="Année", row=1, col=2)
-    fig.update_yaxes(title_text="Nombre d'ingrédients uniques", row=1, col=2)
+    fig.update_xaxes(title_text=t("axis_year", category="trends"), row=1, col=2)
+    fig.update_yaxes(title_text=t("axis_unique_ingredients", category="trends"), row=1, col=2)
 
-    label_delta = "Variation (normalisée)" if NORMALIZE else "Variation (occurrences)"
+    label_delta = t("variation_normalized") if NORMALIZE else t("variation_occurrences")
     fig.update_xaxes(title_text=label_delta, row=2, col=1)
     fig.update_yaxes(row=2, col=1)
 
     fig.update_xaxes(title_text=label_delta, row=2, col=2)
     fig.update_yaxes(row=2, col=2)
 
-    ylabel_freq = "Fréquence" if NORMALIZE else "Occurrences"
-    fig.update_xaxes(title_text="Année", row=3, col=1)
+    ylabel_freq = t("axis_frequency", category="trends") if NORMALIZE else t("axis_occurrences", category="trends")
+    fig.update_xaxes(title_text=t("axis_year", category="trends"), row=3, col=1)
     fig.update_yaxes(title_text=ylabel_freq, row=3, col=1)
 
-    fig.update_xaxes(title_text="Année", row=3, col=2)
+    fig.update_xaxes(title_text=t("axis_year", category="trends"), row=3, col=2)
     fig.update_yaxes(title_text=ylabel_freq, row=3, col=2)
 
     # Mise en forme
@@ -1984,20 +1946,7 @@ def analyse_trendline_ingredients(top_n=10) -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # Interprétation
-    st.info(
-        """
-    💡 **Interprétation statistique**
-
-    L'analyse révèle une **transformation profonde** de l'usage des ingrédients au fil du temps.
-    **Tendances montantes**: Des ingrédients comme *kosher salt*, *garlic cloves*, *olive oil* et *unsalted butter*
-    connaissent une forte progression, reflétant peut-être un virage vers une cuisine plus communautaire ou méditerranéenne.
-    **Tendances descendantes**: Les ingrédients traditionnels comme *sugar*, *butter*, *eggs* et *vanilla* sont en net recul,
-    suggérant une diminution des recettes de pâtisserie classique et une recherche de recettes moins sucrées.
-    **Chute de la diversité**: Le nombre d'ingrédients uniques chute drastiquement, passant du maximum en début de période
-    à un minimum en fin de période. Cette baisse significative s'explique par la diminution du volume de recettes postées
-    après 2007, entraînant une concentration sur des ingrédients plus courants et une perte d'innovation culinaire.
-    """
-    )
+    st.info(t('ingredients_interpretation', category='trends'))
 
 
 # ============================================================================
@@ -2083,12 +2032,12 @@ def analyse_trendline_tags(top_n=10) -> None:
         rows=3,
         cols=2,
         subplot_titles=(
-            f"Top {TOP_N} tags les plus fréquents",
-            "Évolution de la diversité des tags",
-            f"Top {TOP_N} hausses ({min_year_tags}→{max_year_tags})",
-            f"Top {TOP_N} baisses ({min_year_tags}→{max_year_tags})",
-            f"Évolution : Top {N_VARIATIONS} hausses",
-            f"Évolution : Top {N_VARIATIONS} baisses",
+            t("tags_most_frequent", category="trends").format(n=TOP_N),
+            t("tags_diversity_evolution", category="trends"),
+            t("tags_top_increases_short", category="trends").format(n=TOP_N, min_year=min_year_tags, max_year=max_year_tags),
+            t("tags_top_decreases_short", category="trends").format(n=TOP_N, min_year=min_year_tags, max_year=max_year_tags),
+            t("tags_top_increases", category="trends").format(n=N_VARIATIONS),
+            t("tags_top_decreases", category="trends").format(n=N_VARIATIONS),
         ),
         specs=[
             [{"type": "bar"}, {"type": "scatter"}],
@@ -2216,14 +2165,14 @@ def analyse_trendline_tags(top_n=10) -> None:
         )
 
     # Axes
-    fig.update_xaxes(title_text="Occurrences totales", row=1, col=1)
+    fig.update_xaxes(title_text=t("axis_total_occurrences", category="trends"), row=1, col=1)
     fig.update_yaxes(row=1, col=1)
 
-    fig.update_xaxes(title_text="Année", row=1, col=2)
-    fig.update_yaxes(title_text="Nombre de tags uniques", row=1, col=2)
+    fig.update_xaxes(title_text=t("axis_year", category="trends"), row=1, col=2)
+    fig.update_yaxes(title_text=t("axis_unique_tags", category="trends"), row=1, col=2)
 
     label_delta_tags = (
-        "Variation (normalisée)" if NORMALIZE else "Variation (occurrences)"
+        t("variation_normalized") if NORMALIZE else t("variation_occurrences")
     )
     fig.update_xaxes(title_text=label_delta_tags, row=2, col=1)
     fig.update_yaxes(row=2, col=1)
@@ -2231,11 +2180,11 @@ def analyse_trendline_tags(top_n=10) -> None:
     fig.update_xaxes(title_text=label_delta_tags, row=2, col=2)
     fig.update_yaxes(row=2, col=2)
 
-    ylabel_freq_tags = "Fréquence" if NORMALIZE else "Occurrences"
-    fig.update_xaxes(title_text="Année", row=3, col=1)
+    ylabel_freq_tags = t("axis_frequency", category="trends") if NORMALIZE else t("axis_occurrences", category="trends")
+    fig.update_xaxes(title_text=t("axis_year", category="trends"), row=3, col=1)
     fig.update_yaxes(title_text=ylabel_freq_tags, row=3, col=1)
 
-    fig.update_xaxes(title_text="Année", row=3, col=2)
+    fig.update_xaxes(title_text=t("axis_year", category="trends"), row=3, col=2)
     fig.update_yaxes(title_text=ylabel_freq_tags, row=3, col=2)
 
     # Mise en forme
@@ -2250,15 +2199,4 @@ def analyse_trendline_tags(top_n=10) -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # Interprétation
-    st.info(
-        """
-    💡 **Interprétation statistique**
-
-    L'analyse des tags révèle les **évolutions thématiques** des recettes au fil du temps.
-    Comme pour les ingrédients, on observe une **chute de la diversité** des tags, passant d'un maximum en début
-    de période à un minimum en fin de période, reflétant la diminution du volume de recettes postées après 2007.
-    Les **tendances montantes et descendantes** des tags permettent d'identifier les **thématiques culinaires**
-    qui gagnent ou perdent en popularité, offrant un aperçu des **préférences alimentaires** et des **modes culinaires**
-    qui caractérisent chaque période.
-    """
-    )
+    st.info(t('tags_interpretation', category='trends'))

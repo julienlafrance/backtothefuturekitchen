@@ -11,6 +11,8 @@ from loguru import logger
 import sys
 import plotly.express as px
 from utils.environment import EnvironmentDetector
+from i18n import init_language, render_language_selector
+from utils.i18n_helper import t
 from visualization.custom_charts import (
     create_correlation_heatmap,
     create_distribution_plot,
@@ -106,6 +108,9 @@ st.set_page_config(
     page_icon=str(ASSETS_DIR / "favicon.png"),
     layout="wide",
 )
+
+# Initialize language system
+init_language()
 
 
 ########################################################################################################
@@ -526,9 +531,9 @@ def main() -> None:
     else:
         logger.warning(f"CSS file not found: {css_path}")
 
-    # Initialize session state for current page if not exists
+    # Initialize session state for current page if not exists (store key, not label)
     if "current_page" not in st.session_state:
-        st.session_state.current_page = "Tendances 1999-2018"
+        st.session_state.current_page = "trends"
 
     # Sidebar with navigation
     with st.sidebar:
@@ -540,51 +545,58 @@ def main() -> None:
             # Fallback: display text logo if image not found
             st.markdown("### 🍳 Back to the Kitchen")
 
-        # Séparateur subtil
-        st.markdown(
-            "<hr style='border: 0.5px solid rgba(240, 240, 240, 0.1); margin: 20px 0;'>",
-            unsafe_allow_html=True,
-        )
+        st.markdown("---")
+
+        # Language selector directly under the logo
+        render_language_selector()
 
         # Titre de section ANALYSES avec classe CSS
         st.markdown(
-            '<h3 class="sidebar-category-title">ANALYSES</h3>', unsafe_allow_html=True
+            f'<h3 class="sidebar-category-title">{t("analyses_section")}</h3>',
+            unsafe_allow_html=True,
         )
 
         # Texte introductif
         st.markdown(
-            '<p class="sidebar-subtitle">CHOISIR UNE ANALYSE:</p>',
+            f'<p class="sidebar-subtitle">{t("choose_analysis")}</p>',
             unsafe_allow_html=True,
         )
 
         # Menu items with Lucide icons
         menu_options = [
-            ("bar-chart-2", "Tendances 1999-2018"),
-            ("calendar-days", "Analyses Saisonnières"),
-            ("sun", "Effet Jour/Week-end"),
-            ("star", "Analyses Ratings"),
+            ("bar-chart-2", "trends"),
+            ("calendar-days", "seasonality"),
+            ("sun", "weekend"),
+            ("star", "ratings"),
         ]
 
-        # Options pour st.radio (texte simple)
-        menu_labels = [opt[1] for opt in menu_options]
+        # Options pour st.radio (texte traduit)
+        menu_labels = [t(opt[1], category="pages") for opt in menu_options]
 
         # Radio avec icônes en préfixe (les icônes seront ajoutées via CSS)
-        selected_page = st.radio(
+        # Get current page index from key
+        page_keys = [opt[1] for opt in menu_options]
+        current_index = (
+            page_keys.index(st.session_state.current_page)
+            if st.session_state.current_page in page_keys
+            else 0
+        )
+
+        selected_label = st.radio(
             "Navigation",
             menu_labels,
-            index=(
-                menu_labels.index(st.session_state.current_page)
-                if st.session_state.current_page in menu_labels
-                else 0
-            ),
+            index=current_index,
             label_visibility="collapsed",
             key="main_nav",
             horizontal=False,
         )
 
+        # Convert selected label back to key
+        selected_key = page_keys[menu_labels.index(selected_label)]
+
         # Mettre à jour session state
-        if selected_page != st.session_state.current_page:
-            st.session_state.current_page = selected_page
+        if selected_key != st.session_state.current_page:
+            st.session_state.current_page = selected_key
 
         # Séparateur avant bouton Rafraîchir
         st.markdown(
@@ -593,10 +605,12 @@ def main() -> None:
         )
 
         # Bouton Rafraîchir - Vide le cache et recharge les données
-        if st.button("🔄 Rafraîchir", key="btn_refresh", use_container_width=True):
+        if st.button(
+            f"🔄 {t('refresh_button')}", key="btn_refresh", use_container_width=True
+        ):
             st.cache_data.clear()
             st.cache_resource.clear()
-            st.toast("✅ Cache vidé - Rechargement des données...", icon="🔄")
+            st.toast(f"✅ {t('refresh_toast')}", icon="🔄")
             st.rerun()
 
         # Spacer pour pousser les badges en bas (via CSS flexbox)
@@ -637,13 +651,14 @@ def main() -> None:
             s3_ready = False
 
         # Indicateur S3 Ready avec classe CSS
+        s3_status = t("s3_ready") if s3_ready else t("s3_error")
         st.markdown(
             f"""
             <div class="s3-ready-indicator">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
                 </svg>
-                <span>S3 {"Ready" if s3_ready else "Error"}</span>
+                <span>{s3_status}</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -674,18 +689,12 @@ def main() -> None:
         )
 
     # Main content - Display selected analysis
-    if selected_page == "Tendances 1999-2018":
+    if st.session_state.current_page == "trends":
         st.markdown(
-            '<h1 style="margin-top: 0; padding-top: 0;">📈 Analyses des tendances temporelles (1999-2018)</h1>',
+            f'<h1 style="margin-top: 0; padding-top: 0;">📈 {t("main_title", category="trends")}</h1>',
             unsafe_allow_html=True,
         )
-        st.markdown(
-            """
-            Cette section présente les **analyses de tendances à long terme** des recettes Food.com
-            sur la période 1999-2018, en utilisant des **régressions WLS (Weighted Least Squares)**
-            pour identifier les évolutions significatives.
-            """
-        )
+        st.markdown(t("main_description", category="trends"))
 
         # Métriques clés en cartouches stylés
         col1, col2, col3, col4 = st.columns(4)
@@ -694,9 +703,9 @@ def main() -> None:
             st.markdown(
                 f"""
                 <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {ColorTheme.CARD_BORDER};">
-                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📅 Période</div>
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📅 {t("metric_period", category="trends")}</div>
                     <div style="color: {ColorTheme.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">1999-2018</div>
-                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">20 années</div>
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">{t("metric_period_value", category="trends")}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -706,9 +715,9 @@ def main() -> None:
             st.markdown(
                 f"""
                 <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {ColorTheme.CARD_BORDER};">
-                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">🍽️ Recettes</div>
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">🍽️ {t("metric_recipes", category="trends")}</div>
                     <div style="color: {ColorTheme.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">178,265</div>
-                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Total analysées</div>
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">{t("metric_recipes_value", category="trends")}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -718,9 +727,9 @@ def main() -> None:
             st.markdown(
                 f"""
                 <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {ColorTheme.CARD_BORDER};">
-                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📊 Analyses</div>
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📊 {t("metric_analyses", category="trends")}</div>
                     <div style="color: {ColorTheme.TEXT_WHITE}; font-size: 1.75rem; font-weight: 700;">6</div>
-                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Dimensions étudiées</div>
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">{t("metric_analyses_value", category="trends")}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -730,9 +739,9 @@ def main() -> None:
             st.markdown(
                 f"""
                 <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid {ColorTheme.CARD_BORDER};">
-                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📈 Méthode</div>
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem; text-transform: uppercase; margin-bottom: 8px;">📈 {t("metric_method", category="trends")}</div>
                     <div style="color: {ColorTheme.ORANGE_PRIMARY}; font-size: 1.25rem; font-weight: 700;">WLS</div>
-                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">Weighted Least Squares</div>
+                    <div style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.75rem; margin-top: 4px;">{t("metric_method_value", category="trends")}</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -741,55 +750,55 @@ def main() -> None:
         st.markdown("---")
 
         # Display all 6 analyses without dropdown
-        st.subheader("📊 Volume de recettes")
+        st.subheader(f"📊 {t('volume_title', category='trends')}")
         analyse_trendline_volume()
         st.markdown("---")
 
-        st.subheader("⏱️ Durée de préparation")
+        st.subheader(f"⏱️ {t('duration_title', category='trends')}")
         analyse_trendline_duree()
         st.markdown("---")
 
-        st.subheader("🔧 Complexité des recettes")
+        st.subheader(f"🔧 {t('complexity_title', category='trends')}")
         analyse_trendline_complexite()
         st.markdown("---")
 
-        st.subheader("🥗 Valeurs nutritionnelles")
+        st.subheader(f"🥗 {t('nutrition_title', category='trends')}")
         analyse_trendline_nutrition()
         st.markdown("---")
 
-        st.subheader("🥘 Ingrédients")
-        st.info("💡 Analyse des 10 ingrédients les plus populaires")
+        st.subheader(f"🥘 {t('ingredients_title', category='trends')}")
+        st.info(f"💡 {t('ingredients_info', category='trends')}")
         analyse_trendline_ingredients(top_n=10)
         st.markdown("---")
 
-        st.subheader("🏷️ Tags/Catégories")
-        st.info("💡 Analyse des 10 tags les plus fréquents")
+        st.subheader(f"🏷️ {t('tags_title', category='trends')}")
+        st.info(f"💡 {t('tags_info', category='trends')}")
         analyse_trendline_tags(top_n=10)
 
-    elif selected_page == "Analyses Saisonnières":
+    elif st.session_state.current_page == "seasonality":
         # Appel du module d'analyse saisonnière avec charte graphique
         render_seasonality_analysis()
 
-    elif selected_page == "Effet Jour/Week-end":
+    elif st.session_state.current_page == "weekend":
         # Appel du module d'analyse weekend avec charte graphique
         render_weekend_analysis()
 
-    elif selected_page == "Analyses Ratings":
+    elif st.session_state.current_page == "ratings":
         # Appel du module d'analyse ratings avec charte graphique
         render_ratings_analysis()
 
     else:
         # Fallback
         st.markdown(
-            f'<h1 style="margin-top: 0; padding-top: 0;">{selected_page}</h1>',
+            f'<h1 style="margin-top: 0; padding-top: 0;">{t(st.session_state.current_page, category="pages")}</h1>',
             unsafe_allow_html=True,
         )
-        st.info("🚧 Cette analyse sera disponible prochainement.")
+        st.info(f"🚧 {t('coming_soon')}")
 
     # Footer - Cartouche gris visible (pas fixe)
     from datetime import datetime
 
-    today = datetime.now().strftime("%Y-%m-%d")
+    today = "2025-10-31"
 
     st.markdown("<br><br>", unsafe_allow_html=True)  # Espace avant footer
 
@@ -800,7 +809,7 @@ def main() -> None:
         st.markdown(
             f"""
             <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {ColorTheme.CARD_BORDER}; text-align: center;">
-                <span style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem;">🕒 Dernière màj: </span>
+                <span style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem;">🕒 {t("last_update")}: </span>
                 <span style="color: {ColorTheme.TEXT_PRIMARY}; font-weight: 600;">{today}</span>
             </div>
             """,
@@ -811,8 +820,8 @@ def main() -> None:
         st.markdown(
             f"""
             <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {ColorTheme.CARD_BORDER}; text-align: center;">
-                <span style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem;">📦 Version: </span>
-                <span style="color: {ColorTheme.TEXT_PRIMARY}; font-weight: 600;">1.0.0</span>
+                <span style="color: {ColorTheme.TEXT_SECONDARY}; font-size: 0.875rem;">📦 {t("version")}: </span>
+                <span style="color: {ColorTheme.TEXT_PRIMARY}; font-weight: 600;">2.0.0</span>
             </div>
             """,
             unsafe_allow_html=True,
@@ -823,7 +832,7 @@ def main() -> None:
             f"""
             <div style="background-color: {ColorTheme.BACKGROUND_CARD}; padding: 12px 20px; border-radius: 8px; border: 1px solid {ColorTheme.CARD_BORDER}; text-align: center;">
                 <a href="https://github.com/julienlafrance/backtothefuturekitchen" target="_blank" style="color: {ColorTheme.ORANGE_PRIMARY}; text-decoration: none; font-weight: 600;">
-                    📚 Documentation
+                    📚 {t("documentation")}
                 </a>
             </div>
             """,

@@ -17,6 +17,7 @@ import statsmodels.api as sm
 # Import du thème graphique
 from utils import chart_theme
 from utils.color_theme import ColorTheme
+from utils.i18n_helper import t
 
 # Import des utilitaires de chargement avec cache
 from data.cached_loaders import (
@@ -65,13 +66,7 @@ def weighted_spearman(x, y, w):
 
 def analyse_ratings_validation_ponderee() -> None:
     """Analyse 1: Validation méthodologique - Tests pondérés vs non-pondérés."""
-    st.markdown(
-        """
-        Comparaison des méthodes **pondérées** vs **non-pondérées** pour analyser
-        l'évolution des ratings dans le temps. Cette analyse démontre l'importance
-        de la pondération par le volume d'interactions.
-        """
-    )
+    st.markdown(t("ratings_methodology_desc", category="ratings"))
 
     # Chargement des données
     with st.spinner("Chargement des statistiques mensuelles..."):
@@ -80,7 +75,7 @@ def analyse_ratings_validation_ponderee() -> None:
         )
 
     if monthly_stats.empty:
-        st.error("❌ Aucune donnée disponible")
+        st.error(t("no_data_available"))
         return
 
     # Préparation du DataFrame
@@ -115,10 +110,10 @@ def analyse_ratings_validation_ponderee() -> None:
         rows=2,
         cols=2,
         subplot_titles=(
-            "Distribution des volumes mensuels",
-            "Évolution des poids dans le temps",
-            "Ratings pondérés par volume",
-            "Variance des ratings",
+            t("distribution_volumes_mensuels", category="ratings"),
+            t("evolution_poids_temps", category="ratings"),
+            t("ratings_ponderes_volume", category="ratings"),
+            t("variance_ratings", category="ratings"),
         ),
         specs=[
             [{"type": "histogram"}, {"type": "scatter"}],
@@ -150,7 +145,7 @@ def analyse_ratings_validation_ponderee() -> None:
             mode="lines+markers",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=2),
             marker=dict(size=4),
-            name="Poids normalisés",
+            name=t("poids_normalises", category="ratings"),
             showlegend=True,
         ),
         row=1,
@@ -218,14 +213,14 @@ def analyse_ratings_validation_ponderee() -> None:
     )
 
     # Axes
-    fig.update_xaxes(title_text="Nombre d'interactions", row=1, col=1)
-    fig.update_yaxes(title_text="Fréquence (log)", type="log", row=1, col=1)
+    fig.update_xaxes(title_text=t("nombre_interactions", category="ratings"), row=1, col=1)
+    fig.update_yaxes(title_text=t("legend_log_frequency", category="trends"), type="log", row=1, col=1)
 
     fig.update_xaxes(title_text="Date", row=1, col=2)
-    fig.update_yaxes(title_text="Poids normalisé", row=1, col=2)
+    fig.update_yaxes(title_text=t("poids_normalises", category="ratings"), row=1, col=2)
 
     fig.update_xaxes(title_text="Date", row=2, col=1)
-    fig.update_yaxes(title_text="Rating moyen", row=2, col=1)
+    fig.update_yaxes(title_text=t("rating_moyen", category="ratings"), row=2, col=1)
 
     fig.update_yaxes(title_text="Variance", row=2, col=2)
 
@@ -268,37 +263,26 @@ def analyse_ratings_validation_ponderee() -> None:
     # Métriques
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.metric("CV Volumes", f"{cv_volumes:.2f}")
+        st.metric(t("cv_volumes", category="ratings"), f"{cv_volumes:.2f}")
     with col2:
-        st.metric("Biais pente", f"{bias_slope:.1f}%")
+        st.metric(t("biais_pente", category="ratings"), f"{bias_slope:.1f}%")
     with col3:  # noqa: F841
-        st.metric("R² pondéré", f"{r2_weighted:.4f}")
+        st.metric(t("r2_pondere", category="ratings"), f"{r2_weighted:.4f}")
     with col4:
-        st.metric("P-value WLS", f"{wls_result.pvalues[1]:.4f}")
+        st.metric(t("p_value_wls", category="ratings"), f"{wls_result.pvalues[1]:.4f}")
 
     # Interprétation
     st.info(
-        f"""
-    💡 **Interprétation statistique**
-
-    L'analyse méthodologique révèle une **hétérogénéité extrême des volumes d'interactions** mensuels
-    (Coefficient de variation = **{cv_volumes:.2f}**), ce qui rend les tests statistiques standards **non fiables**.
-    Les tests non-pondérés s'avèrent **fortement biaisés** (biais de pente de **+{bias_slope:.1f}%**), car ils donnent une importance
-    disproportionnée aux périodes de **très forte activité** (comme 2008-2009), écrasant l'influence des autres périodes.
-    L'utilisation de **méthodes pondérées** (comme la régression WLS et le Spearman pondéré) est donc **indispensable** pour corriger
-    ce biais et obtenir une **interprétation juste et robuste** des tendances réelles du comportement utilisateur.
-    """
+        t("ratings_info_methodology", category="ratings").format(
+            cv_volumes=cv_volumes,
+            bias_slope=bias_slope
+        )
     )
 
 
 def analyse_ratings_tendance_temporelle() -> None:
     """Analyse 2: Tendance temporelle des ratings (Méthodes pondérées)."""
-    st.markdown(
-        """
-        Analyse de l'évolution des ratings dans le temps avec **régression WLS pondérée**.
-        Examine la stabilité, le volume d'interactions et la corrélation volume-qualité.
-        """
-    )
+    st.markdown(t("analyse_evolution_wls", category="ratings"))
 
     # Chargement des données
     with st.spinner("Chargement des statistiques mensuelles..."):
@@ -307,7 +291,7 @@ def analyse_ratings_tendance_temporelle() -> None:
         )
 
     if monthly_stats.empty:
-        st.error("❌ Aucune donnée disponible")
+        st.error(t("no_data_available"))
         return
 
     # Préparation du DataFrame
@@ -353,10 +337,10 @@ def analyse_ratings_tendance_temporelle() -> None:
         rows=2,
         cols=2,
         subplot_titles=(
-            "Évolution des ratings - Tendance pondérée",
-            "Volume d'interactions",
-            "Stabilité des ratings",
-            "Corrélation volume-qualité",
+            t("evolution_ratings_tendance", category="ratings"),
+            t("volume_interactions", category="ratings"),
+            t("stabilite_ratings", category="ratings"),
+            t("correlation_volume_qualite", category="ratings"),
         ),
     )
 
@@ -368,7 +352,7 @@ def analyse_ratings_tendance_temporelle() -> None:
             mode="lines+markers",
             line=dict(color=ColorTheme.CHART_COLORS[3], width=2),
             marker=dict(size=4),
-            name="Rating moyen",
+            name=t("rating_moyen", category="ratings"),
             showlegend=True,
         ),
         row=1,
@@ -381,7 +365,7 @@ def analyse_ratings_tendance_temporelle() -> None:
             y=trend_line_weighted,
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=2, dash="dash"),
-            name=f"Tendance ({wls_trend_result.params[1]:.4f}/mois)",
+            name=t("legend_trend_per_month", category="trends").format(value=wls_trend_result.params[1]),
             showlegend=True,
         ),
         row=1,
@@ -415,7 +399,7 @@ def analyse_ratings_tendance_temporelle() -> None:
             mode="lines+markers",
             line=dict(color=ColorTheme.CHART_COLORS[1], width=2),
             marker=dict(size=4),
-            name="Écart-type brut",
+            name=t("legend_raw_std", category="trends"),
             showlegend=True,
         ),
         row=2,
@@ -428,7 +412,7 @@ def analyse_ratings_tendance_temporelle() -> None:
             y=[weighted_std, weighted_std],
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=2, dash="dash"),
-            name=f"Écart-type pondéré ({weighted_std:.3f})",
+            name=t("legend_weighted_std", category="trends").format(value=weighted_std),
             showlegend=True,
         ),
         row=2,
@@ -463,7 +447,7 @@ def analyse_ratings_tendance_temporelle() -> None:
             y=vol_pred,
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=2, dash="dash"),
-            name="Régression pondérée",
+            name=t("legend_weighted_regression", category="trends"),
             showlegend=True,
         ),
         row=2,
@@ -471,12 +455,12 @@ def analyse_ratings_tendance_temporelle() -> None:
     )
 
     # Axes
-    fig.update_yaxes(title_text="Rating moyen", row=1, col=1)
+    fig.update_yaxes(title_text=t("rating_moyen", category="ratings"), row=1, col=1)
     fig.update_yaxes(title_text="Nombre d'interactions", row=1, col=2)
     fig.update_xaxes(title_text="Date", row=2, col=1)
-    fig.update_yaxes(title_text="Écart-type", row=2, col=1)
+    fig.update_yaxes(title_text=t("ecart_type", category="ratings"), row=2, col=1)
     fig.update_xaxes(title_text="Nombre d'interactions", row=2, col=2)
-    fig.update_yaxes(title_text="Rating moyen", row=2, col=2)
+    fig.update_yaxes(title_text=t("rating_moyen", category="ratings"), row=2, col=2)
 
     # Mise en forme
     fig.update_layout(
@@ -496,39 +480,28 @@ def analyse_ratings_tendance_temporelle() -> None:
     # Métriques
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.metric("Pente pondérée", f"{wls_trend_result.params[1]:.6f} pts/mois")
+        st.metric(t("slope_weighted", category="ratings"), f"{wls_trend_result.params[1]:.6f} pts/mois")
     with col2:
-        st.metric("R² pondéré", f"{r2_weighted:.4f}")
+        st.metric(t("r2_weighted_metric", category="ratings"), f"{r2_weighted:.4f}")
     with col3:
         st.metric("P-value", f"{wls_trend_result.pvalues[1]:.4f}")
     with col4:
-        st.metric("Corr. volume-qualité", f"{vol_qual_weighted:.3f}")
+        st.metric(t("corr_volume_qualite", category="ratings"), f"{vol_qual_weighted:.3f}")
 
     # Interprétation
     st.info(
-        f"""
-    💡 **Interprétation statistique**
-
-    L'analyse temporelle pondérée révèle une **stabilité remarquable des notes moyennes** sur le long terme,
-    contredisant l'intuition d'une éventuelle dégradation ou amélioration.
-    La tendance observée est **statistiquement non significative** (pente annuelle = **{wls_trend_result.params[1] * 12:.4f} points/an**,
-    p-value = **{wls_trend_result.pvalues[1]:.2f}**). Le R² pondéré de **{r2_weighted:.3f}** confirme que le temps n'explique quasiment
-    **aucune variance** dans les notes. On observe également une **faible corrélation négative** entre le **volume** d'interactions et
-    la **qualité** perçue (ρ = **{vol_qual_weighted:.3f}**), suggérant que les mois de **plus forte activité** sont associés à des
-    **notes moyennes très légèrement plus basses**. Cette stabilité globale confirme que le **comportement de notation des utilisateurs**
-    est **extrêmement constant** depuis 2005.
-    """
+        t("ratings_info_temporal", category="ratings").format(
+            slope_year=wls_trend_result.params[1] * 12,
+            p_value=wls_trend_result.pvalues[1],
+            r2_weighted=r2_weighted,
+            vol_qual_weighted=vol_qual_weighted
+        )
     )
 
 
 def analyse_ratings_distribution() -> None:
     """Analyse 3: Évolution détaillée et corrélations (bandes de confiance)."""
-    st.markdown(
-        """
-        Analyse détaillée de l'évolution des ratings avec **bandes de confiance**.
-        Vue d'ensemble et vue zoomée de la stabilité temporelle.
-        """
-    )
+    st.markdown(t("ratings_detailed_overview", category="ratings"))
 
     # Chargement des données
     with st.spinner("Chargement des statistiques mensuelles..."):
@@ -537,7 +510,7 @@ def analyse_ratings_distribution() -> None:
         )
 
     if monthly_stats.empty:
-        st.error("❌ Aucune donnée disponible")
+        st.error(t("no_data_available"))
         return
 
     # Préparation du DataFrame
@@ -585,9 +558,9 @@ def analyse_ratings_distribution() -> None:
         rows=3,
         cols=1,
         subplot_titles=(
-            "Évolution temporelle - Vue d'ensemble",
-            "Évolution temporelle - Vue zoomée",
-            "Corrélation volume-qualité",
+            t("temporal_evolution_overview", category="ratings"),
+            t("temporal_evolution_zoomed", category="ratings"),
+            t("correlation_volume_quality", category="ratings"),
         ),
         vertical_spacing=0.08,
     )
@@ -630,7 +603,7 @@ def analyse_ratings_distribution() -> None:
             y=trend_weighted_detailed,
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=2, dash="dash"),
-            name=f"Tendance ({wls_trend_result.params[1]*12:.4f}/an)",
+            name=t("legend_trend_per_year", category="trends").format(value=wls_trend_result.params[1]*12),
             showlegend=True,
         ),
         row=1,
@@ -644,7 +617,7 @@ def analyse_ratings_distribution() -> None:
             y=[mean_rating_weighted, mean_rating_weighted],
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[0], width=2),
-            name=f"Moyenne ({mean_rating_weighted:.3f})",
+            name=t("legend_weighted_mean", category="trends").format(value=mean_rating_weighted),
             showlegend=True,
         ),
         row=1,
@@ -689,7 +662,7 @@ def analyse_ratings_distribution() -> None:
             y=trend_weighted_detailed,
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=3, dash="dash"),
-            name=f"Tendance ({wls_trend_result.params[1]*12:.4f}/an)",
+            name=t("legend_trend_per_year", category="trends").format(value=wls_trend_result.params[1]*12),
             showlegend=False,
         ),
         row=2,
@@ -703,7 +676,7 @@ def analyse_ratings_distribution() -> None:
             y=[mean_rating_weighted, mean_rating_weighted],
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[0], width=2),
-            name=f"Moyenne ({mean_rating_weighted:.3f})",
+            name=t("legend_weighted_mean", category="trends").format(value=mean_rating_weighted),
             showlegend=False,
         ),
         row=2,
@@ -738,7 +711,7 @@ def analyse_ratings_distribution() -> None:
             y=vol_pred_detailed,
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=3, dash="dash"),
-            name=f"Régression pondérée (ρ={vol_qual_weighted:.3f})",
+            name=t("legend_weighted_corr", category="trends").format(value=vol_qual_weighted),
             showlegend=True,
         ),
         row=3,
@@ -746,18 +719,18 @@ def analyse_ratings_distribution() -> None:
     )
 
     # Axes
-    fig.update_yaxes(title_text="Rating moyen", row=1, col=1)
+    fig.update_yaxes(title_text=t("rating_moyen", category="ratings"), row=1, col=1)
     fig.update_yaxes(
-        title_text="Rating moyen", row=2, col=1, range=[4.65, 4.72]
+        title_text=t("rating_moyen", category="ratings"), row=2, col=1, range=[4.65, 4.72]
     )  # Zoom
-    fig.update_xaxes(title_text="Nombre d'interactions mensuelles", row=3, col=1)
-    fig.update_yaxes(title_text="Rating moyen", row=3, col=1)
+    fig.update_xaxes(title_text=t("nombre_interactions_mensuelles", category="ratings"), row=3, col=1)
+    fig.update_yaxes(title_text=t("rating_moyen", category="ratings"), row=3, col=1)
 
     # Mise en forme
     fig.update_layout(
         height=1200,
         showlegend=True,
-        title_text="Analyse détaillée avec bandes de confiance",
+        title_text=t("detailed_analysis_confidence", category="ratings"),
     )
 
     # Application du thème
@@ -768,44 +741,33 @@ def analyse_ratings_distribution() -> None:
     # Métriques
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.metric("Moyenne pondérée", f"{mean_rating_weighted:.3f}")
+        st.metric(t("weighted_mean_metric"), f"{mean_rating_weighted:.3f}")
     with col2:
         st.metric(
-            "IC 95%", f"±{1.96 * std_rating_weighted / np.sqrt(np.sum(weights)):.4f}"
+            t("ic_95", category="ratings"), f"±{1.96 * std_rating_weighted / np.sqrt(np.sum(weights)):.4f}"
         )
     with col3:
-        st.metric("Corr. volume-qualité", f"{vol_qual_weighted:.3f}")
+        st.metric(t("corr_volume_qualite", category="ratings"), f"{vol_qual_weighted:.3f}")
 
     # Interprétation
     st.info(
-        f"""
-    💡 **Interprétation statistique**
-
-    L'analyse détaillée confirme la **très forte stabilité** des ratings, avec une **moyenne pondérée** se situant à
-    **{mean_rating_weighted:.3f}**. Les **bandes de confiance à 95%** calculées sur la moyenne pondérée sont **extrêmement resserrées**
-    (IC 95% = **±{1.96 * std_rating_weighted / np.sqrt(np.sum(weights)):.4f}**), ce qui démontre une **variance globale très faible** et une
-    **grande prévisibilité** du comportement de notation. Visuellement, bien que les notes mensuelles individuelles fluctuent légèrement,
-    elles restent **constamment groupées** autour de cette moyenne stable, renforçant la conclusion d'une **absence totale de tendance significative**
-    à long terme.
-    """
+        t("ratings_info_detailed_full", category="ratings").format(
+            mean_rating_weighted=mean_rating_weighted,
+            ci_95=1.96 * std_rating_weighted / np.sqrt(np.sum(weights))
+        )
     )
 
 
 def analyse_ratings_seasonality_1() -> None:
     """Analyse 4: Statistiques descriptives des données saisonnières."""
-    st.markdown(
-        """
-        Analyse de la distribution des interactions et ratings par saison.
-        Examine l'équilibre des données et la validité de l'analyse saisonnière.
-        """
-    )
+    st.markdown(t("ratings_distribution_desc", category="ratings"))
 
     # Chargement des données
     with st.spinner("Chargement des interactions..."):
         df_clean = load_clean_interactions()
 
     if df_clean.shape[0] == 0:
-        st.error("❌ Aucune donnée disponible")
+        st.error(t("no_data_available"))
         return
 
     df_pandas = df_clean.to_pandas()
@@ -850,8 +812,8 @@ def analyse_ratings_seasonality_1() -> None:
         rows=1,
         cols=2,
         subplot_titles=(
-            "Distribution des interactions par saison",
-            "Statistiques de rating par saison",
+            t("distribution_interactions_saison", category="ratings"),
+            t("statistiques_rating_saison", category="ratings"),
         ),
         specs=[[{"type": "bar"}, {"type": "bar"}]],
     )
@@ -895,8 +857,8 @@ def analyse_ratings_seasonality_1() -> None:
     )
 
     # Axes
-    fig.update_yaxes(title_text="Nombre (milliers)", row=1, col=1)
-    fig.update_yaxes(title_text="Rating moyen", row=1, col=2)
+    fig.update_yaxes(title_text=t("nombre_milliers", category="ratings"), row=1, col=1)
+    fig.update_yaxes(title_text=t("rating_moyen", category="ratings"), row=1, col=2)
 
     # Mise en forme
     fig.update_layout(
@@ -911,7 +873,7 @@ def analyse_ratings_seasonality_1() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # Affichage du tableau
-    with st.expander("Voir les statistiques détaillées"):
+    with st.expander(t("voir_statistiques_detaillees", category="ratings")):
         st.dataframe(
             seasonal_stats[
                 [
@@ -938,24 +900,17 @@ def analyse_ratings_seasonality_1() -> None:
 
     # Interprétation
     st.info(
-        f"""
-    💡 **Interprétation statistique**
-
-    Les statistiques descriptives confirment la **validité de l'analyse saisonnière**.
-    Le volume d'interactions est **remarquablement bien équilibré** entre les quatre saisons, chacune représentant environ **25%** du total.
-    Le **Coefficient de Variation ({cv_volumes:.3f})** et le **ratio max/min ({ratio_max_min:.2f}:1)** des volumes sont **extrêmement faibles**,
-    indiquant qu'aucune saison ne pèse indûment sur l'analyse. Les comparaisons entre saisons seront donc **fiables et robustes**.
-    """
+        t("ratings_seasonal_stats_desc", category="ratings").format(
+            cv_volumes=cv_volumes,
+            ratio_max_min=ratio_max_min
+        )
     )
 
 
 def analyse_ratings_seasonality_2() -> None:
     """Analyse 5: Variations saisonnières des ratings (Stats et Visualisations)."""
     st.markdown(
-        """
-        Analyse détaillée des variations saisonnières des ratings avec dashboard complet.
-        Examine moyennes, pourcentages de ratings parfaits/négatifs, et stabilité par saison.
-        """
+        t("ratings_seasonal_dashboard_desc", category="ratings")
     )
 
     # Chargement des données
@@ -963,7 +918,7 @@ def analyse_ratings_seasonality_2() -> None:
         df_clean = load_clean_interactions()
 
     if df_clean.shape[0] == 0:
-        st.error("❌ Aucune donnée disponible")
+        st.error(t("no_data_available"))
         return
 
     # --- PRÉPARATION ET STATS ---
@@ -1029,11 +984,11 @@ def analyse_ratings_seasonality_2() -> None:
         rows=2,
         cols=3,
         subplot_titles=(
-            "Variations saisonnières (Radar)",
-            "Rating moyen par saison",
-            "% Ratings parfaits (5★)",
-            "% Ratings négatifs (1-2★)",
-            "Écart-type des ratings",
+            t("variations_saisonnieres_radar", category="ratings"),
+            t("rating_moyen_saison", category="ratings"),
+            t("ratings_parfaits_5_stars", category="ratings"),
+            t("ratings_negatifs_1_2_stars", category="ratings"),
+            t("ecart_type_ratings", category="ratings"),
             "Volume d'interactions",
         ),
         specs=[
@@ -1090,7 +1045,7 @@ def analyse_ratings_seasonality_2() -> None:
         row=1,
         col=2,
     )
-    fig.update_yaxes(title_text="Rating moyen", range=[4.60, 4.70], row=1, col=2)
+    fig.update_yaxes(title_text=t("rating_moyen", category="ratings"), range=[4.60, 4.70], row=1, col=2)
 
     # 3. % Ratings parfaits (5★)
     fig.add_trace(
@@ -1138,7 +1093,7 @@ def analyse_ratings_seasonality_2() -> None:
         row=2,
         col=2,
     )
-    fig.update_yaxes(title_text="Écart-type", range=[0.0, 0.70], row=2, col=2)
+    fig.update_yaxes(title_text=t("ecart_type", category="ratings"), range=[0.0, 0.70], row=2, col=2)
 
     # 6. Volume d'interactions
     fig.add_trace(
@@ -1154,7 +1109,7 @@ def analyse_ratings_seasonality_2() -> None:
         row=2,
         col=3,
     )
-    fig.update_yaxes(title_text="Nombre (milliers)", row=2, col=3)
+    fig.update_yaxes(title_text=t("nombre_milliers", category="ratings"), row=2, col=3)
 
     # Mise en forme
     fig.update_layout(
@@ -1189,54 +1144,48 @@ def analyse_ratings_seasonality_2() -> None:
         )
 
     # Interprétation
-    st.info(
-        f"""
-    💡 **Interprétation statistique**
+    interpretation_text = t("ratings_seasonal_interpretation", category="ratings").format(
+        f_stat=f_stat,
+        h_stat=h_stat
+    )
 
-    Les tests statistiques (ANOVA F={f_stat:.3f} et Kruskal-Wallis H={h_stat:.3f}) révèlent des
-    **différences statistiquement significatives** entre les saisons (p < 0.0001), **confirmant l'existence d'une variation saisonnière**.
+    # Add amplitude details
+    interpretation_text += f"""
     Cependant, l'**ampleur de cette différence est infime** : l'écart entre la meilleure saison (**{best_season['season']}**, {best_season['mean_rating']:.3f})
     et la moins bonne (**{worst_season['season']}**, {worst_season['mean_rating']:.3f}) n'est que de **{best_season['mean_rating'] - worst_season['mean_rating']:.3f} points**
     sur une échelle de 5. L'analyse visuelle confirme la **stabilité globale**, mais révèle un **schéma saisonnier cohérent**.
-    Malgré une **significativité statistique irréfutable**, l'**impact pratique de cette saisonnalité est nul**.
-    """
-    )
+    Malgré une **significativité statistique irréfutable**, l'**impact pratique de cette saisonnalité est nul**."""
+
+    st.info(interpretation_text)
 
 
 def render_ratings_analysis() -> None:
     """Point d'entrée principal pour les analyses de ratings."""
     st.markdown(
-        '<h1 style="margin-top: 0; padding-top: 0;">⭐ Analyses des Ratings (1999-2018)</h1>',
+        f'<h1 style="margin-top: 0; padding-top: 0;">⭐ {t("main_title", category="ratings")} (1999-2018)</h1>',
         unsafe_allow_html=True,
     )
 
-    st.markdown(
-        """
-    Cette section présente les analyses de **l'évolution des ratings/notes** sur Food.com (1999-2018).
-
-    Les analyses examinent la **stabilité temporelle**, les **tendances**, et les **variations saisonnières**
-    des notes moyennes attribuées aux recettes par les utilisateurs.
-    """
-    )
+    st.markdown(t("main_description", category="ratings"))
 
     # Affichage de toutes les analyses en continu (comme page Saisonnalité)
 
-    st.subheader("🔬 Validation méthodologique")
+    st.subheader(f"🔬 {t('validation_methodologique', category='ratings')}")
     analyse_ratings_validation_ponderee()
     st.markdown("---")
 
-    st.subheader("📈 Tendance temporelle")
+    st.subheader(f"📈 {t('tendance_temporelle', category='ratings')}")
     analyse_ratings_tendance_temporelle()
     st.markdown("---")
 
-    st.subheader("📊 Distribution et stabilité")
+    st.subheader(f"📊 {t('distribution_stabilite', category='ratings')}")
     analyse_ratings_distribution()
     st.markdown("---")
 
-    st.subheader("🍂 Statistiques saisonnières")
+    st.subheader(f"🍂 {t('statistiques_saisonnieres', category='ratings')}")
     analyse_ratings_seasonality_1()
     st.markdown("---")
 
-    st.subheader("🌸 Variations saisonnières")
+    st.subheader(f"🌸 {t('variations_saisonnieres', category='ratings')}")
     analyse_ratings_seasonality_2()
     st.markdown("---")

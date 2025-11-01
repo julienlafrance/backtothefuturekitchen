@@ -1,0 +1,673 @@
+Garage S3 Storage
+=================
+
+Configuration and usage of high-performance Garage S3 storage.
+
+**S3 Garage** is a self-hosted implementation of the Amazon S3 protocol (:doc:`glossaire`).
+This guide covers configuration, performance optimization and troubleshooting.
+
+**To get started quickly**, see :doc:`quickstart`.
+
+Overview
+--------
+
+**Available endpoints**:
+
+* **HTTP**: http://s3fast.lafrance.io (port 3910) - **Preferred in code**
+* **HTTPS**: https://s3fast.lafrance.io (port 443, via reverse proxy)
+
+**Bucket**: mangetamain
+
+**Performance**: 500-917 MB/s (DNAT bypass)
+
+**Region**: garage-fast
+
+**HTTP vs HTTPS choice**:
+
+The code uses the HTTP endpoint for performance reasons:
+
+* **Speed gain**: No TLS/SSL overhead during data transfers
+* **Secured DMZ network**: Communication remains within the isolated local network (192.168.80.0/24)
+* **HTTPS available**: Accessible via reverse proxy for external access if needed
+
+Installation
+------------
+
+Local DNS Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+   echo "192.168.80.202  s3fast.lafrance.io" | sudo tee -a /etc/hosts
+
+iptables-persistent Installation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+   sudo apt update
+   sudo apt install iptables-persistent -y
+
+iptables DNAT Rule
+^^^^^^^^^^^^^^^^^^
+
+Bypass reverse proxy for maximum performance:
+
+.. code-block:: bash
+
+   sudo iptables -t nat -A OUTPUT -p tcp -d 192.168.80.202 --dport 80 -j DNAT --to-destination 192.168.80.202:3910
+
+Permanent Save
+^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+   sudo netfilter-persistent save
+
+Installation Verification
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+   # DNS
+   getent hosts s3fast.lafrance.io
+   # Should display: 192.168.80.202  s3fast.lafrance.io
+
+   # iptables
+   sudo iptables -t nat -L OUTPUT -n -v | grep 3910
+   # Should display the DNAT rule
+
+Credentials Configuration
+-------------------------
+
+96_keys/ Structure
+^^^^^^^^^^^^^^^^^^
+
+.. code-block:: text
+
+   96_keys/
+   ├── credentials          # s3fast profile
+   ├── aws_config           # AWS CLI config
+   └── garage_s3.duckdb     # DuckDB database with S3 secret
+
+credentials File
+^^^^^^^^^^^^^^^^
+
+ConfigParser format:
+
+.. code-block:: ini
+
+   [s3fast]
+   aws_access_key_id = GK4feb...
+   aws_secret_access_key = 50e63b...
+   endpoint_url = http://s3fast.lafrance.io
+   region = garage-fast
+   bucket = mangetamain
+
+aws_config File
+^^^^^^^^^^^^^^^
+
+AWS CLI format:
+
+.. code-block:: ini
+
+   [profile s3fast]
+   region = garage-fast
+   s3 =
+       endpoint_url = http://s3fast.lafrance.io
+
+DuckDB Database with Secret
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Create once:
+
+.. code-block:: bash
+
+   cd ~/mangetamain/96_keys
+   duckdb garage_s3.duckdb
+
+In DuckDB:
+
+.. code-block:: sql
+
+   INSTALL httpfs;
+   LOAD httpfs;
+
+   CREATE SECRET s3fast (
+       TYPE s3,
+       KEY_ID 'your_access_key_id',
+       SECRET 'your_secret_access_key',
+       ENDPOINT 's3fast.lafrance.io',
+       REGION 'garage-fast',
+       URL_STYLE 'path',
+       USE_SSL false
+   );
+
+AWS CLI Usage
+-------------
+
+List Files
+^^^^^^^^^^
+
+.. code-block:: bash
+
+   aws s3 ls s3://mangetamain/ \
+     --endpoint-url http://s3fast.lafrance.io \
+     --region garage-fast
+
+Download
+^^^^^^^^
+
+.. code-block:: bash
+
+   aws s3 cp s3://mangetamain/PP_recipes.csv /tmp/recipes.csv \
+     --endpoint-url http://s3fast.lafrance.io \
+     --region garage-fast
+
+Upload
+^^^^^^
+
+.. code-block:: bash
+
+   aws s3 cp /tmp/results.csv s3://mangetamain/results/ \
+     --endpoint-url http://s3fast.lafrance.io \
+     --region garage-fast
+
+Python boto3 Usage
+------------------
+
+Loading Credentials
+^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+   import boto3
+   from configparser import ConfigParser
+
+   # Load credentials from 96_keys/
+   config = ConfigParser()
+   config.read('../96_keys/credentials')
+
+   s3 = boto3.client(
+       's3',
+       endpoint_url=config['s3fast']['endpoint_url'],
+       aws_access_key_id=config['s3fast']['aws_access_key_id'],
+       aws_secret_access_key=config['s3fast']['aws_secret_access_key'],
+       region_name=config['s3fast']['region']
+   )
+
+List Objects
+^^^^^^^^^^^^
+
+.. code-block:: python
+
+   # List files with sizes
+   response = s3.list_objects_v2(Bucket='mangetamain')
+   for obj in response.get('Contents', []):
+       print(f"{obj['Key']} - {obj['Size']/1e6:.1f} MB")
+
+Download File
+^^^^^^^^^^^^^
+
+.. code-block:: python
+
+   s3.download_file('mangetamain', 'PP_recipes.csv', '/tmp/recipes.csv')
+
+Upload File
+^^^^^^^^^^^
+
+.. code-block:: python
+
+   s3.upload_file('/tmp/results.csv', 'mangetamain', 'results/analysis.csv')
+
+DuckDB Usage
+------------
+
+SQL Queries on S3
+^^^^^^^^^^^^^^^^^
+
+In CLI:
+
+.. code-block:: bash
+
+   # Simple query
+   duckdb ~/mangetamain/96_keys/garage_s3.duckdb \
+     -c "SELECT COUNT(*) FROM 's3://mangetamain/PP_recipes.csv'"
+
+   # Analysis with GROUP BY
+   duckdb ~/mangetamain/96_keys/garage_s3.duckdb -c "
+   SELECT calorie_level, COUNT(*) as total
+   FROM 's3://mangetamain/PP_recipes.csv'
+   GROUP BY calorie_level
+   ORDER BY total DESC"
+
+In Python:
+
+.. code-block:: python
+
+   import duckdb
+
+   # Connect to database with secret
+   conn = duckdb.connect('~/mangetamain/96_keys/garage_s3.duckdb')
+
+   # Direct SQL query on S3
+   df = conn.execute("""
+       SELECT *
+       FROM 's3://mangetamain/PP_recipes.csv'
+       LIMIT 1000
+   """).fetchdf()
+
+Parquet on S3
+^^^^^^^^^^^^^
+
+DuckDB optimized for Parquet:
+
+.. code-block:: python
+
+   # Read Parquet from S3 (zero-copy)
+   conn.execute("""
+       SELECT AVG(calories) as mean_calories
+       FROM 's3://mangetamain/RAW_recipes_clean.parquet'
+       WHERE year >= 2010
+   """)
+
+Polars Usage
+------------
+
+Direct S3 Reading
+^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+   import polars as pl
+   from configparser import ConfigParser
+
+   # Load credentials
+   config = ConfigParser()
+   config.read('../96_keys/credentials')
+
+   # Configure storage options
+   storage_options = {
+       'aws_endpoint_url': config['s3fast']['endpoint_url'],
+       'aws_access_key_id': config['s3fast']['aws_access_key_id'],
+       'aws_secret_access_key': config['s3fast']['aws_secret_access_key'],
+       'aws_region': config['s3fast']['region']
+   }
+
+   # Read CSV from S3
+   df = pl.read_csv(
+       's3://mangetamain/PP_recipes.csv',
+       storage_options=storage_options
+   )
+
+   # Read Parquet from S3
+   df = pl.read_parquet(
+       's3://mangetamain/RAW_recipes_clean.parquet',
+       storage_options=storage_options
+   )
+
+Performance Tests
+-----------------
+
+Download Benchmark
+^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+   # Test with large file
+   time aws s3 cp s3://mangetamain/large_file.parquet /tmp/ \
+     --endpoint-url http://s3fast.lafrance.io \
+     --region garage-fast
+
+**Expected results**:
+
+* **With DNAT bypass**: 500-917 MB/s
+* **Without bypass** (reverse proxy): 50-100 MB/s
+* **Gain**: 5-10x faster
+
+DNAT Active Verification
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: bash
+
+   # Check iptables rule
+   sudo iptables -t nat -L OUTPUT -n -v | grep 3910
+
+   # Test direct connection port 3910
+   curl -I http://192.168.80.202:3910/mangetamain/
+
+   # Should return HTTP 200 or S3 XML error
+
+Bucket Structure
+----------------
+
+File Organization
+^^^^^^^^^^^^^^^^^
+
+.. code-block:: text
+
+   s3://mangetamain/
+   ├── RAW_recipes.csv
+   ├── RAW_recipes_clean.parquet
+   ├── RAW_interactions.csv
+   ├── RAW_interactions_clean.parquet
+   ├── PP_recipes.csv
+   ├── PP_users.csv
+   ├── PP_ratings.parquet
+   ├── interactions_train.csv
+   ├── interactions_test.csv
+   └── interactions_validation.csv
+
+File Sizes
+^^^^^^^^^^
+
+=========================================== ============
+File                                        Size
+=========================================== ============
+RAW_recipes.csv                             ~50 MB
+RAW_recipes_clean.parquet                   ~25 MB
+RAW_interactions.csv                        ~200 MB
+RAW_interactions_clean.parquet              ~80 MB
+PP_recipes.csv                              ~30 MB
+PP_ratings.parquet                          ~60 MB
+=========================================== ============
+
+Infrastructure Tests
+--------------------
+
+Automated Tests (50_test/)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**S3_duckdb_test.py** (14 tests):
+
+* System environment (AWS CLI, credentials)
+* S3 connection with boto3
+* Download performance (>5 MB/s)
+* DuckDB + S3 integration
+* Docker tests (optional)
+
+**test_s3_parquet_files.py** (5 tests):
+
+* Automatically scans code
+* Finds parquet file references
+* Tests S3 accessibility
+
+Run S3 Tests
+^^^^^^^^^^^^
+
+.. code-block:: bash
+
+   cd ~/mangetamain/50_test
+   pytest S3_duckdb_test.py -v
+
+Troubleshooting
+---------------
+
+Error: Cannot connect to S3
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Possible causes**:
+
+1. DNS not configured
+2. Missing iptables rule
+3. Invalid credentials
+
+**Solution**:
+
+.. code-block:: bash
+
+   # Check DNS
+   getent hosts s3fast.lafrance.io
+
+   # Check iptables
+   sudo iptables -t nat -L OUTPUT -n -v | grep 3910
+
+   # Test credentials
+   aws s3 ls s3://mangetamain/ \
+     --endpoint-url http://s3fast.lafrance.io \
+     --region garage-fast
+
+Error: Slow Download Speed
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Cause**: DNAT bypass not active, traffic goes through reverse proxy
+
+**Solution**: Check iptables rule
+
+.. code-block:: bash
+
+   sudo iptables -t nat -L OUTPUT -n -v | grep 3910
+
+   # If absent, recreate rule
+   sudo iptables -t nat -A OUTPUT -p tcp -d 192.168.80.202 --dport 80 -j DNAT --to-destination 192.168.80.202:3910
+   sudo netfilter-persistent save
+
+Error: DuckDB Secret Not Found
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Cause**: S3 secret not created in DuckDB database
+
+**Solution**: Recreate the secret
+
+.. code-block:: bash
+
+   duckdb ~/mangetamain/96_keys/garage_s3.duckdb
+
+.. code-block:: sql
+
+   DROP SECRET IF EXISTS s3fast;
+
+   CREATE SECRET s3fast (
+       TYPE s3,
+       KEY_ID 'your_key_id',
+       SECRET 'your_secret',
+       ENDPOINT 's3fast.lafrance.io',
+       REGION 'garage-fast',
+       URL_STYLE 'path',
+       USE_SSL false
+   );
+
+Best Practices
+--------------
+
+Credentials Security
+^^^^^^^^^^^^^^^^^^^^
+
+* **NEVER** commit 96_keys/ (in .gitignore)
+* Share credentials via secure channel only
+* Regular key rotation
+
+Performance
+^^^^^^^^^^^
+
+* Prefer Parquet over CSV (2-3x faster)
+* Use DuckDB for SQL queries (zero-copy)
+* Enable DNAT bypass (10x faster)
+* Local cache for frequently accessed files
+
+Streamlit Cache
+^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+   import streamlit as st
+
+   @st.cache_data(ttl=3600)  # 1h cache
+   def load_data_from_s3():
+       """Load S3 data with cache."""
+       # Expensive S3 read only once
+       return df
+
+Performance Benchmarks
+----------------------
+
+Configuration Comparison
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Tests performed with ``recipes_clean.parquet`` (250 MB):
+
+================================ ============== =============== ==========
+Configuration                    Speed          Time (250 MB)   Gain
+================================ ============== =============== ==========
+Without DNAT (via reverse proxy) 50-100 MB/s    2.5-5 seconds   Baseline
+DNAT bypass (direct port 3910)   500-917 MB/s   0.27-0.5 sec    **10x**
+DNAT + local SSD read            2-3 GB/s       0.08-0.12 sec   40x
+================================ ============== =============== ==========
+
+**Recommendation**: DNAT bypass mandatory for acceptable performance.
+
+Performance Test
+^^^^^^^^^^^^^^^^
+
+**Benchmark script**:
+
+.. code-block:: bash
+
+   #!/bin/bash
+   # test_s3_speed.sh
+
+   echo "=== Test without DNAT ==="
+   # Temporarily disable DNAT
+   sudo iptables -t nat -D OUTPUT -p tcp -d 192.168.80.202 --dport 80 \
+        -j DNAT --to-destination 192.168.80.202:3910 2>/dev/null
+
+   time aws s3 cp s3://mangetamain/recipes_clean.parquet /tmp/test1.parquet --profile s3fast
+   rm /tmp/test1.parquet
+
+   echo "=== Test with DNAT ==="
+   # Re-enable DNAT
+   sudo iptables -t nat -A OUTPUT -p tcp -d 192.168.80.202 --dport 80 \
+        -j DNAT --to-destination 192.168.80.202:3910
+
+   time aws s3 cp s3://mangetamain/recipes_clean.parquet /tmp/test2.parquet --profile s3fast
+   rm /tmp/test2.parquet
+
+**Expected results**:
+
+.. code-block:: text
+
+   Without DNAT: real 0m4.520s (55 MB/s)
+   With DNAT: real 0m0.380s (658 MB/s)
+
+   Gain: 11.9x faster
+
+Parquet Reading Optimization
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Format comparison**:
+
+=================== ============ =============== ====================
+Format              Size         Read time       Speed
+=================== ============ =============== ====================
+CSV (uncompressed)  1.2 GB       12-15 seconds   80-100 MB/s
+CSV (gzip)          320 MB       8-10 seconds    32-40 MB/s
+Parquet (Snappy)    250 MB       0.3-0.5 sec     **500-833 MB/s**
+=================== ============ =============== ====================
+
+**Why Parquet is optimal**:
+
+* Integrated Snappy compression (ratio ~5:1)
+* Columnar format (selective reading)
+* Integrated metadata (no parsing needed)
+* Zero-copy with DuckDB/Polars
+
+**Optimal reading with Polars**:
+
+.. code-block:: python
+
+   import polars as pl
+
+   # Optimized Parquet reading
+   df = pl.read_parquet(
+       "s3://mangetamain/recipes_clean.parquet",
+       use_pyarrow=True,        # Arrow engine (faster)
+       columns=['id', 'name'],   # Selective reading (columnar)
+       n_rows=1000              # Limit for preview
+   )
+
+Performance Monitoring
+^^^^^^^^^^^^^^^^^^^^^^
+
+**Measure loading time**:
+
+.. code-block:: python
+
+   import time
+   from loguru import logger
+
+   @st.cache_data(ttl=3600)
+   def load_with_timing():
+       start = time.time()
+
+       df = pl.read_parquet("s3://mangetamain/recipes_clean.parquet")
+
+       elapsed = time.time() - start
+       logger.info(f"S3 load: {len(df)} rows in {elapsed:.2f}s ({len(df)/elapsed:.0f} rows/s)")
+
+       return df
+
+**Expected logs**:
+
+.. code-block:: text
+
+   2025-10-27 15:23:45 | INFO | S3 load: 178265 rows in 0.42s (424441 rows/s)
+
+Performance Troubleshooting
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Speed < 100 MB/s**:
+
+1. **Check DNAT active**:
+
+.. code-block:: bash
+
+   sudo iptables -t nat -L OUTPUT -n -v | grep 3910
+   # Should display DNAT rule
+
+2. **Test direct connection**:
+
+.. code-block:: bash
+
+   curl -o /dev/null http://192.168.80.202:3910/mangetamain/recipes_clean.parquet
+
+3. **Check network latency**:
+
+.. code-block:: bash
+
+   ping -c 10 192.168.80.202
+   # RTT should be < 1ms (local network)
+
+**Fluctuating speed**:
+
+* **Cause**: Garage server load
+* **Solution**: Repeat measurements over 5-10 attempts
+* **Normal variance**: ±20%
+
+**First slow load**:
+
+* **Cause**: Garage cold start (server cache)
+* **Normal**: 2-3x slower than subsequent loads
+* **Solution**: Pre-warm with ``aws s3 ls``
+
+Limits and Quotas
+^^^^^^^^^^^^^^^^^
+
+**Garage S3 (current installation)**:
+
+* **Bandwidth**: ~1 Gbps (125 MB/s theoretical)
+* **IOPS**: Unlimited (server SSD)
+* **Simultaneous connections**: 100+ (sufficient)
+* **Bucket size**: ~5 GB used / 1 TB available
+
+**No AWS quotas**: Self-hosted installation, no AWS limits.
+
+See Also
+--------
+
+* :doc:`installation` - Complete project installation
+* :doc:`tests` - Infrastructure S3 tests (50_test/)
+* :doc:`api/data` - data.cached_loaders module with schemas
+* :doc:`api/infrastructure` - Automated S3 tests
+* :doc:`quickstart` - Essential S3 commands
+* S3_INSTALL.md (root) - Detailed installation documentation
+* S3_USAGE.md (root) - Complete usage guide
