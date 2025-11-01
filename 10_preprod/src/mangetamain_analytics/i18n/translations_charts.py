@@ -22,21 +22,28 @@ TRANSLATIONS_CHARTS = {
         "tooltip_count": {"en": "Count", "fr": "Nombre"},
         "tooltip_percentage": {"en": "Percentage", "fr": "Pourcentage"},
         "tooltip_total": {"en": "Total", "fr": "Total"},
-
         # ===== Annotation Helpers (annotation_helpers.py) =====
         "annotation_mean": {"en": "Mean", "fr": "Moyenne"},
         "annotation_median": {"en": "Median", "fr": "Médiane"},
         "annotation_peak": {"en": "Peak", "fr": "Pic"},
         "annotation_valley": {"en": "Valley", "fr": "Creux"},
-        "annotation_trend_increasing": {"en": "Increasing trend", "fr": "Tendance croissante"},
-        "annotation_trend_decreasing": {"en": "Decreasing trend", "fr": "Tendance décroissante"},
+        "annotation_trend_increasing": {
+            "en": "Increasing trend",
+            "fr": "Tendance croissante",
+        },
+        "annotation_trend_decreasing": {
+            "en": "Decreasing trend",
+            "fr": "Tendance décroissante",
+        },
         "annotation_trend_stable": {"en": "Stable trend", "fr": "Tendance stable"},
-        "annotation_threshold_exceeded": {"en": "Threshold exceeded", "fr": "Seuil dépassé"},
+        "annotation_threshold_exceeded": {
+            "en": "Threshold exceeded",
+            "fr": "Seuil dépassé",
+        },
         "annotation_target": {"en": "Target", "fr": "Objectif"},
         "annotation_limit": {"en": "Limit", "fr": "Limite"},
         "annotation_baseline": {"en": "Baseline", "fr": "Référence"},
         "annotation_forecast": {"en": "Forecast", "fr": "Prévision"},
-
         # ===== Filter Panels (filter_panels.py) =====
         "filter_period": {"en": "📅 Filter by period", "fr": "📅 Filtrer par période"},
         "filter_year_range": {"en": "Year range", "fr": "Plage d'années"},
@@ -44,8 +51,14 @@ TRANSLATIONS_CHARTS = {
         "filter_min_rating": {"en": "Minimum rating", "fr": "Note minimale"},
         "filter_max_rating": {"en": "Maximum rating", "fr": "Note maximale"},
         "filter_rating_range": {"en": "Rating range", "fr": "Plage de notes"},
-        "filter_categories": {"en": "🏷️ Filter by category", "fr": "🏷️ Filtrer par catégorie"},
-        "filter_select_categories": {"en": "Select categories", "fr": "Sélectionner catégories"},
+        "filter_categories": {
+            "en": "🏷️ Filter by category",
+            "fr": "🏷️ Filtrer par catégorie",
+        },
+        "filter_select_categories": {
+            "en": "Select categories",
+            "fr": "Sélectionner catégories",
+        },
         "filter_all_categories": {"en": "All categories", "fr": "Toutes catégories"},
         "filter_tags": {"en": "🔖 Filter by tags", "fr": "🔖 Filtrer par étiquettes"},
         "filter_select_tags": {"en": "Select tags", "fr": "Sélectionner étiquettes"},
@@ -53,31 +66,64 @@ TRANSLATIONS_CHARTS = {
         "filter_advanced": {"en": "🔧 Advanced filters", "fr": "🔧 Filtres avancés"},
         "filter_reset": {"en": "Reset filters", "fr": "Réinitialiser filtres"},
         "filter_apply": {"en": "Apply filters", "fr": "Appliquer filtres"},
-        "filter_active_count": {"en": "{count} active filter(s)", "fr": "{count} filtre(s) actif(s)"},
-        "filter_results_count": {"en": "{count} result(s)", "fr": "{count} résultat(s)"},
-        "filter_no_results": {"en": "No results with current filters", "fr": "Aucun résultat avec les filtres actuels"},
-
+        "filter_active_count": {
+            "en": "{count} active filter(s)",
+            "fr": "{count} filtre(s) actif(s)",
+        },
+        "filter_results_count": {
+            "en": "{count} result(s)",
+            "fr": "{count} résultat(s)",
+        },
+        "filter_no_results": {
+            "en": "No results with current filters",
+            "fr": "Aucun résultat avec les filtres actuels",
+        },
         # ===== Custom Charts - Violin/Box Plots (custom_charts.py) =====
-        "violin_title": {"en": "Distribution analysis", "fr": "Analyse de distribution"},
-        "violin_distribution": {"en": "Value distribution", "fr": "Distribution des valeurs"},
-        "violin_by_category": {"en": "Distribution by {category}", "fr": "Distribution par {category}"},
+        "violin_title": {
+            "en": "Distribution analysis",
+            "fr": "Analyse de distribution",
+        },
+        "violin_distribution": {
+            "en": "Value distribution",
+            "fr": "Distribution des valeurs",
+        },
+        "violin_by_category": {
+            "en": "Distribution by {category}",
+            "fr": "Distribution par {category}",
+        },
         "violin_show_box": {"en": "Show box plot", "fr": "Afficher boîte à moustaches"},
         "violin_show_mean": {"en": "Show mean line", "fr": "Afficher ligne moyenne"},
-        "violin_show_points": {"en": "Show data points", "fr": "Afficher points de données"},
-        "violin_points_outliers": {"en": "Outliers only", "fr": "Aberrations uniquement"},
+        "violin_show_points": {
+            "en": "Show data points",
+            "fr": "Afficher points de données",
+        },
+        "violin_points_outliers": {
+            "en": "Outliers only",
+            "fr": "Aberrations uniquement",
+        },
         "violin_points_all": {"en": "All points", "fr": "Tous les points"},
         "violin_points_none": {"en": "No points", "fr": "Aucun point"},
-
-        "boxplot_title": {"en": "Statistical distribution", "fr": "Distribution statistique"},
+        "boxplot_title": {
+            "en": "Statistical distribution",
+            "fr": "Distribution statistique",
+        },
         "boxplot_distribution": {"en": "Box plot", "fr": "Boîte à moustaches"},
-        "boxplot_by_category": {"en": "Box plot by {category}", "fr": "Boîte à moustaches par {category}"},
-        "boxplot_show_points": {"en": "Show all points", "fr": "Afficher tous les points"},
+        "boxplot_by_category": {
+            "en": "Box plot by {category}",
+            "fr": "Boîte à moustaches par {category}",
+        },
+        "boxplot_show_points": {
+            "en": "Show all points",
+            "fr": "Afficher tous les points",
+        },
         "boxplot_median": {"en": "Median", "fr": "Médiane"},
         "boxplot_q1": {"en": "Q1 (25th percentile)", "fr": "Q1 (25ème percentile)"},
         "boxplot_q3": {"en": "Q3 (75th percentile)", "fr": "Q3 (75ème percentile)"},
-        "boxplot_iqr": {"en": "IQR (Interquartile range)", "fr": "IQR (Intervalle interquartile)"},
+        "boxplot_iqr": {
+            "en": "IQR (Interquartile range)",
+            "fr": "IQR (Intervalle interquartile)",
+        },
         "boxplot_outliers": {"en": "Outliers", "fr": "Valeurs aberrantes"},
-
         # ===== Chart Elements - Common =====
         "chart_title": {"en": "Title", "fr": "Titre"},
         "chart_subtitle": {"en": "Subtitle", "fr": "Sous-titre"},
@@ -95,7 +141,6 @@ TRANSLATIONS_CHARTS = {
         "chart_zoom_in": {"en": "Zoom in", "fr": "Zoomer"},
         "chart_zoom_out": {"en": "Zoom out", "fr": "Dézoomer"},
         "chart_reset_zoom": {"en": "Reset zoom", "fr": "Réinitialiser zoom"},
-
         # ===== Statistics - Common =====
         "stats_mean": {"en": "Mean", "fr": "Moyenne"},
         "stats_median": {"en": "Median", "fr": "Médiane"},
@@ -110,7 +155,6 @@ TRANSLATIONS_CHARTS = {
         "stats_percentile": {"en": "Percentile", "fr": "Percentile"},
         "stats_correlation": {"en": "Correlation", "fr": "Corrélation"},
         "stats_coefficient": {"en": "Coefficient", "fr": "Coefficient"},
-
         # ===== Comparison & Analysis =====
         "compare_baseline": {"en": "Baseline", "fr": "Référence"},
         "compare_current": {"en": "Current", "fr": "Actuel"},
@@ -120,15 +164,19 @@ TRANSLATIONS_CHARTS = {
         "compare_relative": {"en": "Relative", "fr": "Relatif"},
         "compare_percentage": {"en": "Percentage", "fr": "Pourcentage"},
         "compare_vs": {"en": "vs", "fr": "vs"},
-
         "analysis_trend": {"en": "Trend analysis", "fr": "Analyse tendance"},
-        "analysis_distribution": {"en": "Distribution analysis", "fr": "Analyse distribution"},
-        "analysis_correlation": {"en": "Correlation analysis", "fr": "Analyse corrélation"},
+        "analysis_distribution": {
+            "en": "Distribution analysis",
+            "fr": "Analyse distribution",
+        },
+        "analysis_correlation": {
+            "en": "Correlation analysis",
+            "fr": "Analyse corrélation",
+        },
         "analysis_outliers": {"en": "Outlier detection", "fr": "Détection aberrations"},
         "analysis_seasonality": {"en": "Seasonality", "fr": "Saisonnalité"},
         "analysis_summary": {"en": "Summary", "fr": "Résumé"},
         "analysis_details": {"en": "Details", "fr": "Détails"},
-
         # ===== Time Periods =====
         "period_daily": {"en": "Daily", "fr": "Quotidien"},
         "period_weekly": {"en": "Weekly", "fr": "Hebdomadaire"},
@@ -138,7 +186,6 @@ TRANSLATIONS_CHARTS = {
         "period_custom": {"en": "Custom period", "fr": "Période personnalisée"},
         "period_start_date": {"en": "Start date", "fr": "Date début"},
         "period_end_date": {"en": "End date", "fr": "Date fin"},
-
         # ===== Data Quality & Indicators =====
         "data_complete": {"en": "Complete data", "fr": "Données complètes"},
         "data_incomplete": {"en": "Incomplete data", "fr": "Données incomplètes"},
@@ -146,14 +193,12 @@ TRANSLATIONS_CHARTS = {
         "data_quality": {"en": "Data quality", "fr": "Qualité données"},
         "data_coverage": {"en": "Coverage", "fr": "Couverture"},
         "data_reliability": {"en": "Reliability", "fr": "Fiabilité"},
-
         "indicator_positive": {"en": "Positive", "fr": "Positif"},
         "indicator_negative": {"en": "Negative", "fr": "Négatif"},
         "indicator_neutral": {"en": "Neutral", "fr": "Neutre"},
         "indicator_increasing": {"en": "Increasing", "fr": "En hausse"},
         "indicator_decreasing": {"en": "Decreasing", "fr": "En baisse"},
         "indicator_stable": {"en": "Stable", "fr": "Stable"},
-
         # ===== UI Elements =====
         "ui_show_more": {"en": "Show more", "fr": "Afficher plus"},
         "ui_show_less": {"en": "Show less", "fr": "Afficher moins"},

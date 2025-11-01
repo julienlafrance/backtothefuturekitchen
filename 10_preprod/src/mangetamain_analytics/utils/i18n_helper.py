@@ -1,6 +1,5 @@
 """i18n helper functions for translations."""
 
-import streamlit as st
 from typing import Any
 from mangetamain_analytics.i18n.translations import TRANSLATIONS
 from mangetamain_analytics.i18n.language_selector import get_current_language
@@ -105,7 +104,15 @@ def get_day_mapping() -> dict[str, str]:
 
     # Map from stored values (French) to display values
     fr_to_display = {}
-    for day_key in ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]:
+    for day_key in [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday",
+    ]:
         fr_value = TRANSLATIONS["days"][day_key]["fr"]
         display_value = TRANSLATIONS["days"][day_key][lang]
         fr_to_display[fr_value] = display_value

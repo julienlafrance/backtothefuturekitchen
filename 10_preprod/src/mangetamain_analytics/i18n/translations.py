@@ -46,13 +46,31 @@ TRANSLATIONS = {
         # Widget & Chart Labels
         "year_range": {"en": "📅 Year range", "fr": "📅 Plage d'années"},
         "show_values": {"en": "🔢 Show values", "fr": "🔢 Afficher valeurs"},
-        "show_proportional_bubbles": {"en": "⭕ Show proportional bubbles", "fr": "⭕ Afficher les bulles proportionnelles"},
-        "dispersion_interval": {"en": "📊 Dispersion interval", "fr": "📊 Intervalle de dispersion"},
-        "detailed_statistics": {"en": "📊 Detailed statistics", "fr": "📊 Statistiques détaillées"},
-        "detailed_regression_stats": {"en": "📊 Detailed regression statistics", "fr": "📊 Statistiques détaillées des régressions"},
-        "detailed_regression_stat": {"en": "📊 Detailed regression statistics", "fr": "📊 Statistiques détaillées de la régression"},
+        "show_proportional_bubbles": {
+            "en": "⭕ Show proportional bubbles",
+            "fr": "⭕ Afficher les bulles proportionnelles",
+        },
+        "dispersion_interval": {
+            "en": "📊 Dispersion interval",
+            "fr": "📊 Intervalle de dispersion",
+        },
+        "detailed_statistics": {
+            "en": "📊 Detailed statistics",
+            "fr": "📊 Statistiques détaillées",
+        },
+        "detailed_regression_stats": {
+            "en": "📊 Detailed regression statistics",
+            "fr": "📊 Statistiques détaillées des régressions",
+        },
+        "detailed_regression_stat": {
+            "en": "📊 Detailed regression statistics",
+            "fr": "📊 Statistiques détaillées de la régression",
+        },
         "years": {"en": "📊 Years", "fr": "📊 Années"},
-        "metric_to_analyze": {"en": "📊 Metric to analyze", "fr": "📊 Métrique à analyser"},
+        "metric_to_analyze": {
+            "en": "📊 Metric to analyze",
+            "fr": "📊 Métrique à analyser",
+        },
         "average_per_year": {"en": "📈 Average/year", "fr": "📈 Moyenne/an"},
         "label_median": {"en": "Median", "fr": "Médiane"},
         "label_average": {"en": "Average", "fr": "Moyenne"},
@@ -61,8 +79,14 @@ TRANSLATIONS = {
         "current_median": {"en": "📊 Current median", "fr": "📊 Médiane actuelle"},
         "average_slope": {"en": "📉 Average slope", "fr": "📉 Pente Moyenne"},
         "median_slope": {"en": "📉 Median slope", "fr": "📉 Pente Médiane"},
-        "current_dispersion": {"en": "📏 Current dispersion", "fr": "📏 Dispersion actuelle"},
-        "average_per_season": {"en": "📈 Average per season", "fr": "📈 Moyenne par saison"},
+        "current_dispersion": {
+            "en": "📏 Current dispersion",
+            "fr": "📏 Dispersion actuelle",
+        },
+        "average_per_season": {
+            "en": "📈 Average per season",
+            "fr": "📈 Moyenne par saison",
+        },
         "global_average": {"en": "📊 Global average", "fr": "📊 Moyenne globale"},
         "weekday_average": {"en": "Weekday (average)", "fr": "Semaine (moyenne)"},
         "weekend_average": {"en": "Weekend (average)", "fr": "Week-end (moyenne)"},
@@ -76,10 +100,22 @@ TRANSLATIONS = {
         "median_bubbles": {"en": "Median (bubbles)", "fr": "Médiane (bulles)"},
         "theoretical_line": {"en": "Theoretical line", "fr": "Ligne théorique"},
         "wls_regression": {"en": "WLS regression", "fr": "Régression WLS"},
-        "view_raw_values": {"en": "View raw values (non-normalized)", "fr": "Voir les valeurs brutes (non normalisées)"},
-        "avg_duration_season_iqr": {"en": "Average duration per season (with IQR)", "fr": "Durée moyenne par saison (avec IQR)"},
-        "deviation_from_average": {"en": "Deviation from global average (%)", "fr": "Écart à la moyenne globale (%)"},
-        "interpretation_title": {"en": "### 📊 Interpretation", "fr": "### 📊 Interprétation"},
+        "view_raw_values": {
+            "en": "View raw values (non-normalized)",
+            "fr": "Voir les valeurs brutes (non normalisées)",
+        },
+        "avg_duration_season_iqr": {
+            "en": "Average duration per season (with IQR)",
+            "fr": "Durée moyenne par saison (avec IQR)",
+        },
+        "deviation_from_average": {
+            "en": "Deviation from global average (%)",
+            "fr": "Écart à la moyenne globale (%)",
+        },
+        "interpretation_title": {
+            "en": "### 📊 Interpretation",
+            "fr": "### 📊 Interprétation",
+        },
         "weighted_r2": {"en": "Weighted R²", "fr": "R² pondéré"},
         # Axes labels
         "axis_period": {"en": "Period", "fr": "Période"},
@@ -93,20 +129,47 @@ TRANSLATIONS = {
         "difference": {"en": "DIFFERENCE", "fr": "DIFFÉRENCE"},
         "iqr_semaine": {"en": "WEEKDAY IQR", "fr": "IQR SEMAINE"},
         # Chart titles
-        "duree_recettes_periode": {"en": "Recipe duration by period", "fr": "Durée des recettes par période"},
-        "distribution_durees_boxplot": {"en": "Duration distribution (boxplot)", "fr": "Distribution des durées (boxplot)"},
-        "nombre_recettes_saison": {"en": "Number of recipes per season", "fr": "Nombre de recettes par saison"},
-        "repartition_saisonniere": {"en": "Seasonal distribution (%)", "fr": "Répartition saisonnière (%)"},
+        "duree_recettes_periode": {
+            "en": "Recipe duration by period",
+            "fr": "Durée des recettes par période",
+        },
+        "distribution_durees_boxplot": {
+            "en": "Duration distribution (boxplot)",
+            "fr": "Distribution des durées (boxplot)",
+        },
+        "nombre_recettes_saison": {
+            "en": "Number of recipes per season",
+            "fr": "Nombre de recettes par saison",
+        },
+        "repartition_saisonniere": {
+            "en": "Seasonal distribution (%)",
+            "fr": "Répartition saisonnière (%)",
+        },
         "score_complexite": {"en": "Complexity score", "fr": "Score de complexité"},
         "nombre_etapes": {"en": "Number of steps", "fr": "Nombre d'étapes"},
-        "nombre_ingredients": {"en": "Number of ingredients", "fr": "Nombre d'ingrédients"},
-        "profil_nutritionnel_normalise": {"en": "Nutritional profile by season (normalized values)", "fr": "Profil nutritionnel par saison (valeurs normalisées)"},
-        "top20_ingredients_variabilite": {"en": "Top 20 ingredients - Seasonal variability", "fr": "Top 20 ingrédients - Variabilité saisonnière"},
+        "nombre_ingredients": {
+            "en": "Number of ingredients",
+            "fr": "Nombre d'ingrédients",
+        },
+        "profil_nutritionnel_normalise": {
+            "en": "Nutritional profile by season (normalized values)",
+            "fr": "Profil nutritionnel par saison (valeurs normalisées)",
+        },
+        "top20_ingredients_variabilite": {
+            "en": "Top 20 ingredients - Seasonal variability",
+            "fr": "Top 20 ingrédients - Variabilité saisonnière",
+        },
         # Other metrics
         "ecart_max_min": {"en": "📏 Max-min range", "fr": "📏 Écart max-min"},
         "ecart_calorique": {"en": "📊 Caloric range", "fr": "📊 Écart calorique"},
-        "ingredients_analyses": {"en": "🔍 Ingredients analyzed", "fr": "🔍 Ingrédients analysés"},
-        "variables_filtres": {"en": "📊 Variables (filtered)", "fr": "📊 Variables (filtrés)"},
+        "ingredients_analyses": {
+            "en": "🔍 Ingredients analyzed",
+            "fr": "🔍 Ingrédients analysés",
+        },
+        "variables_filtres": {
+            "en": "📊 Variables (filtered)",
+            "fr": "📊 Variables (filtrés)",
+        },
         "top_affiches": {"en": "🏆 Top displayed", "fr": "🏆 Top affichés"},
         "tags_analyses": {"en": "🏷️ Tags analyzed", "fr": "🏷️ Tags analysés"},
         # Nutrients
@@ -115,9 +178,15 @@ TRANSLATIONS = {
         "graisses_sat_pct": {"en": "Sat. fat (%)", "fr": "Graisses sat. (%)"},
         # Metrics
         "nutrients_analyzed": {"en": "Nutrients analyzed", "fr": "Nutriments analysés"},
-        "significant_differences": {"en": "Significant differences", "fr": "Différences significatives"},
+        "significant_differences": {
+            "en": "Significant differences",
+            "fr": "Différences significatives",
+        },
         "total_ingredients": {"en": "Total ingredients", "fr": "Total ingrédients"},
-        "variable_ingredients": {"en": "Variable ingredients", "fr": "Ingrédients variables"},
+        "variable_ingredients": {
+            "en": "Variable ingredients",
+            "fr": "Ingrédients variables",
+        },
         # Hovertemplate
         "hover_moyenne": {"en": "Average", "fr": "Moyenne"},
         "hover_mediane": {"en": "Median", "fr": "Médiane"},
@@ -128,22 +197,26 @@ TRANSLATIONS = {
         "hover_frequence": {"en": "Frequency", "fr": "Fréquence"},
         "hover_saison": {"en": "Season", "fr": "Saison"},
         # Z-score
-        "zscore_ecart_moyenne": {"en": "Z-score<br>(deviation from mean)", "fr": "Z-score<br>(écart à la moyenne)"},
+        "zscore_ecart_moyenne": {
+            "en": "Z-score<br>(deviation from mean)",
+            "fr": "Z-score<br>(écart à la moyenne)",
+        },
         # Season labels
         "plus_etapes": {"en": "(+ steps)", "fr": "(+ étapes)"},
         "plus_ingredients": {"en": "(+ ingredients)", "fr": "(+ ingrédients)"},
         "plus_leger": {"en": "(lighter)", "fr": "(+ léger)"},
-        "utilisation_saisonniere": {"en": "Seasonal<br>usage (%)", "fr": "Utilisation<br>saisonnière (%)"},
+        "utilisation_saisonniere": {
+            "en": "Seasonal<br>usage (%)",
+            "fr": "Utilisation<br>saisonnière (%)",
+        },
         # Axis titles
         "nb_etapes": {"en": "Num. steps", "fr": "Nb étapes"},
         "nb_ingredients": {"en": "Num. ingredients", "fr": "Nb ingrédients"},
     },
-
     # ===== SIDEBAR (navigation, menu) =====
     "sidebar": {
         "navigation": {"en": "Navigation", "fr": "Navigation"},
     },
-
     # ===== PAGES (noms des analyses) =====
     "pages": {
         "trends": {"en": "Trends 1999-2018", "fr": "Tendances 1999-2018"},
@@ -151,7 +224,6 @@ TRANSLATIONS = {
         "weekend": {"en": "Day/Weekend Effect", "fr": "Effet Jour/Week-end"},
         "ratings": {"en": "Ratings Analyses", "fr": "Analyses Ratings"},
     },
-
     # ===== TRENDS (analyse_trendlines_v2.py) =====
     "trends": {
         "main_title": {
@@ -171,10 +243,15 @@ pour identifier les évolutions significatives.""",
         "metric_recipes": {"en": "Recipes", "fr": "Recettes"},
         "metric_recipes_value": {"en": "Total analyzed", "fr": "Total analysées"},
         "metric_analyses": {"en": "Analyses", "fr": "Analyses"},
-        "metric_analyses_value": {"en": "Dimensions studied", "fr": "Dimensions étudiées"},
+        "metric_analyses_value": {
+            "en": "Dimensions studied",
+            "fr": "Dimensions étudiées",
+        },
         "metric_method": {"en": "Method", "fr": "Méthode"},
-        "metric_method_value": {"en": "Weighted Least Squares", "fr": "Weighted Least Squares"},
-
+        "metric_method_value": {
+            "en": "Weighted Least Squares",
+            "fr": "Weighted Least Squares",
+        },
         # Volume
         "volume_title": {"en": "Recipe Volume", "fr": "Volume de recettes"},
         "volume_year_range": {"en": "Year range", "fr": "Plage d'années"},
@@ -196,8 +273,14 @@ pour identifier les évolutions significatives.""",
             "en": "Theoretical quantiles (normal distribution)",
             "fr": "Quantiles théoriques (loi normale)",
         },
-        "volume_axis_observed": {"en": "Observed quantiles", "fr": "Quantiles observés"},
-        "volume_stats_title": {"en": "Detailed statistics", "fr": "Statistiques détaillées"},
+        "volume_axis_observed": {
+            "en": "Observed quantiles",
+            "fr": "Quantiles observés",
+        },
+        "volume_stats_title": {
+            "en": "Detailed statistics",
+            "fr": "Statistiques détaillées",
+        },
         "volume_stats_min": {"en": "Min", "fr": "Min"},
         "volume_stats_q1": {"en": "Q1", "fr": "Q1"},
         "volume_stats_median": {"en": "Median", "fr": "Médiane"},
@@ -233,7 +316,6 @@ Les **tests de normalité** et les **Q-Q plots** montrent que la distribution du
 **nombre de recettes par an** **n'est pas parfaitement normale**, avec des **écarts visibles**
 par rapport à la **loi normale théorique**.""",
         },
-
         # Durée
         "duration_title": {"en": "Preparation Time", "fr": "Durée de préparation"},
         "duration_show_bubbles": {
@@ -253,7 +335,10 @@ par rapport à la **loi normale théorique**.""",
             "en": "Q5-Q95 (Very wide)",
             "fr": "Q5-Q95 (Très large)",
         },
-        "duration_interval_narrow": {"en": "Q33-Q66 (Narrow)", "fr": "Q33-Q66 (Étroit)"},
+        "duration_interval_narrow": {
+            "en": "Q33-Q66 (Narrow)",
+            "fr": "Q33-Q66 (Étroit)",
+        },
         "duration_metric_current_mean": {
             "en": "Current average",
             "fr": "Moyenne actuelle",
@@ -284,9 +369,11 @@ depuis la création du site.
 En moyenne, le **temps de préparation diminue d'environ −0.46 min par an**, tandis que la **médiane recule de −0.26 min par an**,
 ce qui traduit une **légère simplification des recettes** au fil du temps.""",
         },
-
         # Complexité
-        "complexity_title": {"en": "Recipe Complexity", "fr": "Complexité des recettes"},
+        "complexity_title": {
+            "en": "Recipe Complexity",
+            "fr": "Complexité des recettes",
+        },
         "complexity_interpretation": {
             "en": """💡 **Statistical interpretation**
 The **weighted linear regression** reveals a **significant upward trend**
@@ -303,9 +390,11 @@ Cette évolution indique une **augmentation progressive de la complexité des re
 suggérant des **préparations de plus en plus élaborées**. La tendance est **cohérente** avec l'augmentation
 du **nombre d'étapes** et du **nombre d'ingrédients**, confirmant une **complexification globale** des recettes publiées.""",
         },
-
         # Nutrition
-        "nutrition_title": {"en": "Nutritional Values", "fr": "Valeurs nutritionnelles"},
+        "nutrition_title": {
+            "en": "Nutritional Values",
+            "fr": "Valeurs nutritionnelles",
+        },
         "nutrition_interpretation": {
             "en": """💡 **Statistical interpretation**
 The **weighted linear regressions** show a **significant downward trend**
@@ -324,7 +413,6 @@ Cette évolution traduit une **orientation progressive vers des recettes plus l�
 et en **macronutriments**, reflétant probablement une **adaptation aux tendances alimentaires modernes**
 (recherche de plats plus équilibrés et moins énergétiques).""",
         },
-
         # Ingrédients
         "ingredients_title": {"en": "Ingredients", "fr": "Ingrédients"},
         "ingredients_info": {
@@ -351,7 +439,6 @@ suggérant une diminution des recettes de pâtisserie classique et une recherche
 à un minimum en fin de période. Cette baisse significative s'explique par la diminution du volume de recettes postées
 après 2007, entraînant une concentration sur des ingrédients plus courants et une perte d'innovation culinaire.""",
         },
-
         # Tags
         "tags_title": {"en": "Tags/Categories", "fr": "Tags/Catégories"},
         "tags_info": {
@@ -381,7 +468,6 @@ du **score moyen de complexité** (pente = **{slope:+.4f}**, R² = **{r2:.2f}**,
             "en": """The **weighted linear regression** reveals a **significant upward trend**
 in the **average complexity score** (slope = **{slope:+.4f}**, R² = **{r2:.2f}**, p = **{pvalue:.2e}**).""",
         },
-
         # Graph titles - Ingredients
         "ingredients_most_frequent": {
             "en": "Top {n} most frequent ingredients",
@@ -415,7 +501,6 @@ in the **average complexity score** (slope = **{slope:+.4f}**, R² = **{r2:.2f}*
             "en": "Top 10 decreases (1999 - 2018)",
             "fr": "Top 10 baisses (1999 - 2018)",
         },
-
         # Graph titles - Tags
         "tags_most_frequent": {
             "en": "Top {n} most frequent tags",
@@ -441,7 +526,6 @@ in the **average complexity score** (slope = **{slope:+.4f}**, R² = **{r2:.2f}*
             "en": "Evolution: Top {n} decreases",
             "fr": "Évolution : Top {n} baisses",
         },
-
         # Axis labels
         "axis_total_occurrences": {
             "en": "Total occurrences",
@@ -488,7 +572,6 @@ in the **average complexity score** (slope = **{slope:+.4f}**, R² = **{r2:.2f}*
 📊 Current dispersion: **{dispersion:.1f} minutes** between Q{q_low} and Q{q_high}""",
         },
     },
-
     # ===== SEASONALITY (analyse_seasonality.py) =====
     "seasonality": {
         "main_title": {
@@ -511,14 +594,16 @@ Les analyses comparent les caractéristiques des recettes selon les **4 saisons*
 - **Summer** (Été) : Juin, Juillet, Août
 - **Autumn** (Automne) : Septembre, Octobre, Novembre""",
         },
-
         # Volume
         "volume_title": {
             "en": "Recipe volume by season",
             "fr": "Volume de recettes par saison",
         },
         "volume_metric_total": {"en": "Total recipes", "fr": "Total recettes"},
-        "volume_metric_average": {"en": "Average per season", "fr": "Moyenne par saison"},
+        "volume_metric_average": {
+            "en": "Average per season",
+            "fr": "Moyenne par saison",
+        },
         "volume_interpretation": {
             "en": """💡 **Statistical interpretation**
 The **Chi-squared test** shows that the **seasonal distribution** of recipe numbers **is not uniform**,
@@ -533,7 +618,6 @@ avec des **écarts significatifs** entre les saisons.
 Le **Printemps**, nettement au-dessus de la moyenne (+8.7%),
 indique une **saisonnalité marquée** dans la production, tandis que les autres saisons restent **relativement stables**.""",
         },
-
         # Durée
         "duration_title": {
             "en": "Preparation time by season",
@@ -557,7 +641,6 @@ tandis que celles postées en **Été** sont les plus courtes (41-42 minutes).
 **Automne/Hiver:** Recettes plus élaborées (plats mijotés, soupes)
 **Été/Printemps:** Recettes plus rapides (salades, grillades, plats frais)""",
         },
-
         # Complexité
         "complexity_title": {
             "en": "Complexity (steps/ingredients) by season",
@@ -583,7 +666,6 @@ Cette **saisonnalité marquée** reflète les habitudes culinaires :
 - **Hiver/Automne:** Plats mijotés, soupes, ragoûts (plus d'étapes, plus d'ingrédients)
 - **Été/Printemps:** Recettes rapides et fraîches (salades, grillades, plats simples)""",
         },
-
         # Nutrition
         "nutrition_title": {
             "en": "Nutritional profile by season",
@@ -615,7 +697,6 @@ avec 446 kcal en moyenne.
 - **Automne/Hiver:** Recettes réconfortantes, riches (soupes crémeuses, ragoûts, pâtisseries)
 - **Printemps/Été:** Recettes fraîches, légères (salades, grillades, fruits)""",
         },
-
         # Ingrédients
         "ingredients_title": {
             "en": "Common ingredients by season",
@@ -647,9 +728,11 @@ au fil de l'année.
 - **Hiver:** Plats mijotés et soupes
 - **Printemps:** Renouveau et légumes printaniers""",
         },
-
         # Tags
-        "tags_title": {"en": "Popular tags by season", "fr": "Tags populaires par saison"},
+        "tags_title": {
+            "en": "Popular tags by season",
+            "fr": "Tags populaires par saison",
+        },
         "tags_interpretation": {
             "en": """💡 **Statistical interpretation**
 Analyses of seasonal variability in culinary tags show **clear segmentation by season**,
@@ -678,7 +761,6 @@ confirmant des **tendances cohérentes avec les périodes de l'année**.
 Ces différences confirment que les **recettes postées varient clairement selon les saisons**, en cohérence
 avec les événements calendaires et les habitudes culinaires saisonnières.""",
         },
-
         # Metric labels
         "season_most_steps": {
             "en": "{season} (+ complex)",
@@ -705,7 +787,6 @@ avec les événements calendaires et les habitudes culinaires saisonnières.""",
             "fr": "Variabilité saisonnière des tags culinaires",
         },
     },
-
     # ===== WEEKEND (analyse_weekend.py) =====
     "weekend": {
         "main_title": {
@@ -720,7 +801,6 @@ The analyses compare recipe characteristics **Weekday** (Monday-Friday) vs. **We
 
 Les analyses comparent les caractéristiques des recettes **Weekday** (Lundi-Vendredi) vs. **Weekend** (Samedi-Dimanche).""",
         },
-
         # Volume
         "volume_title": {
             "en": "Recipe volume (Weekday vs Weekend)",
@@ -744,7 +824,6 @@ Le **lundi est le jour le plus actif** (+45% au-dessus de la moyenne), suivi du 
 À l'inverse, le **samedi est le jour le moins actif** (-49%), suivi du **dimanche** (-36%).
 Les utilisateurs publient principalement **en début de semaine**.""",
         },
-
         # Durée
         "duration_title": {
             "en": "Preparation time",
@@ -762,7 +841,6 @@ entre les durées Weekday et Weekend. Les **moyennes sont quasi identiques**
 (42.5 vs 42.4 min, différence +0.02%).
 La durée des recettes publiées reste **constante indépendamment de la période**, sans effet week-end observable.""",
         },
-
         # Complexité
         "complexity_title": {
             "en": "Complexity (score, steps, ingredients)",
@@ -780,7 +858,6 @@ de complexité entre Weekday et Weekend. Les **scores de complexité sont quasi 
 ainsi que le **nombre d'étapes** et d'**ingrédients**.
 La complexité des recettes publiées reste **constante indépendamment de la période**, sans effet week-end observable.""",
         },
-
         # Nutrition
         "nutrition_title": {"en": "Nutritional profile", "fr": "Profil nutritionnel"},
         "nutrition_interpretation": {
@@ -793,7 +870,6 @@ Les **tests t de Student** révèlent des **profils nutritionnels globalement si
 entre Weekday et Weekend.
 Une seule différence significative émerge: les **protéines** (p < 0.01), avec des recettes publiées légèrement plus protéinées en semaine (environ -3% le week-end).""",
         },
-
         # Ingrédients
         "ingredients_title": {
             "en": "Most variable ingredients",
@@ -819,7 +895,6 @@ Les tests **Chi-2** identifient peu d'ingrédients avec variations significative
 
 **Les écarts restent faibles (<0.4pp) et l'interprétation est sujette à débat.**""",
         },
-
         # Tags
         "tags_title": {"en": "Most variable tags", "fr": "Tags les plus variables"},
         "tags_interpretation": {
@@ -842,7 +917,6 @@ Les **tests Chi-2** révèlent des différences significatives sur peu de tags.
 
 **Les écarts restent faibles (<0.5pp) et l'interprétation est sujette à débat.**""",
         },
-
         # Stats labels for regression details
         "stat_slope": {
             "en": "**Slope:** {value} min/year",
@@ -860,7 +934,6 @@ Les **tests Chi-2** révèlent des différences significatives sur peu de tags.
             "en": "- p-value (slope): {value}",
             "fr": "- p-value (pente) : {value}",
         },
-
         # Main duration analysis summaries
         "duration_analysis_downward": {
             "en": "The analysis of average preparation time shows a **global downward trend** since the site's creation. On average, preparation time decreases by approximately **{slope_mean} min/year**, while the median decreases by **{slope_median} min/year**, reflecting a slight **recipe simplification** over time.",
@@ -943,7 +1016,6 @@ Les **tests Chi-2** révèlent des différences significatives sur peu de tags.
             "fr": "Différence Weekend vs Weekday (%)",
             "en": "Weekend vs Weekday Difference (%)",
         },
-
         # Plotly hovertemplates
         "hover_mean_minutes": {
             "fr": "<b>%{x}</b><br>Moyenne: %{y:.1f} min<extra></extra>",
@@ -969,7 +1041,6 @@ Les **tests Chi-2** révèlent des différences significatives sur peu de tags.
             "fr": "<b>Année %{x}</b><br>Régression: %{y:.1f} min<extra></extra>",
             "en": "<b>Year %{x}</b><br>Regression: %{y:.1f} min<extra></extra>",
         },
-
         # Info blocks and stat labels
         "info_blue_zone": {
             "fr": """💡 **Zone bleue ({quantile})** : Représente la dispersion des durées de recettes.
@@ -1127,7 +1198,6 @@ The weighted volume-quality correlation (ρ={corr:.3f}) indicates {interpretatio
             "fr": "Écart max ({nutrient})",
         },
     },
-
     # ===== RATINGS (analyse_ratings.py) =====
     "ratings": {
         "main_title": {
@@ -1145,63 +1215,111 @@ Les analyses explorent les distributions de notes, les tendances temporelles, et
 entre les notes et les caractéristiques des recettes.""",
         },
         # Titres de sections
-        "validation_methodologique": {"en": "Methodological Validation", "fr": "Validation méthodologique"},
+        "validation_methodologique": {
+            "en": "Methodological Validation",
+            "fr": "Validation méthodologique",
+        },
         "tendance_temporelle": {"en": "Temporal Trend", "fr": "Tendance temporelle"},
-        "distribution_stabilite": {"en": "Distribution and Stability", "fr": "Distribution et stabilité"},
-        "statistiques_saisonnieres": {"en": "Seasonal Statistics", "fr": "Statistiques saisonnières"},
-        "variations_saisonnieres": {"en": "Seasonal Variations", "fr": "Variations saisonnières"},
-
+        "distribution_stabilite": {
+            "en": "Distribution and Stability",
+            "fr": "Distribution et stabilité",
+        },
+        "statistiques_saisonnieres": {
+            "en": "Seasonal Statistics",
+            "fr": "Statistiques saisonnières",
+        },
+        "variations_saisonnieres": {
+            "en": "Seasonal Variations",
+            "fr": "Variations saisonnières",
+        },
         # Descriptions
         "ratings_methodology_desc": {
             "en": "Comparison of **weighted** vs **unweighted** methods for analyzing rating evolution over time. This analysis demonstrates the importance of weighting by interaction volume.",
-            "fr": "Comparaison des méthodes **pondérées** vs **non-pondérées** pour analyser l'évolution des ratings dans le temps. Cette analyse démontre l'importance de la pondération par le volume d'interactions."
+            "fr": "Comparaison des méthodes **pondérées** vs **non-pondérées** pour analyser l'évolution des ratings dans le temps. Cette analyse démontre l'importance de la pondération par le volume d'interactions.",
         },
         "comparaison_methodes": {
             "en": "Comparison of weighted vs non-weighted methods to analyze rating evolution over time. This analysis demonstrates the importance of weighting by interaction volume.",
-            "fr": "Comparaison des méthodes pondérées vs non-pondérées pour analyser l'évolution des ratings dans le temps. Cette analyse démontre l'importance de la pondération par le volume d'interactions."
+            "fr": "Comparaison des méthodes pondérées vs non-pondérées pour analyser l'évolution des ratings dans le temps. Cette analyse démontre l'importance de la pondération par le volume d'interactions.",
         },
         "analyse_evolution_wls": {
             "en": "Analysis of rating evolution over time with weighted WLS regression. Examines stability, interaction volume, and volume-quality correlation.",
-            "fr": "Analyse de l'évolution des ratings dans le temps avec régression WLS pondérée. Examine la stabilité, le volume d'interactions et la corrélation volume-qualité."
+            "fr": "Analyse de l'évolution des ratings dans le temps avec régression WLS pondérée. Examine la stabilité, le volume d'interactions et la corrélation volume-qualité.",
         },
         "analyse_distribution": {
             "en": "Analysis of interaction and rating distribution by season. Examines data balance and seasonal analysis validity.",
-            "fr": "Analyse de la distribution des interactions et ratings par saison. Examine l'équilibre des données et la validité de l'analyse saisonnière."
+            "fr": "Analyse de la distribution des interactions et ratings par saison. Examine l'équilibre des données et la validité de l'analyse saisonnière.",
         },
         "analyse_variations_dashboard": {
             "en": "Detailed analysis of seasonal rating variations with complete dashboard. Examines averages, perfect/negative rating percentages, and stability by season.",
-            "fr": "Analyse détaillée des variations saisonnières des ratings avec dashboard complet. Examine moyennes, pourcentages de ratings parfaits/négatifs, et stabilité par saison."
+            "fr": "Analyse détaillée des variations saisonnières des ratings avec dashboard complet. Examine moyennes, pourcentages de ratings parfaits/négatifs, et stabilité par saison.",
         },
         "ratings_distribution_desc": {
             "en": "Analysis of interaction and rating distribution by season. Examines data balance and seasonal analysis validity.",
-            "fr": "Analyse de la distribution des interactions et ratings par saison. Examine l'équilibre des données et la validité de l'analyse saisonnière."
+            "fr": "Analyse de la distribution des interactions et ratings par saison. Examine l'équilibre des données et la validité de l'analyse saisonnière.",
         },
         "ratings_seasonal_dashboard_desc": {
             "en": "Detailed analysis of seasonal rating variations with complete dashboard. Examines averages, perfect/negative rating percentages, and stability by season.",
-            "fr": "Analyse détaillée des variations saisonnières des ratings avec dashboard complet. Examine moyennes, pourcentages de ratings parfaits/négatifs, et stabilité par saison."
+            "fr": "Analyse détaillée des variations saisonnières des ratings avec dashboard complet. Examine moyennes, pourcentages de ratings parfaits/négatifs, et stabilité par saison.",
         },
-
         # Chart titles
-        "distribution_volumes_mensuels": {"en": "Monthly volume distribution", "fr": "Distribution des volumes mensuels"},
-        "evolution_poids_temps": {"en": "Weight evolution over time", "fr": "Évolution des poids dans le temps"},
-        "ratings_ponderes_volume": {"en": "Ratings weighted by volume", "fr": "Ratings pondérés par volume"},
+        "distribution_volumes_mensuels": {
+            "en": "Monthly volume distribution",
+            "fr": "Distribution des volumes mensuels",
+        },
+        "evolution_poids_temps": {
+            "en": "Weight evolution over time",
+            "fr": "Évolution des poids dans le temps",
+        },
+        "ratings_ponderes_volume": {
+            "en": "Ratings weighted by volume",
+            "fr": "Ratings pondérés par volume",
+        },
         "variance_ratings": {"en": "Rating variance", "fr": "Variance des ratings"},
-        "evolution_ratings_tendance": {"en": "Rating evolution - Weighted trend", "fr": "Évolution des ratings - Tendance pondérée"},
-        "volume_interactions": {"en": "Interaction volume", "fr": "Volume d'interactions"},
+        "evolution_ratings_tendance": {
+            "en": "Rating evolution - Weighted trend",
+            "fr": "Évolution des ratings - Tendance pondérée",
+        },
+        "volume_interactions": {
+            "en": "Interaction volume",
+            "fr": "Volume d'interactions",
+        },
         "stabilite_ratings": {"en": "Rating stability", "fr": "Stabilité des ratings"},
-        "correlation_volume_qualite": {"en": "Volume-quality correlation", "fr": "Corrélation volume-qualité"},
-        "distribution_interactions_saison": {"en": "Interaction distribution by season", "fr": "Distribution des interactions par saison"},
-        "statistiques_rating_saison": {"en": "Rating statistics by season", "fr": "Statistiques de rating par saison"},
-        "variations_saisonnieres_radar": {"en": "Seasonal variations (Radar)", "fr": "Variations saisonnières (Radar)"},
-        "rating_moyen_saison": {"en": "Average rating by season", "fr": "Rating moyen par saison"},
-        "ratings_parfaits_5_stars": {"en": "% Perfect ratings (5★)", "fr": "% Ratings parfaits (5★)"},
-        "ratings_negatifs_1_2_stars": {"en": "% Negative ratings (1-2★)", "fr": "% Ratings négatifs (1-2★)"},
+        "correlation_volume_qualite": {
+            "en": "Volume-quality correlation",
+            "fr": "Corrélation volume-qualité",
+        },
+        "distribution_interactions_saison": {
+            "en": "Interaction distribution by season",
+            "fr": "Distribution des interactions par saison",
+        },
+        "statistiques_rating_saison": {
+            "en": "Rating statistics by season",
+            "fr": "Statistiques de rating par saison",
+        },
+        "variations_saisonnieres_radar": {
+            "en": "Seasonal variations (Radar)",
+            "fr": "Variations saisonnières (Radar)",
+        },
+        "rating_moyen_saison": {
+            "en": "Average rating by season",
+            "fr": "Rating moyen par saison",
+        },
+        "ratings_parfaits_5_stars": {
+            "en": "% Perfect ratings (5★)",
+            "fr": "% Ratings parfaits (5★)",
+        },
+        "ratings_negatifs_1_2_stars": {
+            "en": "% Negative ratings (1-2★)",
+            "fr": "% Ratings négatifs (1-2★)",
+        },
         "ecart_type_ratings": {"en": "Rating std dev", "fr": "Écart-type des ratings"},
-
         # Metrics
         "moyenne_ponderee": {"en": "WEIGHTED AVERAGE", "fr": "MOYENNE PONDÉRÉE"},
         "ic_95": {"en": "95% CI", "fr": "IC 95%"},
-        "corr_volume_qualite": {"en": "CORR. VOLUME-QUALITY", "fr": "CORR. VOLUME-QUALITÉ"},
+        "corr_volume_qualite": {
+            "en": "CORR. VOLUME-QUALITY",
+            "fr": "CORR. VOLUME-QUALITÉ",
+        },
         "slope_weighted": {"en": "Slope (weighted)", "fr": "Pente (pondérée)"},
         "r2_weighted_metric": {"en": "R² (weighted)", "fr": "R² (pondéré)"},
         "cv_volumes": {"en": "CV VOLUMES", "fr": "CV VOLUMES"},
@@ -1216,24 +1334,41 @@ entre les notes et les caractéristiques des recettes.""",
         "p_value": {"en": "P-VALUE", "fr": "P-VALUE"},
         "meilleure_saison": {"en": "BEST SEASON", "fr": "MEILLEURE SAISON"},
         "ecart_max": {"en": "MAX RANGE", "fr": "ÉCART MAX"},
-
         # Axis labels
-        "nombre_interactions_mensuelles": {"en": "Number of monthly interactions", "fr": "Nombre d'interactions mensuelles"},
+        "nombre_interactions_mensuelles": {
+            "en": "Number of monthly interactions",
+            "fr": "Nombre d'interactions mensuelles",
+        },
         "poids_normalises": {"en": "Normalized weights", "fr": "Poids normalisés"},
         "rating_moyen": {"en": "Average rating", "fr": "Rating moyen"},
         "ecart_type": {"en": "Std dev", "fr": "Écart-type"},
         "nombre_milliers": {"en": "Number (thousands)", "fr": "Nombre (milliers)"},
-        "nombre_interactions": {"en": "Number of interactions", "fr": "Nombre d'interactions"},
-
+        "nombre_interactions": {
+            "en": "Number of interactions",
+            "fr": "Nombre d'interactions",
+        },
         # Expander labels
-        "voir_statistiques_detaillees": {"en": "View detailed statistics", "fr": "Voir les statistiques détaillées"},
-
+        "voir_statistiques_detaillees": {
+            "en": "View detailed statistics",
+            "fr": "Voir les statistiques détaillées",
+        },
         # Graph titles
-        "temporal_evolution_overview": {"fr": "Évolution temporelle - Vue d'ensemble", "en": "Temporal evolution - Overview"},
-        "temporal_evolution_zoomed": {"fr": "Évolution temporelle - Vue zoomée", "en": "Temporal evolution - Zoomed view"},
-        "correlation_volume_quality": {"fr": "Corrélation volume-qualité", "en": "Volume-quality correlation"},
-        "detailed_analysis_confidence": {"fr": "Analyse détaillée avec bandes de confiance", "en": "Detailed analysis with confidence bands"},
-
+        "temporal_evolution_overview": {
+            "fr": "Évolution temporelle - Vue d'ensemble",
+            "en": "Temporal evolution - Overview",
+        },
+        "temporal_evolution_zoomed": {
+            "fr": "Évolution temporelle - Vue zoomée",
+            "en": "Temporal evolution - Zoomed view",
+        },
+        "correlation_volume_quality": {
+            "fr": "Corrélation volume-qualité",
+            "en": "Volume-quality correlation",
+        },
+        "detailed_analysis_confidence": {
+            "fr": "Analyse détaillée avec bandes de confiance",
+            "en": "Detailed analysis with confidence bands",
+        },
         # Interpretation blocks
         "ratings_info_detailed_full": {
             "fr": """💡 **Interprétation statistique**
@@ -1318,7 +1453,6 @@ The **Coefficient of Variation ({cv_volumes:.3f})** and **max/min ratio ({ratio_
 indicating that no season unduly weighs on the analysis. Comparisons between seasons will therefore be **reliable and robust**.""",
         },
     },
-
     # ===== SEASONS (valeurs des saisons - données) =====
     "seasons": {
         "winter": {"en": "Winter", "fr": "Hiver"},
@@ -1326,7 +1460,6 @@ indicating that no season unduly weighs on the analysis. Comparisons between sea
         "summer": {"en": "Summer", "fr": "Été"},
         "autumn": {"en": "Autumn", "fr": "Automne"},
     },
-
     # ===== DAYS (valeurs des jours de la semaine - données) =====
     "days": {
         "monday": {"en": "Monday", "fr": "Lundi"},

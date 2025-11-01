@@ -179,8 +179,12 @@ def analyse_trendline_volume() -> None:
     # THÈME : Mise en forme axes avec titres personnalisés
     fig.update_xaxes(title_text=t("axis_year", category="trends"), row=1, col=1)
     fig.update_yaxes(title_text="Nombre de recettes", row=1, col=1)
-    fig.update_xaxes(title_text=t("axis_theoretical_quantiles", category="trends"), row=1, col=2)
-    fig.update_yaxes(title_text=t("axis_observed_quantiles", category="trends"), row=1, col=2)
+    fig.update_xaxes(
+        title_text=t("axis_theoretical_quantiles", category="trends"), row=1, col=2
+    )
+    fig.update_yaxes(
+        title_text=t("axis_observed_quantiles", category="trends"), row=1, col=2
+    )
 
     # Application du thème global
     chart_theme.apply_subplot_theme(fig, num_rows=1, num_cols=2)
@@ -228,7 +232,7 @@ def analyse_trendline_volume() -> None:
             st.error("❌ Distribution non normale")
 
     # Interprétation
-    st.info(t('volume_interpretation', category='trends'))
+    st.info(t("volume_interpretation", category="trends"))
 
 
 # ============================================================================
@@ -265,9 +269,7 @@ def analyse_trendline_duree() -> None:
 
     with col2:
         # Option bulles
-        show_bubbles = st.checkbox(
-            t("show_proportional_bubbles"), value=True
-        )
+        show_bubbles = st.checkbox(t("show_proportional_bubbles"), value=True)
 
     with col3:
         # Quantiles personnalisables
@@ -559,8 +561,8 @@ def analyse_trendline_duree() -> None:
         t("info_blue_zone", category="trends").format(
             quantile=label_quantile,
             dispersion=dispersion_actuelle,
-            q_low=int(q_low*100),
-            q_high=int(q_high*100)
+            q_low=int(q_low * 100),
+            q_high=int(q_high * 100),
         )
     )
 
@@ -572,8 +574,8 @@ def analyse_trendline_duree() -> None:
 
     st.write(
         t("trends_main_interpretation_down", category="trends").format(
-            slope_mean=regressions['mean_minutes']['slope'],
-            slope_median=regressions['median_minutes']['slope']
+            slope_mean=regressions["mean_minutes"]["slope"],
+            slope_median=regressions["median_minutes"]["slope"],
         )
     )
 
@@ -586,24 +588,56 @@ def analyse_trendline_duree() -> None:
 
         with col1:
             st.markdown(t("stats_section_mean", category="trends"))
-            st.write(t("stats_label_slope", category="trends").format(value=f"{regressions['mean_minutes']['slope']:.6f}"))
-            st.write(t("stats_label_intercept", category="trends").format(value=f"{regressions['mean_minutes']['intercept']:.2f}"))
-            st.write(t("trends.stats_label_r2_weighted").format(value=f"{regressions['mean_minutes']['r2']:.4f}"))
-            st.write(t("stats_label_pvalue", category="trends").format(value=f"{regressions['mean_minutes']['p_value']:.4e}"))
+            st.write(
+                t("stats_label_slope", category="trends").format(
+                    value=f"{regressions['mean_minutes']['slope']:.6f}"
+                )
+            )
+            st.write(
+                t("stats_label_intercept", category="trends").format(
+                    value=f"{regressions['mean_minutes']['intercept']:.2f}"
+                )
+            )
+            st.write(
+                t("trends.stats_label_r2_weighted").format(
+                    value=f"{regressions['mean_minutes']['r2']:.4f}"
+                )
+            )
+            st.write(
+                t("stats_label_pvalue", category="trends").format(
+                    value=f"{regressions['mean_minutes']['p_value']:.4e}"
+                )
+            )
 
         with col2:
             st.markdown(t("stats_section_median", category="trends"))
-            st.write(t("stats_label_slope", category="trends").format(value=f"{regressions['median_minutes']['slope']:.6f}"))
-            st.write(t("stats_label_intercept", category="trends").format(value=f"{regressions['median_minutes']['intercept']:.2f}"))
-            st.write(t("trends.stats_label_r2_weighted").format(value=f"{regressions['median_minutes']['r2']:.4f}"))
-            st.write(t("stats_label_pvalue", category="trends").format(value=f"{regressions['median_minutes']['p_value']:.4e}"))
+            st.write(
+                t("stats_label_slope", category="trends").format(
+                    value=f"{regressions['median_minutes']['slope']:.6f}"
+                )
+            )
+            st.write(
+                t("stats_label_intercept", category="trends").format(
+                    value=f"{regressions['median_minutes']['intercept']:.2f}"
+                )
+            )
+            st.write(
+                t("trends.stats_label_r2_weighted").format(
+                    value=f"{regressions['median_minutes']['r2']:.4f}"
+                )
+            )
+            st.write(
+                t("stats_label_pvalue", category="trends").format(
+                    value=f"{regressions['median_minutes']['p_value']:.4e}"
+                )
+            )
 
     # ========================================
     # TABLEAU DES DONNÉES
     # ========================================
 
     # Interprétation
-    st.info(t('duration_interpretation', category='trends'))
+    st.info(t("duration_interpretation", category="trends"))
 
 
 def analyse_trendline_duree_old_intervals() -> None:
@@ -767,7 +801,9 @@ def analyse_trendline_duree_old_intervals() -> None:
             fill="tonexty",
             fillcolor="rgba(255, 165, 0, 0.1)",
             line=dict(width=0),
-            name=t("legend_prediction_interval", category="trends").format(level=confidence_level),
+            name=t("legend_prediction_interval", category="trends").format(
+                level=confidence_level
+            ),
             hoverinfo="skip",
         )
     )
@@ -815,7 +851,9 @@ def analyse_trendline_duree_old_intervals() -> None:
             fill="tonexty",
             fillcolor="rgba(0, 128, 0, 0.15)",
             line=dict(width=0),
-            name=t("legend_confidence_interval", category="trends").format(level=confidence_level),
+            name=t("legend_confidence_interval", category="trends").format(
+                level=confidence_level
+            ),
             hoverinfo="skip",
         )
     )
@@ -962,10 +1000,20 @@ def analyse_trendline_duree_old_intervals() -> None:
         )
 
         st.markdown(t("coefficients_header"))
-        st.write(t("regression_detail_intercept", category="trends").format(value=f"{intercept:.2f}"))
-        st.write(t("regression_detail_slope", category="trends").format(value=f"{slope:.2f}"))
+        st.write(
+            t("regression_detail_intercept", category="trends").format(
+                value=f"{intercept:.2f}"
+            )
+        )
+        st.write(
+            t("regression_detail_slope", category="trends").format(value=f"{slope:.2f}")
+        )
         st.write(t("trends.regression_detail_r2").format(value=f"{r_squared:.4f}"))
-        st.write(t("regression_detail_pvalue", category="trends").format(value=f"{p_value:.4e}"))
+        st.write(
+            t("regression_detail_pvalue", category="trends").format(
+                value=f"{p_value:.4e}"
+            )
+        )
 
         st.markdown(t("model_summary_header"))
         st.text(wls_result.summary())
@@ -1088,7 +1136,9 @@ def analyse_trendline_duree_old() -> None:
         st.metric(
             "📉 Tendance Moyenne",
             f"{trend_mean:+.3f} min/an",
-            delta=t("delta_over_period", category="trends").format(value=trend_mean * len(minutes_by_year)),
+            delta=t("delta_over_period", category="trends").format(
+                value=trend_mean * len(minutes_by_year)
+            ),
             delta_color="inverse",
         )
 
@@ -1097,7 +1147,9 @@ def analyse_trendline_duree_old() -> None:
         st.metric(
             t("trend_median_label", category="trends"),
             f"{trend_median:+.3f} min/an",
-            delta=t("delta_over_period", category="trends").format(value=trend_median * len(minutes_by_year)),
+            delta=t("delta_over_period", category="trends").format(
+                value=trend_median * len(minutes_by_year)
+            ),
             delta_color="inverse",
         )
 
@@ -1284,10 +1336,26 @@ def analyse_trendline_duree_old() -> None:
 
         with col1:
             st.markdown(t("stats_section_mean", category="trends"))
-            st.write(t("stats_label_slope", category="trends").format(value=f"{regressions['mean_minutes']['slope']:.6f}"))
-            st.write(t("stats_label_intercept", category="trends").format(value=f"{regressions['mean_minutes']['intercept']:.2f}"))
-            st.write(t("trends.stats_label_r2_weighted").format(value=f"{regressions['mean_minutes']['r2']:.4f}"))
-            st.write(t("stats_label_pvalue", category="trends").format(value=f"{regressions['mean_minutes']['p_value']:.4e}"))
+            st.write(
+                t("stats_label_slope", category="trends").format(
+                    value=f"{regressions['mean_minutes']['slope']:.6f}"
+                )
+            )
+            st.write(
+                t("stats_label_intercept", category="trends").format(
+                    value=f"{regressions['mean_minutes']['intercept']:.2f}"
+                )
+            )
+            st.write(
+                t("trends.stats_label_r2_weighted").format(
+                    value=f"{regressions['mean_minutes']['r2']:.4f}"
+                )
+            )
+            st.write(
+                t("stats_label_pvalue", category="trends").format(
+                    value=f"{regressions['mean_minutes']['p_value']:.4e}"
+                )
+            )
 
             if regressions["mean_minutes"]["p_value"] < 0.001:
                 st.success("✅ Tendance hautement significative (p < 0.001)")
@@ -1309,10 +1377,26 @@ def analyse_trendline_duree_old() -> None:
 
         with col2:
             st.markdown(t("stats_section_median", category="trends"))
-            st.write(t("stats_label_slope", category="trends").format(value=f"{regressions['median_minutes']['slope']:.6f}"))
-            st.write(t("stats_label_intercept", category="trends").format(value=f"{regressions['median_minutes']['intercept']:.2f}"))
-            st.write(t("trends.stats_label_r2_weighted").format(value=f"{regressions['median_minutes']['r2']:.4f}"))
-            st.write(t("stats_label_pvalue", category="trends").format(value=f"{regressions['median_minutes']['p_value']:.4e}"))
+            st.write(
+                t("stats_label_slope", category="trends").format(
+                    value=f"{regressions['median_minutes']['slope']:.6f}"
+                )
+            )
+            st.write(
+                t("stats_label_intercept", category="trends").format(
+                    value=f"{regressions['median_minutes']['intercept']:.2f}"
+                )
+            )
+            st.write(
+                t("trends.stats_label_r2_weighted").format(
+                    value=f"{regressions['median_minutes']['r2']:.4f}"
+                )
+            )
+            st.write(
+                t("stats_label_pvalue", category="trends").format(
+                    value=f"{regressions['median_minutes']['p_value']:.4e}"
+                )
+            )
 
             if regressions["median_minutes"]["p_value"] < 0.001:
                 st.success("✅ Tendance hautement significative (p < 0.001)")
@@ -1337,18 +1421,16 @@ def analyse_trendline_duree_old() -> None:
 
         if regressions["mean_minutes"]["slope"] < 0:
             st.write(
-                f"""
-            {t("trends_main_interpretation_down", category="trends").format(
-                slope_mean=regressions['mean_minutes']['slope'],
-                slope_median=regressions['median_minutes']['slope']
-            )}
-            """
+                t("trends_main_interpretation_down", category="trends").format(
+                    slope_mean=regressions["mean_minutes"]["slope"],
+                    slope_median=regressions["median_minutes"]["slope"],
+                )
             )
         else:
             st.write(
                 t("trends_main_interpretation_up", category="trends").format(
-                    slope_mean=regressions['mean_minutes']['slope'],
-                    slope_median=regressions['median_minutes']['slope']
+                    slope_mean=regressions["mean_minutes"]["slope"],
+                    slope_median=regressions["median_minutes"]["slope"],
                 )
             )
 
@@ -1531,17 +1613,20 @@ def analyse_trendline_complexite() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # Interprétation
-    complexity_interpretation = t("complexity_regression_interpretation", category="trends").format(
-        slope=regressions['mean_complexity']['slope'],
-        r2=regressions['mean_complexity']['r2'],
-        pvalue=regressions['mean_complexity']['p_value']
+    complexity_interpretation = t(
+        "complexity_regression_interpretation", category="trends"
+    ).format(
+        slope=regressions["mean_complexity"]["slope"],
+        r2=regressions["mean_complexity"]["r2"],
+        pvalue=regressions["mean_complexity"]["p_value"],
     )
 
     # Add details
-    complexity_interpretation += f"""
-    Cette évolution indique une **augmentation progressive de la complexité des recettes** au fil du temps,
-    suggérant des **préparations de plus en plus élaborées**. La tendance est **cohérente** avec l'augmentation
-    du **nombre d'étapes** et du **nombre d'ingrédients**, confirmant une **complexification globale** des recettes publiées."""
+    complexity_interpretation += (
+        "Cette évolution indique une **augmentation progressive de la complexité des recettes** au fil du temps, "
+        "suggérant des **préparations de plus en plus élaborées**. La tendance est **cohérente** avec l'augmentation "
+        "du **nombre d'étapes** et du **nombre d'ingrédients**, confirmant une **complexification globale** des recettes publiées."
+    )
 
     st.info(complexity_interpretation)
 
@@ -1690,7 +1775,7 @@ def analyse_trendline_nutrition() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # Interprétation
-    st.info(t('nutrition_interpretation', category='trends'))
+    st.info(t("nutrition_interpretation", category="trends"))
 
 
 # ============================================================================
@@ -1787,8 +1872,12 @@ def analyse_trendline_ingredients(top_n=10) -> None:
         subplot_titles=(
             t("ingredients_most_frequent", category="trends").format(n=TOP_N),
             t("ingredients_diversity_evolution", category="trends"),
-            t("ingredients_top_increases_short", category="trends").format(n=TOP_N, min_year=min_year, max_year=max_year),
-            t("ingredients_top_decreases_short", category="trends").format(n=TOP_N, min_year=min_year, max_year=max_year),
+            t("ingredients_top_increases_short", category="trends").format(
+                n=TOP_N, min_year=min_year, max_year=max_year
+            ),
+            t("ingredients_top_decreases_short", category="trends").format(
+                n=TOP_N, min_year=min_year, max_year=max_year
+            ),
             t("ingredients_top_increases", category="trends").format(n=N_VARIATIONS),
             t("ingredients_top_decreases", category="trends").format(n=N_VARIATIONS),
         ),
@@ -1914,11 +2003,15 @@ def analyse_trendline_ingredients(top_n=10) -> None:
         )
 
     # Axes
-    fig.update_xaxes(title_text=t("axis_total_occurrences", category="trends"), row=1, col=1)
+    fig.update_xaxes(
+        title_text=t("axis_total_occurrences", category="trends"), row=1, col=1
+    )
     fig.update_yaxes(row=1, col=1)
 
     fig.update_xaxes(title_text=t("axis_year", category="trends"), row=1, col=2)
-    fig.update_yaxes(title_text=t("axis_unique_ingredients", category="trends"), row=1, col=2)
+    fig.update_yaxes(
+        title_text=t("axis_unique_ingredients", category="trends"), row=1, col=2
+    )
 
     label_delta = t("variation_normalized") if NORMALIZE else t("variation_occurrences")
     fig.update_xaxes(title_text=label_delta, row=2, col=1)
@@ -1927,7 +2020,11 @@ def analyse_trendline_ingredients(top_n=10) -> None:
     fig.update_xaxes(title_text=label_delta, row=2, col=2)
     fig.update_yaxes(row=2, col=2)
 
-    ylabel_freq = t("axis_frequency", category="trends") if NORMALIZE else t("axis_occurrences", category="trends")
+    ylabel_freq = (
+        t("axis_frequency", category="trends")
+        if NORMALIZE
+        else t("axis_occurrences", category="trends")
+    )
     fig.update_xaxes(title_text=t("axis_year", category="trends"), row=3, col=1)
     fig.update_yaxes(title_text=ylabel_freq, row=3, col=1)
 
@@ -1946,7 +2043,7 @@ def analyse_trendline_ingredients(top_n=10) -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # Interprétation
-    st.info(t('ingredients_interpretation', category='trends'))
+    st.info(t("ingredients_interpretation", category="trends"))
 
 
 # ============================================================================
@@ -2034,8 +2131,12 @@ def analyse_trendline_tags(top_n=10) -> None:
         subplot_titles=(
             t("tags_most_frequent", category="trends").format(n=TOP_N),
             t("tags_diversity_evolution", category="trends"),
-            t("tags_top_increases_short", category="trends").format(n=TOP_N, min_year=min_year_tags, max_year=max_year_tags),
-            t("tags_top_decreases_short", category="trends").format(n=TOP_N, min_year=min_year_tags, max_year=max_year_tags),
+            t("tags_top_increases_short", category="trends").format(
+                n=TOP_N, min_year=min_year_tags, max_year=max_year_tags
+            ),
+            t("tags_top_decreases_short", category="trends").format(
+                n=TOP_N, min_year=min_year_tags, max_year=max_year_tags
+            ),
             t("tags_top_increases", category="trends").format(n=N_VARIATIONS),
             t("tags_top_decreases", category="trends").format(n=N_VARIATIONS),
         ),
@@ -2165,7 +2266,9 @@ def analyse_trendline_tags(top_n=10) -> None:
         )
 
     # Axes
-    fig.update_xaxes(title_text=t("axis_total_occurrences", category="trends"), row=1, col=1)
+    fig.update_xaxes(
+        title_text=t("axis_total_occurrences", category="trends"), row=1, col=1
+    )
     fig.update_yaxes(row=1, col=1)
 
     fig.update_xaxes(title_text=t("axis_year", category="trends"), row=1, col=2)
@@ -2180,7 +2283,11 @@ def analyse_trendline_tags(top_n=10) -> None:
     fig.update_xaxes(title_text=label_delta_tags, row=2, col=2)
     fig.update_yaxes(row=2, col=2)
 
-    ylabel_freq_tags = t("axis_frequency", category="trends") if NORMALIZE else t("axis_occurrences", category="trends")
+    ylabel_freq_tags = (
+        t("axis_frequency", category="trends")
+        if NORMALIZE
+        else t("axis_occurrences", category="trends")
+    )
     fig.update_xaxes(title_text=t("axis_year", category="trends"), row=3, col=1)
     fig.update_yaxes(title_text=ylabel_freq_tags, row=3, col=1)
 
@@ -2199,4 +2306,4 @@ def analyse_trendline_tags(top_n=10) -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # Interprétation
-    st.info(t('tags_interpretation', category='trends'))
+    st.info(t("tags_interpretation", category="trends"))

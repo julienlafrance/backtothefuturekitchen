@@ -21,7 +21,7 @@ from data.cached_loaders import get_recipes_clean as load_recipes_clean
 # Import de la charte graphique
 from utils import chart_theme
 from utils.color_theme import ColorTheme
-from utils.i18n_helper import t, get_season_mapping
+from utils.i18n_helper import t
 
 
 # ============================================================================
@@ -187,7 +187,7 @@ def analyse_seasonality_volume() -> None:
     # INTERPRÉTATION
     # ========================================
 
-    st.info(t('volume_interpretation', category='seasonality'))
+    st.info(t("volume_interpretation", category="seasonality"))
 
 
 # ============================================================================
@@ -390,7 +390,7 @@ def analyse_seasonality_duree() -> None:
     # INTERPRÉTATION
     # ========================================
 
-    st.info(t('duration_interpretation', category='seasonality'))
+    st.info(t("duration_interpretation", category="seasonality"))
 
 
 # ============================================================================
@@ -474,8 +474,12 @@ def analyse_seasonality_complexite() -> None:
             complexity_by_season_pd["mean_steps"].idxmax()
         ]
         st.metric(
-            t("season_most_steps", category="seasonality").format(season=max_steps['season']),
-            t("steps_count", category="seasonality").format(count=max_steps['mean_steps']),
+            t("season_most_steps", category="seasonality").format(
+                season=max_steps["season"]
+            ),
+            t("steps_count", category="seasonality").format(
+                count=max_steps["mean_steps"]
+            ),
         )
 
     with col_c:
@@ -483,7 +487,9 @@ def analyse_seasonality_complexite() -> None:
             complexity_by_season_pd["mean_ingredients"].idxmax()
         ]
         st.metric(
-            t("season_most_ingredients", category="seasonality").format(season=max_ingredients['season']),
+            t("season_most_ingredients", category="seasonality").format(
+                season=max_ingredients["season"]
+            ),
             f"{max_ingredients['mean_ingredients']:.1f} ingr.",
         )
 
@@ -589,7 +595,7 @@ def analyse_seasonality_complexite() -> None:
     # INTERPRÉTATION
     # ========================================
 
-    st.info(t('complexity_interpretation', category='seasonality'))
+    st.info(t("complexity_interpretation", category="seasonality"))
 
 
 # ============================================================================
@@ -661,7 +667,12 @@ def analyse_seasonality_nutrition() -> None:
             nutrition_by_season_pd["mean_calories"].idxmin()
         ]
         st.metric(
-            t("season_lightest", category="seasonality").format(season=min_cal['season']), t("calories_count", category="seasonality").format(calories=min_cal['mean_calories'])
+            t("season_lightest", category="seasonality").format(
+                season=min_cal["season"]
+            ),
+            t("calories_count", category="seasonality").format(
+                calories=min_cal["mean_calories"]
+            ),
         )
 
     with col_c:
@@ -727,9 +738,7 @@ def analyse_seasonality_nutrition() -> None:
     )
 
     # Application du thème
-    chart_theme.apply_chart_theme(
-        fig, title=t("profil_nutritionnel_normalise")
-    )
+    chart_theme.apply_chart_theme(fig, title=t("profil_nutritionnel_normalise"))
 
     fig.update_xaxes(title_text=t("axis_season"))
     fig.update_yaxes(title_text="Nutriments")
@@ -768,7 +777,7 @@ def analyse_seasonality_nutrition() -> None:
     # INTERPRÉTATION
     # ========================================
 
-    st.info(t('nutrition_interpretation', category='seasonality'))
+    st.info(t("nutrition_interpretation", category="seasonality"))
 
 
 # ============================================================================
@@ -928,9 +937,7 @@ def analyse_seasonality_ingredients() -> None:
     )
 
     # Application du thème
-    chart_theme.apply_chart_theme(
-        fig, title=t("top20_ingredients_variabilite")
-    )
+    chart_theme.apply_chart_theme(fig, title=t("top20_ingredients_variabilite"))
 
     fig.update_xaxes(title_text=t("axis_season"))
     fig.update_yaxes(title_text=t("axis_ingredient"))
@@ -943,7 +950,7 @@ def analyse_seasonality_ingredients() -> None:
     # INTERPRÉTATION
     # ========================================
 
-    st.info(t('ingredients_interpretation', category='seasonality'))
+    st.info(t("ingredients_interpretation", category="seasonality"))
 
 
 # ============================================================================
@@ -1087,7 +1094,9 @@ def analyse_seasonality_tags() -> None:
     )
 
     # Application du thème
-    chart_theme.apply_chart_theme(fig, title=t("tags_seasonal_variability", category="seasonality"))
+    chart_theme.apply_chart_theme(
+        fig, title=t("tags_seasonal_variability", category="seasonality")
+    )
 
     fig.update_xaxes(title_text=t("axis_season"))
     fig.update_yaxes(title_text="Tag")
@@ -1100,7 +1109,7 @@ def analyse_seasonality_tags() -> None:
     # INTERPRÉTATION
     # ========================================
 
-    st.info(t('tags_interpretation', category='seasonality'))
+    st.info(t("tags_interpretation", category="seasonality"))
 
 
 # ============================================================================

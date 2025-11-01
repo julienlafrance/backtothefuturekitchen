@@ -213,8 +213,15 @@ def analyse_ratings_validation_ponderee() -> None:
     )
 
     # Axes
-    fig.update_xaxes(title_text=t("nombre_interactions", category="ratings"), row=1, col=1)
-    fig.update_yaxes(title_text=t("legend_log_frequency", category="trends"), type="log", row=1, col=1)
+    fig.update_xaxes(
+        title_text=t("nombre_interactions", category="ratings"), row=1, col=1
+    )
+    fig.update_yaxes(
+        title_text=t("legend_log_frequency", category="trends"),
+        type="log",
+        row=1,
+        col=1,
+    )
 
     fig.update_xaxes(title_text="Date", row=1, col=2)
     fig.update_yaxes(title_text=t("poids_normalises", category="ratings"), row=1, col=2)
@@ -274,8 +281,7 @@ def analyse_ratings_validation_ponderee() -> None:
     # Interprétation
     st.info(
         t("ratings_info_methodology", category="ratings").format(
-            cv_volumes=cv_volumes,
-            bias_slope=bias_slope
+            cv_volumes=cv_volumes, bias_slope=bias_slope
         )
     )
 
@@ -365,7 +371,9 @@ def analyse_ratings_tendance_temporelle() -> None:
             y=trend_line_weighted,
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=2, dash="dash"),
-            name=t("legend_trend_per_month", category="trends").format(value=wls_trend_result.params[1]),
+            name=t("legend_trend_per_month", category="trends").format(
+                value=wls_trend_result.params[1]
+            ),
             showlegend=True,
         ),
         row=1,
@@ -480,13 +488,18 @@ def analyse_ratings_tendance_temporelle() -> None:
     # Métriques
     col1, col2, col3, col4 = st.columns(4)
     with col1:
-        st.metric(t("slope_weighted", category="ratings"), f"{wls_trend_result.params[1]:.6f} pts/mois")
+        st.metric(
+            t("slope_weighted", category="ratings"),
+            f"{wls_trend_result.params[1]:.6f} pts/mois",
+        )
     with col2:
         st.metric(t("r2_weighted_metric", category="ratings"), f"{r2_weighted:.4f}")
     with col3:
         st.metric("P-value", f"{wls_trend_result.pvalues[1]:.4f}")
     with col4:
-        st.metric(t("corr_volume_qualite", category="ratings"), f"{vol_qual_weighted:.3f}")
+        st.metric(
+            t("corr_volume_qualite", category="ratings"), f"{vol_qual_weighted:.3f}"
+        )
 
     # Interprétation
     st.info(
@@ -494,7 +507,7 @@ def analyse_ratings_tendance_temporelle() -> None:
             slope_year=wls_trend_result.params[1] * 12,
             p_value=wls_trend_result.pvalues[1],
             r2_weighted=r2_weighted,
-            vol_qual_weighted=vol_qual_weighted
+            vol_qual_weighted=vol_qual_weighted,
         )
     )
 
@@ -603,7 +616,9 @@ def analyse_ratings_distribution() -> None:
             y=trend_weighted_detailed,
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=2, dash="dash"),
-            name=t("legend_trend_per_year", category="trends").format(value=wls_trend_result.params[1]*12),
+            name=t("legend_trend_per_year", category="trends").format(
+                value=wls_trend_result.params[1] * 12
+            ),
             showlegend=True,
         ),
         row=1,
@@ -617,7 +632,9 @@ def analyse_ratings_distribution() -> None:
             y=[mean_rating_weighted, mean_rating_weighted],
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[0], width=2),
-            name=t("legend_weighted_mean", category="trends").format(value=mean_rating_weighted),
+            name=t("legend_weighted_mean", category="trends").format(
+                value=mean_rating_weighted
+            ),
             showlegend=True,
         ),
         row=1,
@@ -662,7 +679,9 @@ def analyse_ratings_distribution() -> None:
             y=trend_weighted_detailed,
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=3, dash="dash"),
-            name=t("legend_trend_per_year", category="trends").format(value=wls_trend_result.params[1]*12),
+            name=t("legend_trend_per_year", category="trends").format(
+                value=wls_trend_result.params[1] * 12
+            ),
             showlegend=False,
         ),
         row=2,
@@ -676,7 +695,9 @@ def analyse_ratings_distribution() -> None:
             y=[mean_rating_weighted, mean_rating_weighted],
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[0], width=2),
-            name=t("legend_weighted_mean", category="trends").format(value=mean_rating_weighted),
+            name=t("legend_weighted_mean", category="trends").format(
+                value=mean_rating_weighted
+            ),
             showlegend=False,
         ),
         row=2,
@@ -711,7 +732,9 @@ def analyse_ratings_distribution() -> None:
             y=vol_pred_detailed,
             mode="lines",
             line=dict(color=ColorTheme.CHART_COLORS[2], width=3, dash="dash"),
-            name=t("legend_weighted_corr", category="trends").format(value=vol_qual_weighted),
+            name=t("legend_weighted_corr", category="trends").format(
+                value=vol_qual_weighted
+            ),
             showlegend=True,
         ),
         row=3,
@@ -721,9 +744,14 @@ def analyse_ratings_distribution() -> None:
     # Axes
     fig.update_yaxes(title_text=t("rating_moyen", category="ratings"), row=1, col=1)
     fig.update_yaxes(
-        title_text=t("rating_moyen", category="ratings"), row=2, col=1, range=[4.65, 4.72]
+        title_text=t("rating_moyen", category="ratings"),
+        row=2,
+        col=1,
+        range=[4.65, 4.72],
     )  # Zoom
-    fig.update_xaxes(title_text=t("nombre_interactions_mensuelles", category="ratings"), row=3, col=1)
+    fig.update_xaxes(
+        title_text=t("nombre_interactions_mensuelles", category="ratings"), row=3, col=1
+    )
     fig.update_yaxes(title_text=t("rating_moyen", category="ratings"), row=3, col=1)
 
     # Mise en forme
@@ -744,16 +772,19 @@ def analyse_ratings_distribution() -> None:
         st.metric(t("weighted_mean_metric"), f"{mean_rating_weighted:.3f}")
     with col2:
         st.metric(
-            t("ic_95", category="ratings"), f"±{1.96 * std_rating_weighted / np.sqrt(np.sum(weights)):.4f}"
+            t("ic_95", category="ratings"),
+            f"±{1.96 * std_rating_weighted / np.sqrt(np.sum(weights)):.4f}",
         )
     with col3:
-        st.metric(t("corr_volume_qualite", category="ratings"), f"{vol_qual_weighted:.3f}")
+        st.metric(
+            t("corr_volume_qualite", category="ratings"), f"{vol_qual_weighted:.3f}"
+        )
 
     # Interprétation
     st.info(
         t("ratings_info_detailed_full", category="ratings").format(
             mean_rating_weighted=mean_rating_weighted,
-            ci_95=1.96 * std_rating_weighted / np.sqrt(np.sum(weights))
+            ci_95=1.96 * std_rating_weighted / np.sqrt(np.sum(weights)),
         )
     )
 
@@ -901,17 +932,14 @@ def analyse_ratings_seasonality_1() -> None:
     # Interprétation
     st.info(
         t("ratings_seasonal_stats_desc", category="ratings").format(
-            cv_volumes=cv_volumes,
-            ratio_max_min=ratio_max_min
+            cv_volumes=cv_volumes, ratio_max_min=ratio_max_min
         )
     )
 
 
 def analyse_ratings_seasonality_2() -> None:
     """Analyse 5: Variations saisonnières des ratings (Stats et Visualisations)."""
-    st.markdown(
-        t("ratings_seasonal_dashboard_desc", category="ratings")
-    )
+    st.markdown(t("ratings_seasonal_dashboard_desc", category="ratings"))
 
     # Chargement des données
     with st.spinner("Chargement des interactions..."):
@@ -1045,7 +1073,12 @@ def analyse_ratings_seasonality_2() -> None:
         row=1,
         col=2,
     )
-    fig.update_yaxes(title_text=t("rating_moyen", category="ratings"), range=[4.60, 4.70], row=1, col=2)
+    fig.update_yaxes(
+        title_text=t("rating_moyen", category="ratings"),
+        range=[4.60, 4.70],
+        row=1,
+        col=2,
+    )
 
     # 3. % Ratings parfaits (5★)
     fig.add_trace(
@@ -1093,7 +1126,9 @@ def analyse_ratings_seasonality_2() -> None:
         row=2,
         col=2,
     )
-    fig.update_yaxes(title_text=t("ecart_type", category="ratings"), range=[0.0, 0.70], row=2, col=2)
+    fig.update_yaxes(
+        title_text=t("ecart_type", category="ratings"), range=[0.0, 0.70], row=2, col=2
+    )
 
     # 6. Volume d'interactions
     fig.add_trace(
@@ -1144,10 +1179,9 @@ def analyse_ratings_seasonality_2() -> None:
         )
 
     # Interprétation
-    interpretation_text = t("ratings_seasonal_interpretation", category="ratings").format(
-        f_stat=f_stat,
-        h_stat=h_stat
-    )
+    interpretation_text = t(
+        "ratings_seasonal_interpretation", category="ratings"
+    ).format(f_stat=f_stat, h_stat=h_stat)
 
     # Add amplitude details
     interpretation_text += f"""

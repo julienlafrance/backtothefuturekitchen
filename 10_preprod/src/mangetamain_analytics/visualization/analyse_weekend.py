@@ -124,7 +124,11 @@ def analyse_weekend_volume() -> None:
     with col2:
         st.metric("Week-end (moy/jour)", f"{weekend_rpd:,.0f}")
     with col3:
-        st.metric(t("difference"), f"+{diff_pct:.1f}%", delta=t("weekday_gt_weekend", category="weekend"))
+        st.metric(
+            t("difference"),
+            f"+{diff_pct:.1f}%",
+            delta=t("weekday_gt_weekend", category="weekend"),
+        )
     with col4:
         st.metric(f"Jour max: {max_day['jour']}", f"{max_day['n_recipes']:,}")
 
@@ -234,7 +238,9 @@ def analyse_weekend_volume() -> None:
     # Axes
     fig.update_yaxes(title_text="Recettes/jour", row=1, col=1)
     fig.update_yaxes(title_text="Nombre de recettes", row=1, col=2)
-    fig.update_yaxes(title_text=t("legend_deviation_pct", category="trends"), row=1, col=3)
+    fig.update_yaxes(
+        title_text=t("legend_deviation_pct", category="trends"), row=1, col=3
+    )
 
     fig.update_xaxes(title_text=t("axis_period"), row=1, col=1)
     fig.update_xaxes(title_text="Jour de la semaine", row=1, col=2)
@@ -247,7 +253,7 @@ def analyse_weekend_volume() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # 📝 INTERPRÉTATION
-    st.info(t('volume_interpretation', category='weekend'))
+    st.info(t("volume_interpretation", category="weekend"))
 
 
 def analyse_weekend_duree() -> None:
@@ -443,7 +449,7 @@ def analyse_weekend_duree() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # 📝 INTERPRÉTATION
-    st.info(t('duration_interpretation', category='weekend'))
+    st.info(t("duration_interpretation", category="weekend"))
 
 
 def analyse_weekend_complexite() -> None:
@@ -652,7 +658,7 @@ def analyse_weekend_complexite() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # 📝 INTERPRÉTATION
-    st.info(t('complexity_interpretation', category='weekend'))
+    st.info(t("complexity_interpretation", category="weekend"))
 
 
 def analyse_weekend_nutrition() -> None:
@@ -705,8 +711,8 @@ def analyse_weekend_nutrition() -> None:
     nutrients_list = [
         ("Calories", "calories", "mean_calories", 0),
         (t("proteines_pct"), "protein_pct", "mean_protein", 1),
-        ( t("lipides_pct"), "total_fat_pct", "mean_fat", 1),
-        ( t("graisses_sat_pct"), "sat_fat_pct", "mean_sat_fat", 1),
+        (t("lipides_pct"), "total_fat_pct", "mean_fat", 1),
+        (t("graisses_sat_pct"), "sat_fat_pct", "mean_sat_fat", 1),
         ("Sucres (%)", "sugar_pct", "mean_sugar", 1),
         ("Sodium (%)", "sodium_pct", "mean_sodium", 1),
     ]
@@ -758,7 +764,7 @@ def analyse_weekend_nutrition() -> None:
         st.metric(t("significant_differences", category="common"), f"{signif_count}")
     with col3:
         st.metric(
-            t("max_gap", category="weekend").format(nutrient=max_diff['nutrient']),
+            t("max_gap", category="weekend").format(nutrient=max_diff["nutrient"]),
             f"{max_diff['diff_pct']:+.1f}%",
             delta="p<0.05" if max_diff["significant"] else "NS",
         )
@@ -829,7 +835,7 @@ def analyse_weekend_nutrition() -> None:
     st.plotly_chart(fig, use_container_width=True)
 
     # 📝 INTERPRÉTATION
-    st.info(t('nutrition_interpretation', category='weekend'))
+    st.info(t("nutrition_interpretation", category="weekend"))
 
 
 def analyse_weekend_ingredients() -> None:
@@ -925,7 +931,9 @@ def analyse_weekend_ingredients() -> None:
     with col1:
         st.metric(t("total_ingredients", category="common"), f"{total_ingredients:,}")
     with col2:
-        st.metric(t("variable_ingredients", category="common"), f"{filtered_ingredients}")
+        st.metric(
+            t("variable_ingredients", category="common"), f"{filtered_ingredients}"
+        )
     with col3:
         pct_filtered = (filtered_ingredients / total_ingredients) * 100
         st.metric("% variables", f"{pct_filtered:.1f}%")
@@ -987,7 +995,7 @@ def analyse_weekend_ingredients() -> None:
         st.plotly_chart(fig, use_container_width=True)
 
         # 📝 INTERPRÉTATION
-        st.info(t('ingredients_interpretation', category='weekend'))
+        st.info(t("ingredients_interpretation", category="weekend"))
     else:
         st.warning(
             "⚠️ Aucun ingrédient ne satisfait les critères de filtrage (freq ≥1%, |diff| ≥0.2pp, p<0.05)"
@@ -1139,7 +1147,7 @@ def analyse_weekend_tags() -> None:
         st.plotly_chart(fig, use_container_width=True)
 
         # 📝 INTERPRÉTATION
-        st.info(t('tags_interpretation', category='weekend'))
+        st.info(t("tags_interpretation", category="weekend"))
     else:
         st.warning(
             "⚠️ Aucun tag ne satisfait les critères de filtrage (freq ≥1%, |diff| ≥0.2pp, p<0.05)"

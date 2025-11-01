@@ -796,8 +796,6 @@ def main() -> None:
         st.info(f"🚧 {t('coming_soon')}")
 
     # Footer - Cartouche gris visible (pas fixe)
-    from datetime import datetime
-
     today = "2025-10-31"
 
     st.markdown("<br><br>", unsafe_allow_html=True)  # Espace avant footer

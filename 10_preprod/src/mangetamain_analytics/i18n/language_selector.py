@@ -37,13 +37,38 @@ def render_language_selector() -> None:
     Displays a selectbox allowing users to switch between French and English.
     When language changes, triggers a rerun to update the entire interface.
     """
+    # Custom CSS to ensure selectbox options have correct background color
+    st.markdown(
+        """
+        <style>
+        /* Force selectbox dropdown background to match theme */
+        [data-baseweb="select"] > div {
+            background-color: #333333 !important;
+        }
+        [data-baseweb="popover"] {
+            background-color: #333333 !important;
+        }
+        /* Selectbox options */
+        [data-baseweb="menu"] {
+            background-color: #333333 !important;
+        }
+        [role="option"] {
+            background-color: #333333 !important;
+        }
+        [role="option"]:hover {
+            background-color: #444444 !important;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
     languages = {
         "🇫🇷 Français": "fr",
         "🇬🇧 English": "en",
     }
 
     current_lang = st.session_state.get("language", "fr")
-    current_display = "🇫🇷 Français" if current_lang == "fr" else "🇬🇧 English"
 
     selected = st.sidebar.selectbox(
         "Language / Langue",
